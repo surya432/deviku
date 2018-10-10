@@ -35,36 +35,34 @@ class EmbedController extends Controller
             $resultCheck360 = $this->check_openload360($content->mirror1);
             if (!is_null($resultCheck360) || !empty($resultCheck360)){
                 $this->renameopenload360($resultCheck360,$resultCheck360."-360p.mp4");
-                $save = true;
                 $content->mirror1 = $resultCheck360;
+				$content->save();
             }
         }
         if(is_null($content->mirror1)){
             $video360p = $content->f720p;
             $openload360 = $this->iframesd($video360p);
             if(!is_null($openload360)){
-                $save = true;
                 $content->mirror1 = $openload360;
+				$content->save();
             }
         }
         if(preg_match("/upload_id=/",$content->mirror3)){
             $resultCheck720 = $this->check_openload720($content->mirror3);
             if (!is_null($resultCheck720) || !empty($resultCheck720)){
                 $this->renameopenload720($resultCheck720,$resultCheck720."-720p.mp4");
-                $save = true;
                 $content->mirror3 = $resultCheck720;
+				$content->save();
             }
         }
         if(is_null($content->mirror3)){
             $video720p = $content->f720p;
             $openload720 = $this->iframesd($video720p);
             if(!is_null($openload720)){
-                $save = true;
                 $content->mirror3 = $openload720;
+	            $content->save();
+
             }
-        }
-        if($save){
-            $content->save();
         }
         return $content;
     }
