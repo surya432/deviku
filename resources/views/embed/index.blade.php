@@ -89,7 +89,7 @@
         @if($url->mirror3 !="" && !preg_match("/upload_id=/",$url->mirror3))
             <button class="btn btn-sm btn-primary" onclick="showPlayer('mirror3')">OP<sup>HD</sup></button>
         @endif
-        <button class="btn btn-sm btn-primary" onclick=showPlayer('download_links')>Download</button>	
+        <!-- <button class="btn btn-sm btn-primary" onclick=showPlayer('download_links')>Download</button>!!> -->
     </div>    
     <div id="myElement" style="position:absolute;width:100%!important;height:100%!important" onload="getPlayer()">
         <div class="spinner">
