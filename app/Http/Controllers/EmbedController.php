@@ -22,6 +22,7 @@ class EmbedController extends Controller
         $location = GeoIP::getLocation();
         $country=$location->iso_code;
         if($country == "KR" || $country == "US" && !$agent->isMobile() || $country == "US" && !$agent->isTablet() ){
+        //if($country == "KR" ){
             return abort(404);
         }
 
@@ -33,36 +34,38 @@ class EmbedController extends Controller
         $save = false;
         if(preg_match("/upload_id=/",$content->mirror1)){
             $resultCheck360 = $this->check_openload360($content->mirror1);
-            if (!is_null($resultCheck360) || !empty($resultCheck360)){
+            if (!is_null($resultCheck360) || !empty($resultCheck360) || $resultCheck360 != ""){
                 $this->renameopenload360($resultCheck360,$resultCheck360."-360p.mp4");
+                $save = true;
                 $content->mirror1 = $resultCheck360;
-				$content->save();
             }
         }
-        if(is_null($content->mirror1)){
-            $video360p = $content->f720p;
+        if(is_null($content->mirror1) || $content->mirror1 == "0" || $content->mirror1 ==""){
+            $video360p = $content->f360p;
             $openload360 = $this->iframesd($video360p);
             if(!is_null($openload360)){
+                $save = true;
                 $content->mirror1 = $openload360;
-				$content->save();
             }
         }
         if(preg_match("/upload_id=/",$content->mirror3)){
             $resultCheck720 = $this->check_openload720($content->mirror3);
-            if (!is_null($resultCheck720) || !empty($resultCheck720)){
+            if (!is_null($resultCheck720) || !empty($resultCheck720) || $resultCheck720 != ""){
                 $this->renameopenload720($resultCheck720,$resultCheck720."-720p.mp4");
+                $save = true;
                 $content->mirror3 = $resultCheck720;
-				$content->save();
             }
         }
-        if(is_null($content->mirror3)){
-            $video720p = $content->f720p;
+        if(is_null($content->mirror3) || $content->mirror3 =="" || $content->mirror3 =="0"){
+            $video720p = $content->f360p;
             $openload720 = $this->iframesd($video720p);
             if(!is_null($openload720)){
+                $save = true;
                 $content->mirror3 = $openload720;
-	            $content->save();
-
             }
+        }
+        if($save){
+            $content->save();
         }
         return $content;
     }
@@ -109,6 +112,27 @@ class EmbedController extends Controller
                 $iframe = "http://oload.stream/embed/".$content->mirror3;
                 return $iframe;
                 break;
+			case "download_links":
+					$returncontent = "";
+					$returncontent .= '<div id="notif" class="text-center"><p style="color: blue;">';
+					if(!is_null($content->mirror1)){
+						if(!preg_match("/upload_id=/",$content->mirror1)){
+						$returncontent .= "<a href='http://oload.stream/f/".$content->mirror1."' class='btn btn-sm btn-primary' target='_blank'>Openload 360p</a>";
+						}
+					}
+					if(!is_null($content->mirror3)){
+						if(!preg_match("/upload_id=/",$content->mirror3)){
+						$returncontent .= "<a href='http://oload.stream/f/".$content->mirror3."' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
+						}
+					}
+					/* if(!is_null($content->mirror2)){					
+						if(!preg_match("/upload_id=/",$content->mirror2)){
+						$returncontent .= "<a href='http://www.rapidvideo.com/d/".$content->mirror2."' class='btn btn-sm btn-primary' target='_blank'>RapidVideo 720p</a>";
+						}
+					} */
+					$returncontent .= '</p></div>';
+					return $returncontent;
+					break;
         }
 
     }

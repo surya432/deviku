@@ -180,7 +180,7 @@ trait HelperController {
         if($id["result"]){
             return $id["result"][$id_upload]["extid"];
         }
-        return "";
+        return null;
     }
     function check_openload720($url){
 		$id_upload = str_replace("upload_id=","",$url);
@@ -189,7 +189,7 @@ trait HelperController {
         if($id["result"]){
             return $id["result"][$id_upload]["extid"];
         }
-        return "";
+        return null;
     }
     public function refresh_token($token){
 		$tokenencode = urlencode($token);
