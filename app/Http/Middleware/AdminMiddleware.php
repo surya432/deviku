@@ -18,8 +18,8 @@ class AdminMiddleware
         if(Sentinel::check()){
             return $next($request);
         }else{
-        return redirect('/login');	
-	}
+            return redirect('/login');	
+	    }
         return redirect('/');
     
     }
