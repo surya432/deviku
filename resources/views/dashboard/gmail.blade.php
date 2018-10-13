@@ -83,8 +83,9 @@
             if (confirm('Are you sure you want to delete '+ fn +'?')) {
                 $.ajax({
                     url: "{{ route('gmailDelete') }}",
-                    type: "delete",
+                    type: "get",
                     data: {
+						_method: 'delete',
                         id: $(this).attr('data-id')
                     },
                     success: function(data){
