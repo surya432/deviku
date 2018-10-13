@@ -58,7 +58,7 @@ class EmbedController extends Controller
         }
         if(is_null($content->mirror3) || $content->mirror3 =="" || $content->mirror3 =="0"){
             $video720p = $content->f360p;
-            $openload720 = $this->iframesd($video720p);
+            $openload720 = $this->iframehd($video720p);
             if(!is_null($openload720)){
                 $save = true;
                 $content->mirror3 = $openload720;
