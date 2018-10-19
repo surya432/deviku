@@ -78,6 +78,7 @@ class EmbedController extends Controller
         }
         if($save){
             $content->save();
+            $content->touch();
         }
         return $content;
     }
