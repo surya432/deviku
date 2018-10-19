@@ -182,12 +182,30 @@ trait HelperController {
         }
         return null;
     }
+    function checkfile_openload360($url){
+        $id_upload = $url;
+        $result_curl= $this->post_url("http://api.openload.co/1/file/info","login=0c223dba0894ad6a&key=lqTc5EtD&file=".$id_upload, null);
+        $id = json_decode($result_curl,true);	
+        if($id["result"][$id_upload]["status"] == "200"){
+            return $id["result"][$id_upload]["status"];
+        }
+        return null;
+    }
     function check_openload720($url){
 		$id_upload = str_replace("upload_id=","",$url);
 		$result_curl= $this->post_url("http://api.openload.co/1/remotedl/status","login=1c6d666055b6a4c0&key=t5EK0UYI&id=".$id_upload, null);
         $id = json_decode($result_curl,true);
         if($id["result"]){
             return $id["result"][$id_upload]["extid"];
+        }
+        return null;
+    }
+    function checkfile_openload720($url){
+		$id_upload = $url;
+		$result_curl= $this->post_url("http://api.openload.co/1/file/info","login=1c6d666055b6a4c0&key=t5EK0UYI&file=".$id_upload, null);
+        $id = json_decode($result_curl,true);
+        if($id["result"][$id_upload]["status"] == "200"){
+            return $id["result"][$id_upload]["status"];
         }
         return null;
     }

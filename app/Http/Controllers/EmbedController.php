@@ -47,6 +47,12 @@ class EmbedController extends Controller
                 $save = true;
                 $content->mirror1 = $openload360;
             }
+        }else{
+            $openload360 = $this->checkfile_openload360($content->mirror1);
+            if(is_null($openload360)){
+                $save = true;
+                $content->mirror1 = null;
+            }
         }
         if(preg_match("/upload_id=/",$content->mirror3)){
             $resultCheck720 = $this->check_openload720($content->mirror3);
@@ -62,6 +68,12 @@ class EmbedController extends Controller
             if(!is_null($openload720)){
                 $save = true;
                 $content->mirror3 = $openload720;
+            }
+        }else{
+            $openload720 = $this->checkfile_openload720($content->mirror3);
+            if(is_null($openload720)){
+                $save = true;
+                $content->mirror3 = null;
             }
         }
         if($save){
