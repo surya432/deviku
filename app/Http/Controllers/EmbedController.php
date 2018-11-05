@@ -78,7 +78,6 @@ class EmbedController extends Controller
         }
         if($save){
             $content->save();
-            $content->touch();
         }
         return $content;
     }
@@ -114,15 +113,15 @@ class EmbedController extends Controller
                     }
                 break;
             case 'mirror1':
-                $iframe = "http://oload.stream/embed/".$content->mirror1;
+                $iframe = "https://oload.stream/embed/".$content->mirror1;
                 return $iframe;
                 break;
             case 'mirror2':
-                $iframe = "http://www.rapidvideo.com/e/".$content->mirror2;
+                $iframe = "https://www.rapidvideo.com/e/".$content->mirror2;
                 return $iframe;
                 break;
             case 'mirror3':
-                $iframe = "http://oload.stream/embed/".$content->mirror3;
+                $iframe = "https://oload.stream/embed/".$content->mirror3;
                 return $iframe;
                 break;
 			case "download_links":
@@ -130,12 +129,12 @@ class EmbedController extends Controller
 					$returncontent .= '<div id="notif" class="text-center"><p style="color: blue;">';
 					if(!is_null($content->mirror1)){
 						if(!preg_match("/upload_id=/",$content->mirror1)){
-						$returncontent .= "<a href='http://oload.stream/f/".$content->mirror1."' class='btn btn-sm btn-primary' target='_blank'>Openload 360p</a>";
+						$returncontent .= "<a href='https://oload.stream/f/".$content->mirror1."' class='btn btn-sm btn-primary' target='_blank'>Openload 360p</a>";
 						}
 					}
 					if(!is_null($content->mirror3)){
 						if(!preg_match("/upload_id=/",$content->mirror3)){
-						$returncontent .= "<a href='http://oload.stream/f/".$content->mirror3."' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
+						$returncontent .= "<a href='https://oload.stream/f/".$content->mirror3."' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
 						}
 					}
 					/* if(!is_null($content->mirror2)){					
