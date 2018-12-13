@@ -36,6 +36,9 @@ class GDController extends Controller
                 if($content){
                     if($content->f720p !="https://drive.google.com/open?id=".$Nofiles['id'] ){
                         $content->f720p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
+                        if(is_null($content->f360p)){
+                            $content->f360p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
+                        }
                         $content->save();
                         $data = Content::orderBy('id','desc')->where('drama_id',$id)->get();
                         Cache::forever('Content'.$id,$data);
@@ -48,6 +51,9 @@ class GDController extends Controller
                 if($content){
                     if($content->f360p !="https://drive.google.com/open?id=".$Nofiles['id'] ){
                         $content->f360p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
+                        if(is_null($content->f720p)){
+                            $content->f720p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
+                        }
                         $content->save();
                         $data = Content::orderBy('id','desc')->where('drama_id',$id)->get();
                         Cache::forever('Content'.$id,$data);
