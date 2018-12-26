@@ -365,9 +365,10 @@ trait HelperController {
         foreach($data as $data){
             $idcopy = $data->idcopy;
             $token = $data->token;
-            $this->deletegd($idcopy,$token);
-            $id = Mirror::where('idcopy',$idcopy);
-            $id->delete();
+            if($this->deletegd($idcopy,$token)){
+                $id = Mirror::where('idcopy',$idcopy);
+                $id->delete();
+            }
         }
         return $data;
     }
