@@ -18,6 +18,7 @@ class CreateDataBaseDrama extends Migration
             $table->string('title');
             $table->string('country_id');
             $table->string('type_id');
+            //$table->string('type_id');
             $table->string('status');
             $table->string('slug');
             $table->string('folderid');
