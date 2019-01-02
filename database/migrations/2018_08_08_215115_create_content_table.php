@@ -16,7 +16,7 @@ class CreateContentTable extends Migration
         Schema::create('contents', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('tag');
+            $table->string('drama_id');
             $table->string('status');
             $table->string('url');
             $table->string('360p')->nullable();
