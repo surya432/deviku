@@ -15,9 +15,9 @@ class Gmail extends Migration
     {
         Schema::create('gmails', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('email',255)->unique();
+            $table->string('email')->unique();
             $table->longText('token');
-            $table->string('folderid',255);
+            $table->string('folderid');
             $table->timestamps();
         }); 
     }

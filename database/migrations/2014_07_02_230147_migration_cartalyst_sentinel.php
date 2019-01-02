@@ -46,7 +46,6 @@ class MigrationCartalystSentinel extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('code');
             $table->timestamps();
-
             $table->engine = 'InnoDB';
             $table->unique('code');
         });
@@ -77,7 +76,6 @@ class MigrationCartalystSentinel extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
             $table->nullableTimestamps();
-
             $table->engine = 'InnoDB';
             $table->primary(['user_id', 'role_id']);
         });
@@ -88,7 +86,6 @@ class MigrationCartalystSentinel extends Migration
             $table->string('type');
             $table->string('ip')->nullable();
             $table->timestamps();
-
             $table->engine = 'InnoDB';
             $table->index('user_id');
         });
@@ -102,7 +99,6 @@ class MigrationCartalystSentinel extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->timestamps();
-
             $table->engine = 'InnoDB';
             $table->unique('email');
         });

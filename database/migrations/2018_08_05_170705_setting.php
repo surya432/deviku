@@ -16,9 +16,9 @@ class Setting extends Migration
         //
         Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('site_name',255);
-            $table->string('folder720p',255)->unique();
-            $table->string('folder360p',255)->unique();
+            $table->string('site_name');
+            $table->string('folder720p')->unique();
+            $table->string('folder360p')->unique();
             $table->timestamps();
         }); 
     }
