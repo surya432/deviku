@@ -47,7 +47,7 @@ class MigrationCartalystSentinel extends Migration
             $table->string('code');
             $table->timestamps();
             $table->engine = 'InnoDB';
-            $table->unique('code');
+            //$table->unique('code');
         });
 
         Schema::create('reminders', function (Blueprint $table) {
@@ -100,7 +100,7 @@ class MigrationCartalystSentinel extends Migration
             $table->string('last_name')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
-            $table->unique('email');
+            //$table->unique('email');
         });
     }
 
