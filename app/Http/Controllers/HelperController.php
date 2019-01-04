@@ -285,6 +285,7 @@ trait HelperController {
 
     }
     public function deletegd($id, $token){
+        $this->emptytrash($token);
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 		  CURLOPT_URL => "https://www.googleapis.com/drive/v3/files/$id",
