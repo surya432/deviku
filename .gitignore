@@ -2,4 +2,4 @@
 !public/
 !.gitignore
 !.env
-public/player/*
+public/player/
