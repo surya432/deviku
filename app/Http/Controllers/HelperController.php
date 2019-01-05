@@ -128,7 +128,8 @@ trait HelperController {
         return $page;
     }
     private function link_upload($link, $name = null){
-		if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $link, $id)) {		
+        $links ="";
+        if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $link, $id)) {		
 			//$links = "http://cdn.dldramaid.xyz:5000/videos/apis/".$id[1]."/".$name;
 			$links = urlencode("https://www.googleapis.com/drive/v3/files/".$id[1]."?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M");
 		}
@@ -140,9 +141,12 @@ trait HelperController {
 		return "rename ".$result['msg'];
     }
     function iframesd($url){
-		$url_upload = $this->link_upload($url);
-		$url_upload= $this->openload360($url_upload);
-		return $url_upload;
+        $url_upload = $this->link_upload($url);
+        if(!isEmpty($url_upload)){
+            $url_upload= $this->openload360($url_upload);
+            return $url_upload;
+        }
+        return null;
     }
     function renameopenload720($id_oload, $name){
 		$result_curl= $this->post_url("http://api.openload.co/1/file/rename","login=1c6d666055b6a4c0&key=t5EK0UYI&file=".$id_oload."&name=".$name);
@@ -150,9 +154,12 @@ trait HelperController {
 		return "rename ".$result['msg'];
     }
     function iframehd($url){
-		$url_upload = $this->link_upload($url);
-		$result_id= $this->openload720($url_upload);
-		return $result_id;
+        $url_upload = $this->link_upload($url);
+        if(!isEmpty($url_upload)){
+            $result_id= $this->openload720($url_upload);
+            return $result_id;
+        }
+        return null;
     }
     private function openload720($link){
 		$result_curl= $this->post_url("http://api.openload.co/1/remotedl/add","login=1c6d666055b6a4c0&key=t5EK0UYI&url=".$link);
