@@ -1,4 +1,4 @@
 *
-.public/player/
+public/player/
 !.gitignore
 !.env
