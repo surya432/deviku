@@ -128,7 +128,7 @@ trait HelperController {
         return $page;
     }
     private function link_upload($link, $name = null){
-        $links ="";
+        $links =null;
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $link, $id)) {		
 			//$links = "http://cdn.dldramaid.xyz:5000/videos/apis/".$id[1]."/".$name;
 			$links = urlencode("https://www.googleapis.com/drive/v3/files/".$id[1]."?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M");
@@ -142,7 +142,7 @@ trait HelperController {
     }
     function iframesd($url){
         $url_upload = $this->link_upload($url);
-        if(!isEmpty($url_upload)){
+        if(!is_null($url_upload)){
             $url_upload= $this->openload360($url_upload);
             return $url_upload;
         }
@@ -155,7 +155,7 @@ trait HelperController {
     }
     function iframehd($url){
         $url_upload = $this->link_upload($url);
-        if(!isEmpty($url_upload)){
+        if(!is_null($url_upload)){
             $result_id= $this->openload720($url_upload);
             return $result_id;
         }
