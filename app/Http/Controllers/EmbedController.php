@@ -91,7 +91,7 @@ class EmbedController extends Controller
                 //return json_encode($mirror);
                 if(is_null($mirror)){
                     $copyID =$this->GDCopy($content->f360p, md5($url.$mytime),'SD');
-                    if(is_null($copyID) || isset($copyid['error']) ){ 
+                    if(is_null($copyID) || isset($copyID['error']) ){ 
                         return abort(404);
                     };
                     //return file_get_contents("http://db.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/open?id=".$copyID);
@@ -106,7 +106,7 @@ class EmbedController extends Controller
                 //return json_encode($mirror);
                 if(is_null($mirror)){
                     $copyID =$this->GDCopy($content->f720p, md5($url.$mytime),'HD');
-                    if(is_null($copyID)){ 
+                    if( is_null($copyID) || isset($copyID['error']) ){ 
                         return abort(404);
                     };
                     return file_get_contents("https://dldramaid.xyz/player/json.php?url=https://drive.google.com/open?id=".$copyID);

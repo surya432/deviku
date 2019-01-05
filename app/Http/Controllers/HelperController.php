@@ -369,7 +369,7 @@ trait HelperController {
     function AutoDeleteGd(){
         $mytime = \Carbon\Carbon::now();
         $dt = $mytime->subDays(2);
-        $data = Mirror::where("created_at", '<=',$dt )->limit(5)->get();
+        $data = Mirror::where("created_at", '<=',$dt )->limit(25)->get();
         foreach($data as $data){
             $idcopy = $data->idcopy;
             $token = $data->token;
