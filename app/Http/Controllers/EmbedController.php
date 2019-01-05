@@ -95,10 +95,10 @@ class EmbedController extends Controller
                         return abort(404);
                     };
                     //return file_get_contents("http://db.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/open?id=".$copyID);
-                    return file_get_contents("https://player.dldramaid.xyz/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
+                    return file_get_contents("https://dldramaid.xyz/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
                 }else{
                     //return file_get_contents("http://db.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
-                    return file_get_contents("https://player.dldramaid.xyz/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
+                    return file_get_contents("https://dldramaid.xyz/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
                 }
                 break;
             case 'gd720':
@@ -109,9 +109,9 @@ class EmbedController extends Controller
                     if(is_null($copyID)){ 
                         return abort(404);
                     };
-                    return file_get_contents("https://player.dldramaid.xyz/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
+                    return file_get_contents("https://dldramaid.xyz/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
                 }else{
-                    return file_get_contents("https://player.dldramaid.xyz/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
+                    return file_get_contents("https://dldramaid.xyz/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
                     }
                 break;
             case 'mirror1':
