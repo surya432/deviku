@@ -8,7 +8,7 @@ use App\Country;
 use App\Type;
 use Cache;
 use DB;
-
+use App\Content;
 use Yajra\DataTables\Facades\DataTables;
 
 class DramaController extends Controller
@@ -79,6 +79,7 @@ class DramaController extends Controller
     public function Delete(Request $request){
         $dataContent= Drama::find($request->input("id"));
 		if(!is_null($dataContent)){
+            DB::table('contents')->where('drama_id','=', $request->input("id") )->delete();
             DB::table('dramas')->where('id','=', $request->input("id") )->delete();
             $dataContent = "Delete Success";
 			cache::forget("Drama");

@@ -81,7 +81,6 @@ class DramaEpsController extends Controller
     }
     public function Post(Request $request){
 	$checkPost = Content::where('title',$request->input("title"));	
-	
         if(!empty($request->input("id"))){
             $dataContent = Content::find($request->input("id"));
             $dataContent->title = $request->input("title");
@@ -90,7 +89,6 @@ class DramaEpsController extends Controller
             $dataContent->f360p = $request->input("f360p");
             $dataContent->f720p = $request->input("f720p");
             $dataContent->save();
-
             $dataContentasd = "Update Success";
             return response()->json($dataContentasd,201);
         }

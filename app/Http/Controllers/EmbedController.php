@@ -127,26 +127,26 @@ class EmbedController extends Controller
                 return $iframe;
                 break;
 			case "download_links":
-					$returncontent = "";
-					$returncontent .= '<div id="notif" class="text-center"><p style="color: blue;">';
-					if(!is_null($content->mirror1)){
-						if(!preg_match("/upload_id=/",$content->mirror1)){
-						$returncontent .= "<a href='https://oload.stream/f/".$content->mirror1."' class='btn btn-sm btn-primary' target='_blank'>Openload 360p</a>";
-						}
-					}
-					if(!is_null($content->mirror3)){
-						if(!preg_match("/upload_id=/",$content->mirror3)){
-						$returncontent .= "<a href='https://oload.stream/f/".$content->mirror3."' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
-						}
-					}
-					/* if(!is_null($content->mirror2)){					
-						if(!preg_match("/upload_id=/",$content->mirror2)){
-						$returncontent .= "<a href='http://www.rapidvideo.com/d/".$content->mirror2."' class='btn btn-sm btn-primary' target='_blank'>RapidVideo 720p</a>";
-						}
-					} */
-					$returncontent .= '</p></div>';
-					return $returncontent;
-					break;
+                $returncontent = "";
+                $returncontent .= '<div id="notif" class="text-center"><p style="color: blue;">';
+                if(!is_null($content->mirror1)){
+                    if(!preg_match("/upload_id=/",$content->mirror1)){
+                    $returncontent .= "<a href='https://oload.stream/f/".$content->mirror1."' class='btn btn-sm btn-primary' target='_blank'>Openload 360p</a>";
+                    }
+                }
+                if(!is_null($content->mirror3)){
+                    if(!preg_match("/upload_id=/",$content->mirror3)){
+                    $returncontent .= "<a href='https://oload.stream/f/".$content->mirror3."' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
+                    }
+                }
+                /* if(!is_null($content->mirror2)){					
+                    if(!preg_match("/upload_id=/",$content->mirror2)){
+                    $returncontent .= "<a href='http://www.rapidvideo.com/d/".$content->mirror2."' class='btn btn-sm btn-primary' target='_blank'>RapidVideo 720p</a>";
+                    }
+                } */
+                $returncontent .= '</p></div>';
+                return $returncontent;
+                break;
         }
 
     }
