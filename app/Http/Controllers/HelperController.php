@@ -248,10 +248,10 @@ trait HelperController {
 			$checklinkerror= json_decode($result_curl23,true);
 			if($checklinkerror['access_token']){
                 $gmail = Gmail::where('token',$token)->first();
-                $gmail->touch();
 				$get_info23="Bearer ".$checklinkerror['access_token'];
 				$expiresAt = now()->addMinutes(50);
                 Cache::put('token_GD-'.md5($token), $get_info23, $expiresAt);
+                $gmail->touch();
 				return $get_info23;
 			}else{
 				return $checklinkerror;
