@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gmail;
-use App\HelperController;
 use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\Facades\DataTables;
 class GmailController extends Controller
