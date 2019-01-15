@@ -347,7 +347,7 @@ trait HelperController {
 	}
     function GDCopy($urlVideo, $nameVideo, $kualitas){
         $gmails =  DB::table('gmails')->whereNotIn('token', function($q){
-            $q->select('token')->from('mirrors')->groupBy('token')->havingRaw("COUNT(token) >= 200");
+            $q->select('token')->from('mirrors')->groupBy('token')->havingRaw("COUNT(token) >= 500");
         })->inRandomOrder()->first();
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
             $title= $nameVideo.'-'.$kualitas.'.mp4';
@@ -373,10 +373,9 @@ trait HelperController {
         foreach($data as $data){
             $idcopy = $data->idcopy;
             $token = $data->token;
-            if($this->deletegd($idcopy,$token)){
-                $id = Mirror::where('idcopy',$idcopy);
-                $id->delete();
-            }
+            $this->deletegd($idcopy,$token);
+            $id = Mirror::where('idcopy',$idcopy);
+            $id->delete();
         }
         return $data;
     }
