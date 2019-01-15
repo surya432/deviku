@@ -243,21 +243,21 @@ trait HelperController {
 		}
 	}
     function get_token($token){
-		if(!Cache::has('token_GD-'.md5($token))) {
+		if(!Cache::has('token_GD1-'.md5($token))) {
 			$result_curl23= $this->refresh_token($token);
 			$checklinkerror= json_decode($result_curl23,true);
 			if($checklinkerror['access_token']){
                 $gmail = Gmail::where('token',$token)->first();
 				$get_info23="Bearer ".$checklinkerror['access_token'];
 				$expiresAt = now()->addMinutes(50);
-                Cache::put('token_GD-'.md5($token), $get_info23, $expiresAt);
+                Cache::put('token_GD1-'.md5($token), $get_info23, $expiresAt);
                 $gmail->touch();
 				return $get_info23;
 			}else{
 				return $checklinkerror;
 			}
         }
-        $get_info23 = Cache::get('token_GD-'.md5($token));
+        $get_info23 = Cache::get('token_GD1-'.md5($token));
 		return $get_info23;
 	}
     public function copygd($driveId, $folderid, $title, $token){
