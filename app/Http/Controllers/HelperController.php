@@ -227,7 +227,7 @@ trait HelperController {
 		  CURLOPT_TIMEOUT => 300,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => "POST",
-		  CURLOPT_POSTFIELDS => "client_id=360719302013-sa0stcm46leau9cimhqbkqqpoa7ne51q.apps.googleusercontent.com&client_secret=eYnn5LGB3mXS0pJDKRMemhVe&refresh_token=$tokenencode&grant_type=refresh_token",
+		  CURLOPT_POSTFIELDS => "client_id=340252279758-6237oibftvlr7523oq2bbbsi67btoe8n.apps.googleusercontent.com&client_secret=9XUUzKJsATodbmpwc2lCTts6&refresh_token=$tokenencode&grant_type=refresh_token",
 		  CURLOPT_HTTPHEADER => array(
 			"Cache-Control: no-cache",
 			"Content-Type: application/x-www-form-urlencoded",
