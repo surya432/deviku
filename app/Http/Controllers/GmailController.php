@@ -54,6 +54,7 @@ class GmailController extends Controller
     }
     public function getToken(Request $request){
         $email = Gmail::find($request->input("id"))->first();
-        return $email;
+        
+        return $this->refresh_token($email->token);
     }
 }
