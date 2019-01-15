@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gmail;
+use App\HelperController;
 use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\Facades\DataTables;
 class GmailController extends Controller
 {
     //
+    use HelperController;
+
     public function Index(){
         return view("dashboard.gmail");
     }
@@ -49,5 +52,10 @@ class GmailController extends Controller
             return response()->json($dataContent,201);
         }
         return response()->json("error Delete",201);
+    }
+    public function getToken(Request $request){
+        $email = Gmail::find($request->input("id"))->first();
+        $email->token;
+        return $this->refreshToken($email->token);
     }
 }

@@ -254,7 +254,7 @@ trait HelperController {
                 Cache::put('token_GD-'.md5($token), $get_info23, $expiresAt);
 				return $get_info23;
 			}else{
-				$get_info23=null;
+				return $checklinkerror;
 			}
         }
         $get_info23 = Cache::get('token_GD-'.md5($token));

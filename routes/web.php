@@ -51,6 +51,7 @@ Route::group(['middleware' => ['admin','web']], function(){
     Route::get('/admin/gmail-data', ['as'=>'gmailData','uses'=>'GmailController@Data']);
     Route::post('/admin/gmail', ['as'=>'gmailPost','uses'=>'GmailController@Post']);
     Route::get('/admin/gmail/delete', ['as'=>'gmailDelete','uses'=>'GmailController@Delete']);
+    Route::get('/admin/gmail/token', ['as'=>'gmailtoken','uses'=>'GmailController@getToken']);
 
     Route::get('/admin/country', ['as'=>'country','uses'=>'CountryController@Index']);
     Route::get('/admin/country-data', ['as'=>'countryData','uses'=>'CountryController@Data']);
