@@ -246,7 +246,8 @@ trait HelperController {
 		if(!Cache::has('token_GD1-'.md5($token))) {
             $checklinkerror['access_token'] = null;
 			$result_curl23= $this->refresh_token($token);
-			$checklinkerror= json_decode($result_curl23,true);
+            $checklinkerror= json_decode($result_curl23,true);
+            return $checklinkerror['access_token'];
 			if($checklinkerror){
                 $gmail = Gmail::where('token',$token)->first();
 				$get_info23="Bearer ".$checklinkerror['access_token'];
