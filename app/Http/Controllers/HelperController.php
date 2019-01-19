@@ -237,7 +237,7 @@ trait HelperController {
 		$err = curl_error($curl);
 		curl_close($curl);
 		if ($err) {
-		    return $err;
+		    return null;
 		} else {
             return $response;
 		}
