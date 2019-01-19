@@ -244,6 +244,7 @@ trait HelperController {
 	}
     function get_token($token){
 		if(!Cache::has('token_GD1-'.md5($token))) {
+            $checklinkerror['access_token'] = null;
 			$result_curl23= $this->refresh_token($token);
 			$checklinkerror= json_decode($result_curl23,true);
 			if($checklinkerror['access_token']){
