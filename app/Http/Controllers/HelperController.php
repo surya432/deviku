@@ -247,7 +247,7 @@ trait HelperController {
             $checklinkerror['access_token'] = null;
 			$result_curl23= $this->refresh_token($token);
 			$checklinkerror= json_decode($result_curl23,true);
-			if($checklinkerror['access_token']){
+			if($checklinkerror){
                 $gmail = Gmail::where('token',$token)->first();
 				$get_info23="Bearer ".$checklinkerror['access_token'];
 				$expiresAt = now()->addMinutes(50);
