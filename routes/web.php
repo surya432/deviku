@@ -17,7 +17,7 @@ Route::get('/register', function (){
     return abort(404);
 });
 Route::get('/embed/{url}', ['as'=>'viewEps','uses'=>'EmbedController@Index']);
-Route::get('/ajax/embed/{url}', function(){
+Route::get('/ajax/videos/{url}', function(){
     return abort(404);
 });
 Route::post('/ajax/videos/{url}', ['as'=>'ajaxEps','uses'=>'EmbedController@getDetail']);
