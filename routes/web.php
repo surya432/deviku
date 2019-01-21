@@ -20,7 +20,7 @@ Route::get('/embed/{url}', ['as'=>'viewEps','uses'=>'EmbedController@Index']);
 Route::get('/ajax/embed/{url}', function(){
     return abort(404);
 });
-Route::post('/ajax/embed/{url}', ['as'=>'ajaxEps','uses'=>'EmbedController@getDetail']);
+Route::post('/ajax/videos/{url}', ['as'=>'ajaxEps','uses'=>'EmbedController@getDetail']);
 Route::get('/login', ['as'=>'login','uses'=>'LoginController@login']);
 Route::post('/admin/webfront/singkron', ['as'=>'webfrontSingkronpost','uses'=>'WebfrontsController@postDrama']);
 Route::post('/login',['as'=>'loginPost','uses'=>'LoginController@loginPost']);
