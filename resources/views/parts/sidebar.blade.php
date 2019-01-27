@@ -4,7 +4,7 @@
 
         <ul class="nav" id="side-menu">
 
-            <li class="sidebar-search">
+          {{--   <li class="sidebar-search">
 
                 <div class="input-group custom-search-form">
 
@@ -24,7 +24,7 @@
 
                 <!-- /input-group -->
 
-            </li>
+            </li> --}}
 
             <li>
 

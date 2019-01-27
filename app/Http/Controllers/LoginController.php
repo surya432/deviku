@@ -22,7 +22,7 @@ class LoginController extends Controller
             if(Sentinel::authenticate($request->all(),$rememberMe)){
                 // $slug = Sentinel::getUser()->roles()->first()->slug;
                 // if($slug =='admin'){
-                    return response()->json(['redirect'=>"/admin"]);
+                    return response()->json(['redirect'=>"/admin/drama"]);
                 // }else{
                 //     return response()->json(['redirect'=>"/editor"]);
                 // }
