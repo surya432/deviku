@@ -31,8 +31,6 @@
                 <a href="{{ route('admin') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
 
             </li>
-
-            @if(Sentinel::getUser()->roles()->first()->slug == 'admin')
             <li>
 
                 <a href="#"><i class="fa fa-film fa-fw"></i> Content <span class="fa arrow"></span></a>
@@ -58,6 +56,8 @@
                     </ul>
 
             </li>
+
+            @if(Sentinel::getUser()->roles()->first()->slug == 'admin')
             <li>
 
                 <a href="#"><i class="fa fa-users fa-fw"></i> Gmail Accounts <span class="fa arrow"></span></a>
