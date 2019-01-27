@@ -6,7 +6,7 @@ Drama {{$result->title}}
 <div class="row">
     <div class="col-lg-12">
         <div class="page-header">
-            {{$result->title}} [{{$result->id}}] 
+            <input type="text" value="{{$result->title}} [{{$result->id}}]">           
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">{{$result->title}} Command Action</div>

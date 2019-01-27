@@ -55,14 +55,15 @@ class DramaEpsController extends Controller
                 if($data->f360p){
                     return 'true';
                 }else{
-                    return $data->url;
+                    return '<input type="text" name="url_360p" id="url_360p" values="'.$data->url.'-360p">';
                 } 
             })
             ->addColumn('f720p', function ($data) {
                 if($data->f720p){
                     return 'true';
                 }else{
-                    return $data->url;
+
+                    return '<input type="text" name="url_720p" id="url_720p" values="'.$data->url.'-720p">';
                 }
             })
             ->addColumn('action', function ($data) {
