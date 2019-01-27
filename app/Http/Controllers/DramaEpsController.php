@@ -55,29 +55,32 @@ class DramaEpsController extends Controller
                 if($data->f360p){
                     return 'true';
                 }else{
-                    return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_360p" id="url_360p" value="'.$data->url.'-360p"></div>';
+                    return 'false';
                 } 
             })
             ->addColumn('f720ps', function ($data) {
                 if($data->f720p){
                     return 'true';
                 }else{
-                    return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_720p" id="url_720p" value="'.$data->url.'-720p"></div>';
+                    return 'false';
                 }
             })
             ->addColumn('action', function ($data) {
+                if($data->f720p){
+                    $f720p =  '';
+                }else{
+                    $f720p = '<input type="text" name="url_720p" id="url_720p" value="'.$data->url.'-720p">';
+                }
+                if($data->f360p){
+                    $f360p =  '';
+                }else{
+                    $f360p = '<input type="text" name="url_720p" id="url_720p" value="'.$data->url.'-360p">';
+                }
                 return '<div class="btn-group" role="group" aria-label="Command Action">
+                '.$f360p.$f720p.'
                 <a href="'.route("viewEps",$data->url).'" target="_blank" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
                 <button type="button" id="btnShow" data-id="'.$data->id.'" data-drama_id="'.$data->drama_id.'" data-status="'.$data->status.'" data-title="'.$data->title.'" data-f720p="'.$data->f720p.'" data-f360p="'.$data->f360p.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
                 <button type="button" id="btnDelete" data-id="'.$data->id.'" data-drama_id="'.$data->drama_id.'" data-status="'.$data->status.'" data-title="'.$data->title.'" data-f720p="'.$data->f720p.'" data-f360p="'.$data->f360p.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
-            })
-            ->addColumn('action360p', function ($data) {
-                return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_360p" id="url_360p" value="'.$data->url.'-360p"></div>';
-
-            })
-            ->addColumn('action720p', function ($data) {
-                return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_360p" id="url_360p" value="'.$data->url.'-360p"></div>';
-
             })
             ->order(function ($data) {
                 if (request()->has('id')) {

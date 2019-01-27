@@ -118,7 +118,6 @@ Drama {{$result->title}}
                 <tr>
                     <th>No</th>
                     <th>Title</th>
-                    <th>Status</th>
                     <th>720p</th>
                     <th>360p</th>
                     <th>Action</th>
@@ -228,9 +227,8 @@ Drama {{$result->title}}
                 "columns": [
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title'},
-                    {data: 'status', name: 'status'},
-                    {data: 'action720p', name: 'f720p', orderable: false, searchable: false},
-                    {data: 'action360p', name: 'f360p' , orderable: false, searchable: false},
+                    {data: 'f720ps', name: 'f720p', orderable: false, searchable: false},
+                    {data: 'f360ps', name: 'f360p' , orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                
