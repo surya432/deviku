@@ -71,6 +71,14 @@ class DramaEpsController extends Controller
                 <button type="button" id="btnShow" data-id="'.$data->id.'" data-drama_id="'.$data->drama_id.'" data-status="'.$data->status.'" data-title="'.$data->title.'" data-f720p="'.$data->f720p.'" data-f360p="'.$data->f360p.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
                 <button type="button" id="btnDelete" data-id="'.$data->id.'" data-drama_id="'.$data->drama_id.'" data-status="'.$data->status.'" data-title="'.$data->title.'" data-f720p="'.$data->f720p.'" data-f360p="'.$data->f360p.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
             })
+            ->addColumn('action360p', function ($data) {
+                return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_360p" id="url_360p" value="'.$data->url.'-360p"></div>';
+
+            })
+            ->addColumn('action720p', function ($data) {
+                return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_360p" id="url_360p" value="'.$data->url.'-360p"></div>';
+
+            })
             ->order(function ($data) {
                 if (request()->has('id')) {
                     $data->orderBy('id', 'desc');
