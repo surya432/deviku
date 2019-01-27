@@ -55,7 +55,7 @@ class DramaEpsController extends Controller
                 if($data->f360p){
                     return 'true';
                 }else{
-                    return '<input type="text" name="url_360p" id="url_360p" values="'.$data->url.'-360p">';
+                    return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_360p" id="url_360p" values="'.$data->url.'-360p"></div>';
                 } 
             })
             ->addColumn('f720p', function ($data) {
@@ -63,7 +63,7 @@ class DramaEpsController extends Controller
                     return 'true';
                 }else{
 
-                    return '<input type="text" name="url_720p" id="url_720p" values="'.$data->url.'-720p">';
+                    return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_720p" id="url_720p" values="'.$data->url.'-720p"></div>';
                 }
             })
             ->addColumn('action', function ($data) {
