@@ -6,7 +6,8 @@ Drama {{$result->title}}
 <div class="row">
     <div class="col-lg-12">
         <div class="page-header">
-            <input type="text" value="{{$result->title}} [{{$result->id}}]">           
+                {{$result->title}} [{{$result->id}}]
+            <button type="button" name="url_720p" id="url_720p" data-clipboard-text="{{$result->title}} [{{$result->id}}]" class="btn btn-xs btn-primary btncopy">Copy FOlder</button>           
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">{{$result->title}} Command Action</div>
