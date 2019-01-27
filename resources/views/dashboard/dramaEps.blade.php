@@ -131,6 +131,8 @@ Drama {{$result->title}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+        new Clipboard('.btncopy');
+
         $( "#table-users" ).on( "click", "#btnShow" , function() {
             event.preventDefault()
             $('#modelId').modal('show');
@@ -291,8 +293,5 @@ Drama {{$result->title}}
             }
         });  
     }
-    $(function(){
-    new Clipboard('.btncopy');
-)};
 </script>
 @endsection
