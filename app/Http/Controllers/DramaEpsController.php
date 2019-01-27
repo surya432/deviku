@@ -69,12 +69,12 @@ class DramaEpsController extends Controller
                 if($data->f720p){
                     $f720p =  '';
                 }else{
-                    $f720p = '<button type="button" name="url_720p" id="url_720p" value="'.$data->url.'-720p" class="btn btn-xs btn-primary btncopy">Copy Name 720p</button>';
+                    $f720p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="'.$data->url.'-720p" class="btn btn-xs btn-primary btncopy">Copy 720p</button>';
                 }
                 if($data->f360p){
                     $f360p =  '';
                 }else{
-                    $f360p = '<button type="button" name="url_720p" id="url_720p" value="'.$data->url.'-360p" class="btn btn-xs btn-primary btncopy">Copy Name 360p</button>';
+                    $f360p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="'.$data->url.'-360p" class="btn btn-xs btn-primary btncopy">Copy 360p</button>';
                 }
                 return '<div class="btn-group" role="group" aria-label="Command Action">
                 '.$f360p.$f720p.'
