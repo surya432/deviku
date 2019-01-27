@@ -128,7 +128,7 @@ Drama {{$result->title}}
 </div>
 @endsection
 @section('scripts')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         $( "#table-users" ).on( "click", "#btnShow" , function() {
@@ -291,5 +291,8 @@ Drama {{$result->title}}
             }
         });  
     }
+    $(function(){
+    new Clipboard('.btncopy');
+)};
 </script>
 @endsection
