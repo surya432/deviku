@@ -51,14 +51,14 @@ class DramaEpsController extends Controller
     public function get($id){
         $data = Content::orderBy('id','desc')->where('drama_id',$id)->get();
         return Datatables::of($data)
-            ->addColumn('f360p', function ($data) {
+            ->addColumn('f360ps', function ($data) {
                 if($data->f360p){
                     return 'true';
                 }else{
                     return '<div class="btn-group" role="group" aria-label="Command Action"><input type="text" name="url_360p" id="url_360p" values="'.$data->url.'-360p"></div>';
                 } 
             })
-            ->addColumn('f720p', function ($data) {
+            ->addColumn('f720ps', function ($data) {
                 if($data->f720p){
                     return 'true';
                 }else{

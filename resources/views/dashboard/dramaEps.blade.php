@@ -229,8 +229,8 @@ Drama {{$result->title}}
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title'},
                     {data: 'status', name: 'status'},
-                    {data: 'f720p', name: 'f720p', orderable: false, searchable: false},
-                    {data: 'f360p', name: 'f360p' , orderable: false, searchable: false},
+                    {data: 'f720ps', name: 'f720p', orderable: false, searchable: false},
+                    {data: 'f360ps', name: 'f360p' , orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                
