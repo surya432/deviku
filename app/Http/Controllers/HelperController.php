@@ -348,7 +348,8 @@ trait HelperController {
 	}
     function GDCopy($urlVideo, $nameVideo, $kualitas){
         $gmails =  DB::table('gmails')->whereNotIn('token', function($q){
-            $q->select('token')->from('mirrors')->groupBy('token')->havingRaw("COUNT(token) >= 500");
+            //$q->select('token')->from('mirrors')->groupBy('token')->havingRaw("COUNT(token) >= 500");
+	$q->select('token')->from('mirrors')->groupBy('token');
         })->inRandomOrder()->first();
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
             $title= $nameVideo.'-'.$kualitas.'.mp4';
