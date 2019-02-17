@@ -85,6 +85,8 @@ class EmbedController extends Controller
         $content = Content::where('url',$url)->first();
         $mytime = \Carbon\Carbon::now();
         $this->AutoDeleteGd();
+	    sleep(5);
+
         switch($request->input('player')){
             case 'gd360':
                 $mirror = Mirror::select('idcopy')->where('url',$content->f360p)->where('kualitas','SD')->first();
