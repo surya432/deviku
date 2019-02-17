@@ -96,7 +96,7 @@ class EmbedController extends Controller
                     if(is_null($copyID) || isset($copyID['error']) ){ 
                         return abort(404);
                     };
-                    return $this->GetPlayer($idCopy);
+                    return $this->GetPlayer($copyID);
                 }else{
                     //return file_get_contents("http://db.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
                     return $this->GetPlayer($mirror->idcopy);
@@ -110,7 +110,7 @@ class EmbedController extends Controller
                     if( is_null($copyID) || isset($copyID['error']) ){ 
                         return abort(404);
                     };
-                    return $this->GetPlayer($idCopy);
+                    return $this->GetPlayer($copyID);
                 }else{
                     return $this->GetPlayer($mirror->idcopy);
                     }
