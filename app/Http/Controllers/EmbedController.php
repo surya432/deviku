@@ -85,6 +85,8 @@ class EmbedController extends Controller
         $content = Content::where('url',$url)->first();
         $mytime = \Carbon\Carbon::now();
         $this->AutoDeleteGd();
+	    sleep(5);
+
         switch($request->input('player')){
             case 'gd360':
                 $mirror = Mirror::select('idcopy')->where('url',$content->f360p)->where('kualitas','SD')->first();
@@ -94,11 +96,10 @@ class EmbedController extends Controller
                     if(is_null($copyID) || isset($copyID['error']) ){ 
                         return abort(404);
                     };
-                    //return file_get_contents("http://db.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/open?id=".$copyID);
-                    return file_get_contents("http://player.dldramaid.xyz/json.php?url=https://drive.google.com/open?id=".$copyID);
+                    return $this->GetPlayer($copyID);
                 }else{
                     //return file_get_contents("http://db.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
-                    return file_get_contents("http://player.dldramaid.xyz/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
+                    return $this->GetPlayer($mirror->idcopy);
                 }
                 break;
             case 'gd720':
@@ -109,9 +110,9 @@ class EmbedController extends Controller
                     if( is_null($copyID) || isset($copyID['error']) ){ 
                         return abort(404);
                     };
-                    return file_get_contents("http://player.dldramaid.xyz/json.php?url=https://drive.google.com/open?id=".$copyID);
+                    return $this->GetPlayer($copyID);
                 }else{
-                    return file_get_contents("http://player.dldramaid.xyz/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
+                    return $this->GetPlayer($mirror->idcopy);
                     }
                 break;
             case 'mirror1':
@@ -149,6 +150,9 @@ class EmbedController extends Controller
                 break;
         }
 
+    }
+    function GetPlayer($urlDrive){
+        return file_get_contents("http://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=".$urlDrive);
     }
     
 }
