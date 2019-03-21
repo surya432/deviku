@@ -20,6 +20,9 @@ class SettingController extends Controller
         $data->site_name = $request->input("site_name");
         $data->folder720p = $request->input("folder720p");
         $data->folder360p = $request->input("folder360p");
+        $data->folderUpload = $request->input("folderUpload");
+        $data->tokenDriveAdmin = $request->input("tokenDriveAdmin");
+        $data->apiUrl = $request->input("apiUrl");
         $data->save();
         return response()->json($data,201);
     }

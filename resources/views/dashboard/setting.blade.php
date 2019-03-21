@@ -29,6 +29,18 @@
                             <label class="control-label" for="folder360p">Folder 360p</label>
                             <input type="text" class="form-control" name="folder360p" id="folder360p" required>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label" for="folder360p">Folder Upload</label>
+                            <input type="text" class="form-control" name="folderUpload" id="folderUpload" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="folder360p">Token Drive Admin</label>
+                            <input type="text" class="form-control" name="tokenDriveAdmin" id="tokenDriveAdmin" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="folder360p">Google API</label>
+                            <input type="text" class="form-control" name="apiUrl" id="apiUrl" required>
+                        </div>
                         <button class="btn btn-primary text-center"type="submit">Save</button>
                     </form>
                 </div>
@@ -50,6 +62,9 @@
                     $("input[name=site_name]").val(data[0].site_name) ;
                     $("input[name=folder720p]").val(data[0].folder720p) ;
                     $("input[name=folder360p]").val(data[0].folder360p) ;
+                    $("input[name=folderUpload]").val(data[0].folderUpload) ;
+                    $("input[name=tokenDriveAdmin]").val(data[0].tokenDriveAdmin) ;
+                    $("input[name=apiUrl]").val(data[0].apiUrl) ;
                 },
                 error: function(data){
                     $(".alert-danger").text("Error")
@@ -70,14 +85,20 @@
                     $("input[name=site_name]").val(data.site_name) ;
                     $("input[name=folder720p]").val(data.folder720p) ;
                     $("input[name=folder360p]").val(data.folder360p) ;
+                    $("input[name=folderUpload]").val(data.folderUpload) ;
+                    $("input[name=tokenDriveAdmin]").val(data.tokenDriveAdmin) ;
+                    $("input[name=apiUrl]").val(data.apiUrl) ;
                     $(".alert-success").text("Update Success")
                     $(".alert-success").show()
                 },
                 error: function(data){
                     $("input[name=id]").val(data.id) ;
-                    $("input[name=site_name]").val(data.site_name);
-                    $("input[name=folder720p]").val(data.folder720p);
-                    $("input[name=folder360p]").val(data.folder360p);
+                    $("input[name=site_name]").val(data.site_name) ;
+                    $("input[name=folder720p]").val(data.folder720p) ;
+                    $("input[name=folder360p]").val(data.folder360p) ;
+                    $("input[name=folderUpload]").val(data.folderUpload) ;
+                    $("input[name=tokenDriveAdmin]").val(data.tokenDriveAdmin) ;
+                    $("input[name=apiUrl]").val(data.apiUrl) ;
                     $(".alert-danger").text("Failed Update")
                     $(".alert-danger").show()
                 }

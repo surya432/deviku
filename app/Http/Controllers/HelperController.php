@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 use Cache;
 use App\Gmail;
 use DB;
-
+use App\Setting;
 use App\Mirror;
 trait HelperController {
 
@@ -262,63 +262,64 @@ trait HelperController {
 		return $get_info23;
 	}
     public function copygd($driveId, $folderid, $title, $token){
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://www.googleapis.com/drive/v3/files/$driveId/copy",
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 300,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "POST",
-		  CURLOPT_POSTFIELDS => "{\"name\":\"$title\",\"parents\":[\"$folderid\"]}",
-		  CURLOPT_HTTPHEADER => array(
-			"Authorization: ".$this->get_token($token),
-			"Cache-Control: no-cache",
-			"Content-Type: application/json",
-			"Accept: application/json",
-		  ),
-		));
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-		curl_close($curl);
-		if ($err) {
-		  return $err;
-		} else {
-			if($response){
-				$response= json_decode($response,true);
-				return $response;
-			}
-		}
+      $curl = curl_init();
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://www.googleapis.com/drive/v3/files/$driveId/copy",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 300,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "{\"name\":\"$title\",\"parents\":[\"$folderid\"]}",
+        CURLOPT_HTTPHEADER => array(
+        "Authorization: ".$this->get_token($token),
+        "Cache-Control: no-cache",
+        "Content-Type: application/json",
+        "Accept: application/json",
+        ),
+      ));
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+      curl_close($curl);
+      if ($err) {
+        return $err;
+      } else {
+        if($response){
+          $response= json_decode($response,true);
+          return $response;
+        }
+      }
 
     }
+    public $dataAPI ="";
     public function deletegd($id, $token){
         $this->emptytrash($token);
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://www.googleapis.com/drive/v3/files/$id",
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 300,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "DELETE",
-		  CURLOPT_HTTPHEADER => array(
-			"Authorization: ".$this->get_token($token),
-			"Cache-Control: no-cache",
-			"Content-Type: application/json",
-			"Accept: application/json",
-		  ),
-		));
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-		curl_close($curl);
-		if ($err) {
-		  return false;
-		} else {
-		  $this->emptytrash($token);
-		  return true;
-		}	
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => "https://www.googleapis.com/drive/v3/files/$id",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 300,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "DELETE",
+          CURLOPT_HTTPHEADER => array(
+          "Authorization: ".$this->get_token($token),
+          "Cache-Control: no-cache",
+          "Content-Type: application/json",
+          "Accept: application/json",
+          ),
+        ));
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        if ($err) {
+          return false;
+        } else {
+          $this->emptytrash($token);
+          return true;
+        }	
 	}
 	public function emptytrash($token){
 		$curl = curl_init();
@@ -364,6 +365,31 @@ trait HelperController {
                 return $copyid;
             }
         }
+    }
+    function GDMoveFolder($id, $folderid){
+      $settingData = Setting::find(1);
+      $oldFolder = $settingData->folderUpload;
+      $apiUrl = $settingData->apiUrl;
+      $tokenAdmin =  $settingData->tokenDriveAdmin;
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/drive/v3/files/'.$id.'?addParents='.$uploadfolder.'&removeParents='.$oldFolder);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+
+      curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+
+      $headers = array();
+      $headers[] = 'Authorization: Bearer '.$this->getKey($tokendmin)."'";
+      $headers[] = 'Accept: application/json';
+      $headers[] = 'Content-Type: application/json';
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+      $result = curl_exec($ch);
+      if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+      }
+      curl_close ($ch);
     }
     function AutoDeleteGd(){
         $mytime = \Carbon\Carbon::now();

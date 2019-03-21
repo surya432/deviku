@@ -19,6 +19,9 @@ class Setting extends Migration
             $table->string('site_name');
             $table->string('folder720p');
             $table->string('folder360p');
+            $table->string('folderUpload');
+            $table->string('tokenDriveAdmin');
+            $table->string('apiUrl');
             $table->timestamps();
         }); 
     }
