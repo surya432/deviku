@@ -7,6 +7,7 @@ use App\Country;
 use App\Drama;
 use App\Content;
 use Cache;
+use App\Setting;
 use App\Type;
 use Yajra\DataTables\Facades\DataTables;
 class GDController extends Controller
@@ -26,7 +27,10 @@ class GDController extends Controller
         }else{
             $folderId= $id;
         }
-        $resultCurl = $this->singkronfile($folderId);
+        $settingData = Setting::find(1);
+        $oldFolder = $settingData->folderUpload;
+        //$resultCurl = $this->singkronfile($folderId);
+        $resultCurl = $this->singkronfile($oldFolder);
         $fdrive =array(); 
 
         foreach($resultCurl['files'] as $Nofiles){
@@ -34,6 +38,7 @@ class GDController extends Controller
                 $url = str_replace('-720p.mp4','', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
                 if($content){
+                    $this->GDMoveFolder($Nofiles['id'],$folderId);
                     if($content->f720p !="https://drive.google.com/open?id=".$Nofiles['id'] ){
                         $content->f720p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
                         if(is_null($content->f360p)){
@@ -48,9 +53,12 @@ class GDController extends Controller
             }elseif(preg_match("/-360p.mp4/",$Nofiles['name'])){
                 $url = str_replace('-360p.mp4','', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
+                
                 if($content){
+                    $this->GDMoveFolder($Nofiles['id'],$folderId);
+
                     if($content->f360p !="https://drive.google.com/open?id=".$Nofiles['id'] ){
-                        $content->f360p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
+                       $content->f360p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
                         if(is_null($content->f720p)){
                             $content->f720p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
                         }

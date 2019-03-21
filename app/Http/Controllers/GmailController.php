@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Setting;
 use Illuminate\Http\Request;
 use App\Gmail;
 use Illuminate\Support\Facades\Input;
@@ -56,4 +56,10 @@ class GmailController extends Controller
         $email = Gmail::find($request->input("id"))->first();
         return $this->get_token($email->token);
     }
+    public function getTokenAdmin(){
+        $data = Setting::find(1);
+        
+        return $this->get_token($data->tokenDriveAdmin);
+    }
+    
 }

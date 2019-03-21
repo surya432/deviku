@@ -43,6 +43,7 @@ trait HelperController {
         curl_close($ch);
         return $page;
     }
+    //
     function singkronfile($id_folder,$tokenPage= null){
         $tokenPages = "";
         if($tokenPage){
@@ -217,7 +218,9 @@ trait HelperController {
         return null;
     }
     public function refresh_token($token){
-		$tokenencode = urlencode($token);
+    $tokenencode = urlencode($token);
+    $settingData = Setting::find(1);
+    $apiUrl = $settingData->apiUrl;
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 		  CURLOPT_URL => "https://www.googleapis.com/oauth2/v4/token",
@@ -227,7 +230,8 @@ trait HelperController {
 		  CURLOPT_TIMEOUT => 300,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => "POST",
-		  CURLOPT_POSTFIELDS => "client_id=340252279758-6237oibftvlr7523oq2bbbsi67btoe8n.apps.googleusercontent.com&client_secret=9XUUzKJsATodbmpwc2lCTts6&refresh_token=$tokenencode&grant_type=refresh_token",
+		  //CURLOPT_POSTFIELDS => "client_id=340252279758-6237oibftvlr7523oq2bbbsi67btoe8n.apps.googleusercontent.com&client_secret=9XUUzKJsATodbmpwc2lCTts6&refresh_token=$tokenencode&grant_type=refresh_token",
+		  CURLOPT_POSTFIELDS => "$apiUrl&refresh_token=$tokenencode&grant_type=refresh_token",
 		  CURLOPT_HTTPHEADER => array(
 			"Cache-Control: no-cache",
 			"Content-Type: application/x-www-form-urlencoded",
@@ -243,21 +247,21 @@ trait HelperController {
 		}
 	}
     function get_token($token){
-		if(!Cache::has('token_GD1-'.md5($token))) {
-            $checklinkerror['access_token'] = null;
-			$result_curl23= $this->refresh_token($token);
-            $checklinkerror= json_decode($result_curl23,true);
-			if($checklinkerror){
-                $gmail = Gmail::where('token',$token)->first();
-				$get_info23="Bearer ".$checklinkerror['access_token'];
-				$expiresAt = now()->addMinutes(50);
-                Cache::put('token_GD1-'.md5($token), $get_info23, $expiresAt);
-                $gmail->touch();
-				return $get_info23;
-			}else{
-				return $checklinkerror;
-			}
-        }
+      if(!Cache::has('token_GD1-'.md5($token))) {
+            $checklinkerror['access_token'] = false;
+            $result_curl23= $this->refresh_token($token);
+                  $checklinkerror= json_decode($result_curl23,true);
+            if($checklinkerror){
+              // $gmail = Gmail::where('token',$token)->first();
+              // $gmail->touch();
+              $get_info23="Bearer ".$checklinkerror['access_token'];
+              $expiresAt = now()->addMinutes(50);
+              Cache::put('token_GD1-'.md5($token), $get_info23, $expiresAt);
+              return $get_info23;
+            }else{
+              return $checklinkerror;
+            }
+      }
         $get_info23 = Cache::get('token_GD1-'.md5($token));
 		return $get_info23;
 	}
@@ -366,7 +370,7 @@ trait HelperController {
             }
         }
     }
-    function GDMoveFolder($id, $folderid){
+    function GDMoveFolder($id, $uploadfolder){
       $settingData = Setting::find(1);
       $oldFolder = $settingData->folderUpload;
       $apiUrl = $settingData->apiUrl;
@@ -376,11 +380,10 @@ trait HelperController {
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-
       curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
-
       $headers = array();
-      $headers[] = 'Authorization: Bearer '.$this->getKey($tokendmin)."'";
+      $headers[] = 'Authorization: '.$this->get_token($tokenAdmin);
+
       $headers[] = 'Accept: application/json';
       $headers[] = 'Content-Type: application/json';
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
