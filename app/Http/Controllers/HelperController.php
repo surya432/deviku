@@ -296,7 +296,6 @@ trait HelperController {
       }
 
     }
-    public $dataAPI ="";
     public function deletegd($id, $token){
         $this->emptytrash($token);
         $curl = curl_init();
@@ -383,7 +382,6 @@ trait HelperController {
       curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
       $headers = array();
       $headers[] = 'Authorization: '.$this->get_token($tokenAdmin);
-
       $headers[] = 'Accept: application/json';
       $headers[] = 'Content-Type: application/json';
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);

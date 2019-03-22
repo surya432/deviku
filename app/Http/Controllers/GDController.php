@@ -15,29 +15,29 @@ class GDController extends Controller
     //
     use HelperController;
     public function singkron($id){
-        if(Cache::get('Drama')){
-            $value =Cache::get('Drama')->where('id',$id)->first();
-        }else{
-            $value = Drama::with('country')->with('type')->with('eps')->orderBy('id','desc')->get();
-            Cache::forever('Drama',$value);
-            $value = Cache::get('Drama')->where('id',$id)->first();
-        }
-        if($value){
-            $folderId= $value->folderid;
-        }else{
-            $folderId= $id;
-        }
+        
         $settingData = Setting::find(1);
         $oldFolder = $settingData->folderUpload;
         //$resultCurl = $this->singkronfile($folderId);
         $resultCurl = $this->singkronfile($oldFolder);
         $fdrive =array(); 
-
         foreach($resultCurl['files'] as $Nofiles){
             if(preg_match("/-720p.mp4/",$Nofiles['name'])){
                 $url = str_replace('-720p.mp4','', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
                 if($content){
+                    if(Cache::get('Drama')){
+                        $value =Cache::get('Drama')->where('id',$content->drama_id)->first();
+                    }else{
+                        $value = Drama::with('country')->with('type')->with('eps')->orderBy('id','desc')->get();
+                        Cache::forever('Drama',$value);
+                        $value = Cache::get('Drama')->where('id',$content->drama_id)->first();
+                    }
+                    if($value){
+                        $folderId= $value->folderid;
+                    }else{
+                        $folderId= $id;
+                    }
                     $this->GDMoveFolder($Nofiles['id'],$folderId);
                     if($content->f720p !="https://drive.google.com/open?id=".$Nofiles['id'] ){
                         $content->f720p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
