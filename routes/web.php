@@ -13,6 +13,7 @@
 Route::get('/', function () {
     return abort(404);
 });
+
 Route::get('/register', function (){
     return abort(404);
 });
