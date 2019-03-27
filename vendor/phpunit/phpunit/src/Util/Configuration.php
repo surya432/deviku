@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -18,143 +18,7 @@ use PHPUnit\TextUI\ResultPrinter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
- * Wrapper for the PHPUnit XML configuration file.
- *
- * Example XML configuration file:
- * <code>
- * <?xml version="1.0" encoding="utf-8" ?>
- *
- * <phpunit backupGlobals="false"
- *          backupStaticAttributes="false"
- *          bootstrap="/path/to/bootstrap.php"
- *          cacheResult="false"
- *          cacheResultFile=".phpunit.result.cache"
- *          cacheTokens="false"
- *          columns="80"
- *          colors="false"
- *          stderr="false"
- *          convertDeprecationsToExceptions="true"
- *          convertErrorsToExceptions="true"
- *          convertNoticesToExceptions="true"
- *          convertWarningsToExceptions="true"
- *          disableCodeCoverageIgnore="false"
- *          forceCoversAnnotation="false"
- *          processIsolation="false"
- *          stopOnDefect="false"
- *          stopOnError="false"
- *          stopOnFailure="false"
- *          stopOnWarning="false"
- *          stopOnIncomplete="false"
- *          stopOnRisky="false"
- *          stopOnSkipped="false"
- *          failOnWarning="false"
- *          failOnRisky="false"
- *          extensionsDirectory="tools/phpunit.d"
- *          printerClass="PHPUnit\TextUI\ResultPrinter"
- *          testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
- *          defaultTestSuite=""
- *          beStrictAboutChangesToGlobalState="false"
- *          beStrictAboutCoversAnnotation="false"
- *          beStrictAboutOutputDuringTests="false"
- *          beStrictAboutResourceUsageDuringSmallTests="false"
- *          beStrictAboutTestsThatDoNotTestAnything="false"
- *          beStrictAboutTodoAnnotatedTests="false"
- *          defaultTimeLimit="0"
- *          enforceTimeLimit="false"
- *          ignoreDeprecatedCodeUnitsFromCodeCoverage="false"
- *          timeoutForSmallTests="1"
- *          timeoutForMediumTests="10"
- *          timeoutForLargeTests="60"
- *          verbose="false"
- *          reverseDefectList="false"
- *          registerMockObjectsFromTestArgumentsRecursively="false"
- *          executionOrder="default"
- *          executionOrderDefects="default"
- *          resolveDependencies="false">
- *   <testsuites>
- *     <testsuite name="My Test Suite">
- *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
- *       <file phpVersion="5.3.0" phpVersionOperator=">=">/path/to/MyTest.php</file>
- *       <exclude>/path/to/files/exclude</exclude>
- *     </testsuite>
- *   </testsuites>
- *
- *   <groups>
- *     <include>
- *       <group>name</group>
- *     </include>
- *     <exclude>
- *       <group>name</group>
- *     </exclude>
- *   </groups>
- *
- *   <testdoxGroups>
- *     <include>
- *       <group>name</group>
- *     </include>
- *     <exclude>
- *       <group>name</group>
- *     </exclude>
- *   </testdoxGroups>
- *
- *   <filter>
- *     <whitelist addUncoveredFilesFromWhitelist="true"
- *                processUncoveredFilesFromWhitelist="false">
- *       <directory suffix=".php">/path/to/files</directory>
- *       <file>/path/to/file</file>
- *       <exclude>
- *         <directory suffix=".php">/path/to/files</directory>
- *         <file>/path/to/file</file>
- *       </exclude>
- *     </whitelist>
- *   </filter>
- *
- *   <listeners>
- *     <listener class="MyListener" file="/optional/path/to/MyListener.php">
- *       <arguments>
- *         <array>
- *           <element key="0">
- *             <string>Sebastian</string>
- *           </element>
- *         </array>
- *         <integer>22</integer>
- *         <string>April</string>
- *         <double>19.78</double>
- *         <null/>
- *         <object class="stdClass"/>
- *         <file>MyRelativeFile.php</file>
- *         <directory>MyRelativeDir</directory>
- *       </arguments>
- *     </listener>
- *   </listeners>
- *
- *   <logging>
- *     <log type="coverage-html" target="/tmp/report" lowUpperBound="50" highLowerBound="90"/>
- *     <log type="coverage-clover" target="/tmp/clover.xml"/>
- *     <log type="coverage-crap4j" target="/tmp/crap.xml" threshold="30"/>
- *     <log type="plain" target="/tmp/logfile.txt"/>
- *     <log type="teamcity" target="/tmp/logfile.txt"/>
- *     <log type="junit" target="/tmp/logfile.xml"/>
- *     <log type="testdox-html" target="/tmp/testdox.html"/>
- *     <log type="testdox-text" target="/tmp/testdox.txt"/>
- *     <log type="testdox-xml" target="/tmp/testdox.xml"/>
- *   </logging>
- *
- *   <php>
- *     <includePath>.</includePath>
- *     <ini name="foo" value="bar"/>
- *     <const name="foo" value="bar"/>
- *     <var name="foo" value="bar"/>
- *     <env name="foo" value="bar"/>
- *     <post name="foo" value="bar"/>
- *     <get name="foo" value="bar"/>
- *     <cookie name="foo" value="bar"/>
- *     <server name="foo" value="bar"/>
- *     <files name="foo" value="bar"/>
- *     <request name="foo" value="bar"/>
- *   </php>
- * </phpunit>
- * </code>
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Configuration
 {
@@ -201,7 +65,6 @@ final class Configuration
             );
         }
 
-        /** @var string $realPath */
         if (!isset(self::$instances[$realPath])) {
             self::$instances[$realPath] = new self($realPath);
         }
@@ -262,7 +125,8 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('extensions/extension') as $extension) {
-            /** @var DOMElement $extension */
+            \assert($extension instanceof DOMElement);
+
             $class     = (string) $extension->getAttribute('class');
             $file      = '';
             $arguments = $this->getConfigurationArguments($extension->childNodes);
@@ -373,7 +237,8 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
-            /** @var DOMElement $listener */
+            \assert($listener instanceof DOMElement);
+
             $class     = (string) $listener->getAttribute('class');
             $file      = '';
             $arguments = $this->getConfigurationArguments($listener->childNodes);
@@ -403,7 +268,8 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('logging/log') as $log) {
-            /** @var DOMElement $log */
+            \assert($log instanceof DOMElement);
+
             $type   = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
 
@@ -484,7 +350,8 @@ final class Configuration
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
-            /** @var DOMElement $ini */
+            \assert($ini instanceof DOMElement);
+
             $name  = (string) $ini->getAttribute('name');
             $value = (string) $ini->getAttribute('value');
 
@@ -492,7 +359,8 @@ final class Configuration
         }
 
         foreach ($this->xpath->query('php/const') as $const) {
-            /** @var DOMElement $const */
+            \assert($const instanceof  DOMElement);
+
             $name  = (string) $const->getAttribute('name');
             $value = (string) $const->getAttribute('value');
 
@@ -501,7 +369,8 @@ final class Configuration
 
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
-                /** @var DOMElement $var */
+                \assert($var instanceof DOMElement);
+
                 $name     = (string) $var->getAttribute('name');
                 $value    = (string) $var->getAttribute('value');
                 $verbatim = false;
@@ -930,7 +799,7 @@ final class Configuration
         if ($root->hasAttribute('cacheResult')) {
             $result['cacheResult'] = $this->getBoolean(
                 (string) $root->getAttribute('cacheResult'),
-                false
+                true
             );
         }
 
@@ -965,6 +834,10 @@ final class Configuration
                         $result['resolveDependencies'] = true;
 
                         break;
+                    case 'no-depends':
+                        $result['resolveDependencies'] = false;
+
+                        break;
                 }
             }
         }
@@ -983,6 +856,7 @@ final class Configuration
      * Returns the test suite configuration.
      *
      * @throws Exception
+     * @throws \ReflectionException
      */
     public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
     {
@@ -1076,6 +950,7 @@ final class Configuration
 
     /**
      * @throws \PHPUnit\Framework\Exception
+     * @throws \ReflectionException
      */
     private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {
@@ -1101,7 +976,8 @@ final class Configuration
         $testSuiteFilter    = $testSuiteFilter ? \explode(',', $testSuiteFilter) : [];
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
-            /** @var DOMElement $directoryNode */
+            \assert($directoryNode instanceof DOMElement);
+
             if (!empty($testSuiteFilter) && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
                 continue;
             }
@@ -1138,7 +1014,8 @@ final class Configuration
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
-            /** @var DOMElement $fileNode */
+            \assert($fileNode instanceof DOMElement);
+
             if (!empty($testSuiteFilter) && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
                 continue;
             }
@@ -1221,7 +1098,8 @@ final class Configuration
         $directories = [];
 
         foreach ($this->xpath->query($query) as $directoryNode) {
-            /** @var DOMElement $directoryNode */
+            \assert($directoryNode instanceof DOMElement);
+
             $directoryPath = (string) $directoryNode->textContent;
 
             if (!$directoryPath) {

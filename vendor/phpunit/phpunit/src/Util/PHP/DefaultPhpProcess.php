@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -12,7 +12,7 @@ namespace PHPUnit\Util\PHP;
 use PHPUnit\Framework\Exception;
 
 /**
- * Default utility for PHP sub-processes.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class DefaultPhpProcess extends AbstractPhpProcess
 {

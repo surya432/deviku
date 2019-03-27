@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -17,6 +17,9 @@ use DOMText;
 use PHPUnit\Framework\Exception;
 use ReflectionClass;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class Xml
 {
     public static function import(DOMElement $element): DOMElement

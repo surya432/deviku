@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -69,6 +69,7 @@ class JsonMatchesErrorMessageProviderTest extends TestCase
     }
 
     /**
+     * @testdox Determine JSON error $_dataName
      * @dataProvider determineJsonErrorDataprovider
      *
      * @throws \PHPUnit\Framework\ExpectationFailedException
@@ -79,7 +80,7 @@ class JsonMatchesErrorMessageProviderTest extends TestCase
         $this->assertEquals(
             $expected,
             JsonMatchesErrorMessageProvider::determineJsonError(
-                $error,
+                (string) $error,
                 $prefix
             )
         );

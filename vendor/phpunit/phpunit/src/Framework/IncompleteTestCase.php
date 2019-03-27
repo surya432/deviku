@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -10,9 +10,9 @@
 namespace PHPUnit\Framework;
 
 /**
- * An incomplete test case
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class IncompleteTestCase extends TestCase
+final class IncompleteTestCase extends TestCase
 {
     /**
      * @var string

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -10,9 +10,9 @@
 namespace PHPUnit\Framework\MockObject\Invocation;
 
 /**
- * Represents a non-static invocation.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class ObjectInvocation extends StaticInvocation
+final class ObjectInvocation extends StaticInvocation
 {
     /**
      * @var object

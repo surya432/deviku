@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +11,9 @@ namespace PHPUnit\Util;
 
 use Closure;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class GlobalState
 {
     /**
@@ -26,6 +29,9 @@ final class GlobalState
         '_REQUEST',
     ];
 
+    /**
+     * @throws \ReflectionException
+     */
     public static function getIncludedFilesAsString(): string
     {
         return static::processIncludedFilesAsString(\get_included_files());
@@ -33,6 +39,8 @@ final class GlobalState
 
     /**
      * @param string[] $files
+     *
+     * @throws \ReflectionException
      */
     public static function processIncludedFilesAsString(array $files): string
     {

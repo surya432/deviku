@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -15,16 +15,9 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
- * Invocation matcher which looks for sets of specific parameters in the invocations.
- *
- * Checks the parameters of the incoming invocations, the parameter list is
- * checked against the defined constraints in $parameters. If the constraint
- * is met it will return true in matches().
- *
- * It takes a list of match groups and and increases a call index after each invocation.
- * So the first invocation uses the first group of constraints, the second the next and so on.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class ConsecutiveParameters extends StatelessInvocation
+final class ConsecutiveParameters extends StatelessInvocation
 {
     /**
      * @var array
@@ -59,6 +52,7 @@ class ConsecutiveParameters extends StatelessInvocation
 
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return bool
      */
@@ -72,6 +66,10 @@ class ConsecutiveParameters extends StatelessInvocation
         return false;
     }
 
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function verify(): void
     {
         foreach ($this->invocations as $callIndex => $invocation) {
@@ -85,6 +83,7 @@ class ConsecutiveParameters extends StatelessInvocation
      * @param int $callIndex
      *
      * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
     {

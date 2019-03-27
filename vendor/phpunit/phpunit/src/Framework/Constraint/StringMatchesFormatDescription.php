@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -14,7 +14,7 @@ use SebastianBergmann\Diff\Differ;
 /**
  * ...
  */
-class StringMatchesFormatDescription extends RegularExpression
+final class StringMatchesFormatDescription extends RegularExpression
 {
     /**
      * @var string

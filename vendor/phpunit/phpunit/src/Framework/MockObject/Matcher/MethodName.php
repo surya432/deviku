@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -15,13 +15,9 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
- * Invocation matcher which looks for a specific method name in the invocations.
- *
- * Checks the method name all incoming invocations, the name is checked against
- * the defined constraint $constraint. If the constraint is met it will return
- * true in matches().
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class MethodName extends StatelessInvocation
+final class MethodName extends StatelessInvocation
 {
     /**
      * @var Constraint
@@ -59,6 +55,9 @@ class MethodName extends StatelessInvocation
     }
 
     /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
      * @return bool
      */
     public function matches(BaseInvocation $invocation)

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -15,7 +15,10 @@ use PHPUnit\Util\RegularExpression;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
-class NameFilterIterator extends RecursiveFilterIterator
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class NameFilterIterator extends RecursiveFilterIterator
 {
     /**
      * @var string
@@ -42,6 +45,9 @@ class NameFilterIterator extends RecursiveFilterIterator
         $this->setFilter($filter);
     }
 
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function accept(): bool
     {
         $test = $this->getInnerIterator()->current();

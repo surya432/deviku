@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -79,8 +79,8 @@ class ArraySubsetTest extends ConstraintTestCase
         } catch (ExpectationFailedException $expectedException) {
             $comparisonFailure = $expectedException->getComparisonFailure();
             $this->assertNotNull($comparisonFailure);
-            $this->assertContains("'foo' => 'bar'", $comparisonFailure->getExpectedAsString());
-            $this->assertContains("'baz' => 'bar'", $comparisonFailure->getActualAsString());
+            $this->assertStringContainsString("'foo' => 'bar'", $comparisonFailure->getExpectedAsString());
+            $this->assertStringContainsString("'baz' => 'bar'", $comparisonFailure->getActualAsString());
         }
     }
 }
