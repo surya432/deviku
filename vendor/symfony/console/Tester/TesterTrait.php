@@ -23,7 +23,7 @@ trait TesterTrait
 {
     /** @var StreamOutput */
     private $output;
-    private $inputs = [];
+    private $inputs = array();
     private $captureStreamsIndependently = false;
 
     /**
@@ -126,7 +126,7 @@ trait TesterTrait
      */
     private function initOutput(array $options)
     {
-        $this->captureStreamsIndependently = \array_key_exists('capture_stderr_separately', $options) && $options['capture_stderr_separately'];
+        $this->captureStreamsIndependently = array_key_exists('capture_stderr_separately', $options) && $options['capture_stderr_separately'];
         if (!$this->captureStreamsIndependently) {
             $this->output = new StreamOutput(fopen('php://memory', 'w', false));
             if (isset($options['decorated'])) {
@@ -162,10 +162,7 @@ trait TesterTrait
     {
         $stream = fopen('php://memory', 'r+', false);
 
-        foreach ($inputs as $input) {
-            fwrite($stream, $input.PHP_EOL);
-        }
-
+        fwrite($stream, implode(PHP_EOL, $inputs));
         rewind($stream);
 
         return $stream;

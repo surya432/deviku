@@ -52,7 +52,6 @@ class Google_Service_CloudProfiler extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://cloudprofiler.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v2';
     $this->serviceName = 'cloudprofiler';
 

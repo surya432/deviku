@@ -6,17 +6,11 @@
         @if(is_array($editor->ajax))
             ajax: @json($editor->ajax),
         @else
-            ajax: "{{$editor->ajax}}",
+            ajax: '{{$editor->ajax}}',
         @endif
-        table: "#{{$editor->table}}",
+        table: '#{{$editor->table}}',
         @if($editor->template)
-            template: "{{$editor->template}}",
-        @endif
-        @if($editor->display)
-            display: "{{$editor->display}}",
-        @endif
-        @if($editor->idSrc)
-            idSrc: "{{$editor->idSrc}}",
+            template: '{{$editor->template}}',
         @endif
         fields: @json($editor->fields),
         @if($editor->language)
@@ -24,9 +18,6 @@
         @endif
         });
         {!! $editor->scripts  !!}
-        @foreach ((array) $editor->events as $event)
-            {{$editor->instance}}.on('{!! $event['event']  !!}', {!! $event['script'] !!});
-        @endforeach
     @endforeach
     window.LaravelDataTables["%1$s"] = $("#%1$s").DataTable(%2$s);
 })(window,jQuery);

@@ -64,9 +64,6 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * your account's customer ID.
    * @param Google_Service_Directory_Building $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string coordinatesSource Source from which Building.coordinates
-   * are derived.
    * @return Google_Service_Directory_Building
    */
   public function insert($customer, Google_Service_Directory_Building $postBody, $optParams = array())
@@ -103,9 +100,6 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * @param string $buildingId The ID of the building to update.
    * @param Google_Service_Directory_Building $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string coordinatesSource Source from which Building.coordinates
-   * are derived.
    * @return Google_Service_Directory_Building
    */
   public function patch($customer, $buildingId, Google_Service_Directory_Building $postBody, $optParams = array())
@@ -123,9 +117,6 @@ class Google_Service_Directory_Resource_ResourcesBuildings extends Google_Servic
    * @param string $buildingId The ID of the building to update.
    * @param Google_Service_Directory_Building $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param string coordinatesSource Source from which Building.coordinates
-   * are derived.
    * @return Google_Service_Directory_Building
    */
   public function update($customer, $buildingId, Google_Service_Directory_Building $postBody, $optParams = array())

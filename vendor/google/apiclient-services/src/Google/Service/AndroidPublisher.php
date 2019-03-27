@@ -61,7 +61,6 @@ class Google_Service_AndroidPublisher extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'androidpublisher/v3/applications/';
-    $this->batchPath = 'batch/androidpublisher/v3';
     $this->version = 'v3';
     $this->serviceName = 'androidpublisher';
 

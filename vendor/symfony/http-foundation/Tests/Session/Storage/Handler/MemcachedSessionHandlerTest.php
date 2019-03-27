@@ -41,7 +41,7 @@ class MemcachedSessionHandlerTest extends TestCase
         $this->memcached = $this->getMockBuilder('Memcached')->getMock();
         $this->storage = new MemcachedSessionHandler(
             $this->memcached,
-            ['prefix' => self::PREFIX, 'expiretime' => self::TTL]
+            array('prefix' => self::PREFIX, 'expiretime' => self::TTL)
         );
     }
 
@@ -59,12 +59,6 @@ class MemcachedSessionHandlerTest extends TestCase
 
     public function testCloseSession()
     {
-        $this->memcached
-            ->expects($this->once())
-            ->method('quit')
-            ->will($this->returnValue(true))
-        ;
-
         $this->assertTrue($this->storage->close());
     }
 
@@ -123,12 +117,12 @@ class MemcachedSessionHandlerTest extends TestCase
 
     public function getOptionFixtures()
     {
-        return [
-            [['prefix' => 'session'], true],
-            [['expiretime' => 100], true],
-            [['prefix' => 'session', 'expiretime' => 200], true],
-            [['expiretime' => 100, 'foo' => 'bar'], false],
-        ];
+        return array(
+            array(array('prefix' => 'session'), true),
+            array(array('expiretime' => 100), true),
+            array(array('prefix' => 'session', 'expiretime' => 200), true),
+            array(array('expiretime' => 100, 'foo' => 'bar'), false),
+        );
     }
 
     public function testGetConnection()

@@ -20,9 +20,8 @@ namespace Google\Auth\Tests;
 use Google\Auth\OAuth2;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit\Framework\TestCase;
 
-class OAuth2AuthorizationUriTest extends TestCase
+class OAuth2AuthorizationUriTest extends \PHPUnit_Framework_TestCase
 {
     private $minimal = [
         'authorizationUri' => 'https://accounts.test.org/insecure/url',
@@ -171,7 +170,7 @@ class OAuth2AuthorizationUriTest extends TestCase
     }
 }
 
-class OAuth2GrantTypeTest extends TestCase
+class OAuth2GrantTypeTest extends \PHPUnit_Framework_TestCase
 {
     private $minimal = [
         'authorizationUri' => 'https://accounts.test.org/insecure/url',
@@ -233,7 +232,7 @@ class OAuth2GrantTypeTest extends TestCase
     }
 }
 
-class OAuth2GetCacheKeyTest extends TestCase
+class OAuth2GetCacheKeyTest extends \PHPUnit_Framework_TestCase
 {
     private $minimal = [
         'clientID' => 'aClientID',
@@ -260,7 +259,7 @@ class OAuth2GetCacheKeyTest extends TestCase
     }
 }
 
-class OAuth2TimingTest extends TestCase
+class OAuth2TimingTest extends \PHPUnit_Framework_TestCase
 {
     private $minimal = [
         'authorizationUri' => 'https://accounts.test.org/insecure/url',
@@ -320,7 +319,7 @@ class OAuth2TimingTest extends TestCase
     }
 }
 
-class OAuth2GeneralTest extends TestCase
+class OAuth2GeneralTest extends \PHPUnit_Framework_TestCase
 {
     private $minimal = [
         'authorizationUri' => 'https://accounts.test.org/insecure/url',
@@ -364,7 +363,7 @@ class OAuth2GeneralTest extends TestCase
     }
 }
 
-class OAuth2JwtTest extends TestCase
+class OAuth2JwtTest extends \PHPUnit_Framework_TestCase
 {
     private $signingMinimal = [
         'signingKey' => 'example_key',
@@ -455,21 +454,6 @@ class OAuth2JwtTest extends TestCase
         $this->assertEquals($roundTrip->scope, $testConfig['scope']);
     }
 
-    public function testCanHaveAdditionalClaims()
-    {
-        $publicKey = file_get_contents(__DIR__ . '/fixtures' . '/public.pem');
-        $privateKey = file_get_contents(__DIR__ . '/fixtures' . '/private.pem');
-        $testConfig = $this->signingMinimal;
-        $targetAud = '123@456.com';
-        $testConfig['additionalClaims'] = ['target_audience' => $targetAud];
-        $o = new OAuth2($testConfig);
-        $o->setSigningAlgorithm('RS256');
-        $o->setSigningKey($privateKey);
-        $payload = $o->toJwt();
-        $roundTrip = $this->jwtDecode($payload, $publicKey, array('RS256'));
-        $this->assertEquals($roundTrip->target_audience, $targetAud);
-    }
-
     private function jwtDecode()
     {
         $args = func_get_args();
@@ -482,7 +466,7 @@ class OAuth2JwtTest extends TestCase
     }
 }
 
-class OAuth2GenerateAccessTokenRequestTest extends TestCase
+class OAuth2GenerateAccessTokenRequestTest extends \PHPUnit_Framework_TestCase
 {
     private $tokenRequestMinimal = [
         'tokenCredentialUri' => 'https://tokens_r_us/test',
@@ -610,7 +594,7 @@ class OAuth2GenerateAccessTokenRequestTest extends TestCase
         $this->assertEquals('POST', $req->getMethod());
         $fields = Psr7\parse_query((string)$req->getBody());
         $this->assertEquals(OAuth2::JWT_URN, $fields['grant_type']);
-        $this->assertArrayHasKey('assertion', $fields);
+        $this->assertTrue(array_key_exists('assertion', $fields));
     }
 
     public function testGeneratesExtendedRequests()
@@ -630,7 +614,7 @@ class OAuth2GenerateAccessTokenRequestTest extends TestCase
     }
 }
 
-class OAuth2FetchAuthTokenTest extends TestCase
+class OAuth2FetchAuthTokenTest extends \PHPUnit_Framework_TestCase
 {
     private $fetchAuthTokenMinimal = [
         'tokenCredentialUri' => 'https://tokens_r_us/test',
@@ -742,40 +726,9 @@ class OAuth2FetchAuthTokenTest extends TestCase
         $this->assertEquals('an_id_token', $o->getIdToken());
         $this->assertEquals('a_refresh_token', $o->getRefreshToken());
     }
-
-    public function testUpdatesTokenFieldsOnFetchMissingRefreshToken()
-    {
-        $testConfig = $this->fetchAuthTokenMinimal;
-        $testConfig['refresh_token'] = 'a_refresh_token';
-        $wanted_updates = [
-            'expires_at' => '1',
-            'expires_in' => '57',
-            'issued_at' => '2',
-            'access_token' => 'an_access_token',
-            'id_token' => 'an_id_token',
-        ];
-        $json = json_encode($wanted_updates);
-        $httpHandler = getHandler([
-            buildResponse(200, [], Psr7\stream_for($json)),
-        ]);
-        $o = new OAuth2($testConfig);
-        $this->assertNull($o->getExpiresAt());
-        $this->assertNull($o->getExpiresIn());
-        $this->assertNull($o->getIssuedAt());
-        $this->assertNull($o->getAccessToken());
-        $this->assertNull($o->getIdToken());
-        $this->assertEquals('a_refresh_token', $o->getRefreshToken());
-        $tokens = $o->fetchAuthToken($httpHandler);
-        $this->assertEquals(1, $o->getExpiresAt());
-        $this->assertEquals(57, $o->getExpiresIn());
-        $this->assertEquals(2, $o->getIssuedAt());
-        $this->assertEquals('an_access_token', $o->getAccessToken());
-        $this->assertEquals('an_id_token', $o->getIdToken());
-        $this->assertEquals('a_refresh_token', $o->getRefreshToken());
-    }
 }
 
-class OAuth2VerifyIdTokenTest extends TestCase
+class OAuth2VerifyIdTokenTest extends \PHPUnit_Framework_TestCase
 {
     private $publicKey;
     private $privateKey;
@@ -821,7 +774,7 @@ class OAuth2VerifyIdTokenTest extends TestCase
         $o = new OAuth2($testConfig);
         $jwtIdToken = $this->jwtEncode($origIdToken, $this->privateKey, 'RS256');
         $o->setIdToken($jwtIdToken);
-        $o->verifyIdToken($this->publicKey, ['RS256']);
+        $o->verifyIdToken($this->publicKey);
     }
 
     /**
@@ -840,7 +793,7 @@ class OAuth2VerifyIdTokenTest extends TestCase
         $o = new OAuth2($testConfig);
         $jwtIdToken = $this->jwtEncode($origIdToken, $this->privateKey, 'RS256');
         $o->setIdToken($jwtIdToken);
-        $o->verifyIdToken($this->publicKey, ['RS256']);
+        $o->verifyIdToken($this->publicKey);
     }
 
     public function testShouldReturnAValidIdToken()

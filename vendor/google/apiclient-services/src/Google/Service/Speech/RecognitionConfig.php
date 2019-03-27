@@ -18,15 +18,11 @@
 class Google_Service_Speech_RecognitionConfig extends Google_Collection
 {
   protected $collection_key = 'speechContexts';
-  public $audioChannelCount;
   public $enableAutomaticPunctuation;
-  public $enableSeparateRecognitionPerChannel;
   public $enableWordTimeOffsets;
   public $encoding;
   public $languageCode;
   public $maxAlternatives;
-  protected $metadataType = 'Google_Service_Speech_RecognitionMetadata';
-  protected $metadataDataType = '';
   public $model;
   public $profanityFilter;
   public $sampleRateHertz;
@@ -34,14 +30,6 @@ class Google_Service_Speech_RecognitionConfig extends Google_Collection
   protected $speechContextsDataType = 'array';
   public $useEnhanced;
 
-  public function setAudioChannelCount($audioChannelCount)
-  {
-    $this->audioChannelCount = $audioChannelCount;
-  }
-  public function getAudioChannelCount()
-  {
-    return $this->audioChannelCount;
-  }
   public function setEnableAutomaticPunctuation($enableAutomaticPunctuation)
   {
     $this->enableAutomaticPunctuation = $enableAutomaticPunctuation;
@@ -49,14 +37,6 @@ class Google_Service_Speech_RecognitionConfig extends Google_Collection
   public function getEnableAutomaticPunctuation()
   {
     return $this->enableAutomaticPunctuation;
-  }
-  public function setEnableSeparateRecognitionPerChannel($enableSeparateRecognitionPerChannel)
-  {
-    $this->enableSeparateRecognitionPerChannel = $enableSeparateRecognitionPerChannel;
-  }
-  public function getEnableSeparateRecognitionPerChannel()
-  {
-    return $this->enableSeparateRecognitionPerChannel;
   }
   public function setEnableWordTimeOffsets($enableWordTimeOffsets)
   {
@@ -89,20 +69,6 @@ class Google_Service_Speech_RecognitionConfig extends Google_Collection
   public function getMaxAlternatives()
   {
     return $this->maxAlternatives;
-  }
-  /**
-   * @param Google_Service_Speech_RecognitionMetadata
-   */
-  public function setMetadata(Google_Service_Speech_RecognitionMetadata $metadata)
-  {
-    $this->metadata = $metadata;
-  }
-  /**
-   * @return Google_Service_Speech_RecognitionMetadata
-   */
-  public function getMetadata()
-  {
-    return $this->metadata;
   }
   public function setModel($model)
   {

@@ -21,7 +21,6 @@ class Google_Service_Testing_RoboStartingIntent extends Google_Model
   protected $launcherActivityDataType = '';
   protected $startActivityType = 'Google_Service_Testing_StartActivityIntent';
   protected $startActivityDataType = '';
-  public $timeout;
 
   /**
    * @param Google_Service_Testing_LauncherActivityIntent
@@ -50,13 +49,5 @@ class Google_Service_Testing_RoboStartingIntent extends Google_Model
   public function getStartActivity()
   {
     return $this->startActivity;
-  }
-  public function setTimeout($timeout)
-  {
-    $this->timeout = $timeout;
-  }
-  public function getTimeout()
-  {
-    return $this->timeout;
   }
 }

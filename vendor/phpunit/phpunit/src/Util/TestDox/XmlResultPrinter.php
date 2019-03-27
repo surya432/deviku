@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -21,10 +21,7 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Util\Printer;
 use ReflectionClass;
 
-/**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
- */
-final class XmlResultPrinter extends Printer implements TestListener
+class XmlResultPrinter extends Printer implements TestListener
 {
     /**
      * @var DOMDocument
@@ -144,7 +141,6 @@ final class XmlResultPrinter extends Printer implements TestListener
      * A test ended.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function endTest(Test $test, float $time): void
     {
@@ -167,20 +163,20 @@ final class XmlResultPrinter extends Printer implements TestListener
         $node->setAttribute('methodName', $test->getName());
         $node->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(\get_class($test)));
         $node->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestCase($test));
-        $node->setAttribute('status', (string) $test->getStatus());
-        $node->setAttribute('time', (string) $time);
-        $node->setAttribute('size', (string) $test->getSize());
+        $node->setAttribute('status', $test->getStatus());
+        $node->setAttribute('time', $time);
+        $node->setAttribute('size', $test->getSize());
         $node->setAttribute('groups', \implode(',', $groups));
 
         $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(\get_class($test), $test->getName());
 
         if (isset($inlineAnnotations['given'], $inlineAnnotations['when'], $inlineAnnotations['then'])) {
             $node->setAttribute('given', $inlineAnnotations['given']['value']);
-            $node->setAttribute('givenStartLine', (string) $inlineAnnotations['given']['line']);
+            $node->setAttribute('givenStartLine', $inlineAnnotations['given']['line']);
             $node->setAttribute('when', $inlineAnnotations['when']['value']);
-            $node->setAttribute('whenStartLine', (string) $inlineAnnotations['when']['line']);
+            $node->setAttribute('whenStartLine', $inlineAnnotations['when']['line']);
             $node->setAttribute('then', $inlineAnnotations['then']['value']);
-            $node->setAttribute('thenStartLine', (string) $inlineAnnotations['then']['line']);
+            $node->setAttribute('thenStartLine', $inlineAnnotations['then']['line']);
         }
 
         if ($this->exception !== null) {
@@ -195,7 +191,7 @@ final class XmlResultPrinter extends Printer implements TestListener
 
             foreach ($steps as $step) {
                 if (isset($step['file']) && $step['file'] === $file) {
-                    $node->setAttribute('exceptionLine', (string) $step['line']);
+                    $node->setAttribute('exceptionLine', $step['line']);
 
                     break;
                 }

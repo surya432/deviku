@@ -24,14 +24,14 @@ use Symfony\Component\Routing\Matcher\RedirectableUrlMatcherInterface;
 trait PhpMatcherTrait
 {
     private $matchHost = false;
-    private $staticRoutes = [];
-    private $regexpList = [];
-    private $dynamicRoutes = [];
+    private $staticRoutes = array();
+    private $regexpList = array();
+    private $dynamicRoutes = array();
     private $checkCondition;
 
     public function match($pathinfo)
     {
-        $allow = $allowSchemes = [];
+        $allow = $allowSchemes = array();
         if ($ret = $this->doMatch($pathinfo, $allow, $allowSchemes)) {
             return $ret;
         }
@@ -41,7 +41,7 @@ trait PhpMatcherTrait
         if (!$this instanceof RedirectableUrlMatcherInterface) {
             throw new ResourceNotFoundException();
         }
-        if (!\in_array($this->context->getMethod(), ['HEAD', 'GET'], true)) {
+        if (!\in_array($this->context->getMethod(), array('HEAD', 'GET'), true)) {
             // no-op
         } elseif ($allowSchemes) {
             redirect_scheme:
@@ -54,8 +54,8 @@ trait PhpMatcherTrait
             } finally {
                 $this->context->setScheme($scheme);
             }
-        } elseif ('/' !== $trimmedPathinfo = rtrim($pathinfo, '/') ?: '/') {
-            $pathinfo = $trimmedPathinfo === $pathinfo ? $pathinfo.'/' : $trimmedPathinfo;
+        } elseif ('/' !== $pathinfo) {
+            $pathinfo = '/' !== $pathinfo[-1] ? $pathinfo.'/' : substr($pathinfo, 0, -1);
             if ($ret = $this->doMatch($pathinfo, $allow, $allowSchemes)) {
                 return $this->redirect($pathinfo, $ret['_route']) + $ret;
             }
@@ -67,13 +67,13 @@ trait PhpMatcherTrait
         throw new ResourceNotFoundException();
     }
 
-    private function doMatch(string $pathinfo, array &$allow = [], array &$allowSchemes = []): array
+    private function doMatch(string $rawPathinfo, array &$allow = array(), array &$allowSchemes = array()): array
     {
-        $allow = $allowSchemes = [];
-        $pathinfo = rawurldecode($pathinfo) ?: '/';
-        $trimmedPathinfo = rtrim($pathinfo, '/') ?: '/';
+        $allow = $allowSchemes = array();
+        $pathinfo = rawurldecode($rawPathinfo) ?: '/';
         $context = $this->context;
         $requestMethod = $canonicalMethod = $context->getMethod();
+        $trimmedPathinfo = '/' !== $pathinfo && '/' === $pathinfo[-1] ? substr($pathinfo, 0, -1) : $pathinfo;
 
         if ($this->matchHost) {
             $host = strtolower($context->getHost());
@@ -82,17 +82,17 @@ trait PhpMatcherTrait
         if ('HEAD' === $requestMethod) {
             $canonicalMethod = 'GET';
         }
-        $supportsRedirections = 'GET' === $canonicalMethod && $this instanceof RedirectableUrlMatcherInterface;
 
-        foreach ($this->staticRoutes[$trimmedPathinfo] ?? [] as list($ret, $requiredHost, $requiredMethods, $requiredSchemes, $hasTrailingSlash, , $condition)) {
+        foreach ($this->staticRoutes[$trimmedPathinfo] ?? array() as list($ret, $requiredHost, $requiredMethods, $requiredSchemes, $hasTrailingSlash, $condition)) {
             if ($condition && !($this->checkCondition)($condition, $context, 0 < $condition ? $request ?? $request = $this->request ?: $this->createRequest($pathinfo) : null)) {
                 continue;
             }
 
-            if ('/' !== $pathinfo && $hasTrailingSlash === ($trimmedPathinfo === $pathinfo)) {
-                if ($supportsRedirections && (!$requiredMethods || isset($requiredMethods['GET']))) {
-                    return $allow = $allowSchemes = [];
-                }
+            if ('/' === $pathinfo || $hasTrailingSlash === ('/' === $pathinfo[-1])) {
+                // no-op
+            } elseif ($this instanceof RedirectableUrlMatcherInterface && (!$requiredMethods || isset($requiredMethods['GET'])) && 'GET' === $canonicalMethod) {
+                return $allow = $allowSchemes = array();
+            } else {
                 continue;
             }
 
@@ -125,21 +125,25 @@ trait PhpMatcherTrait
 
         foreach ($this->regexpList as $offset => $regex) {
             while (preg_match($regex, $matchedPathinfo, $matches)) {
-                foreach ($this->dynamicRoutes[$m = (int) $matches['MARK']] as list($ret, $vars, $requiredMethods, $requiredSchemes, $hasTrailingSlash, $hasTrailingVar, $condition)) {
+                foreach ($this->dynamicRoutes[$m = (int) $matches['MARK']] as list($ret, $vars, $requiredMethods, $requiredSchemes, $hasTrailingSlash, $condition)) {
                     if ($condition && !($this->checkCondition)($condition, $context, 0 < $condition ? $request ?? $request = $this->request ?: $this->createRequest($pathinfo) : null)) {
                         continue;
                     }
 
-                    $hasTrailingVar = $trimmedPathinfo !== $pathinfo && $hasTrailingVar;
-                    if ('/' !== $pathinfo && !$hasTrailingVar && $hasTrailingSlash === ($trimmedPathinfo === $pathinfo)) {
-                        if ($supportsRedirections && (!$requiredMethods || isset($requiredMethods['GET']))) {
-                            return $allow = $allowSchemes = [];
+                    if ('/' !== $pathinfo) {
+                        if ('/' === $pathinfo[-1]) {
+                            if (preg_match($regex, substr($pathinfo, 0, -1), $n) && $m === (int) $n['MARK']) {
+                                $matches = $n;
+                            } else {
+                                $hasTrailingSlash = true;
+                            }
                         }
-                        continue;
-                    }
-
-                    if ($hasTrailingSlash && $hasTrailingVar && preg_match($regex, $this->matchHost ? $host.'.'.$trimmedPathinfo : $trimmedPathinfo, $n) && $m === (int) $n['MARK']) {
-                        $matches = $n;
+                        if ($hasTrailingSlash !== ('/' === $pathinfo[-1])) {
+                            if ($this instanceof RedirectableUrlMatcherInterface && (!$requiredMethods || isset($requiredMethods['GET'])) && 'GET' === $canonicalMethod) {
+                                return $allow = $allowSchemes = array();
+                            }
+                            continue;
+                        }
                     }
 
                     foreach ($vars as $i => $v) {
@@ -172,6 +176,6 @@ trait PhpMatcherTrait
             throw new NoConfigurationException();
         }
 
-        return [];
+        return array();
     }
 }

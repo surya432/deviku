@@ -17,8 +17,7 @@
   ],
   "require": {
     "php": ">=7.0",
-    "ext-json": "*",
-    "yajra/laravel-datatables-oracle": "8.*|9.*",
+    "yajra/laravel-datatables-oracle": "8.*",
     "laravelcollective/html": "^5.4"
   },
   "require-dev": {
@@ -37,7 +36,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "4.0-dev"
+      "dev-master": "3.0-dev"
     },
     "laravel": {
       "providers": [

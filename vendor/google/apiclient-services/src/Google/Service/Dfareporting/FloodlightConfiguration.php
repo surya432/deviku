@@ -23,8 +23,6 @@ class Google_Service_Dfareporting_FloodlightConfiguration extends Google_Collect
   protected $advertiserIdDimensionValueType = 'Google_Service_Dfareporting_DimensionValue';
   protected $advertiserIdDimensionValueDataType = '';
   public $analyticsDataSharingEnabled;
-  protected $customViewabilityMetricType = 'Google_Service_Dfareporting_CustomViewabilityMetric';
-  protected $customViewabilityMetricDataType = '';
   public $exposureToConversionEnabled;
   public $firstDayOfWeek;
   public $id;
@@ -82,20 +80,6 @@ class Google_Service_Dfareporting_FloodlightConfiguration extends Google_Collect
   public function getAnalyticsDataSharingEnabled()
   {
     return $this->analyticsDataSharingEnabled;
-  }
-  /**
-   * @param Google_Service_Dfareporting_CustomViewabilityMetric
-   */
-  public function setCustomViewabilityMetric(Google_Service_Dfareporting_CustomViewabilityMetric $customViewabilityMetric)
-  {
-    $this->customViewabilityMetric = $customViewabilityMetric;
-  }
-  /**
-   * @return Google_Service_Dfareporting_CustomViewabilityMetric
-   */
-  public function getCustomViewabilityMetric()
-  {
-    return $this->customViewabilityMetric;
   }
   public function setExposureToConversionEnabled($exposureToConversionEnabled)
   {

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -10,7 +10,7 @@
 namespace PHPUnit\Util;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * Filesystem helpers.
  */
 final class Filesystem
 {
@@ -26,10 +26,5 @@ final class Filesystem
             \DIRECTORY_SEPARATOR,
             $className
         ) . '.php';
-    }
-
-    public static function createDirectory(string $directory): bool
-    {
-        return !(!\is_dir($directory) && !@\mkdir($directory, 0777, true) && !\is_dir($directory));
     }
 }

@@ -20,32 +20,26 @@ final class Runtime
     private static $binary;
 
     /**
-     * Returns true when Xdebug or PCOV is available or
+     * Returns true when Xdebug is supported or
      * the runtime used is PHPDBG.
      */
     public function canCollectCodeCoverage(): bool
     {
-        return $this->hasXdebug() || $this->hasPCOV() || $this->hasPHPDBGCodeCoverage();
+        return $this->hasXdebug() || $this->hasPHPDBGCodeCoverage();
     }
 
     /**
-     * Returns true when Zend OPcache is loaded, enabled, and is configured to discard comments.
+     * Returns true when OPcache is loaded and opcache.save_comments=0 is set.
+     *
+     * Code taken from Doctrine\Common\Annotations\AnnotationReader::__construct().
      */
     public function discardsComments(): bool
     {
-        if (!\extension_loaded('Zend OPcache')) {
-            return false;
-        }
-
-        if (\ini_get('opcache.save_comments') !== '0') {
-            return false;
-        }
-
-        if (\PHP_SAPI === 'cli' && \ini_get('opcache.enable_cli') === '1') {
+        if (\extension_loaded('Zend Optimizer+') && (\ini_get('zend_optimizerplus.save_comments') === '0' || \ini_get('opcache.save_comments') === '0')) {
             return true;
         }
 
-        if (\PHP_SAPI !== 'cli' && \ini_get('opcache.enable') === '1') {
+        if (\extension_loaded('Zend OPcache') && \ini_get('opcache.save_comments') == 0) {
             return true;
         }
 
@@ -104,29 +98,6 @@ final class Runtime
     public function getNameWithVersion(): string
     {
         return $this->getName() . ' ' . $this->getVersion();
-    }
-
-    public function getNameWithVersionAndCodeCoverageDriver(): string
-    {
-        if (!$this->canCollectCodeCoverage() || $this->hasPHPDBGCodeCoverage()) {
-            return $this->getNameWithVersion();
-        }
-
-        if ($this->hasXdebug()) {
-            return \sprintf(
-                '%s with Xdebug %s',
-                $this->getNameWithVersion(),
-                \phpversion('xdebug')
-            );
-        }
-
-        if ($this->hasPCOV()) {
-            return \sprintf(
-                '%s with PCOV %s',
-                $this->getNameWithVersion(),
-                \phpversion('pcov')
-            );
-        }
     }
 
     public function getName(): string
@@ -209,13 +180,5 @@ final class Runtime
     public function hasPHPDBGCodeCoverage(): bool
     {
         return $this->isPHPDBG();
-    }
-
-    /**
-     * Returns true when the runtime used is PHP with PCOV loaded and enabled
-     */
-    public function hasPCOV(): bool
-    {
-        return $this->isPHP() && \extension_loaded('pcov') && \ini_get('pcov.enabled');
     }
 }

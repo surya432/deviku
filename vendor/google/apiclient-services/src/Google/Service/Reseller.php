@@ -51,7 +51,6 @@ class Google_Service_Reseller extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'apps/reseller/v1/';
-    $this->batchPath = 'batch/reseller/v1';
     $this->version = 'v1';
     $this->serviceName = 'reseller';
 

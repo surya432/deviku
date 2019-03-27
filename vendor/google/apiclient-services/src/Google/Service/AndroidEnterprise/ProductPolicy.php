@@ -20,8 +20,6 @@ class Google_Service_AndroidEnterprise_ProductPolicy extends Google_Collection
   protected $collection_key = 'tracks';
   protected $autoInstallPolicyType = 'Google_Service_AndroidEnterprise_AutoInstallPolicy';
   protected $autoInstallPolicyDataType = '';
-  protected $managedConfigurationType = 'Google_Service_AndroidEnterprise_ManagedConfiguration';
-  protected $managedConfigurationDataType = '';
   public $productId;
   public $trackIds;
   public $tracks;
@@ -39,20 +37,6 @@ class Google_Service_AndroidEnterprise_ProductPolicy extends Google_Collection
   public function getAutoInstallPolicy()
   {
     return $this->autoInstallPolicy;
-  }
-  /**
-   * @param Google_Service_AndroidEnterprise_ManagedConfiguration
-   */
-  public function setManagedConfiguration(Google_Service_AndroidEnterprise_ManagedConfiguration $managedConfiguration)
-  {
-    $this->managedConfiguration = $managedConfiguration;
-  }
-  /**
-   * @return Google_Service_AndroidEnterprise_ManagedConfiguration
-   */
-  public function getManagedConfiguration()
-  {
-    return $this->managedConfiguration;
   }
   public function setProductId($productId)
   {

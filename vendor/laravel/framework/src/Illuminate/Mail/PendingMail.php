@@ -3,23 +3,20 @@
 namespace Illuminate\Mail;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Contracts\Mail\Mailer as MailerContract;
-use Illuminate\Contracts\Translation\HasLocalePreference;
-use Illuminate\Contracts\Mail\Mailable as MailableContract;
 
 class PendingMail
 {
     /**
      * The mailer instance.
      *
-     * @var \Illuminate\Contracts\Mail\Mailer
+     * @var \Illuminate\Mail\Mailer
      */
     protected $mailer;
 
     /**
      * The locale of the message.
      *
-     * @var string
+     * @var array
      */
     protected $locale;
 
@@ -47,10 +44,10 @@ class PendingMail
     /**
      * Create a new mailable mailer instance.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailer  $mailer
+     * @param  \Illuminate\Mail\Mailer  $mailer
      * @return void
      */
-    public function __construct(MailerContract $mailer)
+    public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
     }
@@ -77,10 +74,6 @@ class PendingMail
     public function to($users)
     {
         $this->to = $users;
-
-        if (! $this->locale && $users instanceof HasLocalePreference) {
-            $this->locale($users->preferredLocale());
-        }
 
         return $this;
     }
@@ -114,11 +107,10 @@ class PendingMail
     /**
      * Send a new mailable message instance.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailable  $mailable
-     *
+     * @param  \Illuminate\Mail\Mailable  $mailable
      * @return mixed
      */
-    public function send(MailableContract $mailable)
+    public function send(Mailable $mailable)
     {
         if ($mailable instanceof ShouldQueue) {
             return $this->queue($mailable);
@@ -130,10 +122,10 @@ class PendingMail
     /**
      * Send a mailable message immediately.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
+     * @param  \Illuminate\Mail\Mailable  $mailable
      * @return mixed
      */
-    public function sendNow(MailableContract $mailable)
+    public function sendNow(Mailable $mailable)
     {
         return $this->mailer->send($this->fill($mailable));
     }
@@ -141,10 +133,10 @@ class PendingMail
     /**
      * Push the given mailable onto the queue.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
+     * @param  \Illuminate\Mail\Mailable  $mailable
      * @return mixed
      */
-    public function queue(MailableContract $mailable)
+    public function queue(Mailable $mailable)
     {
         $mailable = $this->fill($mailable);
 
@@ -159,10 +151,10 @@ class PendingMail
      * Deliver the queued message after the given delay.
      *
      * @param  \DateTimeInterface|\DateInterval|int  $delay
-     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
+     * @param  \Illuminate\Mail\Mailable  $mailable
      * @return mixed
      */
-    public function later($delay, MailableContract $mailable)
+    public function later($delay, Mailable $mailable)
     {
         return $this->mailer->later($delay, $this->fill($mailable));
     }
@@ -170,10 +162,10 @@ class PendingMail
     /**
      * Populate the mailable with the addresses.
      *
-     * @param  \Illuminate\Contracts\Mail\Mailable $mailable;
+     * @param  \Illuminate\Mail\Mailable  $mailable
      * @return \Illuminate\Mail\Mailable
      */
-    protected function fill(MailableContract $mailable)
+    protected function fill(Mailable $mailable)
     {
         return $mailable->to($this->to)
                         ->cc($this->cc)

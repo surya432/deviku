@@ -46,7 +46,6 @@ class Google_Service_Indexing extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://indexing.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v3';
     $this->serviceName = 'indexing';
 

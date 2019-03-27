@@ -48,7 +48,7 @@ class TranslatorListenerTest extends TestCase
         $this->translator
             ->expects($this->at(0))
             ->method('setLocale')
-            ->willThrowException(new \InvalidArgumentException());
+            ->will($this->throwException(new \InvalidArgumentException()));
         $this->translator
             ->expects($this->at(1))
             ->method('setLocale')
@@ -85,7 +85,7 @@ class TranslatorListenerTest extends TestCase
         $this->translator
             ->expects($this->at(0))
             ->method('setLocale')
-            ->willThrowException(new \InvalidArgumentException());
+            ->will($this->throwException(new \InvalidArgumentException()));
         $this->translator
             ->expects($this->at(1))
             ->method('setLocale')

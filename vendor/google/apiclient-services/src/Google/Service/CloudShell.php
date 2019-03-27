@@ -47,7 +47,6 @@ class Google_Service_CloudShell extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://cloudshell.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'cloudshell';
 

@@ -21,7 +21,6 @@ class Google_Service_Appengine_Network extends Google_Collection
   public $forwardedPorts;
   public $instanceTag;
   public $name;
-  public $sessionAffinity;
   public $subnetworkName;
 
   public function setForwardedPorts($forwardedPorts)
@@ -47,14 +46,6 @@ class Google_Service_Appengine_Network extends Google_Collection
   public function getName()
   {
     return $this->name;
-  }
-  public function setSessionAffinity($sessionAffinity)
-  {
-    $this->sessionAffinity = $sessionAffinity;
-  }
-  public function getSessionAffinity()
-  {
-    return $this->sessionAffinity;
   }
   public function setSubnetworkName($subnetworkName)
   {

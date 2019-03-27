@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Testing\Fakes\EventFake;
 
 /**
- * @method static void listen(string|array $events, $listener)
+ * @method static void listen(string | array $events, $listener)
  * @method static bool hasListeners(string $eventName)
- * @method static void subscribe(object|string $subscriber)
- * @method static array|null until(string|object $event, $payload = [])
- * @method static array|null dispatch(string|object $event, $payload = [], bool $halt = false)
+ * @method static void subscribe(object | string $subscriber)
+ * @method static array|null until(string | object $event, $payload = [])
+ * @method static array|null dispatch(string | object $event, $payload = [], bool $halt = false)
  * @method static void push(string $event, array $payload = [])
  * @method static void flush(string $event)
  * @method static void forget(string $event)
@@ -24,22 +24,20 @@ class Event extends Facade
      * Replace the bound instance with a fake.
      *
      * @param  array|string  $eventsToFake
-     * @return \Illuminate\Support\Testing\Fakes\EventFake
+     * @return void
      */
     public static function fake($eventsToFake = [])
     {
         static::swap($fake = new EventFake(static::getFacadeRoot(), $eventsToFake));
 
         Model::setEventDispatcher($fake);
-
-        return $fake;
     }
 
     /**
      * Replace the bound instance with a fake during the given callable's execution.
      *
      * @param  callable  $callable
-     * @param  array  $eventsToFake
+     * @param  array|string  $eventsToFake
      * @return callable
      */
     public static function fakeFor(callable $callable, array $eventsToFake = [])

@@ -84,9 +84,9 @@ class ApplicationDefaultCredentials
         array $cacheConfig = null,
         CacheItemPoolInterface $cache = null
     ) {
-        $creds = self::getCredentials($scope, $httpHandler, $cacheConfig, $cache);
+        $creds = self::getCredentials($scope, $httpHandler);
 
-        return new AuthTokenSubscriber($creds, $httpHandler);
+        return new AuthTokenSubscriber($creds, $cacheConfig, $cache, $httpHandler);
     }
 
     /**
@@ -112,9 +112,9 @@ class ApplicationDefaultCredentials
         array $cacheConfig = null,
         CacheItemPoolInterface $cache = null
     ) {
-        $creds = self::getCredentials($scope, $httpHandler, $cacheConfig, $cache);
+        $creds = self::getCredentials($scope, $httpHandler);
 
-        return new AuthTokenMiddleware($creds, $httpHandler);
+        return new AuthTokenMiddleware($creds, $cacheConfig, $cache, $httpHandler);
     }
 
     /**
@@ -127,38 +127,28 @@ class ApplicationDefaultCredentials
      * @param string|array scope the scope of the access request, expressed
      *   either as an Array or as a space-delimited String.
      * @param callable $httpHandler callback which delivers psr7 request
-     * @param array $cacheConfig configuration for the cache when it's present
-     * @param CacheItemPoolInterface $cache
      *
      * @return CredentialsLoader
      *
      * @throws DomainException if no implementation can be obtained.
      */
-    public static function getCredentials(
-        $scope = null,
-        callable $httpHandler = null,
-        array $cacheConfig = null,
-        CacheItemPoolInterface $cache = null
-    ) {
-        $creds = null;
-        $jsonKey = CredentialsLoader::fromEnv()
-            ?: CredentialsLoader::fromWellKnownFile();
-
-        if (!is_null($jsonKey)) {
-            $creds = CredentialsLoader::makeCredentials($scope, $jsonKey);
-        } elseif (AppIdentityCredentials::onAppEngine() && !GCECredentials::onAppEngineFlexible()) {
-            $creds = new AppIdentityCredentials($scope);
-        } elseif (GCECredentials::onGce($httpHandler)) {
-            $creds = new GCECredentials();
+    public static function getCredentials($scope = null, callable $httpHandler = null)
+    {
+        $creds = CredentialsLoader::fromEnv($scope);
+        if (!is_null($creds)) {
+            return $creds;
         }
-
-        if (is_null($creds)) {
-            throw new \DomainException(self::notFound());
+        $creds = CredentialsLoader::fromWellKnownFile($scope);
+        if (!is_null($creds)) {
+            return $creds;
         }
-        if (!is_null($cache)) {
-            $creds = new FetchAuthTokenCache($creds, $cacheConfig, $cache);
+        if (AppIdentityCredentials::onAppEngine()) {
+            return new AppIdentityCredentials($scope);
         }
-        return $creds;
+        if (GCECredentials::onGce($httpHandler)) {
+            return new GCECredentials();
+        }
+        throw new \DomainException(self::notFound());
     }
 
     private static function notFound()

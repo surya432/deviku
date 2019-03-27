@@ -20,8 +20,6 @@ class Google_Service_CloudSearch_IndexItemRequest extends Google_Model
   public $connectorName;
   protected $debugOptionsType = 'Google_Service_CloudSearch_DebugOptions';
   protected $debugOptionsDataType = '';
-  protected $indexItemOptionsType = 'Google_Service_CloudSearch_IndexItemOptions';
-  protected $indexItemOptionsDataType = '';
   protected $itemType = 'Google_Service_CloudSearch_Item';
   protected $itemDataType = '';
   public $mode;
@@ -47,20 +45,6 @@ class Google_Service_CloudSearch_IndexItemRequest extends Google_Model
   public function getDebugOptions()
   {
     return $this->debugOptions;
-  }
-  /**
-   * @param Google_Service_CloudSearch_IndexItemOptions
-   */
-  public function setIndexItemOptions(Google_Service_CloudSearch_IndexItemOptions $indexItemOptions)
-  {
-    $this->indexItemOptions = $indexItemOptions;
-  }
-  /**
-   * @return Google_Service_CloudSearch_IndexItemOptions
-   */
-  public function getIndexItemOptions()
-  {
-    return $this->indexItemOptions;
   }
   /**
    * @param Google_Service_CloudSearch_Item

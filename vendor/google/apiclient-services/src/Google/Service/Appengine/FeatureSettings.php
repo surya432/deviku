@@ -18,7 +18,6 @@
 class Google_Service_Appengine_FeatureSettings extends Google_Model
 {
   public $splitHealthChecks;
-  public $useContainerOptimizedOs;
 
   public function setSplitHealthChecks($splitHealthChecks)
   {
@@ -27,13 +26,5 @@ class Google_Service_Appengine_FeatureSettings extends Google_Model
   public function getSplitHealthChecks()
   {
     return $this->splitHealthChecks;
-  }
-  public function setUseContainerOptimizedOs($useContainerOptimizedOs)
-  {
-    $this->useContainerOptimizedOs = $useContainerOptimizedOs;
-  }
-  public function getUseContainerOptimizedOs()
-  {
-    return $this->useContainerOptimizedOs;
   }
 }

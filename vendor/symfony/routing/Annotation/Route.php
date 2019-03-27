@@ -22,14 +22,14 @@ namespace Symfony\Component\Routing\Annotation;
 class Route
 {
     private $path;
-    private $localizedPaths = [];
+    private $localizedPaths = array();
     private $name;
-    private $requirements = [];
-    private $options = [];
-    private $defaults = [];
+    private $requirements = array();
+    private $options = array();
+    private $defaults = array();
     private $host;
-    private $methods = [];
-    private $schemes = [];
+    private $methods = array();
+    private $schemes = array();
     private $condition;
 
     /**
@@ -134,7 +134,7 @@ class Route
 
     public function setSchemes($schemes)
     {
-        $this->schemes = \is_array($schemes) ? $schemes : [$schemes];
+        $this->schemes = \is_array($schemes) ? $schemes : array($schemes);
     }
 
     public function getSchemes()
@@ -144,7 +144,7 @@ class Route
 
     public function setMethods($methods)
     {
-        $this->methods = \is_array($methods) ? $methods : [$methods];
+        $this->methods = \is_array($methods) ? $methods : array($methods);
     }
 
     public function getMethods()

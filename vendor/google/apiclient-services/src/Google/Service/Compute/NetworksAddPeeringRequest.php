@@ -19,8 +19,6 @@ class Google_Service_Compute_NetworksAddPeeringRequest extends Google_Model
 {
   public $autoCreateRoutes;
   public $name;
-  protected $networkPeeringType = 'Google_Service_Compute_NetworkPeering';
-  protected $networkPeeringDataType = '';
   public $peerNetwork;
 
   public function setAutoCreateRoutes($autoCreateRoutes)
@@ -38,20 +36,6 @@ class Google_Service_Compute_NetworksAddPeeringRequest extends Google_Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param Google_Service_Compute_NetworkPeering
-   */
-  public function setNetworkPeering(Google_Service_Compute_NetworkPeering $networkPeering)
-  {
-    $this->networkPeering = $networkPeering;
-  }
-  /**
-   * @return Google_Service_Compute_NetworkPeering
-   */
-  public function getNetworkPeering()
-  {
-    return $this->networkPeering;
   }
   public function setPeerNetwork($peerNetwork)
   {

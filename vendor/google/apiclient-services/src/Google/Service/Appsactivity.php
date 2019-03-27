@@ -46,7 +46,6 @@ class Google_Service_Appsactivity extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'appsactivity/v1/';
-    $this->batchPath = 'batch/appsactivity/v1';
     $this->version = 'v1';
     $this->serviceName = 'appsactivity';
 

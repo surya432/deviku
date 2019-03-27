@@ -36,7 +36,7 @@ class Google_Service_PeopleService extends Google_Service
   /** See and download your contacts. */
   const CONTACTS_READONLY =
       "https://www.googleapis.com/auth/contacts.readonly";
-  /** View your basic profile info, including your age range and language. */
+  /** Know the list of people in your circles, your age range, and language. */
   const PLUS_LOGIN =
       "https://www.googleapis.com/auth/plus.login";
   /** View your street addresses. */
@@ -54,7 +54,7 @@ class Google_Service_PeopleService extends Google_Service
   /** View your email address. */
   const USERINFO_EMAIL =
       "https://www.googleapis.com/auth/userinfo.email";
-  /** See your personal info, including any personal info you've made publically available. */
+  /** View your basic profile info. */
   const USERINFO_PROFILE =
       "https://www.googleapis.com/auth/userinfo.profile";
 
@@ -73,7 +73,6 @@ class Google_Service_PeopleService extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://people.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'people';
 
@@ -87,14 +86,14 @@ class Google_Service_PeopleService extends Google_Service
               'path' => 'v1/contactGroups:batchGet',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'maxMembers' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'resourceNames' => array(
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
-                ),
-                'maxMembers' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),'create' => array(
@@ -133,6 +132,10 @@ class Google_Service_PeopleService extends Google_Service
               'path' => 'v1/contactGroups',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'syncToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -140,10 +143,6 @@ class Google_Service_PeopleService extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'syncToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),'update' => array(
@@ -274,6 +273,18 @@ class Google_Service_PeopleService extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'syncToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'personFields' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'sortOrder' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'requestSyncToken' => array(
                   'location' => 'query',
                   'type' => 'boolean',
@@ -287,18 +298,6 @@ class Google_Service_PeopleService extends Google_Service
                   'type' => 'integer',
                 ),
                 'requestMask.includeField' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'syncToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'personFields' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'sortOrder' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

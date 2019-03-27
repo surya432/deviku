@@ -21,8 +21,6 @@ class Google_Service_BigtableAdmin_CreateClusterMetadata extends Google_Model
   protected $originalRequestType = 'Google_Service_BigtableAdmin_CreateClusterRequest';
   protected $originalRequestDataType = '';
   public $requestTime;
-  protected $tablesType = 'Google_Service_BigtableAdmin_TableProgress';
-  protected $tablesDataType = 'map';
 
   public function setFinishTime($finishTime)
   {
@@ -53,19 +51,5 @@ class Google_Service_BigtableAdmin_CreateClusterMetadata extends Google_Model
   public function getRequestTime()
   {
     return $this->requestTime;
-  }
-  /**
-   * @param Google_Service_BigtableAdmin_TableProgress
-   */
-  public function setTables($tables)
-  {
-    $this->tables = $tables;
-  }
-  /**
-   * @return Google_Service_BigtableAdmin_TableProgress
-   */
-  public function getTables()
-  {
-    return $this->tables;
   }
 }

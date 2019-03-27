@@ -140,15 +140,6 @@ class Hash
     var $ipad;
 
     /**
-     * Engine
-     *
-     * @see self::setHash()
-     * @var string
-     * @access private
-     */
-    var $engine;
-
-    /**
      * Default Constructor.
      *
      * @param string $hash
@@ -211,14 +202,14 @@ class Hash
             return;
         }
 
-        switch ($this->engine) {
-            case self::MODE_MHASH:
+        switch ($mode) {
+            case CRYPT_HASH_MODE_MHASH:
                 $this->computedKey = mhash($this->hash, $this->key);
                 break;
-            case self::MODE_HASH:
+            case CRYPT_HASH_MODE_HASH:
                 $this->computedKey = hash($this->hash, $this->key, true);
                 break;
-            case self::MODE_INTERNAL:
+            case CRYPT_HASH_MODE_INTERNAL:
                 $this->computedKey = call_user_func($this->hash, $this->key);
         }
     }
@@ -291,18 +282,18 @@ class Hash
 
         switch ($hash) {
             case 'md2':
-                $this->engine = CRYPT_HASH_MODE == self::MODE_HASH && in_array('md2', hash_algos()) ?
+                $mode = CRYPT_HASH_MODE == self::MODE_HASH && in_array('md2', hash_algos()) ?
                     self::MODE_HASH : self::MODE_INTERNAL;
                 break;
             case 'sha384':
             case 'sha512':
-                $this->engine = CRYPT_HASH_MODE == self::MODE_MHASH ? self::MODE_INTERNAL : CRYPT_HASH_MODE;
+                $mode = CRYPT_HASH_MODE == self::MODE_MHASH ? self::MODE_INTERNAL : CRYPT_HASH_MODE;
                 break;
             default:
-                $this->engine = CRYPT_HASH_MODE;
+                $mode = CRYPT_HASH_MODE;
         }
 
-        switch ($this->engine) {
+        switch ($mode) {
             case self::MODE_MHASH:
                 switch ($hash) {
                     case 'md5':
@@ -315,7 +306,7 @@ class Hash
                     default:
                         $this->hash = MHASH_SHA1;
                 }
-                $this->_computeKey(self::MODE_MHASH);
+                $this->_computeKey();
                 return;
             case self::MODE_HASH:
                 switch ($hash) {
@@ -332,7 +323,7 @@ class Hash
                     default:
                         $this->hash = 'sha1';
                 }
-                $this->_computeKey(self::MODE_HASH);
+                $this->_computeKey();
                 return;
         }
 
@@ -358,7 +349,7 @@ class Hash
         $this->ipad = str_repeat(chr(0x36), $this->b);
         $this->opad = str_repeat(chr(0x5C), $this->b);
 
-        $this->_computeKey(self::MODE_INTERNAL);
+        $this->_computeKey();
     }
 
     /**
@@ -370,8 +361,10 @@ class Hash
      */
     function hash($text)
     {
+        $mode = is_array($this->hash) ? self::MODE_INTERNAL : CRYPT_HASH_MODE;
+
         if (!empty($this->key) || is_string($this->key)) {
-            switch ($this->engine) {
+            switch ($mode) {
                 case self::MODE_MHASH:
                     $output = mhash($this->hash, $text, $this->computedKey);
                     break;
@@ -388,7 +381,7 @@ class Hash
                     $output = call_user_func($this->hash, $output);          // step 7
             }
         } else {
-            switch ($this->engine) {
+            switch ($mode) {
                 case self::MODE_MHASH:
                     $output = mhash($this->hash, $text);
                     break;

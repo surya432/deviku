@@ -108,7 +108,6 @@ class Google_Service_Classroom extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://classroom.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'classroom';
 

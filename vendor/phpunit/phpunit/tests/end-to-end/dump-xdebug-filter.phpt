@@ -6,7 +6,7 @@ if (!extension_loaded('xdebug')) {
     print 'skip: xdebug not loaded';
 }
 --FILE--
-<?php declare(strict_types=1);
+<?php
 $_SERVER['argv'][1] = '-c';
 $_SERVER['argv'][2] = __DIR__ . '/../_files/configuration_whitelist.xml';
 $_SERVER['argv'][3] = '--dump-xdebug-filter';
@@ -16,7 +16,6 @@ require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
-
 <?php declare(strict_types=1);
 if (!\function_exists('xdebug_set_filter')) {
     return;
@@ -29,4 +28,5 @@ if (!\function_exists('xdebug_set_filter')) {
         %s
     ]
 );
+
 Wrote Xdebug filter script to php://stderr

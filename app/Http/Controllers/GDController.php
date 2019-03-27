@@ -56,6 +56,7 @@ class GDController extends Controller
                 
                 if($content){
                     $this->GDMoveFolder($Nofiles['id'],$folderId);
+
                     if($content->f360p !="https://drive.google.com/open?id=".$Nofiles['id'] ){
                        $content->f360p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
                         if(is_null($content->f720p)){

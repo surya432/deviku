@@ -17,20 +17,10 @@
 
 class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelDetectionConfig extends Google_Model
 {
-  public $frameConfidenceThreshold;
   public $labelDetectionMode;
   public $model;
   public $stationaryCamera;
-  public $videoConfidenceThreshold;
 
-  public function setFrameConfidenceThreshold($frameConfidenceThreshold)
-  {
-    $this->frameConfidenceThreshold = $frameConfidenceThreshold;
-  }
-  public function getFrameConfidenceThreshold()
-  {
-    return $this->frameConfidenceThreshold;
-  }
   public function setLabelDetectionMode($labelDetectionMode)
   {
     $this->labelDetectionMode = $labelDetectionMode;
@@ -54,13 +44,5 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelD
   public function getStationaryCamera()
   {
     return $this->stationaryCamera;
-  }
-  public function setVideoConfidenceThreshold($videoConfidenceThreshold)
-  {
-    $this->videoConfidenceThreshold = $videoConfidenceThreshold;
-  }
-  public function getVideoConfidenceThreshold()
-  {
-    return $this->videoConfidenceThreshold;
   }
 }

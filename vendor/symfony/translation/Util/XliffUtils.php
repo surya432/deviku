@@ -77,7 +77,7 @@ class XliffUtils
         libxml_clear_errors();
         libxml_use_internal_errors($internalErrors);
 
-        return [];
+        return array();
     }
 
     public static function getErrorsAsString(array $xmlErrors): string
@@ -143,16 +143,16 @@ class XliffUtils
      */
     private static function getXmlErrors(bool $internalErrors): array
     {
-        $errors = [];
+        $errors = array();
         foreach (libxml_get_errors() as $error) {
-            $errors[] = [
+            $errors[] = array(
                 'level' => LIBXML_ERR_WARNING == $error->level ? 'WARNING' : 'ERROR',
                 'code' => $error->code,
                 'message' => trim($error->message),
                 'file' => $error->file ?: 'n/a',
                 'line' => $error->line,
                 'column' => $error->column,
-            ];
+            );
         }
 
         libxml_clear_errors();

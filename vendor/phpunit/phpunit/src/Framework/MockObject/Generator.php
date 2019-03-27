@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -22,9 +22,9 @@ use Text_Template;
 use Traversable;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * Mock Object Code Generator
  */
-final class Generator
+class Generator
 {
     /**
      * @var array
@@ -138,7 +138,7 @@ final class Generator
 
         if (null !== $methods) {
             foreach ($methods as $method) {
-                if (!\preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', (string) $method)) {
+                if (!\preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', $method)) {
                     throw new RuntimeException(
                         \sprintf(
                             'Cannot stub or mock method with invalid name "%s"',
@@ -458,16 +458,18 @@ final class Generator
         $methodsBuffer  = '';
 
         foreach ($_methods as $method) {
-            \preg_match_all('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\(/', $method, $matches, \PREG_OFFSET_CAPTURE);
-            $lastFunction = \array_pop($matches[0]);
-            $nameStart    = $lastFunction[1];
-            $nameEnd      = $nameStart + \strlen($lastFunction[0]) - 1;
-            $name         = \str_replace('(', '', $lastFunction[0]);
+            $nameStart = \strpos($method, ' ') + 1;
+            $nameEnd   = \strpos($method, '(');
+            $name      = \substr($method, $nameStart, $nameEnd - $nameStart);
 
             if (empty($methods) || \in_array($name, $methods, true)) {
-                $args = \explode(
+                $args    = \explode(
                     ',',
-                    \str_replace(')', '', \substr($method, $nameEnd + 1))
+                    \substr(
+                        $method,
+                        $nameEnd + 1,
+                        \strpos($method, ')') - $nameEnd - 1
+                    )
                 );
 
                 foreach (\range(0, \count($args) - 1) as $i) {
@@ -538,7 +540,6 @@ final class Generator
 
     /**
      * @throws \ReflectionException
-     * @throws RuntimeException
      *
      * @return MockMethod[]
      */
@@ -633,6 +634,7 @@ final class Generator
      * @param bool         $cloneArguments
      * @param bool         $callOriginalMethods
      *
+     * @throws \InvalidArgumentException
      * @throws \ReflectionException
      * @throws RuntimeException
      *
@@ -802,6 +804,7 @@ final class Generator
         $mockedMethods = '';
         $configurable  = [];
 
+        /** @var MockMethod $mockMethod */
         foreach ($mockMethods->asArray() as $mockMethod) {
             $mockedMethods .= $mockMethod->generateCode();
             $configurable[] = \strtolower($mockMethod->getName());
@@ -877,7 +880,7 @@ final class Generator
         if ($className === '') {
             do {
                 $className = $prefix . $type . '_' .
-                             \substr(\md5((string) \mt_rand()), 0, 8);
+                             \substr(\md5(\mt_rand()), 0, 8);
             } while (\class_exists($className, false));
         }
 
@@ -952,6 +955,8 @@ final class Generator
 
     /**
      * @param string $template
+     *
+     * @throws \InvalidArgumentException
      *
      * @return Text_Template
      */

@@ -18,19 +18,10 @@
 class Google_Service_DLP_GooglePrivacyDlpV2InfoTypeDescription extends Google_Collection
 {
   protected $collection_key = 'supportedBy';
-  public $description;
   public $displayName;
   public $name;
   public $supportedBy;
 
-  public function setDescription($description)
-  {
-    $this->description = $description;
-  }
-  public function getDescription()
-  {
-    return $this->description;
-  }
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;

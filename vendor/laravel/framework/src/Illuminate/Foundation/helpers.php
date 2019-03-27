@@ -1,12 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Mix;
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Container\Container;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Contracts\Bus\Dispatcher;
-use Illuminate\Queue\SerializableClosure;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -27,7 +25,7 @@ if (! function_exists('abort')) {
     /**
      * Throw an HttpException with the given data.
      *
-     * @param  \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int     $code
+     * @param  \Symfony\Component\HttpFoundation\Response|int     $code
      * @param  string  $message
      * @param  array   $headers
      * @return void
@@ -93,7 +91,7 @@ if (! function_exists('action')) {
     /**
      * Generate the URL to a controller action.
      *
-     * @param  string|array  $name
+     * @param  string  $name
      * @param  mixed   $parameters
      * @param  bool    $absolute
      * @return string
@@ -110,7 +108,7 @@ if (! function_exists('app')) {
      *
      * @param  string  $abstract
      * @param  array   $parameters
-     * @return mixed|\Illuminate\Contracts\Foundation\Application
+     * @return mixed|\Illuminate\Foundation\Application
      */
     function app($abstract = null, array $parameters = [])
     {
@@ -241,7 +239,7 @@ if (! function_exists('cache')) {
         }
 
         if (is_string($arguments[0])) {
-            return app('cache')->get(...$arguments);
+            return app('cache')->get($arguments[0], $arguments[1] ?? null);
         }
 
         if (! is_array($arguments[0])) {
@@ -392,10 +390,6 @@ if (! function_exists('dispatch')) {
      */
     function dispatch($job)
     {
-        if ($job instanceof Closure) {
-            $job = new CallQueuedClosure(new SerializableClosure($job));
-        }
-
         return new PendingDispatch($job);
     }
 }
@@ -576,7 +570,47 @@ if (! function_exists('mix')) {
      */
     function mix($path, $manifestDirectory = '')
     {
-        return app(Mix::class)(...func_get_args());
+        static $manifests = [];
+
+        if (! Str::startsWith($path, '/')) {
+            $path = "/{$path}";
+        }
+
+        if ($manifestDirectory && ! Str::startsWith($manifestDirectory, '/')) {
+            $manifestDirectory = "/{$manifestDirectory}";
+        }
+
+        if (file_exists(public_path($manifestDirectory.'/hot'))) {
+            $url = file_get_contents(public_path($manifestDirectory.'/hot'));
+
+            if (Str::startsWith($url, ['http://', 'https://'])) {
+                return new HtmlString(Str::after($url, ':').$path);
+            }
+
+            return new HtmlString("//localhost:8080{$path}");
+        }
+
+        $manifestPath = public_path($manifestDirectory.'/mix-manifest.json');
+
+        if (! isset($manifests[$manifestPath])) {
+            if (! file_exists($manifestPath)) {
+                throw new Exception('The Mix manifest does not exist.');
+            }
+
+            $manifests[$manifestPath] = json_decode(file_get_contents($manifestPath), true);
+        }
+
+        $manifest = $manifests[$manifestPath];
+
+        if (! isset($manifest[$path])) {
+            report(new Exception("Unable to locate Mix file: {$path}."));
+
+            if (! app('config')->get('app.debug')) {
+                return $path;
+            }
+        }
+
+        return new HtmlString($manifestDirectory.$manifest[$path]);
     }
 }
 
@@ -589,7 +623,7 @@ if (! function_exists('now')) {
      */
     function now($tz = null)
     {
-        return Date::now($tz);
+        return Carbon::now($tz);
     }
 }
 
@@ -722,12 +756,11 @@ if (! function_exists('resolve')) {
      * Resolve a service from the container.
      *
      * @param  string  $name
-     * @param  array  $parameters
      * @return mixed
      */
-    function resolve($name, array $parameters = [])
+    function resolve($name)
     {
-        return app($name, $parameters);
+        return app($name);
     }
 }
 
@@ -853,7 +886,7 @@ if (! function_exists('today')) {
      */
     function today($tz = null)
     {
-        return Date::today($tz);
+        return Carbon::today($tz);
     }
 }
 
@@ -934,7 +967,7 @@ if (! function_exists('validator')) {
      * @param  array  $rules
      * @param  array  $messages
      * @param  array  $customAttributes
-     * @return \Illuminate\Contracts\Validation\Validator|\Illuminate\Contracts\Validation\Factory
+     * @return \Illuminate\Contracts\Validation\Validator
      */
     function validator(array $data = [], array $rules = [], array $messages = [], array $customAttributes = [])
     {
@@ -953,7 +986,7 @@ if (! function_exists('view')) {
      * Get the evaluated view contents for the given view.
      *
      * @param  string  $view
-     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
+     * @param  array   $data
      * @param  array   $mergeData
      * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */

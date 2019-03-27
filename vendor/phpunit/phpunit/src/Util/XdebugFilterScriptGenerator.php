@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-/**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
- */
 final class XdebugFilterScriptGenerator
 {
     public function generate(array $filterData): string
@@ -53,11 +50,7 @@ EOF;
 
         if (isset($filterData['include']['directory'])) {
             foreach ($filterData['include']['directory'] as $directory) {
-                $path = \realpath($directory['path']);
-
-                if (\is_string($path)) {
-                    $files[] = \sprintf('%s/', $path);
-                }
+                $files[] = $directory['path'];
             }
         }
 

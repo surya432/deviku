@@ -104,7 +104,7 @@ abstract class AbstractSessionHandler implements \SessionHandlerInterface, \Sess
     {
         if (null === $this->igbinaryEmptyData) {
             // see https://github.com/igbinary/igbinary/issues/146
-            $this->igbinaryEmptyData = \function_exists('igbinary_serialize') ? igbinary_serialize([]) : '';
+            $this->igbinaryEmptyData = \function_exists('igbinary_serialize') ? igbinary_serialize(array()) : '';
         }
         if ('' === $data || $this->igbinaryEmptyData === $data) {
             return $this->destroy($sessionId);

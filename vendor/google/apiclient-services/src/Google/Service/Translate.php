@@ -52,7 +52,6 @@ class Google_Service_Translate extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://translation.googleapis.com/';
     $this->servicePath = 'language/translate/';
-    $this->batchPath = 'batch/translate';
     $this->version = 'v2';
     $this->serviceName = 'translate';
 

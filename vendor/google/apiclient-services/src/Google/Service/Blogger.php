@@ -56,7 +56,6 @@ class Google_Service_Blogger extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'blogger/v3/';
-    $this->batchPath = 'batch/blogger/v3';
     $this->version = 'v3';
     $this->serviceName = 'blogger';
 

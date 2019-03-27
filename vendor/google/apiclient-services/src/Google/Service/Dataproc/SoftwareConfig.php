@@ -15,11 +15,9 @@
  * the License.
  */
 
-class Google_Service_Dataproc_SoftwareConfig extends Google_Collection
+class Google_Service_Dataproc_SoftwareConfig extends Google_Model
 {
-  protected $collection_key = 'optionalComponents';
   public $imageVersion;
-  public $optionalComponents;
   public $properties;
 
   public function setImageVersion($imageVersion)
@@ -29,14 +27,6 @@ class Google_Service_Dataproc_SoftwareConfig extends Google_Collection
   public function getImageVersion()
   {
     return $this->imageVersion;
-  }
-  public function setOptionalComponents($optionalComponents)
-  {
-    $this->optionalComponents = $optionalComponents;
-  }
-  public function getOptionalComponents()
-  {
-    return $this->optionalComponents;
   }
   public function setProperties($properties)
   {
