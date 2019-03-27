@@ -55,18 +55,6 @@ class GDController extends Controller
                 $content = Content::where('url', $url)->first();
                 
                 if($content){
-                    if(Cache::get('Drama')){
-                        $value =Cache::get('Drama')->where('id',$content->drama_id)->first();
-                    }else{
-                        $value = Drama::with('country')->with('type')->with('eps')->orderBy('id','desc')->get();
-                        Cache::forever('Drama',$value);
-                        $value = Cache::get('Drama')->where('id',$content->drama_id)->first();
-                    }
-                    if($value){
-                        $folderId= $value->folderid;
-                    }else{
-                        $folderId= $id;
-                    }
                     $this->GDMoveFolder($Nofiles['id'],$folderId);
                     if($content->f360p !="https://drive.google.com/open?id=".$Nofiles['id'] ){
                        $content->f360p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
