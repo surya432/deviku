@@ -392,6 +392,30 @@ trait HelperController {
       }
       curl_close ($ch);
     }
+    function GDCreateFolder($title){
+      $settingData = Setting::find(1);
+      $folderid = $settingData->folder720p;
+      $tokenAdmin =  $settingData->tokenDriveAdmin;
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/drive/v3/files');
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"name\": \"$title\",\"parents\": [\"$folderid\"],\"mimeType\": \"application/vnd.google-apps.folder\"}");
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+      curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+      $headers = array();
+      $headers[] = 'Authorization: '.$this->get_token($tokenAdmin);
+      $headers[] = 'Accept: application/json';
+      $headers[] = 'Content-Type: application/json';
+      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+      $result = curl_exec($ch);
+      if (curl_errno($ch)) {
+          echo 'Error:' . curl_error($ch);
+      }
+      curl_close ($ch);
+      $response= json_decode($result,true);
+      return $response;
+    }
     function AutoDeleteGd(){
         $mytime = \Carbon\Carbon::now();
         $dt = $mytime->subDays(2);

@@ -23,29 +23,26 @@ Route::get('/ajax/videos/{url}', function(){
 });
 Route::post('/ajax/videos/{url}', ['as'=>'ajaxEps','uses'=>'EmbedController@getDetail']);
 Route::get('/login', ['as'=>'login','uses'=>'LoginController@login']);
-Route::get('/admin/folder', ['as'=>'singkronFolder','uses'=>'GDController@singkronFolder']);
 
 Route::post('/admin/webfront/singkron', ['as'=>'webfrontSingkronpost','uses'=>'WebfrontsController@postDrama']);
 Route::post('/login',['as'=>'loginPost','uses'=>'LoginController@loginPost']);
 
 Route::group(['middleware' => ['web']], function(){
     Route::post('/admin/logout',['as'=>'logout','uses'=>'LoginController@logout']);
-
 });
 
 Route::group(['middleware' => ['admin','web']], function(){
     Route::get('/admin', ['as'=>'admin','uses'=>'DashboardController@index']);
-    
+    Route::get('/admin/folder', ['as'=>'singkronFolder','uses'=>'GDController@singkronFolder']);
+    Route::get('/admin/token', ['as'=>'singkronFolder','uses'=>'GDController@AdminToken']);
     Route::post('/admin/users',['as'=>'users.add','uses'=>'RegistrationController@registerPost']);
     Route::delete('/admin/users',['as'=>'users.delete','uses'=>'RegistrationController@DeleteUser']);
     Route::get('/admin/users/', ['as'=>'users','uses'=>'RegistrationController@ListUser']);
     Route::get('/admin/users-data', ['as'=>'users.getData','uses'=>'RegistrationController@ListUserData']);
-    
     Route::get('/admin/users/roles/', ['as'=>'users.roles','uses'=>'RolesController@index']);
     Route::get('/admin/users/role-data', ['as'=>'users.roleData','uses'=>'RolesController@rolesData']);
     Route::post('/admin/users/role/', ['as'=>'users.RolesPost','uses'=>'RolesController@RolesPost']);
     Route::delete('/admin/users/role/', ['as'=>'users.RolesDelete','uses'=>'RolesController@RolesDelete']);
-    
     Route::get('/admin/setting/', ['as'=>'setting.get','uses'=>'SettingController@index']);
     Route::get('/admin/setting-data', ['as'=>'setting.getData','uses'=>'SettingController@get']);
     Route::post('/admin/setting/', ['as'=>'setting.postData','uses'=>'SettingController@post']);

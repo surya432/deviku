@@ -14,7 +14,13 @@ class GDController extends Controller
     //
 
     use HelperController;
-    
+    public function AdminToken(){
+        $settingData = Setting::find(1);
+        $tokenDriveAdmin = $settingData->tokenDriveAdmin;
+        $resultCurl = $this->get_token($tokenDriveAdmin);
+        
+        return $resultCurl;
+    }
     public function singkronFolder(){
         
         $resultCurl['files']  = null;

@@ -72,8 +72,14 @@ class DramaController extends Controller
         $dataType->country_id = $request->input("country_id");
         $dataType->type_id = $request->input("type_id");
         $dataType->save();
+        $folderName =  $dataType->title." [$dataType->id]";
+        $resultCurl = $this->GDCreateFolder($folderName);
+        $dataType = Drama::find($dataType->id);
+        if($dataType){
+            $dataType->folderid = $resultCurl['id'];
+            $dataType->save();
+        }
         $dataTypeasd = "Insert Success";
-
         return response()->json($dataTypeasd,201);
     }
     public function Delete(Request $request){
