@@ -215,9 +215,12 @@ Drama {{$result->title}}
                     },
                     success: function(data){
                         $(".alert-success").fadeIn().html('Delete User '+fn+' success').wait(20000).fadeOut('slow');
+                        $("#table-users").DataTable().ajax.reload(null, false);
                     },
                     error: function(data){
                         $(".alert-success").fadeIn().html('Delete User '+fn+' Failed').wait(20000).fadeOut('slow');
+                        $("#table-users").DataTable().ajax.reload(null, false);
+
                     }
                 });
             }
@@ -265,6 +268,7 @@ Drama {{$result->title}}
     };
     function btnReloadTable(){
         $(".alert-success").fadeIn().html('Reload Success').wait(20000).fadeOut('slow');
+        $("#table-users").DataTable().ajax.reload(null, false);
     }
     jQuery.fn.wait = function (MiliSeconds) {
         $(this).animate({ opacity: '+=0' }, MiliSeconds);
@@ -275,6 +279,7 @@ Drama {{$result->title}}
                     url: "{{ route('driveEps',$result->id) }}",
                     type: "get",
                     success: function(data){
+                        $("#table-users").DataTable().ajax.reload(null, false);
                         $("#content").fadeOut(function(){
                             setTimeout(function(){
                                 $("#content").fadeIn().html(data).wait(20000).fadeOut('slow');

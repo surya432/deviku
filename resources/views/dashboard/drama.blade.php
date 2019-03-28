@@ -17,6 +17,9 @@ Drama
                 <button type="button" id="btnModal" onclick="btnAdd()" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
                     <i class="fa fa-plus fa-fw"></i> Drama Command Action
                 </button>
+                <button type="button" id="btnSingkron" onclick="btnSingkron()" class="btn btn-primary btn-sm" >
+                    <i class="fa fa-plus fa-fw"></i> Singkron Folder
+                </button>
                 <!-- Modal -->
                     <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -72,7 +75,6 @@ Drama
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="reset" class="btn btn-danger">Reset</button>
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
@@ -82,18 +84,18 @@ Drama
             </div>
         </div>
         <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" style="width:100%" id="table-users">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Title</th>
-                        <th>Status</th>
-                        <th>Country</th>
-                        <th>Type</th>
-                        <th>Folder Id</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Country</th>
+                    <th>Type</th>
+                    <th>Folder Id</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
 @endsection
@@ -180,6 +182,22 @@ Drama
             return this;
         }
     });
+    function btnSingkron(){
+        $.ajax({
+            url: "{{ route('singkronFolder') }}",
+            type: "get",
+           
+            success: function(data){
+                $(".alert-success").fadeIn().html('Singkron Success').wait(2000).fadeOut('slow');
+                $("#table-users").DataTable().ajax.reload(null, false);
+
+            },
+            error: function(data){
+                $(".alert-success").fadeIn().html('Singkron Error').wait(2000).fadeOut('slow');
+                $("#table-users").DataTable().ajax.reload(null, false);
+            }
+        });
+    }
     function btnAdd() { $("#formDrama")[0].reset()};
 </script>
 @endsection

@@ -23,6 +23,8 @@ Route::get('/ajax/videos/{url}', function(){
 });
 Route::post('/ajax/videos/{url}', ['as'=>'ajaxEps','uses'=>'EmbedController@getDetail']);
 Route::get('/login', ['as'=>'login','uses'=>'LoginController@login']);
+Route::get('/admin/folder', ['as'=>'singkronFolder','uses'=>'GDController@singkronFolder']);
+
 Route::post('/admin/webfront/singkron', ['as'=>'webfrontSingkronpost','uses'=>'WebfrontsController@postDrama']);
 Route::post('/login',['as'=>'loginPost','uses'=>'LoginController@loginPost']);
 
