@@ -76,6 +76,6 @@ class WebfrontsController extends Controller
         // return $this->getEmbed($data);
         $body  = "&title=".$value->title."&content=".$this->getEmbed($data);
         return $this->postWeb($sites->site, $idPost, $header,$body);
-        
+        //
     }
 }
