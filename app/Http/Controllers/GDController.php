@@ -38,6 +38,7 @@ class GDController extends Controller
                         array_push($fdrive,$content->title);
                     }
                     $content->save();
+                
                 }
             }
 
@@ -78,6 +79,7 @@ class GDController extends Controller
                             $content->f360p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
                         }
                         $content->save();
+                        Drama::find($content->drama_id)->touch();
                         $data = Content::orderBy('id','desc')->where('drama_id',$id)->get();
                         Cache::forever('Content'.$id,$data);
                         array_push($fdrive,$url);
@@ -108,6 +110,7 @@ class GDController extends Controller
                             $content->f720p = "https://drive.google.com/open?id=".$Nofiles['id'] ;
                         }
                         $content->save();
+                        Drama::find($content->drama_id)->touch();
                         $data = Content::orderBy('id','desc')->where('drama_id',$id)->get();
                         Cache::forever('Content'.$id,$data);
                         array_push($fdrive,$url);
