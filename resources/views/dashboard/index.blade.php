@@ -66,7 +66,8 @@ Dahsboard
                 }
             }
         });  
-    };
+    };  
+
     $(document).ready(function(){
         $( "#table-users" ).on( "click", "#btnShow" , function() {
             event.preventDefault()
