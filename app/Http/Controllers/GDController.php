@@ -22,7 +22,6 @@ class GDController extends Controller
         return $resultCurl;
     }
     public function singkronFolder(){
-        
         $resultCurl['files']  = null;
         $settingData = Setting::find(1);
         $oldFolder = $settingData->folder720p;

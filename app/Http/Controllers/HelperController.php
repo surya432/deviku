@@ -218,53 +218,54 @@ trait HelperController {
         return null;
     }
     public function refresh_token($token){
-    $tokenencode = urlencode($token);
-    $settingData = Setting::find(1);
-    $apiUrl = $settingData->apiUrl;
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://www.googleapis.com/oauth2/v4/token",
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 300,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "POST",
-		  //CURLOPT_POSTFIELDS => "client_id=340252279758-6237oibftvlr7523oq2bbbsi67btoe8n.apps.googleusercontent.com&client_secret=9XUUzKJsATodbmpwc2lCTts6&refresh_token=$tokenencode&grant_type=refresh_token",
-		  CURLOPT_POSTFIELDS => "$apiUrl&refresh_token=$tokenencode&grant_type=refresh_token",
-		  CURLOPT_HTTPHEADER => array(
-			"Cache-Control: no-cache",
-			"Content-Type: application/x-www-form-urlencoded",
-		  ),
-        ));
-        $response = curl_exec($curl);
-		$err = curl_error($curl);
-		curl_close($curl);
-		if ($err) {
-		    return null;
-		} else {
-            return $response;
-		}
-	}
-    function get_token($token){
-      if(!Cache::has('token_GD1-'.md5($token))) {
-            $checklinkerror['access_token'] = false;
-            $result_curl23= $this->refresh_token($token);
-                  $checklinkerror= json_decode($result_curl23,true);
-            if($checklinkerror){
-              // $gmail = Gmail::where('token',$token)->first();
-              // $gmail->touch();
-              $get_info23="Bearer ".$checklinkerror['access_token'];
-              $expiresAt = now()->addMinutes(50);
-              Cache::put('token_GD1-'.md5($token), $get_info23, $expiresAt);
-              return $get_info23;
-            }else{
-              return $checklinkerror;
-            }
+      $tokenencode = urlencode($token);
+      $settingData = Setting::find(1);
+      $apiUrl = $settingData->apiUrl;
+      $curl = curl_init();
+      curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://www.googleapis.com/oauth2/v4/token",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 300,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        //CURLOPT_POSTFIELDS => "client_id=340252279758-6237oibftvlr7523oq2bbbsi67btoe8n.apps.googleusercontent.com&client_secret=9XUUzKJsATodbmpwc2lCTts6&refresh_token=$tokenencode&grant_type=refresh_token",
+        CURLOPT_POSTFIELDS => "$apiUrl&refresh_token=$tokenencode&grant_type=refresh_token",
+        CURLOPT_HTTPHEADER => array(
+        "Cache-Control: no-cache",
+        "Content-Type: application/x-www-form-urlencoded",
+        ),
+      ));
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+      curl_close($curl);
+      if ($err) {
+          return null;
+      } else {
+              return $response;
       }
-        $get_info23 = Cache::get('token_GD1-'.md5($token));
-		return $get_info23;
-	}
+    }
+    function get_token($token){
+        if(!Cache::has('token_GD1-'.md5($token))) {
+              $checklinkerror['access_token'] = false;
+              Gmail::where('token', $token)->touch();
+              $result_curl23= $this->refresh_token($token);
+              $checklinkerror= json_decode($result_curl23,true);
+              if($checklinkerror){
+                // $gmail = Gmail::where('token',$token)->first();
+                // $gmail->touch();
+                $get_info23="Bearer ".$checklinkerror['access_token'];
+                $expiresAt = now()->addMinutes(50);
+                Cache::put('token_GD1-'.md5($token), $get_info23, $expiresAt);
+                return $get_info23;
+              }else{
+                return $checklinkerror;
+              }
+        }
+          $get_info23 = Cache::get('token_GD1-'.md5($token));
+      return $get_info23;
+    }
     public function copygd($driveId, $folderid, $title, $token){
       $curl = curl_init();
       curl_setopt_array($curl, array(
