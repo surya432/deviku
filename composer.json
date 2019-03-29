@@ -13,7 +13,7 @@
         "geoip2/geoip2": "^2.9",
         "google/apiclient": "2.0",
         "jenssegers/agent": "^2.6",
-        "laravel/framework": "5.6.*",
+        "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "nesbot/carbon": "1.*",
         "torann/geoip": "^1.0",
@@ -22,11 +22,12 @@
         "yajra/laravel-datatables-oracle": "^8.7"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.0",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^2.0",
-        "phpunit/phpunit": "^7.0"
+        "nunomaduro/collision": "^3.0",
+        "phpunit/phpunit": "^7.5"
     },
     "autoload": {
         "classmap": [
@@ -61,9 +62,9 @@
         ]
     },
     "config": {
+        "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true,
-        "optimize-autoloader": true
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
