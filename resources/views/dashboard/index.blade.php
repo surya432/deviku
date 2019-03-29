@@ -99,8 +99,7 @@ Dahsboard
         $( "#table-users" ).on( "click", "#btnSingkronWeb" , function() {
 
             event.preventDefault()
-            var dmaIDD = $(this).attr("data-id");
-
+            var dmaIDD = $(this).attr("data-drama_id");
             var seacrh = $(this).attr("data-title");
             $.ajax({
                 type:"get",
