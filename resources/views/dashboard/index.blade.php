@@ -108,7 +108,7 @@ Dahsboard
                 success: function(data){
                     $("#content").html(data);
                     $("input[name=searchKeyword]").val(seacrh) ;
-                    $("input[name=idDrama]").val(seacrh) ;
+                    $("input[name=idDrama]").val(dmaIDD) ;
                 }
             });
         });
