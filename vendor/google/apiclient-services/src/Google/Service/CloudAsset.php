@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for CloudAsset (v1beta1).
+ * Service definition for CloudAsset (v1).
  *
  * <p>
  * The cloud asset API manages the history and inventory of cloud resources.</p>
@@ -34,10 +34,8 @@ class Google_Service_CloudAsset extends Google_Service
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
-  public $organizations;
-  public $organizations_operations;
-  public $projects;
-  public $projects_operations;
+  public $operations;
+  public $v1;
   
   /**
    * Constructs the internal representation of the CloudAsset service.
@@ -49,27 +47,44 @@ class Google_Service_CloudAsset extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://cloudasset.googleapis.com/';
     $this->servicePath = '';
-    $this->version = 'v1beta1';
+    $this->batchPath = 'batch';
+    $this->version = 'v1';
     $this->serviceName = 'cloudasset';
 
-    $this->organizations = new Google_Service_CloudAsset_Resource_Organizations(
+    $this->operations = new Google_Service_CloudAsset_Resource_Operations(
         $this,
         $this->serviceName,
-        'organizations',
+        'operations',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->v1 = new Google_Service_CloudAsset_Resource_V1(
+        $this,
+        $this->serviceName,
+        'v1',
         array(
           'methods' => array(
             'batchGetAssetsHistory' => array(
-              'path' => 'v1beta1/{+parent}:batchGetAssetsHistory',
+              'path' => 'v1/{+parent}:batchGetAssetsHistory',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ),
-                'contentType' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
                 'readTimeWindow.endTime' => array(
                   'location' => 'query',
@@ -84,99 +99,16 @@ class Google_Service_CloudAsset extends Google_Service
                   'type' => 'string',
                   'repeated' => true,
                 ),
-              ),
-            ),'exportAssets' => array(
-              'path' => 'v1beta1/{+parent}:exportAssets',
-              'httpMethod' => 'POST',
-              'parameters' => array(
-                'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->organizations_operations = new Google_Service_CloudAsset_Resource_OrganizationsOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        array(
-          'methods' => array(
-            'get' => array(
-              'path' => 'v1beta1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'name' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects = new Google_Service_CloudAsset_Resource_Projects(
-        $this,
-        $this->serviceName,
-        'projects',
-        array(
-          'methods' => array(
-            'batchGetAssetsHistory' => array(
-              'path' => 'v1beta1/{+parent}:batchGetAssetsHistory',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
                 'contentType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'readTimeWindow.endTime' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'readTimeWindow.startTime' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'assetNames' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
               ),
             ),'exportAssets' => array(
-              'path' => 'v1beta1/{+parent}:exportAssets',
+              'path' => 'v1/{+parent}:exportAssets',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ),
-              ),
-            ),
-          )
-        )
-    );
-    $this->projects_operations = new Google_Service_CloudAsset_Resource_ProjectsOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        array(
-          'methods' => array(
-            'get' => array(
-              'path' => 'v1beta1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => array(
-                'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

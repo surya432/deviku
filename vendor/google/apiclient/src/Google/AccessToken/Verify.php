@@ -17,11 +17,11 @@
  */
 
 use Firebase\JWT\ExpiredException as ExpiredExceptionV3;
+use Firebase\JWT\SignatureInvalidException;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use phpseclib\Crypt\RSA;
-use phpseclib\Math\BigInteger;
 use Psr\Cache\CacheItemPoolInterface;
+use Google\Auth\Cache\MemoryCacheItemPool;
 use Stash\Driver\FileSystem;
 use Stash\Pool;
 
@@ -49,19 +49,22 @@ class Google_AccessToken_Verify
    * Instantiates the class, but does not initiate the login flow, leaving it
    * to the discretion of the caller.
    */
-  public function __construct(ClientInterface $http = null, CacheItemPoolInterface $cache = null)
-  {
-    if (is_null($http)) {
+  public function __construct(
+      ClientInterface $http = null,
+      CacheItemPoolInterface $cache = null,
+      $jwt = null
+  ) {
+    if (null === $http) {
       $http = new Client();
     }
 
-    if (is_null($cache) && class_exists('Stash\Pool')) {
-      $cache = new Pool(new FileSystem);
+    if (null === $cache) {
+      $cache = new MemoryCacheItemPool;
     }
 
     $this->http = $http;
     $this->cache = $cache;
-    $this->jwt = $this->getJwtService();
+    $this->jwt = $jwt ?: $this->getJwtService();
   }
 
   /**
@@ -85,10 +88,12 @@ class Google_AccessToken_Verify
     // Check signature
     $certs = $this->getFederatedSignOnCerts();
     foreach ($certs as $cert) {
-      $modulus = new BigInteger($this->jwt->urlsafeB64Decode($cert['n']), 256);
-      $exponent = new BigInteger($this->jwt->urlsafeB64Decode($cert['e']), 256);
+      $bigIntClass = $this->getBigIntClass();
+      $rsaClass = $this->getRsaClass();
+      $modulus = new $bigIntClass($this->jwt->urlsafeB64Decode($cert['n']), 256);
+      $exponent = new $bigIntClass($this->jwt->urlsafeB64Decode($cert['e']), 256);
 
-      $rsa = new RSA();
+      $rsa = new $rsaClass();
       $rsa->loadKey(array('n' => $modulus, 'e' => $exponent));
 
       try {
@@ -116,6 +121,8 @@ class Google_AccessToken_Verify
         return false;
       } catch (ExpiredExceptionV3 $e) {
         return false;
+      } catch (SignatureInvalidException $e) {
+        // continue
       } catch (DomainException $e) {
         // continue
       }
@@ -171,7 +178,7 @@ class Google_AccessToken_Verify
   {
     $certs = null;
     if ($cache = $this->getCache()) {
-      $cacheItem = $cache->getItem('federated_signon_certs_v3', 3600);
+      $cacheItem = $cache->getItem('federated_signon_certs_v3');
       $certs = $cacheItem->get();
     }
 
@@ -182,6 +189,7 @@ class Google_AccessToken_Verify
       );
 
       if ($cache) {
+        $cacheItem->expiresAt(new DateTime('+1 hour'));
         $cacheItem->set($certs);
         $cache->save($cacheItem);
       }
@@ -203,13 +211,44 @@ class Google_AccessToken_Verify
       $jwtClass = 'Firebase\JWT\JWT';
     }
 
-    if (property_exists($jwtClass, 'leeway')) {
-      // adds 1 second to JWT leeway
+    if (property_exists($jwtClass, 'leeway') && $jwtClass::$leeway < 1) {
+      // Ensures JWT leeway is at least 1
       // @see https://github.com/google/google-api-php-client/issues/827
       $jwtClass::$leeway = 1;
     }
 
     return new $jwtClass;
+  }
+
+  private function getRsaClass()
+  {
+    if (class_exists('phpseclib\Crypt\RSA')) {
+      return 'phpseclib\Crypt\RSA';
+    }
+
+    return 'Crypt_RSA';
+  }
+
+  private function getBigIntClass()
+  {
+    if (class_exists('phpseclib\Math\BigInteger')) {
+      return 'phpseclib\Math\BigInteger';
+    }
+
+    return 'Math_BigInteger';
+  }
+
+  private function getOpenSslConstant()
+  {
+    if (class_exists('phpseclib\Crypt\RSA')) {
+      return 'phpseclib\Crypt\RSA::MODE_OPENSSL';
+    }
+
+    if (class_exists('Crypt_RSA')) {
+      return 'CRYPT_RSA_MODE_OPENSSL';
+    }
+
+    throw new \Exception('Cannot find RSA class');
   }
 
   /**
@@ -227,7 +266,7 @@ class Google_AccessToken_Verify
         define('MATH_BIGINTEGER_OPENSSL_ENABLED', true);
       }
       if (!defined('CRYPT_RSA_MODE')) {
-        define('CRYPT_RSA_MODE', RSA::MODE_OPENSSL);
+        define('CRYPT_RSA_MODE', constant($this->getOpenSslConstant()));
       }
     }
   }
