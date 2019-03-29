@@ -16,7 +16,7 @@ class DatabaseManager implements ConnectionResolverInterface
     /**
      * The application instance.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
     protected $app;
 
@@ -42,16 +42,9 @@ class DatabaseManager implements ConnectionResolverInterface
     protected $extensions = [];
 
     /**
-     * The callback to be executed to reconnect to a database.
-     *
-     * @var callable
-     */
-    protected $reconnector;
-
-    /**
      * Create a new database manager instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  \Illuminate\Foundation\Application  $app
      * @param  \Illuminate\Database\Connectors\ConnectionFactory  $factory
      * @return void
      */
@@ -59,10 +52,6 @@ class DatabaseManager implements ConnectionResolverInterface
     {
         $this->app = $app;
         $this->factory = $factory;
-
-        $this->reconnector = function ($connection) {
-            $this->reconnect($connection->getName());
-        };
     }
 
     /**
@@ -73,7 +62,7 @@ class DatabaseManager implements ConnectionResolverInterface
      */
     public function connection($name = null)
     {
-        [$database, $type] = $this->parseConnectionName($name);
+        list($database, $type) = $this->parseConnectionName($name);
 
         $name = $name ?: $database;
 
@@ -175,7 +164,9 @@ class DatabaseManager implements ConnectionResolverInterface
         // Here we'll set a reconnector callback. This reconnector can be any callable
         // so we will set a Closure to reconnect from this manager with the name of
         // the connection, which will allow us to reconnect from the connections.
-        $connection->setReconnector($this->reconnector);
+        $connection->setReconnector(function ($connection) {
+            $this->reconnect($connection->getName());
+        });
 
         return $connection;
     }
@@ -189,9 +180,9 @@ class DatabaseManager implements ConnectionResolverInterface
      */
     protected function setPdoForType(Connection $connection, $type = null)
     {
-        if ($type === 'read') {
+        if ($type == 'read') {
             $connection->setPdo($connection->getReadPdo());
-        } elseif ($type === 'write') {
+        } elseif ($type == 'write') {
             $connection->setReadPdo($connection->getPdo());
         }
 
@@ -322,17 +313,6 @@ class DatabaseManager implements ConnectionResolverInterface
     public function getConnections()
     {
         return $this->connections;
-    }
-
-    /**
-     * Set the database reconnector callback.
-     *
-     * @param  callable  $reconnector
-     * @return void
-     */
-    public function setReconnector(callable $reconnector)
-    {
-        $this->reconnector = $reconnector;
     }
 
     /**

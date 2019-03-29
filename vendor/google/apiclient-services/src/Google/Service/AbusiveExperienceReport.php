@@ -49,7 +49,6 @@ class Google_Service_AbusiveExperienceReport extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://abusiveexperiencereport.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'abusiveexperiencereport';
 

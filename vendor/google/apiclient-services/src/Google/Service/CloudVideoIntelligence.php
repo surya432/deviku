@@ -20,8 +20,7 @@
  *
  * <p>
  * Detects objects, explicit content, and scene changes in videos. It also
- * specifies the region for annotation and transcribes speech to text. Supports
- * both asynchronous API and streaming API.</p>
+ * specifies the region for annotation and transcribes speech to text.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -50,7 +49,6 @@ class Google_Service_CloudVideoIntelligence extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://videointelligence.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'videointelligence';
 
@@ -94,6 +92,10 @@ class Google_Service_CloudVideoIntelligence extends Google_Service
               'path' => 'v1/operations',
               'httpMethod' => 'GET',
               'parameters' => array(
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'name' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -105,10 +107,6 @@ class Google_Service_CloudVideoIntelligence extends Google_Service
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
-                ),
-                'filter' => array(
-                  'location' => 'query',
-                  'type' => 'string',
                 ),
               ),
             ),

@@ -26,8 +26,7 @@
 class Google_Service_ShoppingContent_Resource_Datafeeds extends Google_Service_Resource
 {
   /**
-   * Deletes, fetches, gets, inserts and updates multiple datafeeds in a single
-   * request. (datafeeds.custombatch)
+   * (datafeeds.custombatch)
    *
    * @param Google_Service_ShoppingContent_DatafeedsCustomBatchRequest $postBody
    * @param array $optParams Optional parameters.

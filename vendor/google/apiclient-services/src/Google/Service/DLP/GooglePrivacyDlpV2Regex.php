@@ -15,20 +15,10 @@
  * the License.
  */
 
-class Google_Service_DLP_GooglePrivacyDlpV2Regex extends Google_Collection
+class Google_Service_DLP_GooglePrivacyDlpV2Regex extends Google_Model
 {
-  protected $collection_key = 'groupIndexes';
-  public $groupIndexes;
   public $pattern;
 
-  public function setGroupIndexes($groupIndexes)
-  {
-    $this->groupIndexes = $groupIndexes;
-  }
-  public function getGroupIndexes()
-  {
-    return $this->groupIndexes;
-  }
   public function setPattern($pattern)
   {
     $this->pattern = $pattern;

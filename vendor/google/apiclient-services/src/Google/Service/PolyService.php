@@ -47,7 +47,6 @@ class Google_Service_PolyService extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://poly.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'poly';
 
@@ -91,11 +90,11 @@ class Google_Service_PolyService extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'maxComplexity' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'maxComplexity' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -123,6 +122,10 @@ class Google_Service_PolyService extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'format' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -136,10 +139,6 @@ class Google_Service_PolyService extends Google_Service
                   'type' => 'string',
                 ),
                 'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'format' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -163,19 +162,19 @@ class Google_Service_PolyService extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'orderBy' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'pageSize' => array(
                   'location' => 'query',
                   'type' => 'integer',
                 ),
                 'format' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

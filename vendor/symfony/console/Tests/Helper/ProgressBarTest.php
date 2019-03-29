@@ -314,7 +314,7 @@ class ProgressBarTest extends TestCase
 
     public function testOverwriteWithSectionOutput()
     {
-        $sections = [];
+        $sections = array();
         $stream = $this->getOutputStream(true);
         $output = new ConsoleSectionOutput($stream->getStream(), $sections, $stream->getVerbosity(), $stream->isDecorated(), new OutputFormatter());
 
@@ -336,7 +336,7 @@ class ProgressBarTest extends TestCase
 
     public function testOverwriteMultipleProgressBarsWithSectionOutputs()
     {
-        $sections = [];
+        $sections = array();
         $stream = $this->getOutputStream(true);
         $output1 = new ConsoleSectionOutput($stream->getStream(), $sections, $stream->getVerbosity(), $stream->isDecorated(), new OutputFormatter());
         $output2 = new ConsoleSectionOutput($stream->getStream(), $sections, $stream->getVerbosity(), $stream->isDecorated(), new OutputFormatter());
@@ -365,7 +365,7 @@ class ProgressBarTest extends TestCase
 
     public function testMultipleSectionsWithCustomFormat()
     {
-        $sections = [];
+        $sections = array();
         $stream = $this->getOutputStream(true);
         $output1 = new ConsoleSectionOutput($stream->getStream(), $sections, $stream->getVerbosity(), $stream->isDecorated(), new OutputFormatter());
         $output2 = new ConsoleSectionOutput($stream->getStream(), $sections, $stream->getVerbosity(), $stream->isDecorated(), new OutputFormatter());
@@ -859,12 +859,12 @@ class ProgressBarTest extends TestCase
      */
     public function provideFormat()
     {
-        return [
-            ['normal'],
-            ['verbose'],
-            ['very_verbose'],
-            ['debug'],
-        ];
+        return array(
+            array('normal'),
+            array('verbose'),
+            array('very_verbose'),
+            array('debug'),
+        );
     }
 
     protected function getOutputStream($decorated = true, $verbosity = StreamOutput::VERBOSITY_NORMAL)

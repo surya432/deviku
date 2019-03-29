@@ -4,6 +4,7 @@ namespace Torann\GeoIP\Services;
 
 use Exception;
 use GeoIp2\Database\Reader;
+use GeoIp2\Exception\AddressNotFoundException;
 
 class MaxMindDatabase extends AbstractService
 {
@@ -74,7 +75,7 @@ class MaxMindDatabase extends AbstractService
         $headers = get_headers($url);
 
         if (substr($headers[0], 9, 3) != '200') {
-            throw new Exception('Unable to download database. (' . substr($headers[0], 13) . ')');
+            throw new Exception('Unable to download database. ('. substr($headers[0], 13) .')');
         }
 
         // Download zipped database to a system temp file

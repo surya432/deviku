@@ -3,7 +3,6 @@
 namespace Illuminate\Database\Eloquent\Concerns;
 
 use Illuminate\Support\Arr;
-use InvalidArgumentException;
 use Illuminate\Contracts\Events\Dispatcher;
 
 trait HasEvents
@@ -31,8 +30,6 @@ trait HasEvents
      *
      * @param  object|array|string  $classes
      * @return void
-     *
-     * @throws \RuntimeException
      */
     public static function observe($classes)
     {
@@ -48,12 +45,10 @@ trait HasEvents
      *
      * @param  object|string $class
      * @return void
-     *
-     * @throws \RuntimeException
      */
     protected function registerObserver($class)
     {
-        $className = $this->resolveObserverClassName($class);
+        $className = is_string($class) ? $class : get_class($class);
 
         // When registering a model observer, we will spin through the possible events
         // and determine if this observer has that method. If it does, we will hook
@@ -63,27 +58,6 @@ trait HasEvents
                 static::registerModelEvent($event, $className.'@'.$event);
             }
         }
-    }
-
-    /**
-     * Resolve the observer's class name from an object or string.
-     *
-     * @param  object|string $class
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function resolveObserverClassName($class)
-    {
-        if (is_object($class)) {
-            return get_class($class);
-        }
-
-        if (class_exists($class)) {
-            return $class;
-        }
-
-        throw new InvalidArgumentException('Unable to find observer: '.$class);
     }
 
     /**
@@ -174,7 +148,7 @@ trait HasEvents
         // First, we will get the proper method to call on the event dispatcher, and then we
         // will attempt to fire a custom, object based event for the given event. If that
         // returns a result we can return that result, or we'll call the string events.
-        $method = $halt ? 'until' : 'dispatch';
+        $method = $halt ? 'until' : 'fire';
 
         $result = $this->filterModelEventResults(
             $this->fireCustomModelEvent($event, $method)
@@ -376,26 +350,5 @@ trait HasEvents
     public static function unsetEventDispatcher()
     {
         static::$dispatcher = null;
-    }
-
-    /**
-     * Execute a callback without firing any model events for any model type.
-     *
-     * @param  callable  $callback
-     * @return mixed
-     */
-    public static function withoutEvents(callable $callback)
-    {
-        $dispatcher = static::getEventDispatcher();
-
-        static::unsetEventDispatcher();
-
-        try {
-            return $callback();
-        } finally {
-            if ($dispatcher) {
-                static::setEventDispatcher($dispatcher);
-            }
-        }
     }
 }

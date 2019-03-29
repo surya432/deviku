@@ -29,9 +29,7 @@ class Google_Service_Dataflow_Resource_ProjectsLocations extends Google_Service_
    * Send a worker_message to the service. (locations.workerMessages)
    *
    * @param string $projectId The project to send the WorkerMessages to.
-   * @param string $location The [regional endpoint]
-   * (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
-   * contains the job.
+   * @param string $location The location which contains the job
    * @param Google_Service_Dataflow_SendWorkerMessagesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_Dataflow_SendWorkerMessagesResponse

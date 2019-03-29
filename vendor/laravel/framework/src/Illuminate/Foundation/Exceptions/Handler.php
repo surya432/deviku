@@ -27,7 +27,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
@@ -99,8 +98,8 @@ class Handler implements ExceptionHandlerContract
             return;
         }
 
-        if (is_callable($reportCallable = [$e, 'report'])) {
-            return $this->container->call($reportCallable);
+        if (method_exists($e, 'report')) {
+            return $e->report();
         }
 
         try {
@@ -151,7 +150,7 @@ class Handler implements ExceptionHandlerContract
         try {
             return array_filter([
                 'userId' => Auth::id(),
-                // 'email' => Auth::user() ? Auth::user()->email : null,
+                'email' => Auth::user() ? Auth::user()->email : null,
             ]);
         } catch (Throwable $e) {
             return [];
@@ -212,13 +211,13 @@ class Handler implements ExceptionHandlerContract
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Auth\AuthenticationException  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         return $request->expectsJson()
                     ? response()->json(['message' => $exception->getMessage()], 401)
-                    : redirect()->guest($exception->redirectTo() ?? route('login'));
+                    : redirect()->guest(route('login'));
     }
 
     /**
@@ -249,7 +248,7 @@ class Handler implements ExceptionHandlerContract
     protected function invalid($request, ValidationException $exception)
     {
         return redirect($exception->redirectTo ?? url()->previous())
-                    ->withInput(Arr::except($request->input(), $this->dontFlash))
+                    ->withInput($request->except($this->dontFlash))
                     ->withErrors($exception->errors(), $exception->errorBag);
     }
 
@@ -366,10 +365,10 @@ class Handler implements ExceptionHandlerContract
     /**
      * Render the given HttpException.
      *
-     * @param  \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface  $e
+     * @param  \Symfony\Component\HttpKernel\Exception\HttpException  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function renderHttpException(HttpExceptionInterface $e)
+    protected function renderHttpException(HttpException $e)
     {
         $this->registerErrorViewPaths();
 
@@ -477,6 +476,6 @@ class Handler implements ExceptionHandlerContract
      */
     protected function isHttpException(Exception $e)
     {
-        return $e instanceof HttpExceptionInterface;
+        return $e instanceof HttpException;
     }
 }

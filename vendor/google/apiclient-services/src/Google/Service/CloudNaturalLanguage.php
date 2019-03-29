@@ -51,7 +51,6 @@ class Google_Service_CloudNaturalLanguage extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://language.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'language';
 

@@ -42,7 +42,7 @@ class MessageFormatter implements MessageFormatterInterface, IntlFormatterInterf
     /**
      * {@inheritdoc}
      */
-    public function format($message, $locale, array $parameters = [])
+    public function format($message, $locale, array $parameters = array())
     {
         if ($this->translator instanceof TranslatorInterface) {
             return $this->translator->trans($message, $parameters, null, $locale);
@@ -54,7 +54,7 @@ class MessageFormatter implements MessageFormatterInterface, IntlFormatterInterf
     /**
      * {@inheritdoc}
      */
-    public function formatIntl(string $message, string $locale, array $parameters = []): string
+    public function formatIntl(string $message, string $locale, array $parameters = array()): string
     {
         return $this->intlFormatter->formatIntl($message, $locale, $parameters);
     }
@@ -64,16 +64,16 @@ class MessageFormatter implements MessageFormatterInterface, IntlFormatterInterf
      *
      * @deprecated since Symfony 4.2, use format() with a %count% parameter instead
      */
-    public function choiceFormat($message, $number, $locale, array $parameters = [])
+    public function choiceFormat($message, $number, $locale, array $parameters = array())
     {
         @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 4.2, use the format() one instead with a %%count%% parameter.', __METHOD__), E_USER_DEPRECATED);
 
-        $parameters = ['%count%' => $number] + $parameters;
+        $parameters = array('%count%' => $number) + $parameters;
 
         if ($this->translator instanceof TranslatorInterface) {
             return $this->format($message, $locale, $parameters);
         }
 
-        return $this->format($this->translator->transChoice($message, $number, [], null, $locale), $locale, $parameters);
+        return $this->format($this->translator->transChoice($message, $number, array(), null, $locale), $locale, $parameters);
     }
 }

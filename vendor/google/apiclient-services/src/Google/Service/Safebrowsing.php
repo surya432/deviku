@@ -51,7 +51,6 @@ class Google_Service_Safebrowsing extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://safebrowsing.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v4';
     $this->serviceName = 'safebrowsing';
 

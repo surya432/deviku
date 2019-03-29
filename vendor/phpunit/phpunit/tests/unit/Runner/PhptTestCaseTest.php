@@ -208,38 +208,39 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldSkipTestWhenPhptFileIsEmpty(): void
+    public function testShouldThrowsAnExceptionWhenPhptFileIsEmpty(): void
     {
         $this->setPhpContent('');
 
-        $result = $this->testCase->run();
-        $this->assertCount(1, $result->skipped());
-        $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
+
+        $this->testCase->run();
     }
 
-    public function testShouldSkipTestWhenFileSectionIsMissing(): void
+    public function testShouldThrowsAnExceptionWhenFileSectionIsMissing(): void
     {
         $this->setPhpContent(
             <<<EOF
 --TEST--
-Something to describe it
+Something to decribe it
 --EXPECT--
 Something
 EOF
         );
 
-        $result = $this->testCase->run();
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
 
-        $this->assertCount(1, $result->skipped());
-        $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
+        $this->testCase->run();
     }
 
-    public function testShouldSkipTestWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile(): void
+    public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile(): void
     {
         $this->setPhpContent(
             <<<EOF
 --TEST--
-Something to describe it
+Something to decribe it
 --FILE--
 <?php
 echo "Hello world!\n";
@@ -247,30 +248,10 @@ echo "Hello world!\n";
 EOF
         );
 
-        $result = $this->testCase->run();
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
 
-        $this->assertCount(1, $result->skipped());
-        $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
-        $this->assertSame('Invalid PHPT file', $skipMessage);
-    }
-
-    public function testShouldSkipTestWhenSectionHeaderIsMalformed(): void
-    {
-        $this->setPhpContent(
-            <<<EOF
-----
---TEST--
-This is not going to work out
---EXPECT--
-Tears and misery
-EOF
-        );
-
-        $result = $this->testCase->run();
-
-        $this->assertCount(1, $result->skipped());
-        $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
-        $this->assertSame('Invalid PHPT file: empty section header', $skipMessage);
+        $this->testCase->run();
     }
 
     public function testShouldValidateExpectSession(): void

@@ -20,6 +20,7 @@ class Google_Service_YouTube_ChannelAuditDetails extends Google_Model
   public $communityGuidelinesGoodStanding;
   public $contentIdClaimsGoodStanding;
   public $copyrightStrikesGoodStanding;
+  public $overallGoodStanding;
 
   public function setCommunityGuidelinesGoodStanding($communityGuidelinesGoodStanding)
   {
@@ -44,5 +45,13 @@ class Google_Service_YouTube_ChannelAuditDetails extends Google_Model
   public function getCopyrightStrikesGoodStanding()
   {
     return $this->copyrightStrikesGoodStanding;
+  }
+  public function setOverallGoodStanding($overallGoodStanding)
+  {
+    $this->overallGoodStanding = $overallGoodStanding;
+  }
+  public function getOverallGoodStanding()
+  {
+    return $this->overallGoodStanding;
   }
 }

@@ -130,8 +130,7 @@ class Location implements ArrayAccess
     /**
      * Determine if the given attribute exists.
      *
-     * @param  mixed $offset
-     *
+     * @param  mixed  $offset
      * @return bool
      */
     public function offsetExists($offset)
@@ -142,8 +141,7 @@ class Location implements ArrayAccess
     /**
      * Get the value for a given offset.
      *
-     * @param  mixed $offset
-     *
+     * @param  mixed  $offset
      * @return mixed
      */
     public function offsetGet($offset)
@@ -154,9 +152,8 @@ class Location implements ArrayAccess
     /**
      * Set the value for a given offset.
      *
-     * @param  mixed $offset
-     * @param  mixed $value
-     *
+     * @param  mixed  $offset
+     * @param  mixed  $value
      * @return void
      */
     public function offsetSet($offset, $value)
@@ -167,8 +164,7 @@ class Location implements ArrayAccess
     /**
      * Unset the value for a given offset.
      *
-     * @param  mixed $offset
-     *
+     * @param  mixed  $offset
      * @return void
      */
     public function offsetUnset($offset)
@@ -191,8 +187,7 @@ class Location implements ArrayAccess
     /**
      * Unset an attribute on the location.
      *
-     * @param  string $key
-     *
+     * @param  string  $key
      * @return void
      */
     public function __unset($key)

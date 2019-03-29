@@ -24,7 +24,6 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Model extends Goo
   public $etag;
   public $labels;
   public $name;
-  public $onlinePredictionConsoleLogging;
   public $onlinePredictionLogging;
   public $regions;
 
@@ -73,14 +72,6 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1Model extends Goo
   public function getName()
   {
     return $this->name;
-  }
-  public function setOnlinePredictionConsoleLogging($onlinePredictionConsoleLogging)
-  {
-    $this->onlinePredictionConsoleLogging = $onlinePredictionConsoleLogging;
-  }
-  public function getOnlinePredictionConsoleLogging()
-  {
-    return $this->onlinePredictionConsoleLogging;
   }
   public function setOnlinePredictionLogging($onlinePredictionLogging)
   {

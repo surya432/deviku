@@ -19,7 +19,6 @@ class Google_Service_Bigquery_DestinationTableProperties extends Google_Model
 {
   public $description;
   public $friendlyName;
-  public $labels;
 
   public function setDescription($description)
   {
@@ -36,13 +35,5 @@ class Google_Service_Bigquery_DestinationTableProperties extends Google_Model
   public function getFriendlyName()
   {
     return $this->friendlyName;
-  }
-  public function setLabels($labels)
-  {
-    $this->labels = $labels;
-  }
-  public function getLabels()
-  {
-    return $this->labels;
   }
 }

@@ -53,13 +53,6 @@ class QueryDataTable extends DataTableAbstract
     protected $skipTotalRecords = false;
 
     /**
-     * Flag to keep the select bindings.
-     *
-     * @var bool
-     */
-    protected $keepSelectBindings = false;
-
-    /**
      * Can the DataTable engine be created with these parameters.
      *
      * @param mixed $source
@@ -139,18 +132,6 @@ class QueryDataTable extends DataTableAbstract
     }
 
     /**
-     * Keep the select bindings.
-     *
-     * @return $this
-     */
-    public function keepSelectBindings()
-    {
-        $this->keepSelectBindings = true;
-
-        return $this;
-    }
-
-    /**
      * Count total items.
      *
      * @return int
@@ -206,9 +187,7 @@ class QueryDataTable extends DataTableAbstract
         if (! $this->isComplexQuery($builder)) {
             $row_count = $this->wrap('row_count');
             $builder->select($this->connection->raw("'1' as {$row_count}"));
-            if (! $this->keepSelectBindings) {
-                $builder->setBindings([], 'select');
-            }
+            $builder->setBindings([], 'select');
         }
 
         return $builder;

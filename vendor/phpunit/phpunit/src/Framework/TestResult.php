@@ -38,37 +38,37 @@ class TestResult implements Countable
     protected $passed = [];
 
     /**
-     * @var TestFailure[]
+     * @var array
      */
     protected $errors = [];
 
     /**
-     * @var TestFailure[]
+     * @var array
      */
     protected $failures = [];
 
     /**
-     * @var TestFailure[]
+     * @var array
      */
     protected $warnings = [];
 
     /**
-     * @var TestFailure[]
+     * @var array
      */
     protected $notImplemented = [];
 
     /**
-     * @var TestFailure[]
+     * @var array
      */
     protected $risky = [];
 
     /**
-     * @var TestFailure[]
+     * @var array
      */
     protected $skipped = [];
 
     /**
-     * @var TestListener[]
+     * @var array
      */
     protected $listeners = [];
 
@@ -461,9 +461,7 @@ class TestResult implements Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the risky tests
-     *
-     * @return TestFailure[]
+     * Returns an Enumeration for the risky tests.
      */
     public function risky(): array
     {
@@ -471,9 +469,7 @@ class TestResult implements Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the incomplete tests
-     *
-     * @return TestFailure[]
+     * Returns an Enumeration for the incomplete tests.
      */
     public function notImplemented(): array
     {
@@ -497,9 +493,7 @@ class TestResult implements Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the skipped tests
-     *
-     * @return TestFailure[]
+     * Returns an Enumeration for the skipped tests.
      */
     public function skipped(): array
     {
@@ -515,9 +509,7 @@ class TestResult implements Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the errors
-     *
-     * @return TestFailure[]
+     * Returns an Enumeration for the errors.
      */
     public function errors(): array
     {
@@ -533,9 +525,7 @@ class TestResult implements Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the failures
-     *
-     * @return TestFailure[]
+     * Returns an Enumeration for the failures.
      */
     public function failures(): array
     {
@@ -551,9 +541,7 @@ class TestResult implements Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the warnings
-     *
-     * @return TestFailure[]
+     * Returns an Enumeration for the warnings.
      */
     public function warnings(): array
     {
@@ -1080,12 +1068,7 @@ class TestResult implements Countable
      */
     public function wasSuccessful(): bool
     {
-        return $this->wasSuccessfulIgnoringWarnings() && empty($this->warnings);
-    }
-
-    public function wasSuccessfulIgnoringWarnings(): bool
-    {
-        return empty($this->errors) && empty($this->failures);
+        return empty($this->errors) && empty($this->failures) && empty($this->warnings);
     }
 
     /**

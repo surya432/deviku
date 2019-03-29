@@ -17,7 +17,7 @@
 
 class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoAnnotationResults extends Google_Collection
 {
-  protected $collection_key = 'textAnnotations';
+  protected $collection_key = 'speechTranscriptions';
   protected $errorType = 'Google_Service_CloudVideoIntelligence_GoogleRpcStatus';
   protected $errorDataType = '';
   protected $explicitAnnotationType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ExplicitContentAnnotation';
@@ -25,8 +25,6 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoA
   protected $frameLabelAnnotationsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelAnnotation';
   protected $frameLabelAnnotationsDataType = 'array';
   public $inputUri;
-  protected $objectAnnotationsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ObjectTrackingAnnotation';
-  protected $objectAnnotationsDataType = 'array';
   protected $segmentLabelAnnotationsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelAnnotation';
   protected $segmentLabelAnnotationsDataType = 'array';
   protected $shotAnnotationsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoSegment';
@@ -35,8 +33,6 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoA
   protected $shotLabelAnnotationsDataType = 'array';
   protected $speechTranscriptionsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1SpeechTranscription';
   protected $speechTranscriptionsDataType = 'array';
-  protected $textAnnotationsType = 'Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextAnnotation';
-  protected $textAnnotationsDataType = 'array';
 
   /**
    * @param Google_Service_CloudVideoIntelligence_GoogleRpcStatus
@@ -87,20 +83,6 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoA
   public function getInputUri()
   {
     return $this->inputUri;
-  }
-  /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ObjectTrackingAnnotation
-   */
-  public function setObjectAnnotations($objectAnnotations)
-  {
-    $this->objectAnnotations = $objectAnnotations;
-  }
-  /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1ObjectTrackingAnnotation
-   */
-  public function getObjectAnnotations()
-  {
-    return $this->objectAnnotations;
   }
   /**
    * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1LabelAnnotation
@@ -157,19 +139,5 @@ class Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1VideoA
   public function getSpeechTranscriptions()
   {
     return $this->speechTranscriptions;
-  }
-  /**
-   * @param Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextAnnotation
-   */
-  public function setTextAnnotations($textAnnotations)
-  {
-    $this->textAnnotations = $textAnnotations;
-  }
-  /**
-   * @return Google_Service_CloudVideoIntelligence_GoogleCloudVideointelligenceV1TextAnnotation
-   */
-  public function getTextAnnotations()
-  {
-    return $this->textAnnotations;
   }
 }

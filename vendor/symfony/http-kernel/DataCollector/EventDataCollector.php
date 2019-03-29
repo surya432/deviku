@@ -37,16 +37,16 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $this->data = [
-            'called_listeners' => [],
-            'not_called_listeners' => [],
-            'orphaned_events' => [],
-        ];
+        $this->data = array(
+            'called_listeners' => array(),
+            'not_called_listeners' => array(),
+            'orphaned_events' => array(),
+        );
     }
 
     public function reset()
     {
-        $this->data = [];
+        $this->data = array();
 
         if ($this->dispatcher instanceof ResetInterface) {
             $this->dispatcher->reset();

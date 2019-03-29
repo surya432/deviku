@@ -23,8 +23,6 @@ class Google_Service_Compute_ManagedInstance extends Google_Model
   public $instanceStatus;
   protected $lastAttemptType = 'Google_Service_Compute_ManagedInstanceLastAttempt';
   protected $lastAttemptDataType = '';
-  protected $versionType = 'Google_Service_Compute_ManagedInstanceVersion';
-  protected $versionDataType = '';
 
   public function setCurrentAction($currentAction)
   {
@@ -71,19 +69,5 @@ class Google_Service_Compute_ManagedInstance extends Google_Model
   public function getLastAttempt()
   {
     return $this->lastAttempt;
-  }
-  /**
-   * @param Google_Service_Compute_ManagedInstanceVersion
-   */
-  public function setVersion(Google_Service_Compute_ManagedInstanceVersion $version)
-  {
-    $this->version = $version;
-  }
-  /**
-   * @return Google_Service_Compute_ManagedInstanceVersion
-   */
-  public function getVersion()
-  {
-    return $this->version;
   }
 }

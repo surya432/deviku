@@ -46,7 +46,6 @@ class Google_Service_Playcustomapp extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'playcustomapp/v1/accounts/';
-    $this->batchPath = 'batch/playcustomapp/v1';
     $this->version = 'v1';
     $this->serviceName = 'playcustomapp';
 

@@ -23,7 +23,6 @@ class Google_Service_AccessContextManager_Condition extends Google_Collection
   public $ipSubnetworks;
   public $members;
   public $negate;
-  public $regions;
   public $requiredAccessLevels;
 
   /**
@@ -63,14 +62,6 @@ class Google_Service_AccessContextManager_Condition extends Google_Collection
   public function getNegate()
   {
     return $this->negate;
-  }
-  public function setRegions($regions)
-  {
-    $this->regions = $regions;
-  }
-  public function getRegions()
-  {
-    return $this->regions;
   }
   public function setRequiredAccessLevels($requiredAccessLevels)
   {

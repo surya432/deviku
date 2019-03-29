@@ -50,7 +50,6 @@ class Google_Service_ServiceControl extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://servicecontrol.googleapis.com/';
     $this->servicePath = '';
-    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'servicecontrol';
 

@@ -71,6 +71,7 @@ class Google_Service_Dfareporting_Creative extends Google_Collection
   public $mediaDuration;
   public $name;
   public $overrideCss;
+  public $politeLoadAssetId;
   protected $progressOffsetType = 'Google_Service_Dfareporting_VideoOffset';
   protected $progressOffsetDataType = '';
   public $redirectUrl;
@@ -501,6 +502,14 @@ class Google_Service_Dfareporting_Creative extends Google_Collection
   public function getOverrideCss()
   {
     return $this->overrideCss;
+  }
+  public function setPoliteLoadAssetId($politeLoadAssetId)
+  {
+    $this->politeLoadAssetId = $politeLoadAssetId;
+  }
+  public function getPoliteLoadAssetId()
+  {
+    return $this->politeLoadAssetId;
   }
   /**
    * @param Google_Service_Dfareporting_VideoOffset

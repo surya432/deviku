@@ -157,14 +157,14 @@ class TestTest extends TestCase
                     'OS'        => 'DOESNOTEXIST',
                     'functions' => [
                         'testFuncOne',
-                        'testFunc2',
+                        'testFuncTwo',
                     ],
                     'setting'   => [
                         'not_a_setting' => 'Off',
                     ],
                     'extensions' => [
                         'testExtOne',
-                        'testExt2',
+                        'testExtTwo',
                         'testExtThree',
                     ],
                     'extension_versions' => [
@@ -526,10 +526,10 @@ class TestTest extends TestCase
                 'PHPUnit >= 9-dev is required.',
                 'Operating system matching /DOESNOTEXIST/i is required.',
                 'Function testFuncOne is required.',
-                'Function testFunc2 is required.',
+                'Function testFuncTwo is required.',
                 'Setting "not_a_setting" must be "Off".',
                 'Extension testExtOne is required.',
-                'Extension testExt2 is required.',
+                'Extension testExtTwo is required.',
                 'Extension testExtThree >= 2.0 is required.',
             ]],
             ['testPHPVersionOperatorLessThan', ['PHP < 5.4 is required.']],

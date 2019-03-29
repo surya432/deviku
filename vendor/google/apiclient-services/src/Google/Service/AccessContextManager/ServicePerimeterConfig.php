@@ -17,10 +17,11 @@
 
 class Google_Service_AccessContextManager_ServicePerimeterConfig extends Google_Collection
 {
-  protected $collection_key = 'restrictedServices';
+  protected $collection_key = 'unrestrictedServices';
   public $accessLevels;
   public $resources;
   public $restrictedServices;
+  public $unrestrictedServices;
 
   public function setAccessLevels($accessLevels)
   {
@@ -45,5 +46,13 @@ class Google_Service_AccessContextManager_ServicePerimeterConfig extends Google_
   public function getRestrictedServices()
   {
     return $this->restrictedServices;
+  }
+  public function setUnrestrictedServices($unrestrictedServices)
+  {
+    $this->unrestrictedServices = $unrestrictedServices;
+  }
+  public function getUnrestrictedServices()
+  {
+    return $this->unrestrictedServices;
   }
 }

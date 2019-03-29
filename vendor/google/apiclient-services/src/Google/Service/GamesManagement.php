@@ -30,7 +30,7 @@
  */
 class Google_Service_GamesManagement extends Google_Service
 {
-  /** Create, edit, and delete your Google Play Games activity. */
+  /** Share your Google+ profile information and view and manage your game activity. */
   const GAMES =
       "https://www.googleapis.com/auth/games";
 
@@ -53,7 +53,6 @@ class Google_Service_GamesManagement extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'games/v1management/';
-    $this->batchPath = 'batch/gamesManagement/v1management';
     $this->version = 'v1management';
     $this->serviceName = 'gamesManagement';
 

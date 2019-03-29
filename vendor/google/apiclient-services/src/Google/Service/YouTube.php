@@ -87,7 +87,6 @@ class Google_Service_YouTube extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'youtube/v3/';
-    $this->batchPath = 'batch/youtube/v3';
     $this->version = 'v3';
     $this->serviceName = 'youtube';
 

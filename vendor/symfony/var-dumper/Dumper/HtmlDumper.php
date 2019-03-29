@@ -23,8 +23,8 @@ class HtmlDumper extends CliDumper
 {
     public static $defaultOutput = 'php://output';
 
-    protected static $themes = [
-        'dark' => [
+    protected static $themes = array(
+        'dark' => array(
             'default' => 'background-color:#18171B; color:#FF8400; line-height:1.2em; font:12px Menlo, Monaco, Consolas, monospace; word-wrap: break-word; white-space: pre-wrap; position:relative; z-index:99999; word-break: break-all',
             'num' => 'font-weight:bold; color:#1299DA',
             'const' => 'font-weight:bold',
@@ -39,8 +39,8 @@ class HtmlDumper extends CliDumper
             'index' => 'color:#1299DA',
             'ellipsis' => 'color:#FF8400',
             'ns' => 'user-select:none;',
-        ],
-        'light' => [
+        ),
+        'light' => array(
             'default' => 'background:none; color:#CC7832; line-height:1.2em; font:12px Menlo, Monaco, Consolas, monospace; word-wrap: break-word; white-space: pre-wrap; position:relative; z-index:99999; word-break: break-all',
             'num' => 'font-weight:bold; color:#1299DA',
             'const' => 'font-weight:bold',
@@ -55,8 +55,8 @@ class HtmlDumper extends CliDumper
             'index' => 'color:#1299DA',
             'ellipsis' => 'color:#CC7832',
             'ns' => 'user-select:none;',
-        ],
-    ];
+        ),
+    );
 
     protected $dumpHeader;
     protected $dumpPrefix = '<pre class=sf-dump id=%s data-indent-pad="%s">';
@@ -67,12 +67,12 @@ class HtmlDumper extends CliDumper
     protected $lastDepth = -1;
     protected $styles;
 
-    private $displayOptions = [
+    private $displayOptions = array(
         'maxDepth' => 1,
         'maxStringLength' => 160,
         'fileLinkFormat' => null,
-    ];
-    private $extraDisplayOptions = [];
+    );
+    private $extraDisplayOptions = array();
 
     /**
      * {@inheritdoc}
@@ -139,7 +139,7 @@ class HtmlDumper extends CliDumper
     /**
      * {@inheritdoc}
      */
-    public function dump(Data $data, $output = null, array $extraDisplayOptions = [])
+    public function dump(Data $data, $output = null, array $extraDisplayOptions = array())
     {
         $this->extraDisplayOptions = $extraDisplayOptions;
         $result = parent::dump($data, $output);
@@ -500,17 +500,12 @@ return function (root, x) {
 
         function showCurrent(state)
         {
-            var currentNode = state.current(), currentRect, searchRect;
+            var currentNode = state.current();
             if (currentNode) {
                 reveal(currentNode);
                 highlight(root, currentNode, state.nodes);
                 if ('scrollIntoView' in currentNode) {
-                    currentNode.scrollIntoView(true);
-                    currentRect = currentNode.getBoundingClientRect();
-                    searchRect = search.getBoundingClientRect();
-                    if (currentRect.top < (searchRect.top + searchRect.height)) {
-                        window.scrollBy(0, -(searchRect.top + searchRect.height + 5));
-                    }
+                    currentNode.scrollIntoView();
                 }
             }
             counter.textContent = (state.isEmpty() ? 0 : state.idx + 1) + ' of ' + state.count();
@@ -646,7 +641,6 @@ pre.sf-dump {
     display: block;
     white-space: pre;
     padding: 5px;
-    overflow: initial !important;
 }
 pre.sf-dump:after {
    content: "";
@@ -715,16 +709,14 @@ pre.sf-dump code {
     border-radius: 3px;
 }
 pre.sf-dump .sf-dump-search-hidden {
-    display: none !important;
+    display: none;
 }
 pre.sf-dump .sf-dump-search-wrapper {
+    float: right;
     font-size: 0;
     white-space: nowrap;
-    margin-bottom: 5px;
-    display: flex;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 5px;
+    max-width: 100%;
+    text-align: right;
 }
 pre.sf-dump .sf-dump-search-wrapper > * {
     vertical-align: top;
@@ -741,11 +733,10 @@ pre.sf-dump .sf-dump-search-wrapper > input.sf-dump-search-input {
     height: 21px;
     font-size: 12px;
     border-right: none;
+    width: 140px;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
     color: #000;
-    min-width: 15px;
-    width: 100%;
 }
 pre.sf-dump .sf-dump-search-wrapper > .sf-dump-search-input-next,
 pre.sf-dump .sf-dump-search-wrapper > .sf-dump-search-input-previous {
@@ -828,7 +819,7 @@ EOHTML
     /**
      * {@inheritdoc}
      */
-    protected function style($style, $value, $attr = [])
+    protected function style($style, $value, $attr = array())
     {
         if ('' === $value) {
             return '';
@@ -928,7 +919,7 @@ EOHTML
         }
 
         if (-1 === $depth) {
-            $args = ['"'.$this->dumpId.'"'];
+            $args = array('"'.$this->dumpId.'"');
             if ($this->extraDisplayOptions) {
                 $args[] = json_encode($this->extraDisplayOptions, JSON_FORCE_OBJECT);
             }
@@ -950,7 +941,7 @@ EOHTML
         $options = $this->extraDisplayOptions + $this->displayOptions;
 
         if ($fmt = $options['fileLinkFormat']) {
-            return \is_string($fmt) ? strtr($fmt, ['%f' => $file, '%l' => $line]) : $fmt->format($file, $line);
+            return \is_string($fmt) ? strtr($fmt, array('%f' => $file, '%l' => $line)) : $fmt->format($file, $line);
         }
 
         return false;

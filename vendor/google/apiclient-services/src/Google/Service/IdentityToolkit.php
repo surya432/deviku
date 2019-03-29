@@ -49,7 +49,6 @@ class Google_Service_IdentityToolkit extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'identitytoolkit/v3/relyingparty/';
-    $this->batchPath = 'batch/identitytoolkit/v3';
     $this->version = 'v3';
     $this->serviceName = 'identitytoolkit';
 

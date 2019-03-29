@@ -87,8 +87,6 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
   public $screenCaptureDisabled;
   public $setUserIconDisabled;
   public $setWallpaperDisabled;
-  protected $setupActionsType = 'Google_Service_AndroidManagement_SetupAction';
-  protected $setupActionsDataType = 'array';
   public $shareLocationDisabled;
   protected $shortSupportMessageType = 'Google_Service_AndroidManagement_UserFacingMessage';
   protected $shortSupportMessageDataType = '';
@@ -637,20 +635,6 @@ class Google_Service_AndroidManagement_Policy extends Google_Collection
   public function getSetWallpaperDisabled()
   {
     return $this->setWallpaperDisabled;
-  }
-  /**
-   * @param Google_Service_AndroidManagement_SetupAction
-   */
-  public function setSetupActions($setupActions)
-  {
-    $this->setupActions = $setupActions;
-  }
-  /**
-   * @return Google_Service_AndroidManagement_SetupAction
-   */
-  public function getSetupActions()
-  {
-    return $this->setupActions;
   }
   public function setShareLocationDisabled($shareLocationDisabled)
   {

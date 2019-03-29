@@ -80,7 +80,7 @@ class View implements ArrayAccess, ViewContract
      * Get the string contents of the view.
      *
      * @param  callable|null  $callback
-     * @return array|string
+     * @return string
      *
      * @throws \Throwable
      */
@@ -163,9 +163,7 @@ class View implements ArrayAccess, ViewContract
     /**
      * Get the sections of the rendered view.
      *
-     * @return array
-     *
-     * @throws \Throwable
+     * @return string
      */
     public function renderSections()
     {
@@ -384,7 +382,7 @@ class View implements ArrayAccess, ViewContract
      * Remove a piece of bound data from the view.
      *
      * @param  string  $key
-     * @return void
+     * @return bool
      */
     public function __unset($key)
     {
@@ -419,8 +417,6 @@ class View implements ArrayAccess, ViewContract
      * Get the string contents of the view.
      *
      * @return string
-     *
-     * @throws \Throwable
      */
     public function __toString()
     {

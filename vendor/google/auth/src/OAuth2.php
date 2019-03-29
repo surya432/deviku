@@ -239,12 +239,6 @@ class OAuth2 implements FetchAuthTokenInterface
     private $extensionParams;
 
     /**
-     * When using the toJwt function, these claims will be added to the JWT
-     * payload.
-     */
-    private $additionalClaims;
-
-    /**
      * Create a new OAuthCredentials.
      *
      * The configuration array accepts various options
@@ -328,7 +322,6 @@ class OAuth2 implements FetchAuthTokenInterface
             'signingKey' => null,
             'signingAlgorithm' => null,
             'scope' => null,
-            'additionalClaims' => [],
         ], $config);
 
         $this->setAuthorizationUri($opts['authorizationUri']);
@@ -347,7 +340,6 @@ class OAuth2 implements FetchAuthTokenInterface
         $this->setSigningAlgorithm($opts['signingAlgorithm']);
         $this->setScope($opts['scope']);
         $this->setExtensionParams($opts['extensionParams']);
-        $this->setAdditionalClaims($opts['additionalClaims']);
         $this->updateToken($opts);
     }
 
@@ -421,7 +413,6 @@ class OAuth2 implements FetchAuthTokenInterface
         if (!(is_null($this->getSub()))) {
             $assertion['sub'] = $this->getSub();
         }
-        $assertion += $this->getAdditionalClaims();
 
         return $this->jwtEncode($assertion, $this->getSigningKey(),
             $this->getSigningAlgorithm());
@@ -516,9 +507,7 @@ class OAuth2 implements FetchAuthTokenInterface
     {
         if (is_string($this->scope)) {
             return $this->scope;
-        }
-
-        if (is_array($this->scope)) {
+        } elseif (is_array($this->scope)) {
             return implode(':', $this->scope);
         }
 
@@ -545,14 +534,14 @@ class OAuth2 implements FetchAuthTokenInterface
             parse_str($body, $res);
 
             return $res;
-        }
+        } else {
+            // Assume it's JSON; if it's not throw an exception
+            if (null === $res = json_decode($body, true)) {
+                throw new \Exception('Invalid JSON response');
+            }
 
-        // Assume it's JSON; if it's not throw an exception
-        if (null === $res = json_decode($body, true)) {
-            throw new \Exception('Invalid JSON response');
+            return $res;
         }
-
-        return $res;
     }
 
     /**
@@ -591,13 +580,16 @@ class OAuth2 implements FetchAuthTokenInterface
     {
         $opts = array_merge([
             'extensionParams' => [],
+            'refresh_token' => null,
             'access_token' => null,
             'id_token' => null,
+            'expires' => null,
             'expires_in' => null,
             'expires_at' => null,
             'issued_at' => null,
         ], $config);
 
+        $this->setExpiresAt($opts['expires']);
         $this->setExpiresAt($opts['expires_at']);
         $this->setExpiresIn($opts['expires_in']);
         // By default, the token is issued at `Time.now` when `expiresIn` is set,
@@ -608,12 +600,7 @@ class OAuth2 implements FetchAuthTokenInterface
 
         $this->setAccessToken($opts['access_token']);
         $this->setIdToken($opts['id_token']);
-        // The refresh token should only be updated if a value is explicitly
-        // passed in, as some access token responses do not include a refresh
-        // token.
-        if (array_key_exists('refresh_token', $opts)) {
-            $this->setRefreshToken($opts['refresh_token']);
-        }
+        $this->setRefreshToken($opts['refresh_token']);
     }
 
     /**
@@ -806,21 +793,15 @@ class OAuth2 implements FetchAuthTokenInterface
         // state.
         if (!is_null($this->code)) {
             return 'authorization_code';
-        }
-
-        if (!is_null($this->refreshToken)) {
+        } elseif (!is_null($this->refreshToken)) {
             return 'refresh_token';
-        }
-
-        if (!is_null($this->username) && !is_null($this->password)) {
+        } elseif (!is_null($this->username) && !is_null($this->password)) {
             return 'password';
-        }
-
-        if (!is_null($this->issuer) && !is_null($this->signingKey)) {
+        } elseif (!is_null($this->issuer) && !is_null($this->signingKey)) {
             return self::JWT_URN;
+        } else {
+            return null;
         }
-
-        return null;
     }
 
     /**
@@ -1127,9 +1108,7 @@ class OAuth2 implements FetchAuthTokenInterface
     {
         if (!is_null($this->expiresAt)) {
             return $this->expiresAt;
-        }
-
-        if (!is_null($this->issuedAt) && !is_null($this->expiresIn)) {
+        } elseif (!is_null($this->issuedAt) && !is_null($this->expiresIn)) {
             return $this->issuedAt + $this->expiresIn;
         }
 
@@ -1229,26 +1208,6 @@ class OAuth2 implements FetchAuthTokenInterface
     public function setRefreshToken($refreshToken)
     {
         $this->refreshToken = $refreshToken;
-    }
-
-    /**
-     * Sets additional claims to be included in the JWT token
-     *
-     * @param array $additionalClaims
-     */
-    public function setAdditionalClaims(array $additionalClaims)
-    {
-        $this->additionalClaims = $additionalClaims;
-    }
-
-    /**
-     * Gets the additional claims to be included in the JWT token.
-     *
-     * @return array
-     */
-    public function getAdditionalClaims()
-    {
-        return $this->additionalClaims;
     }
 
     /**

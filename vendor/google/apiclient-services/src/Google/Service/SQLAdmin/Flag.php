@@ -20,7 +20,6 @@ class Google_Service_SQLAdmin_Flag extends Google_Collection
   protected $collection_key = 'appliesTo';
   public $allowedStringValues;
   public $appliesTo;
-  public $inBeta;
   public $kind;
   public $maxValue;
   public $minValue;
@@ -43,14 +42,6 @@ class Google_Service_SQLAdmin_Flag extends Google_Collection
   public function getAppliesTo()
   {
     return $this->appliesTo;
-  }
-  public function setInBeta($inBeta)
-  {
-    $this->inBeta = $inBeta;
-  }
-  public function getInBeta()
-  {
-    return $this->inBeta;
   }
   public function setKind($kind)
   {

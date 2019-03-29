@@ -19,8 +19,6 @@ class Google_Service_ServiceControl_CheckError extends Google_Model
 {
   public $code;
   public $detail;
-  protected $statusType = 'Google_Service_ServiceControl_Status';
-  protected $statusDataType = '';
   public $subject;
 
   public function setCode($code)
@@ -38,20 +36,6 @@ class Google_Service_ServiceControl_CheckError extends Google_Model
   public function getDetail()
   {
     return $this->detail;
-  }
-  /**
-   * @param Google_Service_ServiceControl_Status
-   */
-  public function setStatus(Google_Service_ServiceControl_Status $status)
-  {
-    $this->status = $status;
-  }
-  /**
-   * @return Google_Service_ServiceControl_Status
-   */
-  public function getStatus()
-  {
-    return $this->status;
   }
   public function setSubject($subject)
   {

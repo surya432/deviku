@@ -65,7 +65,6 @@ class Google_Service_Calendar extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'calendar/v3/';
-    $this->batchPath = 'batch/calendar/v3';
     $this->version = 'v3';
     $this->serviceName = 'calendar';
 

@@ -38,7 +38,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         // attributes are serialized and as they can be anything, they need to be converted to strings.
-        $attributes = [];
+        $attributes = array();
         $route = '';
         foreach ($request->attributes->all() as $key => $value) {
             if ('_route' === $key) {
@@ -57,10 +57,10 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
             $content = false;
         }
 
-        $sessionMetadata = [];
-        $sessionAttributes = [];
+        $sessionMetadata = array();
+        $sessionAttributes = array();
         $session = null;
-        $flashes = [];
+        $flashes = array();
         if ($request->hasSession()) {
             $session = $request->getSession();
             if ($session->isStarted()) {
@@ -74,19 +74,19 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
 
         $statusCode = $response->getStatusCode();
 
-        $responseCookies = [];
+        $responseCookies = array();
         foreach ($response->headers->getCookies() as $cookie) {
             $responseCookies[$cookie->getName()] = $cookie;
         }
 
-        $dotenvVars = [];
+        $dotenvVars = array();
         foreach (explode(',', getenv('SYMFONY_DOTENV_VARS')) as $name) {
             if ('' !== $name && false !== $value = getenv($name)) {
                 $dotenvVars[$name] = $value;
             }
         }
 
-        $this->data = [
+        $this->data = array(
             'method' => $request->getMethod(),
             'format' => $request->getRequestFormat(),
             'content' => $content,
@@ -110,7 +110,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
             'controller' => 'n/a',
             'locale' => $request->getLocale(),
             'dotenv_vars' => $dotenvVars,
-        ];
+        );
 
         if (isset($this->data['request_headers']['php-auth-pw'])) {
             $this->data['request_headers']['php-auth-pw'] = '******';
@@ -147,14 +147,14 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
         if ($response->isRedirect()) {
             $response->headers->setCookie(new Cookie(
                 'sf_redirect',
-                json_encode([
+                json_encode(array(
                     'token' => $response->headers->get('x-debug-token'),
                     'route' => $request->attributes->get('_route', 'n/a'),
                     'method' => $request->getMethod(),
                     'controller' => $this->parseController($request->attributes->get('_controller')),
                     'status_code' => $statusCode,
                     'status_text' => Response::$statusTexts[(int) $statusCode],
-                ]),
+                )),
                 0, '/', null, $request->isSecure(), true, false, 'lax'
             ));
         }
@@ -173,7 +173,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
 
     public function reset()
     {
-        $this->data = [];
+        $this->data = array();
         $this->controllers = new \SplObjectStorage();
     }
 
@@ -308,7 +308,7 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
      */
     public function getRouteParams()
     {
-        return isset($this->data['request_attributes']['_route_params']) ? $this->data['request_attributes']['_route_params']->getValue() : [];
+        return isset($this->data['request_attributes']['_route_params']) ? $this->data['request_attributes']['_route_params']->getValue() : array();
     }
 
     /**
@@ -356,10 +356,10 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
 
     public static function getSubscribedEvents()
     {
-        return [
+        return array(
             KernelEvents::CONTROLLER => 'onKernelController',
             KernelEvents::RESPONSE => 'onKernelResponse',
-        ];
+        );
     }
 
     /**
@@ -387,21 +387,21 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
             try {
                 $r = new \ReflectionMethod($controller[0], $controller[1]);
 
-                return [
+                return array(
                     'class' => \is_object($controller[0]) ? \get_class($controller[0]) : $controller[0],
                     'method' => $controller[1],
                     'file' => $r->getFileName(),
                     'line' => $r->getStartLine(),
-                ];
+                );
             } catch (\ReflectionException $e) {
                 if (\is_callable($controller)) {
                     // using __call or  __callStatic
-                    return [
+                    return array(
                         'class' => \is_object($controller[0]) ? \get_class($controller[0]) : $controller[0],
                         'method' => $controller[1],
                         'file' => 'n/a',
                         'line' => 'n/a',
-                    ];
+                    );
                 }
             }
         }
@@ -409,12 +409,12 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
         if ($controller instanceof \Closure) {
             $r = new \ReflectionFunction($controller);
 
-            $controller = [
+            $controller = array(
                 'class' => $r->getName(),
                 'method' => null,
                 'file' => $r->getFileName(),
                 'line' => $r->getStartLine(),
-            ];
+            );
 
             if (false !== strpos($r->name, '{closure}')) {
                 return $controller;
@@ -433,12 +433,12 @@ class RequestDataCollector extends DataCollector implements EventSubscriberInter
         if (\is_object($controller)) {
             $r = new \ReflectionClass($controller);
 
-            return [
+            return array(
                 'class' => $r->getName(),
                 'method' => null,
                 'file' => $r->getFileName(),
                 'line' => $r->getStartLine(),
-            ];
+            );
         }
 
         return \is_string($controller) ? $controller : 'n/a';

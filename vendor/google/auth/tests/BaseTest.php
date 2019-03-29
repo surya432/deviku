@@ -3,9 +3,8 @@
 namespace Google\Auth\tests;
 
 use GuzzleHttp\ClientInterface;
-use PHPUnit\Framework\TestCase;
 
-abstract class BaseTest extends TestCase
+abstract class BaseTest extends \PHPUnit_Framework_TestCase
 {
     public function onlyGuzzle6()
     {
@@ -28,6 +27,6 @@ abstract class BaseTest extends TestCase
      */
     public function getValidKeyName($key)
     {
-        return preg_replace('|[^a-zA-Z0-9_\.! ]|', '', $key);
+        return str_replace(['{', '}', '(', ')', '/', '\\', '@', ':'], '-', $key);
     }
 }

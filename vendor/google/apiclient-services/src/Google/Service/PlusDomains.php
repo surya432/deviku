@@ -36,7 +36,7 @@ class Google_Service_PlusDomains extends Google_Service
   /** Manage your circles and add people and pages. People and pages you add to your circles will be notified. Others may see this information publicly. People you add to circles can use Hangouts with you.. */
   const PLUS_CIRCLES_WRITE =
       "https://www.googleapis.com/auth/plus.circles.write";
-  /** View your basic profile info, including your age range and language. */
+  /** Know the list of people in your circles, your age range, and language. */
   const PLUS_LOGIN =
       "https://www.googleapis.com/auth/plus.login";
   /** Know who you are on Google. */
@@ -57,7 +57,7 @@ class Google_Service_PlusDomains extends Google_Service
   /** View your email address. */
   const USERINFO_EMAIL =
       "https://www.googleapis.com/auth/userinfo.email";
-  /** See your personal info, including any personal info you've made publically available. */
+  /** View your basic profile info. */
   const USERINFO_PROFILE =
       "https://www.googleapis.com/auth/userinfo.profile";
 
@@ -78,7 +78,6 @@ class Google_Service_PlusDomains extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'plusDomains/v1/';
-    $this->batchPath = 'batch/plusDomains/v1';
     $this->version = 'v1';
     $this->serviceName = 'plusDomains';
 

@@ -272,7 +272,7 @@ class MockObjectTest extends TestCase
 
         $mock->expects($this->once())
              ->method('doSomething')
-             ->will($this->returnCallback('FunctionCallbackWrapper::functionCallback'));
+             ->will($this->returnCallback('functionCallback'));
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
 
@@ -282,7 +282,7 @@ class MockObjectTest extends TestCase
 
         $mock->expects($this->once())
              ->method('doSomething')
-             ->willReturnCallback('FunctionCallbackWrapper::functionCallback');
+             ->willReturnCallback('functionCallback');
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }

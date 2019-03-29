@@ -17,8 +17,8 @@
 
 class Google_Service_CloudTasks_Queue extends Google_Model
 {
-  protected $appEngineRoutingOverrideType = 'Google_Service_CloudTasks_AppEngineRouting';
-  protected $appEngineRoutingOverrideDataType = '';
+  protected $appEngineHttpQueueType = 'Google_Service_CloudTasks_AppEngineHttpQueue';
+  protected $appEngineHttpQueueDataType = '';
   public $name;
   public $purgeTime;
   protected $rateLimitsType = 'Google_Service_CloudTasks_RateLimits';
@@ -28,18 +28,18 @@ class Google_Service_CloudTasks_Queue extends Google_Model
   public $state;
 
   /**
-   * @param Google_Service_CloudTasks_AppEngineRouting
+   * @param Google_Service_CloudTasks_AppEngineHttpQueue
    */
-  public function setAppEngineRoutingOverride(Google_Service_CloudTasks_AppEngineRouting $appEngineRoutingOverride)
+  public function setAppEngineHttpQueue(Google_Service_CloudTasks_AppEngineHttpQueue $appEngineHttpQueue)
   {
-    $this->appEngineRoutingOverride = $appEngineRoutingOverride;
+    $this->appEngineHttpQueue = $appEngineHttpQueue;
   }
   /**
-   * @return Google_Service_CloudTasks_AppEngineRouting
+   * @return Google_Service_CloudTasks_AppEngineHttpQueue
    */
-  public function getAppEngineRoutingOverride()
+  public function getAppEngineHttpQueue()
   {
-    return $this->appEngineRoutingOverride;
+    return $this->appEngineHttpQueue;
   }
   public function setName($name)
   {

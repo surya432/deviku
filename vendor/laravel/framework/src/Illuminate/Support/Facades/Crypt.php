@@ -3,10 +3,8 @@
 namespace Illuminate\Support\Facades;
 
 /**
- * @method static string encrypt($value, bool $serialize = true)
- * @method static string encryptString(string $value)
- * @method static string decrypt($payload, bool $unserialize = true)
- * @method static string decryptString(string $payload)
+ * @method static string encrypt(string $value, bool $serialize = true)
+ * @method static string decrypt(string $payload, bool $unserialize = true)
  *
  * @see \Illuminate\Encryption\Encrypter
  */

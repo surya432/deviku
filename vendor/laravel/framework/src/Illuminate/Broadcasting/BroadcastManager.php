@@ -21,7 +21,7 @@ class BroadcastManager implements FactoryContract
     /**
      * The application instance.
      *
-     * @var \Illuminate\Contracts\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
     protected $app;
 
@@ -42,7 +42,7 @@ class BroadcastManager implements FactoryContract
     /**
      * Create a new manager instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param  \Illuminate\Foundation\Application  $app
      * @return void
      */
     public function __construct($app)
@@ -176,6 +176,10 @@ class BroadcastManager implements FactoryContract
     {
         $config = $this->getConfig($name);
 
+        if (is_null($config)) {
+            throw new InvalidArgumentException("Broadcaster [{$name}] is not defined.");
+        }
+
         if (isset($this->customCreators[$config['driver']])) {
             return $this->callCustomCreator($config);
         }
@@ -208,16 +212,10 @@ class BroadcastManager implements FactoryContract
      */
     protected function createPusherDriver(array $config)
     {
-        $pusher = new Pusher(
-            $config['key'], $config['secret'],
-            $config['app_id'], $config['options'] ?? []
+        return new PusherBroadcaster(
+            new Pusher($config['key'], $config['secret'],
+            $config['app_id'], $config['options'] ?? [])
         );
-
-        if ($config['log'] ?? false) {
-            $pusher->setLogger($this->app->make(LoggerInterface::class));
-        }
-
-        return new PusherBroadcaster($pusher);
     }
 
     /**
@@ -265,11 +263,7 @@ class BroadcastManager implements FactoryContract
      */
     protected function getConfig($name)
     {
-        if (! is_null($name) && $name !== 'null') {
-            return $this->app['config']["broadcasting.connections.{$name}"];
-        }
-
-        return ['driver' => 'null'];
+        return $this->app['config']["broadcasting.connections.{$name}"];
     }
 
     /**
