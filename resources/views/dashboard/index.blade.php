@@ -52,7 +52,7 @@ Dahsboard
         var siteId = $('#siteid').val();
         var siteName = $('#siteid').find('option:selected').text();
         var searchKeyword = $('#searchKeyword').val();
-        var drama_id = $('idDrama').val();
+        var drama_id = $('#idDrama').val();
         $.ajax({
             type:"POST",
             url: "{{route('webfrontSingkronpost')}}/"+siteId,
@@ -99,6 +99,7 @@ Dahsboard
         $( "#table-users" ).on( "click", "#btnSingkronWeb" , function() {
 
             event.preventDefault()
+            var dmaIDD = $(this).attr("data-title");
 
             var seacrh = $(this).attr("data-title");
             $.ajax({
@@ -107,7 +108,7 @@ Dahsboard
                 success: function(data){
                     $("#content").html(data);
                     $("input[name=searchKeyword]").val(seacrh) ;
-
+                    $("input[name=idDrama]").val(seacrh) ;
                 }
             });
         });

@@ -27,7 +27,7 @@ class DashboardController extends Controller
                 ->addColumn('action', function ($data) {
                     return '<div class="btn-group" role="group" aria-label="Command Action">
                     <a href="'.route("eps",$data->id).'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
-                    <button type="button" id="btnSingkronWeb" data-title="'.$data->title.'" class="btn btn-primary btn-xs">
+                    <button type="button" id="btnSingkronWeb" data-title="'.$data->title.'" data-drama_id="'.$data->id.'" class="btn btn-primary btn-xs">
                         <i class="fa fa-refresh fa-fw"></i>  Wordpress
                     </button>
                     </div>';
