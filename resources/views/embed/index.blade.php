@@ -73,7 +73,18 @@
         $(function() {getPlayer();});
         $(window).resize(function(){video.width=$(window).width(),video.height=$(window).height()-h,jwplayer().resize(video.width,video.height)});
     </script>
-    <div id="server" class="text-center" style="padding-top:5px;">
+ 
+    <div id="myElement" style="position:absolute;width:100%!important;height:100%!important" onload="getPlayer()">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+        <div id="notif" class="text-center">
+        <p style="color: blue;"> Pilih Server Di atas!!!</br> Jangan Gunakan UCbrowser atau Browser mini lainnya!!!</br> Jika Error Cepat Lapor Mimin atau Komentar di bawah... :D :)</p>
+        </div>
+    </div>
+    <div id="server" class="text-left" style="padding-top:5px;">
         <button class="btn btn-sm btn-primary" disabled>Server:</button>
         @if($url->f360p !="")
             <button class="btn btn-sm btn-danger" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
@@ -94,16 +105,6 @@
         @endif
         <button class="btn btn-sm btn-primary" onclick=showPlayer('download_links')>Download</button>	
     </div>    
-    <div id="myElement" style="position:absolute;width:100%!important;height:100%!important" onload="getPlayer()">
-        <div class="spinner">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-        </div>
-        <div id="notif" class="text-center">
-        <p style="color: blue;"> Pilih Server Di atas!!!</br> Jangan Gunakan UCbrowser atau Browser mini lainnya!!!</br> Jika Error Cepat Lapor Mimin atau Komentar di bawah... :D :)</p>
-        </div>
-    </div>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {

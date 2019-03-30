@@ -153,9 +153,7 @@ return [
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
-        Torann\GeoIP\GeoIPServiceProvider::class,
-
-
+        \Torann\GeoIP\GeoIPServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -220,7 +218,6 @@ return [
         'Datatables' => Yajra\DataTables\Facades\Datatables::class,
         'Input' => Illuminate\Support\Facades\Input::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
-
 
     ],
 

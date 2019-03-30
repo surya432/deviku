@@ -25,7 +25,7 @@ class EmbedController extends Controller
         //if($country == "KR" ){
             return abort(404);
         }
-
+        $country = "id";
         $value= $this->MirrorCheck($url);
         return view("embed.index")->with("url", $value)->with('GeoIP',$country);
     }
@@ -98,7 +98,6 @@ class EmbedController extends Controller
                     };
                     return $this->GetPlayer($copyID);
                 }else{
-                    //return file_get_contents("http://db.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/open?id=".$mirror->idcopy);
                     return $this->GetPlayer($mirror->idcopy);
                 }
                 break;
