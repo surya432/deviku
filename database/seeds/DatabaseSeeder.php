@@ -11,9 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //$this->call(serialtv::class);
-        //$this->call(ContentSeed::class);
-        //$this->call(MirrorSeeder::class);
-        //$this->call(GmailSeeder::class);
+        // $this->call(UsersTableSeeder::class);
     }
 }
