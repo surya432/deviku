@@ -36,6 +36,13 @@ class DramaController extends Controller
                 ->addColumn('type', function ($data) {
                     return $data->type->name;
                 })
+                ->addColumn('folderids', function ($data) {
+                    if($data->folderid !== "a"){
+                        return 'true';
+                    }else{
+                        return 'false';
+                    } 
+                })
                 ->addColumn('action', function ($data) {
                     return '<div class="btn-group" role="group" aria-label="Command Action">
                     <a href="'.route("eps",$data->id).'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>

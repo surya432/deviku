@@ -12,10 +12,7 @@ Drama {{$result->title}}
         <div class="panel panel-primary">
             <div class="panel-heading">{{$result->title}} Command Action</div>
             <div class="panel-body">
-                <div class="alert alert-danger alert-dismissible" id="alert-danger" style="display:none">
-                </div>
-                <div class="alert alert-success alert-dismissible" id="alert-succes" style="display:none">
-                </div>
+               
                 <!-- Button trigger modal -->
                 <button type="button" id="btnModal" onclick="btnAdd()" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
                     <i class="fa fa-plus fa-fw"></i> Drama Eps.
@@ -114,6 +111,8 @@ Drama {{$result->title}}
         </div>
         <div id='content' >
         </div>
+        <div class="alert alert-danger alert-dismissible" id="alert-danger" style="display:none"></div>
+        <div class="alert alert-success alert-dismissible" id="alert-succes" style="display:none"></div>
         <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" style="width:100%" id="table-users">
             <thead>
                 <tr>

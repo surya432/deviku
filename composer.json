@@ -12,7 +12,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "cartalyst/sentinel": "2.*",
+        "cartalyst/sentinel": "^2.0",
         "geoip2/geoip2": "^2.9",
         "google/apiclient": "^2.0",
         "jenssegers/agent": "^2.6", 
