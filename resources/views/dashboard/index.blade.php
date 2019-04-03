@@ -11,8 +11,6 @@ Dahsboard
         <div class="panel panel-primary">
             <div class="panel-heading">Drama</div>
             <div class="panel-body">
-                <div class="alert alert-danger alert-dismissible" id="alert-danger" style="display:none"></div>
-                <div class="alert alert-success alert-dismissible" id="alert-succes" style="display:none"></div>
                 <!-- Button trigger modal -->
                 <button type="button" id="btnSingkron" onclick="btnSingkron()" class="btn btn-primary btn-sm" >
                     <i class="fa fa-refresh fa-fw"></i> Singkron Folder
@@ -24,6 +22,9 @@ Dahsboard
         </div>
         <div id='content' >
         </div>  
+        <div class="alert alert-danger alert-dismissible" id="alert-danger" style="display:none"></div>
+        <div class="alert alert-success alert-dismissible" id="alert-succes" style="display:none"></div>
+                
     </div>
    
     <div class="col-lg-12">
@@ -33,6 +34,7 @@ Dahsboard
                     <th>No</th>
                     <th>Title</th>
                     <th>Status</th>
+                    <th>Updated At</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -165,6 +167,7 @@ Dahsboard
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title'},
                     {data: 'status', name: 'status'},
+                    {data: 'updated_at', name: 'updated_at'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                

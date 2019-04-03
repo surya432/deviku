@@ -171,7 +171,7 @@ Drama
                     {data: 'status', name: 'status'},
                     {data: 'country', name: 'country', orderable: false, searchable: false},
                     {data: 'type', name: 'type',orderable: false},
-                    {data: 'folderid', name: 'folderid',orderable: false, searchable: false},
+                    {data: 'folderids', name: 'folderids',orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                
