@@ -93,29 +93,38 @@
                         </ul>
     
                 </li>
-
+                @endif
                 <li>
                     
                     <a href="#"><i class="fa fa-user fa-fw"></i> Users<span class="fa arrow"></span></a>
     
                     <ul class="nav nav-second-level">                     
-    
+                        @if(Sentinel::getUser()->roles()->first()->slug == 'admin')
+
+                            <li>
+        
+                                <a href="{{ route('users') }}">List Users</a>
+        
+                            </li>
+                            
+                            <li>
+        
+                                <a href="{{ route('users.roles') }}">Roles</a>
+        
+                            </li>
+                        @endif
                         <li>
-    
-                            <a href="{{ route('users') }}">List Users</a>
-    
-                        </li>
-                        
-                        <li>
-    
-                            <a href="{{ route('users.roles') }}">Roles</a>
-    
+                            
+                            <a href="{{ route('users.laporan') }}">Laporan</a>
+
                         </li>
                     </ul>
     
                     <!-- /.nav-second-level -->
     
                 </li>
+
+            @if(Sentinel::getUser()->roles()->first()->slug == 'admin')
 
                 <li>
 
