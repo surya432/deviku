@@ -23,6 +23,14 @@ class SettingController extends Controller
         $data->folderUpload = $request->input("folderUpload");
         $data->tokenDriveAdmin = $request->input("tokenDriveAdmin");
         $data->apiUrl = $request->input("apiUrl");
+        $data->tokenViu = $request->input("tokenViu");
+        $data->viuSenin = $request->input("viuSenin");
+        $data->viuSelasa = $request->input("viuSelasa");
+        $data->viuRabu = $request->input("viuRabu");
+        $data->viuKamis = $request->input("viuKamis");
+        $data->viuJumat = $request->input("viuJumat");
+        $data->viuSabtu = $request->input("viuSabtu");
+        $data->viuMinggu = $request->input("viuMinggu");
         $data->save();
         return response()->json($data,201);
     }
