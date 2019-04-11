@@ -65,18 +65,11 @@ class WebfrontsController extends Controller
         $header =  base64_encode($sites->username.":".$sites->password);   
         $drama_id = $request->input('drama_id');
         $idPost = $request->input('idPost');
-/*         if(Cache::get('Drama')){
-            $value =Cache::get('Drama')->where('id',$drama_id)->first();
-        }else{
-            $value = Drama::with('country')->with('type')->with('eps')->orderBy('id','desc')->get();
-            Cache::forever('Drama',$value);
-            $value = Cache::get('Drama')->where('id',$drama_id)->first();
-        } */
+
         $value = Drama::where('id',$drama_id)->with('country')->with('type')->with('eps')->orderBy('id','desc')->first();
         $data = Content::orderBy('id','asc')->where('drama_id',$drama_id)->get();
         // return $this->getEmbed($data);
         $body  = "&title=".$value->title."&content=".$this->getEmbed($data);
         return $this->postWeb($sites->site, $idPost, $header,$body);
-        //
     }
 }
