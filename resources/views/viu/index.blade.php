@@ -87,7 +87,13 @@ Viu Generator
 
             },
             success: function(data){
+                $(".alert-success").fadeIn().html("Berhasil Di Dapatkan").wait(20000).fadeOut('slow');
                 $('#exampleFormControlTextarea1').html(data);
+            },
+            error: function (request, status, error) {
+                $(".alert-danger").fadeIn().html("Gagal Di Dapatkan").wait(20000).fadeOut('slow');
+                $('#exampleFormControlTextarea1').html("");
+                alert(request.responseText);
             }
         });
     }
@@ -101,9 +107,18 @@ Viu Generator
                 id: id
             },
             success: function(data){
+                $(".alert-success").fadeIn().html("Berhasil Di Dapatkan").wait(3000).fadeOut('slow');
                 $('#exampleFormControlTextarea1').html(data);
+            },
+            error: function (request, status, error) {
+                $(".alert-danger").fadeIn().html("Gagal Di Dapatkan").wait(3000).fadeOut('slow');
+                $('#exampleFormControlTextarea1').html("");
             }
         });
+    }
+    jQuery.fn.wait = function (MiliSeconds) {
+        $(this).animate({ opacity: '+=0' }, MiliSeconds);
+        return this;
     }
 </script>
 
