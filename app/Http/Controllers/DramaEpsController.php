@@ -21,14 +21,7 @@ class DramaEpsController extends Controller
         if(is_null($checkPost)){
             return abort('404');
         }
-       /*  if(Cache::get('Drama')){
-            $value =Cache::get('Drama')->where('id',$id)->first();
-        }else{
-            Cache::forever('Drama',$value);
-            $value = Cache::get('Drama')->where('id',$id)->first();
-        } */
         $value = Drama::where('id',$id)->with('country')->with('type')->with('eps')->orderBy('id','desc')->first();
-
         return view('dashboard.dramaEps')->with('result',$value);
 
     }
