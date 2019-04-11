@@ -34,6 +34,8 @@ Route::group(['middleware' => ['web']], function(){
 Route::group(['middleware' => ['admin','web']], function(){
     Route::get('/admin', ['as'=>'admin','uses'=>'DashboardController@index']);
     Route::get('/admin/list-update', ['as'=>'dramaDataUpdate','uses'=>'DashboardController@get']);
+    Route::get('/admin/viu', ['as'=>'viudownloader','uses'=>'ViuController@index']);
+    Route::post('/admin/viu', ['as'=>'viugetdata','uses'=>'ViuController@getData']);
 
     Route::get('/admin/folder', ['as'=>'singkronFolder','uses'=>'GDController@singkronFolder']);
     Route::get('/admin/token', ['as'=>'singkronFolder','uses'=>'GDController@AdminToken']);

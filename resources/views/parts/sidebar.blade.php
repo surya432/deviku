@@ -56,7 +56,11 @@
                     </ul>
 
             </li>
+            <li>
 
+                <a href="{{ route('viudownloader') }}"><i class="fa fa-download fa-fw" aria-hidden="true"></i> Viu Downloader</a>
+
+            </li>
             @if(Sentinel::getUser()->roles()->first()->slug == 'admin')
             <li>
 
