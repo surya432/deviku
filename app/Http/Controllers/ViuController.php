@@ -29,6 +29,7 @@ class ViuController extends Controller
         switch($request->input("id")){
             case "senin":
                 $id_hari =$settingData->viuSenin;
+                $result= $this->curl_viu($id_hari, $jwt,$start,$end);
             break;
             case "selasa":
                 $id_hari =$settingData->viuSelasa;
@@ -57,22 +58,23 @@ class ViuController extends Controller
             default:
                 $result= $this->curl_viu($request->input("id"), $jwt, $start, $end);
         }
-        if(empty($result)){
+        $number = json_decode($result,true);
+        $data = $number['response']['container']['item'];
+        if(empty($data)){
             return response('Hello World', 404);
         }
-        return $this->data($result);
+        return $this->data($data);
     }
     function data($result){
         $path_sub=".";
         $subtext = "'FontSize=22,PrimaryColour=&H00FFFF&'";
         $command_ffmpeg = '-i "\ffmpeg\blue.png" -filter_complex "[0:v]scale=1280x720[outv];[outv][1:v]overlay=10:10[outw];[outw]subtitles=sub/%%~na.ass:force_style='.$subtext.'[out]" -map "[out]" -map 0:a -aspect 16:9 -c:a copy -bsf:a aac_adtstoasc -c:v libx264 -movflags +faststart -pix_fmt yuv420p -preset fast -b:v 900K';
         $hardsub360p = ' && "'.$path_sub.'\ffmpeg\ffmpeg.exe" -y -i "'.$path_sub.'\hardsub\%%~na-720p.mp4" -aspect 16:9 -c:a copy -s 640x360 -bsf:a aac_adtstoasc -c:v libx264 -movflags +faststart -pix_fmt yuv420p -crf 27 -preset faster "I:\hardsub\%%~na-360p.mp4" && MOVE "'.$path_sub.':\%%a" "'.$path_sub.':\RAW\%%a"';
-        $number = json_decode($result,true);
-        $data = $number['response']['container']['item'];
+        
         $sub = "";
         $subtitle_code ="";
         $ffmpeg_code = "";
-        foreach($data as $item){
+        foreach($result as $item){
             if(!empty($item["subtitle_id_srt"])){
                 $subtitle_indo = $item["subtitle_id_srt"];
                 $slug =$item["slug"];
