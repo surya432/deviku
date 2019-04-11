@@ -175,7 +175,6 @@ Drama {{$result->title}}
                 },
                 error: function(data){
                     $(".alert-success").fadeIn().html(data).wait(20000).fadeOut('slow');
-
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');

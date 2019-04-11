@@ -57,7 +57,9 @@ class ViuController extends Controller
             default:
                 $result= $this->curl_viu($request->input("id"), $jwt, $start, $end);
         }
-        
+        if(empty($result)){
+            return response('Hello World', 404);
+        }
         return $this->data($result);
     }
     function data($result){
@@ -81,7 +83,7 @@ class ViuController extends Controller
                 //$subbes= $slug." Sub<br>";
             }
         }
-        return $subtitle_code.$ffmpeg_code;
+        return response($subtitle_code.$ffmpeg_code, 200);
     }
     function curl_viu($id, $jwt, $start, $end){
         $curl = curl_init();
