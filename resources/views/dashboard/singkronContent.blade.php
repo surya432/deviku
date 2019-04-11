@@ -9,7 +9,7 @@
                         Tidak ada Singkron
                     @endif
                     <ul>
-                        @foreach($url as $url)
+                        @foreach($url->$data as $url)
                             <li><a href="{{ route('viewEps',$url )}}" class="list-group-item list-group-item-action">{{$url}}</a></li>
                         @endforeach
                     </ul>
