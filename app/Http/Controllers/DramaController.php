@@ -23,39 +23,41 @@ class DramaController extends Controller
     }
     public function get(){
         // Cache::forget('Drama');
-        if (Cache::has('Drama')) {
+        /* if (Cache::has('Drama')) {
             $data = Cache::get('Drama');
         }else{
             $data = Drama::with('country')->with('type')->orderBy('id','desc')->get();
             Cache::forever('Drama', $data);
-        }
-            return Datatables::of($data)
-                ->addColumn('country', function ($data) {
-                    return $data->country->name;
-                })
-                ->addColumn('type', function ($data) {
-                    return $data->type->name;
-                })
-                ->addColumn('folderids', function ($data) {
-                    if($data->folderid !== "a"){
-                        return 'true';
-                    }else{
-                        return 'false';
-                    } 
-                })
-                ->addColumn('action', function ($data) {
-                    return '<div class="btn-group" role="group" aria-label="Command Action">
-                    <a href="'.route("eps",$data->id).'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
-                    <button type="button" id="btnShow" data-id="'.$data->id.'" data-status="'.$data->status.'" data-folderid="'.$data->folderid.'" data-type_id="'.$data->type_id.'" data-country_id="'.$data->country_id.'"data-title="'.$data->title.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
-                    <button type="button" id="btnDelete" data-id="'.$data->id.'" data-status="'.$data->status.'" data-folderid="'.$data->folderid.'" data-type_id="'.$data->type_id.'" data-country_id="'.$data->country_id.'"data-title="'.$data->title.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
-                })
-                ->order(function ($query) {
-                    if (request()->has('id')) {
-                        $query->orderBy('id', 'desc');
-                    }
+        } */
+        $data = Drama::with('country')->with('type')->orderBy('id','desc')->get();
 
-                })
-                ->make(true);
+        return Datatables::of($data)
+            ->addColumn('country', function ($data) {
+                return $data->country->name;
+            })
+            ->addColumn('type', function ($data) {
+                return $data->type->name;
+            })
+            ->addColumn('folderids', function ($data) {
+                if($data->folderid !== "a"){
+                    return 'true';
+                }else{
+                    return 'false';
+                } 
+            })
+            ->addColumn('action', function ($data) {
+                return '<div class="btn-group" role="group" aria-label="Command Action">
+                <a href="'.route("eps",$data->id).'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
+                <button type="button" id="btnShow" data-id="'.$data->id.'" data-status="'.$data->status.'" data-folderid="'.$data->folderid.'" data-type_id="'.$data->type_id.'" data-country_id="'.$data->country_id.'"data-title="'.$data->title.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
+                <button type="button" id="btnDelete" data-id="'.$data->id.'" data-status="'.$data->status.'" data-folderid="'.$data->folderid.'" data-type_id="'.$data->type_id.'" data-country_id="'.$data->country_id.'"data-title="'.$data->title.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
+            })
+            ->order(function ($query) {
+                if (request()->has('id')) {
+                    $query->orderBy('id', 'desc');
+                }
+
+            })
+            ->make(true);
     }
     public function Post(Request $request){
         Cache::forget('Drama');
