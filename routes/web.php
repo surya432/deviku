@@ -38,7 +38,7 @@ Route::group(['middleware' => ['admin','web']], function(){
     Route::post('/admin/viu', ['as'=>'viugetdata','uses'=>'ViuController@getData']);
 
     Route::get('/admin/folder', ['as'=>'singkronFolder','uses'=>'GDController@singkronFolder']);
-    Route::get('/admin/token', ['as'=>'singkronFolder','uses'=>'GDController@AdminToken']);
+    Route::get('/admin/token', ['as'=>'singkronFolderToken','uses'=>'GDController@AdminToken']);
     Route::post('/admin/users',['as'=>'users.add','uses'=>'RegistrationController@registerPost']);
     Route::get('/admin/users/laporan',['as'=>'users.laporan','uses'=>'UsersController@index']);
     Route::get('/admin/users/getlaporan',['as'=>'users.getlaporan','uses'=>'UsersController@getlaporan']);
