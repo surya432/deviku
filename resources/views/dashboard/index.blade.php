@@ -180,7 +180,7 @@ Dahsboard
     });
     function btnSingkron(){
         $.ajax({
-            url: "{{ route('singkronFolder') }}",
+            url: "{{ route('driveEps','1') }}",
             type: "get",
            
             success: function(data){
