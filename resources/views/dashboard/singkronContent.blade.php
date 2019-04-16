@@ -7,12 +7,10 @@
                 <div class="list-group">
                     @if(!$url)
                         Tidak ada Singkron
+                    @else
+                        Berhasil 
                     @endif
-                    <ul>
-                        @foreach($url->$data as $url)
-                            <li><a href="{{ route('viewEps',$url )}}" class="list-group-item list-group-item-action">{{$url}}</a></li>
-                        @endforeach
-                    </ul>
+                   
                 </div>
         </div>
 </div>
