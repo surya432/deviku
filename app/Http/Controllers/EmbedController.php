@@ -83,36 +83,27 @@ class EmbedController extends Controller
     }
     public function getDetail(Request $request,$url){
         $content = Content::where('url',$url)->first();
-        $mytime = \Carbon\Carbon::now();
         $this->AutoDeleteGd();
-	    sleep(5);
-
+	    sleep(2);
+		$linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Ya Link Sudah Di Rusak!! :( </br> #LaporDenganKomentarDibawah</p></div>';
         switch($request->input('player')){
             case 'gd360':
-                $mirror = Mirror::select('idcopy')->where('url',$content->f360p)->where('kualitas','SD')->first();
-                //return json_encode($mirror);
-                if(is_null($mirror)){
-                    $copyID =$this->GDCopy($content->f360p, md5($url.$mytime),'SD');
-                    if(is_null($copyID) || isset($copyID['error']) ){ 
-                        return abort(404);
-                    };
-                    return $this->GetPlayer($copyID);
+                $f360p=$this->GetIdDrive($content->f360p);
+                if($f360p == '200'){
+                    return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
                 }else{
-                    return $this->GetPlayer($mirror->idcopy);
+                    return $linkError;
+                    //return abort(404);
                 }
                 break;
             case 'gd720':
-                $mirror = Mirror::select('idcopy')->where('url',$content->f720p)->where('kualitas','HD')->first();
-                //return json_encode($mirror);
-                if(is_null($mirror)){
-                    $copyID =$this->GDCopy($content->f720p, md5($url.$mytime),'HD');
-                    if( is_null($copyID) || isset($copyID['error']) ){ 
-                        return abort(404);
-                    };
-                    return $this->GetPlayer($copyID);
+                $s720p=$this->GetIdDrive($content->f720p);
+                if($s720p == '200'){
+                    //return "helloWorld";
+                    return $this->CopyGoogleDriveID($content->f720p,$url, "HD");
                 }else{
-                    return $this->GetPlayer($mirror->idcopy);
-                    }
+                    return $linkError;
+                }
                 break;
             case 'mirror1':
                 $iframe = "https://oload.stream/embed/".$content->mirror1;
@@ -131,12 +122,12 @@ class EmbedController extends Controller
                 $returncontent .= '<div id="notif" class="text-center"><p style="color: blue;">';
                 if(!is_null($content->mirror1)){
                     if(!preg_match("/upload_id=/",$content->mirror1)){
-                    $returncontent .= "<a href='https://oload.stream/f/".$content->mirror1."' class='btn btn-sm btn-primary' target='_blank'>Openload 360p</a>";
+                        $returncontent .= "<a href='https://oload.stream/f/".$content->mirror1."' class='btn btn-sm btn-primary' target='_blank'>Openload 360p</a>";
                     }
                 }
                 if(!is_null($content->mirror3)){
                     if(!preg_match("/upload_id=/",$content->mirror3)){
-                    $returncontent .= "<a href='https://oload.stream/f/".$content->mirror3."' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
+                        $returncontent .= "<a href='https://oload.stream/f/".$content->mirror3."' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
                     }
                 }
                 /* if(!is_null($content->mirror2)){					
@@ -150,8 +141,38 @@ class EmbedController extends Controller
         }
 
     }
+    function CopyGoogleDriveID($urlDrive,$url, $kualitas){
+        $mytime = \Carbon\Carbon::now();
+        $mirror = Mirror::select('idcopy')->where('url',$urlDrive)->where('kualitas',$kualitas)->first();
+        //return json_encode($mirror);
+        if(is_null($mirror)){
+            $copyID =$this->GDCopy($urlDrive, md5($url.$mytime),$kualitas);
+            if(is_null($copyID) || isset($copyID['error']) ){ 
+                return abort(404);
+            };
+            return $this->GetPlayer($copyID);
+        }else{
+            return $this->GetPlayer($mirror->idcopy);
+        }
+    }
     function GetPlayer($urlDrive){
         return file_get_contents("http://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=".$urlDrive);
     }
-    
+    function CheckHeaderCode($idDrive){
+         if(!Cache::has('CHECKHEADER-'.md5($idDrive))) {
+            $expiresAt = now()->addMinutes(60*24);
+            $statusCode=$this->getHeaderCode($idDrive);
+            Cache::put('CHECKHEADER-'.md5($idDrive), $statusCode, $expiresAt);
+            return $statusCode;
+        }
+        $statusCode = Cache::get('CHECKHEADER-'.md5($idDrive));
+        return $statusCode;
+    }
+    function GetIdDrive($urlVideoDrive){
+        if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
+            return $this->CheckHeaderCode($id[1]);
+        }else{
+            return "Format Link Salah";
+        }
+    }
 }
