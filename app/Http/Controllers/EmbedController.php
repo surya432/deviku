@@ -159,7 +159,7 @@ class EmbedController extends Controller
         $HeaderCode = Cache::remember(md5($idDrive), 24*60, function() {
             return $this->getHeaderCode($idDrive);
         });
-        return response()->json($HeaderCode);
+        return $HeaderCode;
     }
     function GetIdDrive($url){
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
