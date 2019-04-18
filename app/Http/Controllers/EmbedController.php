@@ -87,11 +87,11 @@ class EmbedController extends Controller
 	    sleep(2);
         switch($request->input('player')){
             case 'gd360':
-                $s720p=$this->GetIdDrive($content->f720p);
-                if($s720p == '200'){
+                $f360p=$this->GetIdDrive($content->f360p);
+                if($f360p == '200'){
                     return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
                 }else{
-                    return $s720p;
+                    return $f360p;
                     //return abort(404);
                 }
                 break;
@@ -159,15 +159,15 @@ class EmbedController extends Controller
     }
     function CheckHeaderCode($idDrive){
         $HeaderCode = Cache::remember(md5($idDrive), 24*60, function() {
-            
+            return $this->getHeaderCode($id['1']);
         });
         return $HeaderCode;
     }
     function GetIdDrive($urlVideoDrive){
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
-            return $this->getHeaderCode($id['1']);
+            return $this->CheckHeaderCode($id['1']);
         }else{
-            return $urlVideoDrive;
+            return "Format Link Salah";
         }
     }
 }
