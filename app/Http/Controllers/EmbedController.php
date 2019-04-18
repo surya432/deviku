@@ -88,16 +88,14 @@ class EmbedController extends Controller
         switch($request->input('player')){
             case 'gd360':
                 if($this->CheckHeaderCode($content->f360p) == '200'){
-                    $kualitas = "SD";
-                    $this->CopyGoogleDriveID($content->f360p,$url, $kualitas);
+                    return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
                 }else{
                     return abort(404);
                 }
                 break;
             case 'gd720':
                 if($this->CheckHeaderCode($content->f720p) == '200'){
-                    $kualitas = "HD";
-                    $this->CopyGoogleDriveID($content->f720p,$url, $kualitas);
+                    return $this->CopyGoogleDriveID($content->f720p,$url, "HD");
                 }else{
                     return abort(404);
                 }
