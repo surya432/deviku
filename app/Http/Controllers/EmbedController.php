@@ -87,20 +87,22 @@ class EmbedController extends Controller
 	    sleep(2);
         switch($request->input('player')){
             case 'gd360':
-                if($this->CheckHeaderCode($content->f360p) == '200'){
+                $s720p=$this->CheckHeaderCode($content->f720p);
+                if($s720p == '200'){
                     return "helloWorld";
                     //return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
                 }else{
-                    return "helloHell";
+                    return $s720p;
                     //return abort(404);
                 }
                 break;
             case 'gd720':
-                if($this->CheckHeaderCode($content->f720p) == '200'){
+                $s720p=$this->CheckHeaderCode($content->f720p);
+                if($s720p == '200'){
                     return "helloWorld";
                     //return $this->CopyGoogleDriveID($content->f720p,$url, "HD");
                 }else{
-                    return "helloHell";
+                    return $s720p;
                 }
                 break;
             case 'mirror1':
