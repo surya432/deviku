@@ -159,7 +159,7 @@ class EmbedController extends Controller
     }
     function CheckHeaderCode($idDrive){
         $HeaderCode = Cache::remember(md5($idDrive), 24*60, function() {
-            return $this->getHeaderCode($id['1']);
+            return $this->getHeaderCode($idDrive);
         });
         return $HeaderCode;
     }
