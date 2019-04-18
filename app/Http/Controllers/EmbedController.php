@@ -158,9 +158,13 @@ class EmbedController extends Controller
         return file_get_contents("http://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=".$urlDrive);
     }
     function CheckHeaderCode($idDrive){
-        $HeaderCode = Cache::remember(md5($idDrive), 24*60, function() {
-            return $this->getHeaderCode($idDrive);
-        });
+        if(!Cache::has('CHECKHEADER-'.md5($idDrive))) {
+            $expiresAt = now()->addMinutes(60*24);
+            $statusCode=$this->getHeaderCode($idDrive);
+            Cache::put('token_GD1-'.md5($token), $statusCode, $expiresAt);
+            return $statusCode;
+        }
+        $get_info23 = Cache::get('CHECKHEADER-'.md5($idDrive));
         return $HeaderCode;
     }
     function GetIdDrive($urlVideoDrive){
