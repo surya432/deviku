@@ -87,7 +87,7 @@ class EmbedController extends Controller
 	    sleep(2);
         switch($request->input('player')){
             case 'gd360':
-                $s720p=$this->CheckHeaderCode($content->f720p);
+                $s720p=$this->GetIdDrive($content->f720p);
                 if($s720p == '200'){
                     return "helloWorld";
                     //return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
@@ -97,7 +97,7 @@ class EmbedController extends Controller
                 }
                 break;
             case 'gd720':
-                $s720p=$this->CheckHeaderCode($content->f720p);
+                $s720p=$this->GetIdDrive($content->f720p);
                 if($s720p == '200'){
                     return "helloWorld";
                     //return $this->CopyGoogleDriveID($content->f720p,$url, "HD");
