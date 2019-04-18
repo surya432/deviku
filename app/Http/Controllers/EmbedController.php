@@ -89,8 +89,7 @@ class EmbedController extends Controller
             case 'gd360':
                 $s720p=$this->GetIdDrive($content->f720p);
                 if($s720p == '200'){
-                    return "helloWorld";
-                    //return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
+                    return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
                 }else{
                     return $s720p;
                     //return abort(404);
@@ -99,8 +98,8 @@ class EmbedController extends Controller
             case 'gd720':
                 $s720p=$this->GetIdDrive($content->f720p);
                 if($s720p == '200'){
-                    return "helloWorld";
-                    //return $this->CopyGoogleDriveID($content->f720p,$url, "HD");
+                    //return "helloWorld";
+                    return $this->CopyGoogleDriveID($content->f720p,$url, "HD");
                 }else{
                     return $s720p;
                 }
@@ -168,7 +167,7 @@ class EmbedController extends Controller
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
             return $this->getHeaderCode($id['1']);
         }else{
-            return '403';
+            return $urlVideoDrive;
         }
     }
 }
