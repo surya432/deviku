@@ -138,7 +138,7 @@ class EmbedController extends Controller
     }
     function CopyGoogleDriveID($urlDrive,$url, $kualitas){
         $mytime = \Carbon\Carbon::now();
-        $mirror = Mirror::select('idcopy')->where('url',)->where('kualitas',$kualitas)->first();
+        $mirror = Mirror::select('idcopy')->where('url',$urlDrive)->where('kualitas',$kualitas)->first();
         //return json_encode($mirror);
         if(is_null($mirror)){
             $copyID =$this->GDCopy($urlDrive, md5($url.$mytime),$kualitas);
