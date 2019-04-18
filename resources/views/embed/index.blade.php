@@ -146,6 +146,7 @@
           return false;
         }
         $('.btn').click(function() {
+            daplayer.remove();
             $('.btn').removeClass('btn-danger');
             $('.btn').addClass('btn-primary');
             $(this).removeClass('btn-primary').addClass('btn-danger');
