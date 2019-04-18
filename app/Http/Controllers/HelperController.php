@@ -22,6 +22,18 @@ trait HelperController {
         return $string;
     
     }
+    function getHeaderCode($url){
+      $url = 'https://drive.google.com/file/d/'.$url.'/view';
+      $ch = curl_init($url);
+      curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
+      curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+      curl_setopt($ch, CURLOPT_TIMEOUT,10);
+      $output = curl_exec($ch);
+      $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      curl_close($ch);
+      return $httpcode;
+    }
     function viewsource($url){
         $ch = @curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -131,15 +143,15 @@ trait HelperController {
     private function link_upload($link, $name = null){
         $links =null;
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $link, $id)) {		
-			//$links = "http://cdn.dldramaid.xyz:5000/videos/apis/".$id[1]."/".$name;
-			$links = urlencode("https://www.googleapis.com/drive/v3/files/".$id[1]."?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M");
-		}
+          //$links = "http://cdn.dldramaid.xyz:5000/videos/apis/".$id[1]."/".$name;
+          $links = urlencode("https://www.googleapis.com/drive/v3/files/".$id[1]."?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M");
+		    }
 		return $links;
     }
     function renameopenload360($id_oload, $name){
-		$result_curl= $this->post_url("http://api.openload.co/1/file/rename","login=0c223dba0894ad6a&key=lqTc5EtD&file=".$id_oload."&name=".$name);
-		$result = json_decode($result_curl,true);
-		return "rename ".$result['msg'];
+      $result_curl= $this->post_url("http://api.openload.co/1/file/rename","login=0c223dba0894ad6a&key=lqTc5EtD&file=".$id_oload."&name=".$name);
+      $result = json_decode($result_curl,true);
+      return "rename ".$result['msg'];
     }
     function iframesd($url){
         $url_upload = $this->link_upload($url);
@@ -150,9 +162,9 @@ trait HelperController {
         return null;
     }
     function renameopenload720($id_oload, $name){
-		$result_curl= $this->post_url("http://api.openload.co/1/file/rename","login=1c6d666055b6a4c0&key=t5EK0UYI&file=".$id_oload."&name=".$name);
-		$result = json_decode($result_curl,true);
-		return "rename ".$result['msg'];
+      $result_curl= $this->post_url("http://api.openload.co/1/file/rename","login=1c6d666055b6a4c0&key=t5EK0UYI&file=".$id_oload."&name=".$name);
+      $result = json_decode($result_curl,true);
+      return "rename ".$result['msg'];
     }
     function iframehd($url){
         $url_upload = $this->link_upload($url);
@@ -163,23 +175,23 @@ trait HelperController {
         return null;
     }
     private function openload720($link){
-		$result_curl= $this->post_url("http://api.openload.co/1/remotedl/add","login=1c6d666055b6a4c0&key=t5EK0UYI&url=".$link);
-		$result = $this->get_idupload($result_curl);
-		return $result;
+      $result_curl= $this->post_url("http://api.openload.co/1/remotedl/add","login=1c6d666055b6a4c0&key=t5EK0UYI&url=".$link);
+      $result = $this->get_idupload($result_curl);
+      return $result;
     }
     private function openload360($link){
-		$result_curl= $this->post_url("http://api.openload.co/1/remotedl/add","login=0c223dba0894ad6a&key=lqTc5EtD&url=".$link);
-		$result = $this->get_idupload($result_curl);
-		return $result;
+      $result_curl= $this->post_url("http://api.openload.co/1/remotedl/add","login=0c223dba0894ad6a&key=lqTc5EtD&url=".$link);
+      $result = $this->get_idupload($result_curl);
+      return $result;
     }
     private function get_idupload($result){
-		$link = json_decode($result,true);
-		if ($link['status'] == "200"){
-			$result_id="upload_id=".$link["result"]["id"];
-		}else{
-			$result_id=null;
-		}
-		return $result_id;
+      $link = json_decode($result,true);
+      if ($link['status'] == "200"){
+        $result_id="upload_id=".$link["result"]["id"];
+      }else{
+        $result_id=null;
+      }
+      return $result_id;
     }
     function check_openload360($url){
         $id_upload = str_replace("upload_id=","",$url);
