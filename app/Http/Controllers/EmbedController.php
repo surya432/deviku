@@ -9,6 +9,7 @@ use DB;
 use Cache;
 use Jenssegers\Agent\Agent;
 use GeoIP;
+use App\Brokenlink;
 class EmbedController extends Controller
 {
     //
@@ -158,21 +159,5 @@ class EmbedController extends Controller
     function GetPlayer($urlDrive){
         return file_get_contents("http://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=".$urlDrive);
     }
-    function CheckHeaderCode($idDrive){
-         if(!Cache::has('CHECKHEADER-'.md5($idDrive))) {
-            $expiresAt = now()->addMinutes(60*24);
-            $statusCode=$this->getHeaderCode($idDrive);
-            Cache::put('CHECKHEADER-'.md5($idDrive), $statusCode, $expiresAt);
-            return $statusCode;
-        }
-        $statusCode = Cache::get('CHECKHEADER-'.md5($idDrive));
-        return $statusCode;
-    }
-    function GetIdDrive($urlVideoDrive){
-        if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
-            return $this->CheckHeaderCode($id[1]);
-        }else{
-            return "Format Link Salah";
-        }
-    }
+
 }

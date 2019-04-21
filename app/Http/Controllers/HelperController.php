@@ -280,6 +280,23 @@ trait HelperController {
           $get_info23 = Cache::get('token_GD1-'.md5($token));
       return $get_info23;
     }
+    function CheckHeaderCode($idDrive){
+      if(!Cache::has('CHECKHEADER-'.md5($idDrive))) {
+         $expiresAt = now()->addMinutes(60*24);
+         $statusCode=$this->getHeaderCode($idDrive);
+         Cache::put('CHECKHEADER-'.md5($idDrive), $statusCode, $expiresAt);
+         return $statusCode;
+     }
+     $statusCode = Cache::get('CHECKHEADER-'.md5($idDrive));
+     return $statusCode;
+    }
+    function GetIdDrive($urlVideoDrive){
+      if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
+          return $this->CheckHeaderCode($id[1]);
+      }else{
+          return "Format Link Salah";
+      }
+    }
     public function copygd($driveId, $folderid, $title, $token){
       $curl = curl_init();
       curl_setopt_array($curl, array(
