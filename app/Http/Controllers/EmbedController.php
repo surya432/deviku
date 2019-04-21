@@ -93,10 +93,10 @@ class EmbedController extends Controller
                 if($f360p == '200'){
                     return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
                 }else{
-                    $checkLaporanBroken = Brokenlink::where('content_id',$content->id);
+                    $checkLaporanBroken = Brokenlink::where('contents_id',$content->id)->first();
                     if(is_null($checkLaporanBroken)){
                         $laporBrokenLinks = new Brokenlink;
-                        $laporBrokenLinks->content_id = $content->id;
+                        $laporBrokenLinks->contents_id = $content->id;
                         $laporBrokenLinks->save();
                     }
                     return $linkError;
@@ -109,6 +109,12 @@ class EmbedController extends Controller
                     //return "helloWorld";
                     return $this->CopyGoogleDriveID($content->f720p,$url, "HD");
                 }else{
+					$checkLaporanBroken = Brokenlink::where('contents_id',$content->id)->first();
+                    if(is_null($checkLaporanBroken)){
+                        $laporBrokenLinks = new Brokenlink;
+                        $laporBrokenLinks->contents_id = $content->id;
+                        $laporBrokenLinks->save();
+                    }
                     return $linkError;
                 }
                 break;
