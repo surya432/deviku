@@ -9,11 +9,12 @@ use DB;
 use Cache;
 use Jenssegers\Agent\Agent;
 use GeoIP;
+use App\Brokenlink;
 class EmbedController extends Controller
 {
     //
     use HelperController;
-    public function index(Request $request,$url){
+    function index(Request $request,$url){
         $contentCheck = Content::where('url',$url)->first();
         if(is_null($contentCheck) || is_null($contentCheck->f720p)){
             return abort(404);
@@ -81,7 +82,7 @@ class EmbedController extends Controller
         }
         return $content;
     }
-    public function getDetail(Request $request,$url){
+    function getDetail(Request $request,$url){
         $content = Content::where('url',$url)->first();
         $this->AutoDeleteGd();
 	    sleep(2);
@@ -92,6 +93,12 @@ class EmbedController extends Controller
                 if($f360p == '200'){
                     return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
                 }else{
+                    $checkLaporanBroken = Brokenlink::where('contents_id',$content->id)->first();
+                    if(is_null($checkLaporanBroken)){
+                        $laporBrokenLinks = new Brokenlink;
+                        $laporBrokenLinks->contents_id = $content->id;
+                        $laporBrokenLinks->save();
+                    }
                     return $linkError;
                     //return abort(404);
                 }
@@ -102,6 +109,12 @@ class EmbedController extends Controller
                     //return "helloWorld";
                     return $this->CopyGoogleDriveID($content->f720p,$url, "HD");
                 }else{
+					$checkLaporanBroken = Brokenlink::where('contents_id',$content->id)->first();
+                    if(is_null($checkLaporanBroken)){
+                        $laporBrokenLinks = new Brokenlink;
+                        $laporBrokenLinks->contents_id = $content->id;
+                        $laporBrokenLinks->save();
+                    }
                     return $linkError;
                 }
                 break;
@@ -158,21 +171,5 @@ class EmbedController extends Controller
     function GetPlayer($urlDrive){
         return file_get_contents("http://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=".$urlDrive);
     }
-    function CheckHeaderCode($idDrive){
-         if(!Cache::has('CHECKHEADER-'.md5($idDrive))) {
-            $expiresAt = now()->addMinutes(60*24);
-            $statusCode=$this->getHeaderCode($idDrive);
-            Cache::put('CHECKHEADER-'.md5($idDrive), $statusCode, $expiresAt);
-            return $statusCode;
-        }
-        $statusCode = Cache::get('CHECKHEADER-'.md5($idDrive));
-        return $statusCode;
-    }
-    function GetIdDrive($urlVideoDrive){
-        if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
-            return $this->CheckHeaderCode($id[1]);
-        }else{
-            return "Format Link Salah";
-        }
-    }
+
 }

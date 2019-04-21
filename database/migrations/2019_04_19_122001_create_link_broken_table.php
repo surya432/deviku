@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLaporan extends Migration
+class CreateLinkBrokenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateLaporan extends Migration
      */
     public function up()
     {
-        Schema::table('laporans', function (Blueprint $table) {
+        Schema::create('brokenlinks', function (Blueprint $table) {
             //
             $table->increments('id');
-            $table->integer('username');
-            $table->string('laporan');
+            $table->integer('contents_id');
             $table->timestamps();
         });
     }
@@ -29,9 +28,9 @@ class CreateLaporan extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('laporans', function (Blueprint $table) {
+        Schema::dropIfExists('brokenlinks', function (Blueprint $table) {
             //
-            Schema::dropIfExists('laporans');
+            Schema::dropIfExists('brokenlinks');
         });
     }
 }
