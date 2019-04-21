@@ -13,13 +13,13 @@ class CreateLaporan extends Migration
      */
     public function up()
     {
-        /* Schema::table('laporans', function (Blueprint $table) {
+        Schema::table('laporans', function (Blueprint $table) {
             //
             $table->increments('id');
             $table->integer('username');
             $table->string('laporan');
             $table->timestamps();
-        }); */
+        });
     }
 
     /**
@@ -29,9 +29,9 @@ class CreateLaporan extends Migration
      */
     public function down()
     {
-       /*  Schema::table('laporans', function (Blueprint $table) {
+        Schema::dropIfExists('laporans', function (Blueprint $table) {
             //
             Schema::dropIfExists('laporans');
-        }); */
+        });
     }
 }
