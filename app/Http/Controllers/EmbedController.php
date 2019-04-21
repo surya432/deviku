@@ -14,7 +14,7 @@ class EmbedController extends Controller
 {
     //
     use HelperController;
-    public function index(Request $request,$url){
+    function index(Request $request,$url){
         $contentCheck = Content::where('url',$url)->first();
         if(is_null($contentCheck) || is_null($contentCheck->f720p)){
             return abort(404);
@@ -82,7 +82,7 @@ class EmbedController extends Controller
         }
         return $content;
     }
-    public function getDetail(Request $request,$url){
+    function getDetail(Request $request,$url){
         $content = Content::where('url',$url)->first();
         $this->AutoDeleteGd();
 	    sleep(2);
@@ -93,6 +93,12 @@ class EmbedController extends Controller
                 if($f360p == '200'){
                     return $this->CopyGoogleDriveID($content->f360p,$url, "SD");
                 }else{
+                    $checkLaporanBroken = Brokenlink::where('content_id',$content->id);
+                    if(is_null($checkLaporanBroken)){
+                        $laporBrokenLinks = new Brokenlink;
+                        $laporBrokenLinks->content_id = $content->id;
+                        $laporBrokenLinks->save();
+                    }
                     return $linkError;
                     //return abort(404);
                 }

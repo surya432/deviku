@@ -61,6 +61,11 @@
                 <a href="{{ route('viudownloader') }}"><i class="fa fa-download fa-fw" aria-hidden="true"></i> Viu Downloader</a>
 
             </li>
+            <li>
+
+                <a href="{{ route('brokenlinksIndex') }}"><i class="fa fa-link fa-fw" aria-hidden="true"></i> Broken Links</a>
+
+            </li>
             @if(Sentinel::getUser()->roles()->first()->slug == 'admin')
             <li>
 

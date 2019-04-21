@@ -13,7 +13,7 @@ class CreateLinkBrokenTable extends Migration
      */
     public function up()
     {
-        Schema::table('brokenlinks', function (Blueprint $table) {
+        Schema::create('brokenlinks', function (Blueprint $table) {
             //
             $table->increments('id');
             $table->integer('contents_id');
@@ -28,7 +28,7 @@ class CreateLinkBrokenTable extends Migration
      */
     public function down()
     {
-        Schema::table('brokenlinks', function (Blueprint $table) {
+        Schema::dropIfExists('brokenlinks', function (Blueprint $table) {
             //
             Schema::dropIfExists('brokenlinks');
         });

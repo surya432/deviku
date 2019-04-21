@@ -84,7 +84,8 @@ Route::group(['middleware' => ['admin','web']], function(){
 
     Route::get('/admin/drive/content/{id}', ['as'=>'driveEps','uses'=>'GDController@singkron']);
     Route::get('/admin/drive/drama/{id}', ['as'=>'driveDrama','uses'=>'GDController@foldersingkron']);
-   
+
+    Route::get('/admin/brokenlinks/', ['as'=>'brokenlinksIndex','uses'=>'BrokenLinkController@index']);
 
     Route::get('/admin/webfront/', ['as'=>'webfront','uses'=>'WebfrontsController@index']);
     Route::get('/admin/webfront-data/', ['as'=>'webfrontGet','uses'=>'WebfrontsController@get']);
