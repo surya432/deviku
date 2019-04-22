@@ -39,6 +39,8 @@ Route::group(['middleware' => ['admin','web']], function(){
 
     Route::get('/admin/folder', ['as'=>'singkronFolder','uses'=>'GDController@singkronFolder']);
     Route::get('/admin/token', ['as'=>'singkronFolderToken','uses'=>'GDController@AdminToken']);
+    Route::get('/admin/googledrive/create-folder', ['as'=>'createFolderDrive','uses'=>'GDController@createFolderDrive']);
+    
     Route::post('/admin/users',['as'=>'users.add','uses'=>'RegistrationController@registerPost']);
     Route::get('/admin/users/laporan',['as'=>'users.laporan','uses'=>'UsersController@index']);
     Route::get('/admin/users/getlaporan',['as'=>'users.getlaporan','uses'=>'UsersController@getlaporan']);
@@ -86,6 +88,9 @@ Route::group(['middleware' => ['admin','web']], function(){
     Route::get('/admin/drive/drama/{id}', ['as'=>'driveDrama','uses'=>'GDController@foldersingkron']);
 
     Route::get('/admin/brokenlinks/', ['as'=>'brokenlinksIndex','uses'=>'BrokenLinkController@index']);
+    Route::get('/admin/brokenlinks/table', ['as'=>'brokenlinksIndexTables','uses'=>'BrokenLinkController@brokenlinksIndexTables']);
+    Route::get('/admin/brokenlinks/detail/{id}', ['as'=>'DetailBrokenLinks','uses'=>'BrokenLinkController@DetailBrokenLinks']);
+    Route::get('/admin/brokenlinks/details/{id}', ['as'=>'DetailBrokenLink','uses'=>'BrokenLinkController@DetailBrokenLink']);
 
     Route::get('/admin/webfront/', ['as'=>'webfront','uses'=>'WebfrontsController@index']);
     Route::get('/admin/webfront-data/', ['as'=>'webfrontGet','uses'=>'WebfrontsController@get']);

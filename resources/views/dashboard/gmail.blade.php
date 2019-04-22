@@ -106,6 +106,7 @@
             oTable = $("#table-users").DataTable({
                 "processing": true,
                 "serverSide": true,
+                "pageLength": 25,
                 "ajax": "{{ route('gmailData') }}",
                 "columns": [
                     {data: 'id', name: 'id'},

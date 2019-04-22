@@ -12,12 +12,12 @@ List Of BrokenLinks
             <div class="panel-heading">BrokenLinks</div>
             <div class="panel-body">
                 <!-- Button trigger modal -->
-               <!--  <button type="button" id="btnSingkron" onclick="btnSingkron()" class="btn btn-primary btn-sm" >
+                <button type="button" id="btnSingkron" onclick="btnSingkron()" class="btn btn-primary btn-sm" >
                     <i class="fa fa-refresh fa-fw"></i> CheckLinks
                 </button>
                 <button type="button" id="btnReloadTable" onclick="btnReloadTable()" class="btn btn-primary btn-sm">
                     <i class="fa fa-refresh fa-fw"></i> Reload Table
-                </button> -->
+                </button>
             </div>
         </div>
         <div id='content' >
@@ -80,8 +80,6 @@ List Of BrokenLinks
             $("input[name=title]").val($(this).attr('data-title'));
             $("input[name=folderid]").val($(this).attr('data-folderid'));
             $("select[name=status]").val($(this).attr('data-status'));
-            $("select[name=type_id]").val($(this).attr('data-type_id'));
-            $("select[name=country_id]").val($(this).attr('data-country_id'));
         });
         $("#content").on("click",'#btnSubmitSingkron',function(){
             event.preventDefault()
@@ -136,6 +134,28 @@ List Of BrokenLinks
                 }
             });
         });
+        $( "#table-users" ).on( "click", "#btnaddFolder" , function() {
+            var fn = $(this).attr('data-title');
+            var ids = $(this).attr('data-id');
+            if (confirm('Are you sure you want to Crete Folder '+ fn +' ['+ ids +'] in Drive?')) {
+                $.ajax({
+                    url: "{{ route('createFolderDrive') }}",
+                    type: "get",
+                    data: {
+                        id: $(this).attr('data-id')
+                    },
+                    success: function(data){
+                        $(".alert-success").fadeIn().html('Delete Success').wait(2000).fadeOut('slow');
+                        $("#table-users").DataTable().ajax.reload(null, false);
+
+                    },
+                    error: function(data){
+                        $(".alert-success").fadeIn().html('Delete Error').wait(2000).fadeOut('slow');
+                        $("#table-users").DataTable().ajax.reload(null, false);
+                    }
+                });
+            }
+        });
         $( "#table-users" ).on( "click", "#btnDelete" , function() {
             var fn = $(this).attr('data-title');
             if (confirm('Are you sure you want to delete '+ fn +'?')) {
@@ -162,7 +182,8 @@ List Of BrokenLinks
             oTable = $("#table-users").DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{{ route('dramaDataUpdate') }}",
+                "pageLength": 25,
+                "ajax": "{{ route('brokenlinksIndexTables') }}",
                 "columns": [
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title'},
@@ -182,7 +203,6 @@ List Of BrokenLinks
         $.ajax({
             url: "{{ route('driveEps','1') }}",
             type: "get",
-           
             success: function(data){
                 $(".alert-success").fadeIn().html('Singkron Success').wait(2000).fadeOut('slow');
                 $("#table-users").DataTable().ajax.reload(null, false);

@@ -228,7 +228,7 @@ Drama {{$result->title}}
                 "processing": true,
                 "pageLength": 25,
                 "serverSide": true,
-                "ajax": "{{ route('epsData',$result->id) }}",
+                "ajax": "{{ route('DetailBrokenLinks',$result->id) }}",
                 "columns": [
                     {data: 'id', name: 'id'},
                     {data: 'title', name: 'title'},
