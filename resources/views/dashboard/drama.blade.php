@@ -42,7 +42,7 @@ Drama
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label" for="email">Folder ID</label>
-                                                <input type="text" class="form-control" name="folderid" id="folderid" required>
+                                                <input type="text" class="form-control" name="folderid" id="folderid">
                                             </div>
                                             <div class="form-group">
                                                 <label for="type" class="form-label">Status</label>
@@ -164,6 +164,7 @@ Drama
             oTable = $("#table-users").DataTable({
                 "processing": true,
                 "serverSide": true,
+                "pageLength": 25,
                 "ajax": "{{ route('dramaData') }}",
                 "columns": [
                     {data: 'id', name: 'id'},

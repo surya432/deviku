@@ -66,6 +66,7 @@ class GDController extends Controller
                         Cache::forever('Drama',$value);
                         $value = Cache::get('Drama')->where('id',$content->drama_id)->first();
                     }
+                    $value = Drama::with('country')->with('type')->with('eps')->orderBy('id','desc')->where('dramas.id',$content->drama_id)->first();
                     if($value){
                         $folderId= $value->folderid;
                     }else{
@@ -96,6 +97,8 @@ class GDController extends Controller
                         Cache::forever('Drama',$value);
                         $value = Cache::get('Drama')->where('id',$content->drama_id)->first();
                     }
+                    $value = Drama::with('country')->with('type')->with('eps')->orderBy('id','desc')->where('dramas.id',$content->drama_id)->first();
+
                     if($value){
                         $folderId= $value->folderid;
                     }else{
@@ -118,5 +121,17 @@ class GDController extends Controller
             }                 
         }
         return view('dashboard.singkronContent')->with('url', $fdrive); 
+    }
+    function createFolderDrive(Request $request){
+        $dataType = Drama::find($request->input('id'));
+        $folderName =  $dataType->title." [$dataType->id]";
+        $resultCurl = $this->GDCreateFolder($folderName);
+        $dataType = Drama::find($dataType->id);
+        if($dataType){
+            $dataType->folderid = $resultCurl['id'];
+            $dataType->save();
+        }
+        $dataTypeasd = "Insert Success";
+        return response()->json($dataTypeasd,201);
     }
 }
