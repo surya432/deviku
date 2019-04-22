@@ -13,7 +13,7 @@ Country
             <div class="panel-body">
                 <div class="alert alert-danger" id="alert-danger" style="display:none"></div>
                 <div class="alert alert-success" id="alert-succes" style="display:none"></div>
-            <form action="{{ route("countryPost") }}" method="post" id="formCountry" role="form">
+            <form action="{{ route('countryPost') }}" method="post" id="formCountry" role="form">
                     {{ csrf_field() }}
                     <div class="form-group">
                         <input class="form-control" type="hidden" name="id" id="id" hidden>
