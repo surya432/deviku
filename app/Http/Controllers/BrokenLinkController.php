@@ -40,9 +40,7 @@ class BrokenLinkController extends Controller
                 $extBtn ='<button type="button" id="btnaddFolder" data-id="'.$data->id.'" data-status="'.$data->status.'" data-folderid="'.$data->folderid.'" data-title="'.$data->title.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus"></i> Create Folder</button>'; 
             }
             return '<div class="btn-group" role="group" aria-label="Command Action">
-            '.$extBtn.'
             <a href="'.route("DetailBrokenLink",$data->id).'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
-            
             <button type="button" id="btnDelete" data-id="'.$data->id.'" data-status="'.$data->status.'" data-folderid="'.$data->folderid.'" data-title="'.$data->title.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
         })
         ->order(function ($query) {

@@ -72,6 +72,9 @@ Drama {{$result->title}}
                 <button type="button" id="btnSingkronWeb" data-title="{{$result->title}}" class="btn btn-primary btn-sm">
                         <i class="fa fa-refresh fa-fw"></i> Singkron Wordpress
                 </button>
+                @if($result->folderid =="")
+                    <button type="button" id="btnaddFolder" data-id="{{$result->id}}" data-status="{{$result->status}}" data-folderid="{{$result->folderid}}" data-title="{{$result->title}}" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i> Create Folder</button>
+                @endif
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" onclick="btnDetail()" data-target="#modelId2">
                     <i class="fa fa-film fa-fw"></i> Detail Drama
@@ -143,6 +146,29 @@ Drama {{$result->title}}
             $("select[name=status]").val($(this).attr('data-status'));
             $("input[name=f720p]").val($(this).attr('data-f720p'));
             $("input[name=f360p]").val($(this).attr('data-f360p'));
+        });
+        $("#btnaddFolder").on("click", function(){
+            var fn = $(this).attr('data-title');
+            var ids = $(this).attr('data-id');
+            if (confirm('Are you sure you want to Crete Folder '+ fn +' ['+ ids +'] in Drive?')) {
+                $.ajax({
+                    url: "{{ route('createFolderDrive') }}",
+                    type: "get",
+                    data: {
+                        id: $(this).attr('data-id')
+                    },
+                    success: function(data){
+                        $(".alert-success").fadeIn().html('Create Success').wait(2000).fadeOut('slow');
+                        $("#table-users").DataTable().ajax.reload(null, false);
+                        document.location.reload();
+
+                    },
+                    error: function(data){
+                        $(".alert-success").fadeIn().html('Create Error').wait(2000).fadeOut('slow');
+                        $("#table-users").DataTable().ajax.reload(null, false);
+                    }
+                });
+            }
         });
         $("#btnSingkronWeb").on("click", function(){
             event.preventDefault()
@@ -265,6 +291,7 @@ Drama {{$result->title}}
             }
         });  
     };
+    
     function btnReloadTable(){
         $(".alert-success").fadeIn().html('Reload Success').wait(20000).fadeOut('slow');
         $("#table-users").DataTable().ajax.reload(null, false);
