@@ -101,6 +101,7 @@ class BrokenLinkController extends Controller
         if(is_null($checkPost)){
             return abort('404');
         }
+        
         $value = Drama::where('id',$id)->with('country')->with('type')->with('eps')->orderBy('id','desc')->first();
         return view('brokenlinks.detail')->with('result',$value);
     }
