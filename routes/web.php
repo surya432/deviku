@@ -91,6 +91,7 @@ Route::group(['middleware' => ['admin','web']], function(){
     Route::get('/admin/brokenlinks/table', ['as'=>'brokenlinksIndexTables','uses'=>'BrokenLinkController@brokenlinksIndexTables']);
     Route::get('/admin/brokenlinks/detail/{id}', ['as'=>'DetailBrokenLinks','uses'=>'BrokenLinkController@DetailBrokenLinks']);
     Route::get('/admin/brokenlinks/details/{id}', ['as'=>'DetailBrokenLink','uses'=>'BrokenLinkController@DetailBrokenLink']);
+    Route::get('/admin/brokenlinks/setfixed/', ['as'=>'SetEpsFixed','uses'=>'BrokenLinkController@SetEpsFixed']);
 
     Route::get('/admin/webfront/', ['as'=>'webfront','uses'=>'WebfrontsController@index']);
     Route::get('/admin/webfront-data/', ['as'=>'webfrontGet','uses'=>'WebfrontsController@get']);

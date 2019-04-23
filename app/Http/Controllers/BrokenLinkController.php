@@ -53,7 +53,12 @@ class BrokenLinkController extends Controller
         })
         ->make(true);
     }
-
+    function SetEpsFixed($id){
+        $data = DB::table('brokenlinks')->whereIn('id',$id);
+        $data->delete();
+        $dataTypeasd = "sukses di Jalankan";
+        return response()->json($dataTypeasd,201);
+    }
     function DetailBrokenLinks($id){
         $data = DB::table('contents')->whereIn('id',function($query){
             $query->from('brokenlinks')->select('contents_id')->get();
@@ -61,11 +66,11 @@ class BrokenLinkController extends Controller
         return Datatables::of($data)
             ->addColumn('f360ps', function ($data) {
                 $f360p=$this->GetIdDrive($data->f360p);
-                return ($f360p == '200')? true:false;
+                return ($f360p == '200')? "Ok":"Rusak";
             })
             ->addColumn('f720ps', function ($data) {
                 $f720p=$this->GetIdDrive($data->f720p);
-                return ($f720p == '200')? true:false;
+                return ($f720p == '200')? "Ok":"Rusak";
             })
             ->addColumn('action', function ($data) {
                 if($data->f720p){
@@ -82,6 +87,7 @@ class BrokenLinkController extends Controller
                 '.$f360p.$f720p.'
                 <a href="'.route("viewEps",$data->url).'" target="_blank" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
                 <button type="button" id="btnShow" data-id="'.$data->id.'" data-drama_id="'.$data->drama_id.'" data-status="'.$data->status.'" data-title="'.$data->title.'" data-f720p="'.$data->f720p.'" data-f360p="'.$data->f360p.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
+                <button type="button" id="btnFixed" data-id="'.$data->id.'" data-drama_id="'.$data->drama_id.'" data-status="'.$data->status.'" data-title="'.$data->title.'" data-f720p="'.$data->f720p.'" data-f360p="'.$data->f360p.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Set Fixed</button>
                 <button type="button" id="btnDelete" data-id="'.$data->id.'" data-drama_id="'.$data->drama_id.'" data-status="'.$data->status.'" data-title="'.$data->title.'" data-f720p="'.$data->f720p.'" data-f360p="'.$data->f360p.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
             })
             ->order(function ($data) {
