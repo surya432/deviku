@@ -249,6 +249,27 @@ Drama {{$result->title}}
                 });
             }
         });
+        $( "#table-users" ).on( "click", "#btnFixed" , function() {
+            var id = $(this).attr('data-id');
+            if (confirm('Are you sure you want to Set Fixed ?')) {
+                $.ajax({
+                    url: "{{ route('SetEpsFixed') }}",
+                    type: "get",
+                    data: {
+                        id: id,
+                    },
+                    success: function(data){
+                        $(".alert-success").fadeIn().html('Delete User '+fn+' success').wait(20000).fadeOut('slow');
+                        $("#table-users").DataTable().ajax.reload(null, false);
+                    },
+                    error: function(data){
+                        $(".alert-success").fadeIn().html('Delete User '+fn+' Failed').wait(20000).fadeOut('slow');
+                        $("#table-users").DataTable().ajax.reload(null, false);
+
+                    }
+                });
+            }
+        });
         $("#table-users").ready(function(){
             var oTable = $("#table-users").DataTable({
                 "processing": true,
