@@ -253,7 +253,7 @@ Drama {{$result->title}}
             var id = $(this).attr('data-id');
             if (confirm('Are you sure you want to Set Fixed ?')) {
                 $.ajax({
-                    url: "{{ route('brokenFixed') }}",
+                    url: "{{ route('SetEpsFixed') }}",
                     type: "get",
                     data: {
                         id: id,
