@@ -54,7 +54,7 @@ class BrokenLinkController extends Controller
         ->make(true);
     }
     function SetEpsFixed(Request $request){
-        $data = Brokenlink::find($request->input('id'))->delete();
+        $data = Brokenlink::where('contents_id',$request->input('id'))->delete();
         $dataTypeasd = "sukses di Jalankan";
         return response()->json($dataTypeasd,201);
     }
