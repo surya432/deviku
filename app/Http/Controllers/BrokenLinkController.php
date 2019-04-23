@@ -53,8 +53,8 @@ class BrokenLinkController extends Controller
         })
         ->make(true);
     }
-    function SetEpsFixed($id){
-        $data = DB::table('brokenlinks')->whereIn('id',$id);
+    function SetEpsFixed(Request $request){
+        $data = DB::table('brokenlinks')->whereIn('id',$request->input('id'));
         $data->delete();
         $dataTypeasd = "sukses di Jalankan";
         return response()->json($dataTypeasd,201);
