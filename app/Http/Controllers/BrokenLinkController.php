@@ -8,7 +8,7 @@ use App\Country;
 use App\Drama;
 use App\Content;
 use App\Type;
-
+use App\Brokenlink;
 use Yajra\DataTables\Facades\DataTables;
 class BrokenLinkController extends Controller
 {
@@ -53,9 +53,8 @@ class BrokenLinkController extends Controller
         })
         ->make(true);
     }
-    function SetEpsFixed($id){
-        $data = DB::table('brokenlinks')->whereIn('id',$id);
-        $data->delete();
+    function SetEpsFixed(Request $request){
+        $data = Brokenlink::where('contents_id',$request->input('id'))->delete();
         $dataTypeasd = "sukses di Jalankan";
         return response()->json($dataTypeasd,201);
     }
