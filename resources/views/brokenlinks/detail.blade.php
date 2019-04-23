@@ -244,7 +244,6 @@ Drama {{$result->title}}
                     error: function(data){
                         $(".alert-success").fadeIn().html('Delete User '+fn+' Failed').wait(20000).fadeOut('slow');
                         $("#table-users").DataTable().ajax.reload(null, false);
-
                     }
                 });
             }
@@ -253,7 +252,7 @@ Drama {{$result->title}}
             var id = $(this).attr('data-id');
             if (confirm('Are you sure you want to Set Fixed ?')) {
                 $.ajax({
-                    url: "{{ route('brokenFixed') }}",
+                    url: "{{ route('SetEpsFixed') }}",
                     type: "get",
                     data: {
                         id: id,
