@@ -244,7 +244,6 @@ Drama {{$result->title}}
                     error: function(data){
                         $(".alert-success").fadeIn().html('Delete User '+fn+' Failed').wait(20000).fadeOut('slow');
                         $("#table-users").DataTable().ajax.reload(null, false);
-
                     }
                 });
             }
