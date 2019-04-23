@@ -13,6 +13,8 @@ use Yajra\DataTables\Facades\DataTables;
 class BrokenLinkController extends Controller
 {
     //
+    use HelperController;
+
     function index(){
         return view('brokenlinks.index');
     }
@@ -58,18 +60,12 @@ class BrokenLinkController extends Controller
         })->where('drama_id',$id)->get();
         return Datatables::of($data)
             ->addColumn('f360ps', function ($data) {
-                if($data->f360p){
-                    return 'true';
-                }else{
-                    return 'false';
-                } 
+                $f360p=$this->GetIdDrive($data->f360p);
+                return ($f360p == '200')? true:false;
             })
             ->addColumn('f720ps', function ($data) {
-                if($data->f720p){
-                    return 'true';
-                }else{
-                    return 'false';
-                }
+                $f720p=$this->GetIdDrive($data->f720p);
+                return ($f720p == '200')? true:false;
             })
             ->addColumn('action', function ($data) {
                 if($data->f720p){
