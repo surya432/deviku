@@ -8,7 +8,7 @@ use App\Country;
 use App\Drama;
 use App\Content;
 use App\Type;
-
+use App\Brokenlink;
 use Yajra\DataTables\Facades\DataTables;
 class BrokenLinkController extends Controller
 {
