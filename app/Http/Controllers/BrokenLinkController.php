@@ -69,16 +69,8 @@ class BrokenLinkController extends Controller
                 return ($f720p == '200')? "Ok":"Rusak";
             })
             ->addColumn('action', function ($data) {
-                if($this->GetIdDrive($data->f720p)){
-                    $f720p =  '';
-                }else{
-                    $f720p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="'.$data->url.'-720p" class="btn btn-xs btn-primary btncopy">Copy 720p</button>';
-                }
-                if($this->GetIdDrive($data->f360p)){
-                    $f360p =  '';
-                }else{
-                    $f360p = '<button type="button" name="url_720p" id="url_360p" data-clipboard-text="'.$data->url.'-360p" class="btn btn-xs btn-primary btncopy">Copy 360p</button>';
-                }
+                $f720p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="'.$data->url.'-720p" class="btn btn-xs btn-primary btncopy">Copy 720p</button>';
+                $f360p = '<button type="button" name="url_720p" id="url_360p" data-clipboard-text="'.$data->url.'-360p" class="btn btn-xs btn-primary btncopy">Copy 360p</button>';
                 return '<div class="btn-group" role="group" aria-label="Command Action">
                 '.$f360p.$f720p.'
                 <a href="'.route("viewEps",$data->url).'" target="_blank" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
