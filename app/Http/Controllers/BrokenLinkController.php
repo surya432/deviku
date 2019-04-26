@@ -74,10 +74,10 @@ class BrokenLinkController extends Controller
                 }else{
                     $f720p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="'.$data->url.'-720p" class="btn btn-xs btn-primary btncopy">Copy 720p</button>';
                 }
-                if($this->GetIdDrive($data->f720p)){
+                if($this->GetIdDrive($data->f360p)){
                     $f360p =  '';
                 }else{
-                    $f360p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="'.$data->url.'-360p" class="btn btn-xs btn-primary btncopy">Copy 360p</button>';
+                    $f360p = '<button type="button" name="url_720p" id="url_360p" data-clipboard-text="'.$data->url.'-360p" class="btn btn-xs btn-primary btncopy">Copy 360p</button>';
                 }
                 return '<div class="btn-group" role="group" aria-label="Command Action">
                 '.$f360p.$f720p.'
