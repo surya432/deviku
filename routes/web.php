@@ -93,6 +93,9 @@ Route::group(['middleware' => ['admin','web']], function(){
     Route::get('/admin/brokenlinks/details/{id}', ['as'=>'DetailBrokenLink','uses'=>'BrokenLinkController@DetailBrokenLink']);
     Route::get('/admin/brokenlinks/setfixed/', ['as'=>'SetEpsFixed','uses'=>'BrokenLinkController@SetEpsFixed']);
 
+    Route::get('/admin/lastupdate/', ['as'=>'DrakorUpdateIndex','uses'=>'DrakorController@index']);
+    Route::get('/admin/lastupdate/data', ['as'=>'DrakorUpdateData','uses'=>'DrakorController@Data']);
+
     Route::get('/admin/webfront/', ['as'=>'webfront','uses'=>'WebfrontsController@index']);
     Route::get('/admin/webfront-data/', ['as'=>'webfrontGet','uses'=>'WebfrontsController@get']);
     Route::delete('/admin/webfront-data/', ['as'=>'webfrontDelete','uses'=>'WebfrontsController@delete']);

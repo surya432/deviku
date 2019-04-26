@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{!! asset('theme/vendor/datatables/css/dataTables.bootstrap.css') !!}">
     <link rel="stylesheet" href="{!! asset('theme/vendor/datatables-responsive/dataTables.responsive.css') !!}">
     <script scr="{!! asset('theme/js/jwplayer.js') !!}"></script>
+    <script scr="//cdn.datatables.net/plug-ins/1.10.6/sorting/date-euro.js"></script>
 
     <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 
