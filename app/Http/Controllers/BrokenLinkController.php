@@ -19,10 +19,7 @@ class BrokenLinkController extends Controller
         return view('brokenlinks.index');
     }
     function brokenlinksIndexTables(){
-        //$data = DB::table('brokenlinks')->select('contents_id')->groupBy('contents_id')->get();
-       /*  $data = DB::table('contents')->whereIn('id', function($query){
-            $query->from('brokenlinks')->select('contents_id')->get();
-        })->select('drama_id')->groupBy('drama_id')->get(); */
+
         $data = DB::table('dramas')->whereIn('id',function ($query){
             $query->from('contents')->select('drama_id')->whereIn('id',function($query){
                 $query->from('brokenlinks')->select('contents_id')->get();
@@ -72,12 +69,12 @@ class BrokenLinkController extends Controller
                 return ($f720p == '200')? "Ok":"Rusak";
             })
             ->addColumn('action', function ($data) {
-                if($data->f720p){
+                if($this->GetIdDrive($data->f720p)){
                     $f720p =  '';
                 }else{
                     $f720p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="'.$data->url.'-720p" class="btn btn-xs btn-primary btncopy">Copy 720p</button>';
                 }
-                if($data->f360p){
+                if($this->GetIdDrive($data->f720p)){
                     $f360p =  '';
                 }else{
                     $f360p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="'.$data->url.'-360p" class="btn btn-xs btn-primary btncopy">Copy 360p</button>';

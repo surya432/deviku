@@ -17,7 +17,7 @@ class ViuController extends Controller
     }
     function getData(Request $request){
         $jwt="Bearer eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.oIdYGTM1hbluGV8uQQnp1too4qz-ASAKarVla0efU2ZG4YFt00UMOw.57o-H-1CbmUSus8lbfr9NA.QtsX1o5KkYO0wtx8kElPAWLt3lTd9vfLmMP7EGRu_j-03W7wwQsFcFE54MVRu3XpJ-ZhVn9vrxIDutWOIU8ceTMj9krjPTG1Ax6zWUQCc61IHkA2Bc-w3-n00pjHq_iZC7AUnL8x1xnZRvZ2GuCgtrgCoigicu4PNqgJGGn62gHh4f0W7GMEZic4BYl3fECVvIexcn1iriANGPdaxSYI3g.cKOUX4pXB04kfdoOLdlknQ";
-        $start = $request->input('inputStartEp');
+        $start = $request->input('inputStartEp')-1;
         $end = $request->input('inputEndEp');
         if($start == null){
             $start="0";
