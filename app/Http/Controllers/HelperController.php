@@ -467,7 +467,7 @@ trait HelperController {
       $value = Cache::remember('deletegd', $seconds, function () {
         $mytime = \Carbon\Carbon::now();
         $dt = $mytime->subDays(2);
-        $datas = Mirror::where("created_at", '<=',date_format($dt,"Y/m/d H:i:s") )->take(50)->get();
+        $datas = Mirror::where("created_at", '<=',date_format($dt,"Y/m/d H:i:s") )->take(10)->get();
         if($datas){
           foreach($datas as $datass){
             $idcopy = $datass->idcopy;
