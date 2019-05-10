@@ -1,8 +1,9 @@
 <?php 
 namespace App\Http\Controllers;
-use Cache;
 use App\Gmail;
 use DB;
+use Illuminate\Support\Facades\Cache;
+
 use App\Setting;
 use App\Mirror;
 trait HelperController {
@@ -87,7 +88,7 @@ trait HelperController {
         $title = $data->title;
         $category = $data->country->name;
         $jenis = $data->type->name;
-        $tag="Nonton ".$title." Subtile Indonesia, Nonton ".$title." Sub Indonesia, Nonton ".$jenis." ".$category." ".$title." Sub Indo, Nonton ".$jenis." ".$category." ".$title." Subtitle Indo online, Nonton ".$title." Sub Indonesia Online, Nonton ".$jenis." ".$category." Sub Indo, Nonton ".$jenis." ".$category." Subtitle Indo, Nonton ".$jenis." ".$title." Subtitle Indonesia, Download ".$jenis." ".$category." ".$title." Sub Indo, Download ".$title." Sub Indonesia, Download ".$title." ".$category." Subtitle Indonesia, Download ".$jenis." ".$title." Subtitle Indonesia, Download ".$category." ".$title." Subtitle Indonesia, Download ".$jenis." ".$category." Sub Indo, Download ".$jenis." ".$category." Subtitle Indo";
+        $tag="Nonton ".$title." Subtile Indonesia, Nonton ".$title." Sub Indonesia, Nonton ".$jenis." ".$category." ".$title." Sub Indo, Nonton ".$jenis." ".$category." ".$title." Subtitle Indo online, Nonton ".$title." Sub Indonesia Online, Nonton ".$jenis." ".$category." Sub Indo, Nonton ".$jenis." ".$category." Subtitle Indo, Nonton ".$jenis." ".$title." Subtitle Indonesia, Download ".$jenis." ".$category." ".$title." Sub Indo, Download ".$title." Sub Indonesia, Download ".$title." ".$category." Subtitle Indonesia, Download ".$jenis." ".$title." Subtitle Indonesia, Download ".$category." ".$title." Subtitle Indonesia, Download ".$jenis." ".$category." Sub Indo, Download ".$jenis." ".$category." Subtitle Indo, nonton online drama korea sub indo,drakor id,nonton drama korea,nonton drama korea online,nonton streaming drama korea,nonton drama online,nontondrama tv,nonton online drama korea,nonton movie korea,nonton korea online,nonton streaming korea,nonton drama korea streaming,nonton movie drama korea,k drama online,nonton korea streaming,nonton streaming drama korea terbaru,nonton korea drama online,nonton online drama,nonton on line,nonton drama,nonton film online korea terbaru,streaming k drama,nonton film drama korea online,k drama streaming,nonton web drama korea,nonton film online drama korea sub indo,nonton drama korea indo sub,nonton movie,nonton film,nonton streaming,drama korea terbaru,nonton drakor,kdrama,nonton film korea,k drama sub indo,nonton streaming online, drakorindo,drakor,drama korea terbaru,nonton drakor,nonton online drama korea sub indo,drakor id,nonton drama korea,nonton drama korea online,nonton streaming drama korea,nonton drama online,nontondrama tv,nonton online drama korea,nonton movie korea,nonton korea online,nonton streaming korea,nonton drama korea streaming,nonton movie drama korea,k drama online,nonton korea streaming,nonton streaming drama korea terbaru,nonton korea drama online,nonton online drama,nonton on line,nonton drama,nonton film online korea terbaru,streaming k drama,nonton film drama korea online,k drama streaming,nonton web drama korea,nonton film online drama korea sub indo,nonton drama korea indo sub,nonton movie,nonton film,nonton streaming,drama korea terbaru,nonton drakor,kdrama,nonton film korea,k drama sub indo,nonton streaming online, drakorindo,drakor,drama korea terbaru,nonton drakor";
         foreach($eps as $eps){
             $embed .=
             '<h3>'.$eps->title.'</h3><p><iframe src="'.route("viewEps",$eps->url).'" width="100%" height="400" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>';
@@ -258,27 +259,29 @@ trait HelperController {
               return $response;
       }
     }
-    function get_token($token){
-        if(!Cache::has('token_GD1-'.md5($token))) {
-              $checklinkerror['access_token'] = false;
-             
-              $result_curl23= $this->refresh_token($token);
-              $checklinkerror= json_decode($result_curl23,true);
-              if($checklinkerror){
-                $gmail = Gmail::where('token',$token)->first();
-                if(!is_null($gmail)){
-                  Gmail::find($gmail->id)->touch();
-                }
-                $get_info23="Bearer ".$checklinkerror['access_token'];
-                $expiresAt = now()->addMinutes(50);
-                Cache::put('token_GD1-'.md5($token), $get_info23, $expiresAt);
-                return $get_info23;
-              }else{
-                return $checklinkerror;
-              }
+    function get_token($tokens){
+      $seconds = 1000*60*50;
+      if (!Cache::has($tokens)) {
+        $result_curl23= $this->refresh_token($tokens);
+        if($result_curl23){
+          $checklinkerror= json_decode($result_curl23,true);
+          if(isset($checklinkerror['access_token'])){
+            $gmail = Gmail::where('token',$tokens)->first();
+            if(!is_null($gmail)){
+              Gmail::find($gmail->id)->touch();
+            }
+            $get_info23="Bearer ".$checklinkerror['access_token'];
+            Cache::put($tokens, $get_info23, now()->addMinutes(50));
+            return $get_info23;
+            
+          
+          }else{
+            return "Bearer ";
+          }
         }
-          $get_info23 = Cache::get('token_GD1-'.md5($token));
-      return $get_info23;
+      }else{
+        return Cache::get($tokens);
+      }
     }
     function CheckHeaderCode($idDrive){
       if(!Cache::has('CHECKHEADER-'.md5($idDrive))) {
@@ -329,7 +332,6 @@ trait HelperController {
 
     }
     public function deletegd($id, $token){
-        $this->emptytrash($token);
         $curl = curl_init();
         curl_setopt_array($curl, array(
           CURLOPT_URL => "https://www.googleapis.com/drive/v3/files/$id",
@@ -386,18 +388,30 @@ trait HelperController {
         $gmails =  DB::table('gmails')->inRandomOrder()->first();
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
             $title= $nameVideo.'-'.$kualitas.'.mp4';
-            $copyid = $this->copygd($id['1'],$gmails->folderid, $title, $gmails->token);
-            if( isset($copyid['id']) ){
-                $fieldMirror =  array("id"=>$copyid['id'], "kualitas"=> $kualitas, "url"=>$urlVideo);
-                $mirror = new Mirror();
-                $mirror->idcopy= $copyid['id'];
-                $mirror->kualitas= $kualitas;
-                $mirror->token= $gmails->token;
-                $mirror->url= $urlVideo;
-                $mirror->save();
-                return $copyid['id'];
+            if(is_null($gmails)){
+              return array(
+                array(
+                    "error" => "Token null",
+                )
+              );
             }else{
-                return $copyid;
+              $copyid = $this->copygd($id['1'],$gmails->folderid, $title, $gmails->token);
+              if( isset($copyid['id']) ){
+                  $fieldMirror =  array("id"=>$copyid['id'], "kualitas"=> $kualitas, "url"=>$urlVideo);
+                  $mirror = new Mirror();
+                  $mirror->idcopy= $copyid['id'];
+                  $mirror->kualitas= $kualitas;
+                  $mirror->token= $gmails->token;
+                  $mirror->url= $urlVideo;
+                  $mirror->save();
+                  return $copyid['id'];
+              }else{
+                return array(
+                  array(
+                      "error" => "gagal copy",
+                  )
+                );
+              }
             }
         }
     }
@@ -449,16 +463,24 @@ trait HelperController {
       return $response;
     }
     function AutoDeleteGd(){
+      $seconds = 1000*60*5;
+      $value = Cache::remember('deletegd', $seconds, function () {
         $mytime = \Carbon\Carbon::now();
         $dt = $mytime->subDays(2);
-        $data = Mirror::where("created_at", '<=',$dt )->limit(50)->get();
-        foreach($data as $data){
-            $idcopy = $data->idcopy;
-            $token = $data->token;
-            $this->deletegd($idcopy,$token);
-            $id = Mirror::where('idcopy',$idcopy);
-            $id->delete();
+        $datas = Mirror::where("created_at", '<=',date_format($dt,"Y/m/d H:i:s") )->take(50)->get();
+        if($datas){
+          foreach($datas as $datass){
+            $idcopy = $datass->idcopy;
+            $tokens = $datass->token;
+            if(!is_null($idcopy) && !is_null($tokens)){
+              if($this->deletegd($idcopy,$tokens)){
+                $id = Mirror::where('idcopy',$idcopy);
+                $id->delete();
+              }
+		      	}
+          }
         }
-        return $data;
+      });
     }
+    
 }

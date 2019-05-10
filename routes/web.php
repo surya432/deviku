@@ -32,6 +32,9 @@ Route::group(['middleware' => ['web']], function(){
 });
 
 Route::group(['middleware' => ['admin','web']], function(){
+    Route::get('/admin/drive/deleteall/', ['as'=>'driveDramaDelete','uses'=>'EmbedController@deletegdbydate']);
+
+
     Route::get('/admin', ['as'=>'admin','uses'=>'DashboardController@index']);
     Route::get('/admin/list-update', ['as'=>'dramaDataUpdate','uses'=>'DashboardController@get']);
     Route::get('/admin/viu', ['as'=>'viudownloader','uses'=>'ViuController@index']);
