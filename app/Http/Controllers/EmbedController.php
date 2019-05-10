@@ -32,6 +32,7 @@ class EmbedController extends Controller
     }
     function MirrorCheck($url){
         $content = Content::where('url',$url)->first();
+        $this->AutoDeleteGd();    
         $save = false;
         if(preg_match("/upload_id=/",$content->mirror1)){
             $resultCheck360 = $this->check_openload360($content->mirror1);
