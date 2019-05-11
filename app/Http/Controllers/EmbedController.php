@@ -98,8 +98,7 @@ class EmbedController extends Controller
                         $laporBrokenLinks->contents_id = $content->id;
                         $laporBrokenLinks->save();
                     }
-                    return $linkError;
-                    //return abort(404);
+                    return '<script type="text/javascript">showPlayer("gd720");</script>';
                 }
                 break;
             case 'gd720':
@@ -114,7 +113,7 @@ class EmbedController extends Controller
                         $laporBrokenLinks->contents_id = $content->id;
                         $laporBrokenLinks->save();
                     }
-                    return $linkError;
+                    return '<script type="text/javascript">showPlayer("gd360");</script>';
                 }
                 break;
             case 'mirror1':
