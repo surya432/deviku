@@ -43,16 +43,18 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                           
-                        <form id="login-form"action="/admin/login" method="POST" role="form">
+
+                        <form id="login-form" action="/admin/login" method="POST" role="form">
                             <div id="alert-danger" class="alert alert-danger" style="display:none"></div>
                             <fieldset>
-                                
+
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail be Like aa@email.com" name="email" type="email" autofocus required>
+                                    <input class="form-control" placeholder="E-mail be Like aa@email.com" name="email"
+                                        type="email" autofocus required>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" required>
+                                    <input class="form-control" placeholder="Password" name="password" type="password"
+                                        required>
                                 </div>
                                 <div class="checkbox">
                                     <label>
@@ -81,16 +83,16 @@
     <!-- Custom Theme JavaScript -->
     <script src="{!! asset('theme/dist/js/sb-admin-2.js') !!}"></script>
     <script type="text/javascript">
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            },
-        });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        },
+    });
     </script>
     <script type="text/javascript">
-    $('#login-form').on("submit",function (){
+    $('#login-form').on("submit", function() {
         event.preventDefault()
-        var postData={
+        var postData = {
             'email': $('input[name=email]').val(),
             'password': $('input[name=password]').val(),
             'remember_me': $('input[name=remember_me]').is(":checked"),
@@ -99,12 +101,12 @@
             type: 'POST',
             url: '{{route("loginPost")}}',
             data: postData,
-            success: function(data){
+            success: function(data) {
                 window.location.href = data.redirect
             },
-            error: function(data){
-               $(".alert-danger").text(data.responseJSON.alert)
-               $(".alert-danger").show()
+            error: function(data) {
+                $(".alert-danger").text(data.responseJSON.alert)
+                $(".alert-danger").show()
             }
         })
     });

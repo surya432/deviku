@@ -26,13 +26,13 @@
 
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 
-            <i class="fa fa-user fa-fw"></i> 
+            <i class="fa fa-user fa-fw"></i>
             {{ Sentinel::getUser()->first_name}}
             <i class="fa fa-caret-down"></i>
         </a>
 
         <ul class="dropdown-menu dropdown-user">
-         
+
             <li><a href="/admin/profile"><i class="fa fa-user fa-fw"></i> Profile</a>
 
             </li>
@@ -44,9 +44,10 @@
             <li class="divider"></li>
             <form action="/admin/logout" method="POST" role="form" id="logout-form">
                 {{ csrf_field() }}
-                <li><a href="#" onclick="document.getElementById('logout-form').submit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a href="#" onclick="document.getElementById('logout-form').submit()"><i
+                            class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
-                
+
             </form>
 
         </ul>

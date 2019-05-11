@@ -10,28 +10,25 @@ class DrakorController extends Controller
 {
     //
     use HelperController;
-    function index(){
+    function index()
+    {
         return view('lastupdate.index');
     }
-    function Data(){
-        $xml = simplexml_load_string( $this->viewsource("//123drakor.co/post-sitemap.xml") );
-        
+    function Data()
+    {
+        $xml = simplexml_load_string($this->viewsource("//123drakor.co/post-sitemap.xml"));
+
         $result = array();
-        foreach($xml as $datas){
+        foreach ($xml as $datas) {
             array_push($result, $datas);
         }
-        unset($result[0]); 
+        unset($result[0]);
 
         return Datatables::of($result)
-        ->addColumn('date', function ($result) {
-           return  date("d/m/Y", strtotime($result->lastmod)) ;
-        })
-        ->order(function ($result) {
-            if (request()->has('date')) {
-                $query->orderBy('url', 'desc');
-            }
+            ->addColumn('date', function ($result) {
+                return  date("d/m/Y", strtotime($result->lastmod));
+            })
 
-        })
-        ->make();
+            ->make();
     }
 }

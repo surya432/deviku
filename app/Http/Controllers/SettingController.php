@@ -8,14 +8,17 @@ use App\Setting;
 class SettingController extends Controller
 {
     //SettingController
-    public function index(){
+    public function index()
+    {
         return view('dashboard.setting');
     }
-    public function get(){
+    public function get()
+    {
         $data = Setting::all();
-        return response()->json($data,201);
+        return response()->json($data, 201);
     }
-    public function post(Request $request){
+    public function post(Request $request)
+    {
         $data = Setting::find(1);
         $data->site_name = $request->input("site_name");
         $data->folder720p = $request->input("folder720p");
@@ -32,6 +35,6 @@ class SettingController extends Controller
         $data->viuSabtu = $request->input("viuSabtu");
         $data->viuMinggu = $request->input("viuMinggu");
         $data->save();
-        return response()->json($data,201);
+        return response()->json($data, 201);
     }
 }
