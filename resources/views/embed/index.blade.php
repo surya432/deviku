@@ -122,10 +122,10 @@
         <!-- <button class="btn btn-sm btn-primary" disabled>Server:</button> -->
         @if(isset($url->f360p))
         <button class="btn btn-sm btn-danger" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
-        @elseif(isset($url->f720p))
+        @elseif($url->f720p !="")
         <button class="btn btn-sm btn-danger" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
         @endif
-        @if(isset($url->f720p))
+        @if($url->f720p !="")
         <button class="btn btn-sm btn-primary" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
         @endif
         @if($url->mirror1 !="" && !preg_match("/upload_id=/",$url->mirror1))
@@ -148,7 +148,7 @@
     </script>
     <script type="text/javascript">
     function getPlayer() {
-        @if($url - > f360p != "")
+        @if($url->f360p != "")
         var data = showPlayer('gd360');
         @else
         var data = showPlayer('gd720');
