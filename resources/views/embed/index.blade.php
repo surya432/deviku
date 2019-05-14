@@ -120,12 +120,12 @@
     </div>
     <div id="server" class="text-left" style="padding-top:5px;">
         <!-- <button class="btn btn-sm btn-primary" disabled>Server:</button> -->
-        @if($url->f360p !="")
+        @if(isset($url->f360p))
         <button class="btn btn-sm btn-danger" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
-        @elseif($url->f720p !="")
+        @elseif(isset($url->f720p))
         <button class="btn btn-sm btn-danger" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
         @endif
-        @if($url->f720p !="")
+        @if(isset($url->f720p))
         <button class="btn btn-sm btn-primary" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
         @endif
         @if($url->mirror1 !="" && !preg_match("/upload_id=/",$url->mirror1))
