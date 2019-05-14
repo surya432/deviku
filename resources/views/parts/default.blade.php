@@ -23,7 +23,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
 
-    <title> @yield('title-page') - {{config('app.name')}}    </title>
+    <title> @yield('title-page') - {{config('app.name')}} </title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -122,7 +122,7 @@
 
     <script src="{!! asset('theme/data/morris-data.js') !!}"></script>-->
 
-    
+
     <!-- DataTables -->
     <script src="{!! asset('theme/vendor/datatables/js/jquery.dataTables.min.js') !!}"></script>
     <script src="{!! asset('theme/vendor/datatables/js/dataTables.bootstrap.min.js') !!}"></script>
@@ -133,11 +133,11 @@
 
     <script src="{!! asset('theme/dist/js/sb-admin-2.js') !!}"></script>
     <script type="text/javascript">
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-            },
-        });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        },
+    });
     </script>
     @yield('scripts')
 
