@@ -166,13 +166,18 @@
             type: "POST",
             data: data,
             cache: false,
+            beforeSend: function() {
+                // setting a timeout
+                $("#myElement").html( 
+                    '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Tunggu Sebentar Ya... :D :)</p></div>'
+                );
+            },
             success: function(html) {
                 if (html) {
                     if (html.match(/^http/g)) {
                         $("#myElement").html('<iframe src="' + html +
                             '" frameborder=0 marginwidth=0 marginheight=0 scrolling=no width="' + video
                             .width + '" height="' + video.height + '" allowfullscreen></iframe>');
-                        $("#myElement").removeClass();
                     } else
                         $("#myElement").html(html);
                     //                            console.log(html)
