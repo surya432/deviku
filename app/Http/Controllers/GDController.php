@@ -51,23 +51,21 @@ class GDController extends Controller
     }
     public function singkron($id)
     {
-        $settingData = Setting::find(1);
-        $oldFolder = $settingData->folderUpload;
-        //$resultCurl = $this->singkronfile($folderId);
-        $resultCurl = $this->singkronfile($oldFolder);
+        if($id == "0"){
+            $settingData = Setting::find(1);
+            $oldFolder = $settingData->folderUpload;
+            $resultCurl = $this->singkronfile($oldFolder);
+        }else{
+            $settingData = Drama::find($id);
+            $oldFolder = $settingData->folderid;
+            $resultCurl = $this->singkronfile($oldFolder);
+        }
         $fdrive = array();
         foreach ($resultCurl['files'] as $Nofiles) {
             if (preg_match("/-720p.mp4/", $Nofiles['name'])) {
                 $url = str_replace('-720p.mp4', '', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
                 if ($content) {
-                    if (Cache::get('Drama')) {
-                        $value = Cache::get('Drama')->where('id', $content->drama_id)->first();
-                    } else {
-                        $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->get();
-                        Cache::forever('Drama', $value);
-                        $value = Cache::get('Drama')->where('id', $content->drama_id)->first();
-                    }
                     $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->where('dramas.id', $content->drama_id)->first();
                     if ($value) {
                         $folderId = $value->folderid;
@@ -90,17 +88,8 @@ class GDController extends Controller
             } elseif (preg_match("/-360p.mp4/", $Nofiles['name'])) {
                 $url = str_replace('-360p.mp4', '', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
-
                 if ($content) {
-                    if (Cache::get('Drama')) {
-                        $value = Cache::get('Drama')->where('id', $content->drama_id)->first();
-                    } else {
-                        $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->get();
-                        Cache::forever('Drama', $value);
-                        $value = Cache::get('Drama')->where('id', $content->drama_id)->first();
-                    }
                     $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->where('dramas.id', $content->drama_id)->first();
-
                     if ($value) {
                         $folderId = $value->folderid;
                     } else {
