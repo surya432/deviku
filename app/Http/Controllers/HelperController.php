@@ -303,7 +303,7 @@ trait HelperController
   function CheckHeaderCode($idDrive)
   {
     if (!Cache::has('CHECKHEADER-' . md5($idDrive))) {
-      $expiresAt = now()->addMinutes(60 * 24);
+      $expiresAt = now()->addMinutes(10080);
       $statusCode = $this->getHeaderCode($idDrive);
       Cache::put('CHECKHEADER-' . md5($idDrive), $statusCode, $expiresAt);
       return $statusCode;
