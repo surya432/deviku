@@ -210,7 +210,7 @@ $(document).ready(function() {
 
 function btnSingkron() {
     $.ajax({
-        url: "{{ route('driveEps','1') }}",
+        url: "{{ route('driveEps','0') }}",
         type: "get",
 
         success: function(data) {

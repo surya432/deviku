@@ -24,7 +24,6 @@ Route::get('/ajax/videos/{url}', function(){
 Route::post('/ajax/videos/{url}', ['as'=>'ajaxEps','uses'=>'EmbedController@getDetail']);
 Route::get('/login', ['as'=>'login','uses'=>'LoginController@login']);
 
-Route::post('/admin/webfront/singkron', ['as'=>'webfrontSingkronpost','uses'=>'WebfrontsController@postDrama']);
 Route::post('/login',['as'=>'loginPost','uses'=>'LoginController@loginPost']);
 
 Route::group(['middleware' => ['web']], function(){
@@ -89,6 +88,7 @@ Route::group(['middleware' => ['admin','web']], function(){
 
     Route::get('/admin/drive/content/{id}', ['as'=>'driveEps','uses'=>'GDController@singkron']);
     Route::get('/admin/drive/drama/{id}', ['as'=>'driveDrama','uses'=>'GDController@foldersingkron']);
+    Route::post('/admin/webfront/singkron', ['as'=>'webfrontSingkronpost','uses'=>'WebfrontsController@postDrama']);
 
     Route::get('/admin/brokenlinks/', ['as'=>'brokenlinksIndex','uses'=>'BrokenLinkController@index']);
     Route::get('/admin/brokenlinks/table', ['as'=>'brokenlinksIndexTables','uses'=>'BrokenLinkController@brokenlinksIndexTables']);
