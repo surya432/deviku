@@ -409,9 +409,9 @@ trait HelperController
   {
     //$gmails =  DB::table('gmails')->inRandomOrder()->first();
     if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
-      $gmails = gmails::whereNotIn('token', function($query){
+      $gmails = Gmail::whereNotIn('token', function($query){
                   $query->select('token')
-                  ->from('mirrors')->groupBy('token')->havingRaw(" COUNT(*) >= 100 ")
+                  ->from('mirrors')->groupBy('token')->havingRaw(" COUNT(*) >= 100 ");
                 })->inRandomOrder()->first();  
       $title = $nameVideo . '-' . $kualitas . '.mp4';
       if (is_null($gmails)) {
