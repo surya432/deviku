@@ -407,15 +407,15 @@ trait HelperController
   }
   function GDCopy($urlVideo, $nameVideo, $kualitas)
   {
-    $gmails =  DB::table('gmails')->inRandomOrder()->first();
+    //$gmails =  DB::table('gmails')->inRandomOrder()->first();
     if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
+      $gmails = gmails::whereNotIn('token', function($query){
+                  $query->select('token')
+                  ->from('mirrors')->groupBy('token')->havingRaw(" COUNT(*) >= 100 ")
+                })->inRandomOrder()->first();  
       $title = $nameVideo . '-' . $kualitas . '.mp4';
       if (is_null($gmails)) {
-        return array(
-          array(
-            "error" => "Token null",
-          )
-        );
+        return null;
       } else {
         $copyid = $this->copygd($id['1'], $gmails->folderid, $title, $gmails->token);
         if (isset($copyid['id'])) {
@@ -428,11 +428,7 @@ trait HelperController
           $mirror->save();
           return $copyid['id'];
         } else {
-          return array(
-            array(
-              "error" => "gagal copy",
-            )
-          );
+          return null;
         }
       }
     }
