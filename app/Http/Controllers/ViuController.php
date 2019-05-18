@@ -19,7 +19,7 @@ class ViuController extends Controller
     }
     function getData(Request $request)
     {
-        $jwt = "Bearer eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.oIdYGTM1hbluGV8uQQnp1too4qz-ASAKarVla0efU2ZG4YFt00UMOw.57o-H-1CbmUSus8lbfr9NA.QtsX1o5KkYO0wtx8kElPAWLt3lTd9vfLmMP7EGRu_j-03W7wwQsFcFE54MVRu3XpJ-ZhVn9vrxIDutWOIU8ceTMj9krjPTG1Ax6zWUQCc61IHkA2Bc-w3-n00pjHq_iZC7AUnL8x1xnZRvZ2GuCgtrgCoigicu4PNqgJGGn62gHh4f0W7GMEZic4BYl3fECVvIexcn1iriANGPdaxSYI3g.cKOUX4pXB04kfdoOLdlknQ";
+        $jwt = "Bearer eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.LDSvNGddmlR5CP6UayTgmVZ5r1I9a_MToNABYP9MMXs64s965H7itA.Ltt6pWKOI3iPWgkJFQtpNA.mxIIs6D8ZOLbfUwJzs1zZmlszdPy6CuJAZk3kg1Xb5l30kVlRcQNk-TQHkwcZ9oiZmkbe_bbrlwAXMDOv2pwGvpdZWvi1yZu4Tq3sACFqqQbPOd3YzBtOFY07iHPVyTjuSqNmJl8CyTlNaVoqewgp0jObdsQ13pvYRM1UUUHvaLuVhtt1JolqbdEw_yNaTSs7SrLueWZl-HfFLXg3Noweg.jzK0VZNcr30kiYGRxs_-8Q";
         $start = $request->input('inputStartEp') - 1;
         $end = $request->input('inputEndEp');
         if ($start == null) {
@@ -29,6 +29,7 @@ class ViuController extends Controller
             $end = "150";
         }
         $settingData = Setting::find(1);
+		$jwt = $settingData->tokenViu;
         switch ($request->input("id")) {
             case "senin":
                 $id_hari = $settingData->viuSenin;
@@ -61,16 +62,18 @@ class ViuController extends Controller
             default:
                 $result = $this->curl_viu($request->input("id"), $jwt, $start, $end);
         }
-        $number = json_decode($result, true);
+		$number = json_decode($result, true);
+		
         $data = $number['response']['container']['item'];
-        if (empty($data)) {
-            return response('Hello World', 404);
+        if (isset($data)) {
+			return $this->data($data);
         }
-        return $this->data($data);
+		return response($number, 404);
+
     }
     function data($result)
     {
-        $path_sub = ".";
+        $path_sub = "R:\\";
         $subtext = "'FontSize=22,PrimaryColour=&H00FFFF&'";
         $command_ffmpeg = '-i "\ffmpeg\blue.png" -filter_complex "[0:v]scale=1280x720[outv];[outv][1:v]overlay=10:10[outw];[outw]subtitles=sub/%%~na.ass:force_style=' . $subtext . '[out]" -map "[out]" -map 0:a -aspect 16:9 -c:a copy -bsf:a aac_adtstoasc -c:v libx264 -movflags +faststart -pix_fmt yuv420p -preset fast -b:v 900K';
         $hardsub360p = ' && "' . $path_sub . '\ffmpeg\ffmpeg.exe" -y -i "' . $path_sub . '\hardsub\%%~na-720p.mp4" -aspect 16:9 -c:a copy -s 640x360 -bsf:a aac_adtstoasc -c:v libx264 -movflags +faststart -pix_fmt yuv420p -crf 27 -preset faster "I:\hardsub\%%~na-360p.mp4" && MOVE "' . $path_sub . ':\%%a" "' . $path_sub . ':\RAW\%%a"';
@@ -83,8 +86,9 @@ class ViuController extends Controller
                 $subtitle_indo = $item["subtitle_id_srt"];
                 $slug = $item["slug"];
                 $slug = $this->seoUrl($slug);
-                $subtitle_code .= "wget '" . $subtitle_indo . "' -OutFile 'sub/" . $slug . ".srt' \n";
-                $ffmpeg_code .= " \n" . '' . $path_sub . '\ffmpeg\ffmpeg.exe -y -i "' . $item["href"] . '" -c copy ' . $path_sub . '\\' . $slug . '.ts;';
+                $subtitle_code .= "powershell.exe wget '" . $subtitle_indo . "' -OutFile 'sub/" . $slug . ".srt' \n";
+                //$ffmpeg_code .= " \n" . '' . $path_sub . '\ffmpeg\ffmpeg.exe -y -i "' . $item["href"] . '" -c copy ' . $path_sub . '\\' . $slug . '.ts;';
+				$ffmpeg_code .= " \n" .'start "Encoding '.$slug.'" powershell.exe "'. 'ffmpeg -y -i "' . $item["href"] . '" -c copy ' . $path_sub .  $slug . '.ts;"';
                 //$ffmpeg_code .= " \n".'start "Encoding '.$slug.'" powershell.exe "'.$path_sub.':\ffmpeg\ffmpeg.exe" -y -i "'.$items["href"].'" '.$command_ffmpeg.' "'.$path_sub.':\\'.$slug.'.720p.mp4"'.$hardsub360p;
                 //$subbes= $slug." Sub<br>";
             }

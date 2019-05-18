@@ -157,13 +157,14 @@ class EmbedController extends Controller
     }
     function CopyGoogleDriveID($urlDrive, $url, $kualitas)
     {
+        $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Gagal Getlink video!! :( </br> #PERLU REFRESH</p></div>';
         $mytime = \Carbon\Carbon::now();
         $mirror = Mirror::select('idcopy')->where('url', $urlDrive)->where('kualitas', $kualitas)->first();
         //return json_encode($mirror);
         if (is_null($mirror)) {
             $copyID = $this->GDCopy($urlDrive, md5($url . $mytime), $kualitas);
             if (is_null($copyID) || isset($copyID['error'])) {
-                return abort(404);
+                return $linkError;
             };
             return $this->GetPlayer($copyID);
         } else {
