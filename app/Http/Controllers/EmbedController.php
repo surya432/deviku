@@ -117,7 +117,7 @@ class EmbedController extends Controller
                         $laporBrokenLinks->contents_id = $content->id;
                         $laporBrokenLinks->save();
                     }
-                    return '<script type="text/javascript">showPlayer("gd360");</script>';
+                    return $linkError;
                 }
                 break;
             case 'mirror1':
@@ -173,7 +173,7 @@ class EmbedController extends Controller
     }
     function GetPlayer($urlDrive)
     {
-        return file_get_contents("http://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
+        return $this->viewsource("https://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
     }
     function deletegdbydate()
     {
