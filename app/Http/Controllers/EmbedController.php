@@ -102,7 +102,7 @@ class EmbedController extends Controller
                         $laporBrokenLinks->contents_id = $content->id;
                         $laporBrokenLinks->save();
                     }
-                    return $this->CopyGoogleDriveID($content->f360p, $url, "SD");
+                    return '<script type="text/javascript">showPlayer("gd720");</script>';
                 }
                 break;
             case 'gd720':
@@ -117,7 +117,7 @@ class EmbedController extends Controller
                         $laporBrokenLinks->contents_id = $content->id;
                         $laporBrokenLinks->save();
                     }
-                    return $this->CopyGoogleDriveID($content->f720p, $url, "HD");
+                    return $linkError;
                 }
                 break;
             case 'mirror1':
