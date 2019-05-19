@@ -173,6 +173,7 @@ $(document).ready(function() {
         oTable = $("#table-users").DataTable({
             "processing": true,
             "serverSide": true,
+            "order": [[ 3, "desc" ]],
             "ajax": "{{ route('dramaDataUpdate') }}",
             "columns": [{
                     data: 'id',

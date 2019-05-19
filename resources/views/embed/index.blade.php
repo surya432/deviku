@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{URL::asset('js/jwplayer.js')}}"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/jwplayer/5.10/jwplayer.js"></script>
     <script>
@@ -106,18 +106,6 @@
             video.height)
     });
     </script>
-
-    <div id="myElement" style="position:absolute;width:100%!important;height:100%!important" onload="getPlayer()">
-        <div class="spinner">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-        </div>
-        <div id="notif" class="text-center">
-            <p style="color: blue;"> Pilih Server Di atas!!!</br> Jangan Gunakan UCbrowser atau Browser mini
-                lainnya!!!</br> Jika Error Cepat Lapor Mimin atau Komentar di bawah... :D :)</p>
-        </div>
-    </div>
     <div id="server" class="text-left" style="padding-top:5px;">
         <!-- <button class="btn btn-sm btn-primary" disabled>Server:</button> -->
         @if(isset($url->f360p))
@@ -139,6 +127,18 @@
         @endif
         <button class="btn btn-sm btn-primary" onclick=showPlayer('download_links')>Download</button>
     </div>
+    <div id="myElement" style="width:100%!important;height:100%!important" onload="getPlayer()">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+        <div id="notif" class="text-center">
+            <p style="color: blue;"> Pilih Server Di atas!!!</br> Jangan Gunakan UCbrowser atau Browser mini
+                lainnya!!!</br> Jika Error Cepat Lapor Mimin atau Komentar di bawah... :D :)</p>
+        </div>
+    </div>
+
     <script type="text/javascript">
     $.ajaxSetup({
         headers: {
@@ -162,6 +162,7 @@
             );
         var data = 'videos={{ $url->url }}&player=' + link_id;
         $.ajax({
+            async: true,
             url: "{{ route('ajaxEps',$url->url) }}",
             type: "POST",
             data: data,

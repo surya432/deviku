@@ -89,7 +89,7 @@ class EmbedController extends Controller
     function getDetail(Request $request, $url)
     {
         $content = Content::where('url', $url)->first();
-        $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Ya Link Sudah Di Rusak!! :( </br> #LaporDenganKomentarDibawah</p></div>';
+        $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Ya Link Sudah Di Rusak!! Coba Server Lain Kak. :( </br> #LaporDenganKomentarDibawah</p></div>';
         switch ($request->input('player')) {
             case 'gd360':
                 $f360p = $this->GetIdDrive($content->f360p);
@@ -117,7 +117,7 @@ class EmbedController extends Controller
                         $laporBrokenLinks->contents_id = $content->id;
                         $laporBrokenLinks->save();
                     }
-                    return '<script type="text/javascript">showPlayer("gd360");</script>';
+                    return $linkError;
                 }
                 break;
             case 'mirror1':
@@ -173,7 +173,7 @@ class EmbedController extends Controller
     }
     function GetPlayer($urlDrive)
     {
-        return file_get_contents("http://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
+        return $this->viewsource("https://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
     }
     function deletegdbydate()
     {

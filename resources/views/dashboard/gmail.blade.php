@@ -38,7 +38,7 @@ Accounts Gmail
                 <tr>
                     <th>No</th>
                     <th>Email</th>
-                    <th>folder Id</th>
+                    <th>Total Files</th>
                     <th>Update At</th>
                     <th>Action</th>
                 </tr>
@@ -107,8 +107,12 @@ $(document).ready(function() {
         oTable = $("#table-users").DataTable({
             "processing": true,
             "serverSide": true,
-            "pageLength": 25,
+            "pageLength": 10,
             "ajax": "{{ route('gmailData') }}",
+            "order": [[ 3, "asc" ]],
+            columnDefs: [
+                { type: 'date-euro', targets: 3 }
+            ],
             "columns": [{
                     data: 'id',
                     name: 'id'
@@ -118,8 +122,8 @@ $(document).ready(function() {
                     name: 'email'
                 },
                 {
-                    data: 'folderid',
-                    name: 'folderid'
+                    data: 'totalfiles',
+                    name: 'totalfiles'
                 },
                 {
                     data: 'updated_at',
