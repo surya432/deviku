@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Gmail;
 use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\Facades\DataTables;
-
+use DB;
 class GmailController extends Controller
 {
     //
@@ -19,7 +19,11 @@ class GmailController extends Controller
     }
     public function Data()
     {
-        $data = Gmail::all();
+        $data = DB::table('gmails')
+                    ->select('gmails.*',
+                        DB::raw("(SELECT Count(*) FROM mirrors where mirrors.token = gmails.token) as totalfiles")
+                    )
+                    ->get();
         return Datatables::of($data)
             ->addColumn('action', function ($data) {
             return '
