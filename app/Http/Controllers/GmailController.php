@@ -25,6 +25,11 @@ class GmailController extends Controller
                     )
                     ->get();
         return Datatables::of($data)
+            ->addColumn('statusFolder', function ($data) {
+                //$this->getHeaderFolderCode($idDrive);
+                $folderCode = $this->CheckHeaderFolderCode( $data->folderid);
+                return ($folderCode)?"true":"false";
+            })
             ->addColumn('action', function ($data) {
             return '
                 <a href="https://drive.google.com/drive/folders/' . $data->folderid . '"  class="btn btn-xs btn-primary" target="_blank">Folder</a>

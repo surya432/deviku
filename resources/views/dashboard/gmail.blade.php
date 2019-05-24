@@ -39,6 +39,7 @@ Accounts Gmail
                     <th>No</th>
                     <th>Email</th>
                     <th>Total Files</th>
+                    <th>Status Folder</th>
                     <th>Update At</th>
                     <th>Action</th>
                 </tr>
@@ -126,9 +127,14 @@ $(document).ready(function() {
                     name: 'totalfiles'
                 },
                 {
+                    data: 'statusFolder',
+                    name: 'statusFolder'
+                },
+                {
                     data: 'updated_at',
                     name: 'updated_at'
                 },
+                
                 {
                     data: 'action',
                     name: 'action',

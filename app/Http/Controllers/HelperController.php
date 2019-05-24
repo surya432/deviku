@@ -33,11 +33,21 @@ trait HelperController
     curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
     curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     $output = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     return $httpcode;
+  }
+  function getHeaderFolderCode($id)
+  {
+    $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M" );
+    $data=  json_decode($curl, true);
+    if(isset($data["shared"])){
+      return $data["shared"];
+    }else{
+      return false;
+    }
   }
   function viewsource($url)
   {
@@ -303,13 +313,24 @@ trait HelperController
   function CheckHeaderCode($idDrive)
   {
     if (!Cache::has('CHECKHEADER-' . md5($idDrive))) {
-      $expiresAt = now()->addMinutes(10080);
-      $statusCode = $this->getHeaderCode($idDrive);
+      $expiresAt = now()->addMinutes(86400);
+      $statusCode = $this->getHeaderFolderCode($idDrive);
       Cache::put('CHECKHEADER-' . md5($idDrive), $statusCode, $expiresAt);
       return $statusCode;
     }
     $statusCode = Cache::get('CHECKHEADER-' . md5($idDrive));
     return $statusCode;
+  }
+  function CheckHeaderFolderCode($idDrive)
+  {
+    if (!Cache::has('FolderCode' . md5($idDrive))) {
+      $expiresAt = now()->addMinutes(86400);
+      $statusCode = $this->getHeaderFolderCode($idDrive);
+      Cache::put('FolderCode' . md5($idDrive), $statusCode, $expiresAt);
+      return $statusCode;
+    }
+    $statusCode = Cache::get('FolderCode' . md5($idDrive));
+    return  $statusCode;
   }
   function GetIdDrive2($urlVideoDrive)
   {
@@ -495,7 +516,7 @@ trait HelperController
     $seconds = 1000 * 60 * 5;
     $value = Cache::remember('deletegd', $seconds, function () {
       $mytime = \Carbon\Carbon::now();
-      $dt = $mytime->subDays(2);
+      $dt = $mytime->subDays(4);
       $datas = Mirror::where("created_at", '<=', date_format($dt, "Y/m/d H:i:s"))->take(10)->get();
       if ($datas) {
         foreach ($datas as $datass) {
