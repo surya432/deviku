@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 
 use App\Setting;
 use App\Mirror;
+use App\Trash;
 
 trait HelperController
 {
@@ -515,17 +516,14 @@ trait HelperController
   {
     $seconds = 1000 * 60 * 5;
     $value = Cache::remember('deletegd', $seconds, function () {
-      $mytime = \Carbon\Carbon::now();
-      $dt = $mytime->subDays(4);
-      $datas = Mirror::where("created_at", '<=', date_format($dt, "Y/m/d H:i:s"))->take(10)->get();
+      $datas = Trash::take(20)->get();
       if ($datas) {
         foreach ($datas as $datass) {
           $idcopy = $datass->idcopy;
           $tokens = $datass->token;
           if (!is_null($idcopy) && !is_null($tokens)) {
             if ($this->deletegd($idcopy, $tokens)) {
-              $id = Mirror::where('idcopy', $idcopy);
-              $id->delete();
+              $datass->delete();
             }
           }
         }

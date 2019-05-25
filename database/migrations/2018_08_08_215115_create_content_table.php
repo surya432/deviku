@@ -19,8 +19,8 @@ class CreateContentTable extends Migration
             $table->string('drama_id');
             $table->string('status');
             $table->string('url');
-            $table->string('f720p')->nullable();
-            $table->string('f720p')->nullable();
+            $table->string('f360p')->default('https://drive.google.com/open?id=1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu');
+            $table->string('f720p')->default('https://drive.google.com/open?id=1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu');
             $table->string('mirror1')->nullable();
             $table->string('mirror2')->nullable();
             $table->string('mirror3')->nullable();

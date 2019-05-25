@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLinkBrokenTable extends Migration
+class CreateTrashesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateLinkBrokenTable extends Migration
      */
     public function up()
     {
-        Schema::create('brokenlinks', function (Blueprint $table) {
-            //
-            $table->increments('id');
-            $table->integer('contents_id');
-            $table->string('kualitas');
+        Schema::create('trashes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('idcopy');
+            $table->string('token');
             $table->timestamps();
         });
     }
@@ -29,9 +28,6 @@ class CreateLinkBrokenTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brokenlinks', function (Blueprint $table) {
-            //
-            Schema::dropIfExists('brokenlinks');
-        });
+        Schema::dropIfExists('trashes');
     }
 }

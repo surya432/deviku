@@ -18,7 +18,7 @@ class EmbedController extends Controller
     function index(Request $request, $url)
     {
         $contentCheck = Content::where('url', $url)->first();
-        if (is_null($contentCheck) || is_null($contentCheck->f720p)) {
+        if (is_null($contentCheck) ) {
             return abort(404);
         }
         $agent = new Agent();
@@ -32,10 +32,25 @@ class EmbedController extends Controller
         $value = $this->MirrorCheck($url);
         return view("embed.index")->with("url", $value)->with('GeoIP', $country);
     }
+    function addToTrashes()
+    {
+        $mytime = \Carbon\Carbon::now();
+        $dt = $mytime->subDays(4);
+        $datas = Mirror::where("created_at", '<=', date_format($dt, "Y/m/d H:i:s"))->take(20)->get();
+        if ($datas) {
+          foreach ($datas as $datass) {
+            $trashes =new Trash();
+            $trashes->idcopy=$idcopy;
+            $trashes->token=$token;
+            $trashes->save();
+          }
+        }
+        $this->AutoDeleteGd();
+    }
     function MirrorCheck($url)
     {
         $content = Content::where('url', $url)->first();
-        $this->AutoDeleteGd();
+        $this->addToTrashes();
         $save = false;
         if (preg_match("/upload_id=/", $content->mirror1)) {
             $resultCheck360 = $this->check_openload360($content->mirror1);
@@ -86,6 +101,17 @@ class EmbedController extends Controller
         }
         return $content;
     }
+    function MethodBrokenlinks($id, $kualitas, $options){
+        $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
+        if ($checkLaporanBroken && $options == "delete") {
+            $laporBrokenLinks->delete();
+        }elseif(is_null($checkLaporanBroken) && $options == "add"){
+            $laporBrokenLinks = new Brokenlink;
+            $laporBrokenLinks->contents_id = $content->id;
+            $laporBrokenLinks->kualitas = $kualitas;
+            $laporBrokenLinks->save();
+        }
+    }
     function getDetail(Request $request, $url)
     {
         $content = Content::where('url', $url)->first();
@@ -94,29 +120,20 @@ class EmbedController extends Controller
             case 'gd360':
                 $f360p = $this->GetIdDrive($content->f360p);
                 if ($f360p == '200') {
+                    $this->MethodBrokenlinks($content->id, "SD","delete");
                     return $this->CopyGoogleDriveID($content->f360p, $url, "SD");
                 } else {
-                    $checkLaporanBroken = Brokenlink::where('contents_id', $content->id)->first();
-                    if (is_null($checkLaporanBroken)) {
-                        $laporBrokenLinks = new Brokenlink;
-                        $laporBrokenLinks->contents_id = $content->id;
-                        $laporBrokenLinks->save();
-                    }
+                    $this->MethodBrokenlinks($content->id, "SD","add");
                     return '<script type="text/javascript">showPlayer("gd720");</script>';
                 }
                 break;
             case 'gd720':
                 $s720p = $this->GetIdDrive($content->f720p);
                 if ($s720p == '200') {
-                    //return "helloWorld";
+                    $this->MethodBrokenlinks($content->id, "HD","delete");
                     return $this->CopyGoogleDriveID($content->f720p, $url, "HD");
                 } else {
-                    $checkLaporanBroken = Brokenlink::where('contents_id', $content->id)->first();
-                    if (is_null($checkLaporanBroken)) {
-                        $laporBrokenLinks = new Brokenlink;
-                        $laporBrokenLinks->contents_id = $content->id;
-                        $laporBrokenLinks->save();
-                    }
+                    $this->MethodBrokenlinks($content->id, "HD","add");
                     return $linkError;
                 }
                 break;
