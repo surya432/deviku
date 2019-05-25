@@ -21,6 +21,7 @@ class GDController extends Controller
         $settingData = Setting::find(1);
         $tokenDriveAdmin = $settingData->tokenDriveAdmin;
         $resultCurl = $this->get_token($tokenDriveAdmin);
+
         return $resultCurl;
     }
     public function singkronFolder()
@@ -117,17 +118,12 @@ class GDController extends Controller
         $dataType = Drama::find($request->input('id'));
         $folderName =  $dataType->title . " [$dataType->id]";
         $resultCurl = $this->GDCreateFolder($folderName);
-        if(isset($resultCurl['id'])){
-            $dataType = Drama::find($dataType->id);
-            if ($dataType) {
-                $dataType->folderid = $resultCurl['id'];
-                $dataType->save();
-            }
-            $dataTypeasd = "Insert Success";
-            return response()->json($dataTypeasd, 201);
-        }else{
-            return response()->json($resultCurl, 201);
-
+        $dataType = Drama::find($dataType->id);
+        if ($dataType) {
+            $dataType->folderid = $resultCurl['id'];
+            $dataType->save();
         }
+        $dataTypeasd = "Insert Success";
+        return response()->json($dataTypeasd, 201);
     }
 }
