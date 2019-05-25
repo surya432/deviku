@@ -181,7 +181,7 @@ class EmbedController extends Controller
         if (is_null($mirror)) {
             $copyID = $this->GDCopy($urlDrive, md5($url . $mytime), $kualitas);
             if (is_null($copyID) || isset($copyID['error'])) {
-                return $linkError;
+                return $this->GetPlayer('1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu');
             };
             return $this->GetPlayer($copyID);
         } else {
