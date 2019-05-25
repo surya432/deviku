@@ -97,7 +97,6 @@ class EmbedController extends Controller
             $laporBrokenLinks->save();
         }
     }
-
     function getDetail(Request $request, $url)
     {
         $content = Content::where('url', $url)->first();
