@@ -333,12 +333,12 @@ trait HelperController
     $statusCode = Cache::get('FolderCode' . md5($idDrive));
     return  $statusCode;
   }
-  function GetIdDrive2($urlVideoDrive)
+  function GetIdDriveForPlayer($urlVideoDrive)
   {
     if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
-      return $id[1];
+      return $this->CheckHeaderCode($id[1]);
     } else {
-      return "Format Link Salah";
+      return false;
     }
   }
   function GetIdDrive($urlVideoDrive)
@@ -346,7 +346,7 @@ trait HelperController
     if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
       return $this->CheckHeaderCode($id[1]);
     } else {
-      return "Format Link Salah";
+      return false;
     }
   }
   public function copygd($driveId, $folderid, $title, $token)
