@@ -97,6 +97,7 @@ Drama
                     <th>Status</th>
                     <th>Country</th>
                     <th>Type</th>
+                    <th>Folder Id</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -195,6 +196,12 @@ $(document).ready(function() {
                     data: 'type',
                     name: 'type',
                     orderable: false
+                },
+                {
+                    data: 'folderids',
+                    name: 'folderids',
+                    orderable: false,
+                    searchable: false
                 },
                 {
                     data: 'action',
