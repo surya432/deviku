@@ -18,7 +18,7 @@ class EmbedController extends Controller
     function index(Request $request, $url)
     {
         $contentCheck = Content::where('url', $url)->first();
-        if (is_null($contentCheck) || is_null($contentCheck->f720p)) {
+        if (is_null($contentCheck) ) {
             return abort(404);
         }
         $agent = new Agent();
@@ -32,10 +32,25 @@ class EmbedController extends Controller
         $value = $this->MirrorCheck($url);
         return view("embed.index")->with("url", $value)->with('GeoIP', $country);
     }
+    function addToTrashes()
+    {
+        $mytime = \Carbon\Carbon::now();
+        $dt = $mytime->subDays(4);
+        $datas = Mirror::where("created_at", '<=', date_format($dt, "Y/m/d H:i:s"))->take(20)->get();
+        if ($datas) {
+          foreach ($datas as $datass) {
+            $trashes =new Trash();
+            $trashes->idcopy=$idcopy;
+            $trashes->token=$token;
+            $trashes->save();
+          }
+        }
+        $this->AutoDeleteGd();
+    }
     function MirrorCheck($url)
     {
         $content = Content::where('url', $url)->first();
-        $this->AutoDeleteGd();
+        $this->addToTrashes();
         $save = false;
         if (preg_match("/upload_id=/", $content->mirror1)) {
             $resultCheck360 = $this->check_openload360($content->mirror1);
