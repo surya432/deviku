@@ -106,15 +106,18 @@ class EmbedController extends Controller
         return $content;
     }
     function MethodBrokenlinks($id, $kualitas, $options){
-        $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
-        if ($checkLaporanBroken && $options == "delete") {
-            $laporBrokenLinks->delete();
-        }elseif(is_null($checkLaporanBroken) && $options == "add"){
-            $laporBrokenLinks = new Brokenlink;
-            $laporBrokenLinks->contents_id = $id;
-            $laporBrokenLinks->kualitas = $kualitas;
-            $laporBrokenLinks->save();
-        }
+        $seconds = 1000 * 60 * 4;
+        $value = Cache::remember('MethodBrokenlinks', $seconds, function () {
+            $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
+            if ($checkLaporanBroken && $options == "delete") {
+                $laporBrokenLinks->delete();
+            }elseif(is_null($checkLaporanBroken) && $options == "add"){
+                $laporBrokenLinks = new Brokenlink;
+                $laporBrokenLinks->contents_id = $id;
+                $laporBrokenLinks->kualitas = $kualitas;
+                $laporBrokenLinks->save();
+            }
+        });
     }
     function getDetail(Request $request, $url)
     {
