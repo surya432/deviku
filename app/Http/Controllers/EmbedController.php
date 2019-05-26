@@ -15,7 +15,6 @@ use App\Trash;
 
 class EmbedController extends Controller
 {
-    //
     use HelperController;
     function index(Request $request, $url)
     {
@@ -54,7 +53,6 @@ class EmbedController extends Controller
     function MirrorCheck($url)
     {
         $content = Content::where('url', $url)->first();
-        $this->addToTrashes();
         $save = false;
         if (preg_match("/upload_id=/", $content->mirror1)) {
             $resultCheck360 = $this->check_openload360($content->mirror1);
@@ -106,15 +104,18 @@ class EmbedController extends Controller
         return $content;
     }
     function MethodBrokenlinks($id, $kualitas, $options){
-        $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
-        if ($checkLaporanBroken && $options == "delete") {
-            $laporBrokenLinks->delete();
-        }elseif(is_null($checkLaporanBroken) && $options == "add"){
-            $laporBrokenLinks = new Brokenlink;
-            $laporBrokenLinks->contents_id = $id;
-            $laporBrokenLinks->kualitas = $kualitas;
-            $laporBrokenLinks->save();
-        }
+        $seconds = 1000 * 60 * 4;
+        $value = Cache::remember('MethodBrokenlinks', $seconds, function () use($id, $kualitas, $options) {
+            $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
+            if ($checkLaporanBroken && $options == "delete") {
+                $laporBrokenLinks->delete();
+            }elseif(is_null($checkLaporanBroken) && $options == "add"){
+                $laporBrokenLinks = new Brokenlink;
+                $laporBrokenLinks->contents_id = $id;
+                $laporBrokenLinks->kualitas = $kualitas;
+                $laporBrokenLinks->save();
+            }
+        });
     }
     function getDetail(Request $request, $url)
     {
@@ -197,8 +198,5 @@ class EmbedController extends Controller
     {
         return $this->viewsource("https://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
     }
-    function deletegdbydate()
-    {
-        return $this->AutoDeleteGd();
-    }
+    
 }
