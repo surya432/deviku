@@ -447,27 +447,33 @@ trait HelperController
   {
     //$gmails =  DB::table('gmails')->inRandomOrder()->first();
     if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
-      $gmails = Gmail::whereNotIn('token', function($query){
+      $sizeCount = Setting::find(1)->sizeCoun;
+      $gmails = Gmail::whereNotIn('token', function($query)use ($sizeCount){
                   $query->select('token')
-                  ->from('mirrors')->groupBy('token')->havingRaw(" COUNT(*) >= 100 ");
+                  ->from('mirrors')->groupBy('token')->havingRaw('COUNT(*) >= '. $sizeCount);
                 })->inRandomOrder()->first();  
       $title = $nameVideo . '-' . $kualitas . '.mp4';
       if (is_null($gmails)) {
         return null;
       } else {
-        $copyid = $this->copygd($id['1'], $gmails->folderid, $title, $gmails->token);
-        if (isset($copyid['id'])) {
-          $fieldMirror =  array("id" => $copyid['id'], "kualitas" => $kualitas, "url" => $urlVideo);
-          $mirror = new Mirror();
-          $mirror->idcopy = $copyid['id'];
-          $mirror->kualitas = $kualitas;
-          $mirror->token = $gmails->token;
-          $mirror->url = $urlVideo;
-          $mirror->save();
-          return $copyid['id'];
-        } else {
-          return null;
+        try{
+          $copyid = $this->copygd($id['1'], $gmails->folderid, $title, $gmails->token);
+          if (isset($copyid['id'])) {
+            $fieldMirror =  array("id" => $copyid['id'], "kualitas" => $kualitas, "url" => $urlVideo);
+            $mirror = new Mirror();
+            $mirror->idcopy = $copyid['id'];
+            $mirror->kualitas = $kualitas;
+            $mirror->token = $gmails->token;
+            $mirror->url = $urlVideo;
+            $mirror->save();
+            return $copyid['id'];
+          } else {
+            return null;
+          }
+        }catch(Exception $e){
+          return $e->errorMessage();
         }
+       
       }
     }
   }
