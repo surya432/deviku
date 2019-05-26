@@ -111,7 +111,7 @@ class EmbedController extends Controller
             $laporBrokenLinks->delete();
         }elseif(is_null($checkLaporanBroken) && $options == "add"){
             $laporBrokenLinks = new Brokenlink;
-            $laporBrokenLinks->contents_id = $content->id;
+            $laporBrokenLinks->contents_id = $id;
             $laporBrokenLinks->kualitas = $kualitas;
             $laporBrokenLinks->save();
         }
@@ -123,7 +123,7 @@ class EmbedController extends Controller
         $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Ya Link Sudah Di Rusak!! Coba Server Lain Kak. :( </br> #LaporDenganKomentarDibawah</p></div>';
         switch ($request->input('player')) {
             case 'gd360':
-                $f360p = $this->GetIdDrive($content->f360p);
+                $f360p = $this->CheckHeaderCode($content->f360p);
                 if ($f360p == '200') {
                     $this->MethodBrokenlinks($content->id, "SD","delete");
                     return $this->CopyGoogleDriveID($content->f360p, $url, "SD");
@@ -133,7 +133,7 @@ class EmbedController extends Controller
                 }
                 break;
             case 'gd720':
-                $s720p = $this->GetIdDrive($content->f720p);
+                $s720p = $this->CheckHeaderCode($content->f720p);
                 if ($s720p == '200') {
                     $this->MethodBrokenlinks($content->id, "HD","delete");
                     return $this->CopyGoogleDriveID($content->f720p, $url, "HD");
