@@ -15,7 +15,6 @@ use App\Trash;
 
 class EmbedController extends Controller
 {
-    //
     use HelperController;
     function index(Request $request, $url)
     {
@@ -199,8 +198,5 @@ class EmbedController extends Controller
     {
         return $this->viewsource("https://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
     }
-    function deletegdbydate()
-    {
-        return $this->AutoDeleteGd();
-    }
+    
 }
