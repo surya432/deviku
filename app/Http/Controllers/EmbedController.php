@@ -11,6 +11,7 @@ use Jenssegers\Agent\Agent;
 use GeoIP;
 use App\Brokenlink;
 use App\Setting;
+use App\Trash;
 
 class EmbedController extends Controller
 {
@@ -42,8 +43,8 @@ class EmbedController extends Controller
         if ($datas) {
           foreach ($datas as $datass) {
             $trashes =new Trash();
-            $trashes->idcopy=$idcopy;
-            $trashes->token=$token;
+            $trashes->idcopy=$datass->idcopy;
+            $trashes->token=$datass->token;
             $trashes->save();
           }
         }
