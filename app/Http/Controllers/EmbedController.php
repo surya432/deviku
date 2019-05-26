@@ -15,7 +15,6 @@ use App\Trash;
 
 class EmbedController extends Controller
 {
-    //
     use HelperController;
     function index(Request $request, $url)
     {
