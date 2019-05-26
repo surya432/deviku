@@ -34,6 +34,10 @@ Setting
                             <input type="text" class="form-control" name="folderUpload" id="folderUpload" required>
                         </div>
                         <div class="form-group">
+                            <label class="control-label" for="folder360p">Folder Upload</label>
+                            <input type="text" class="form-control" name="sizeCount" id="sizeCount" required>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label" for="folder360p">Token Drive Admin</label>
                             <input type="text" class="form-control" name="tokenDriveAdmin" id="tokenDriveAdmin"
                                 required>
@@ -110,6 +114,7 @@ $(document).ready(function() {
                 $("input[name=viuJumat]").val(data[0].viuJumat);
                 $("input[name=viuSabtu]").val(data[0].viuSabtu);
                 $("input[name=viuMinggu]").val(data[0].viuMinggu);
+                $("input[name=sizeCount]").val(data[0].sizeCount);
             },
             error: function(data) {
                 $(".alert-danger").text("Error")
