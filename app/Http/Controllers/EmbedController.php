@@ -10,6 +10,8 @@ use Cache;
 use Jenssegers\Agent\Agent;
 use GeoIP;
 use App\Brokenlink;
+use App\Setting;
+use App\Trash;
 
 class EmbedController extends Controller
 {
@@ -34,15 +36,17 @@ class EmbedController extends Controller
     }
     function addToTrashes()
     {
+        $dayFiles = Setting::find(1)->dayFiles;
         $mytime = \Carbon\Carbon::now();
-        $dt = $mytime->subDays(4);
+        $dt = $mytime->subDays($dayFiles);
         $datas = Mirror::where("created_at", '<=', date_format($dt, "Y/m/d H:i:s"))->take(20)->get();
         if ($datas) {
           foreach ($datas as $datass) {
             $trashes =new Trash();
-            $trashes->idcopy=$idcopy;
-            $trashes->token=$token;
+            $trashes->idcopy=$datass->idcopy;
+            $trashes->token=$datass->token;
             $trashes->save();
+            Mirror::where('idcopy',$datass->idcopy)->delete();
           }
         }
         $this->AutoDeleteGd();
