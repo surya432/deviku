@@ -314,9 +314,9 @@ trait HelperController
   function CheckHeaderCode($idDrive)
   {
     if (!Cache::has('CHECKHEADER-' . md5($idDrive))) {
-      $expiresAt = now()->addMinutes(86400);
+      $expiresCacheAt =Setting::find(1)->expiresCacheAt;
       $statusCode = $this->getHeaderFolderCode($idDrive);
-      Cache::put('CHECKHEADER-' . md5($idDrive), $statusCode, $expiresAt);
+      Cache::put('CHECKHEADER-' . md5($idDrive), $statusCode, $expiresCacheAt);
       return $statusCode;
     }
     $statusCode = Cache::get('CHECKHEADER-' . md5($idDrive));
@@ -325,9 +325,9 @@ trait HelperController
   function CheckHeaderFolderCode($idDrive)
   {
     if (!Cache::has('FolderCode' . md5($idDrive))) {
-      $expiresAt = now()->addMinutes(86400);
+      $expiresCacheAt =Setting::find(1)->expiresCacheAt;
       $statusCode = $this->getHeaderFolderCode($idDrive);
-      Cache::put('FolderCode' . md5($idDrive), $statusCode, $expiresAt);
+      Cache::put('FolderCode' . md5($idDrive), $statusCode, $expiresCacheAt);
       return $statusCode;
     }
     $statusCode = Cache::get('FolderCode' . md5($idDrive));
@@ -439,7 +439,7 @@ trait HelperController
   {
     //$gmails =  DB::table('gmails')->inRandomOrder()->first();
     if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
-      $sizeCount = Setting::find(1)->sizeCoun;
+      $sizeCount = Setting::find(1)->sizeCount;
       $gmails = Gmail::whereNotIn('token', function($query)use ($sizeCount){
                   $query->select('token')
                   ->from('mirrors')->groupBy('token')->havingRaw('COUNT(*) >= '. $sizeCount);
