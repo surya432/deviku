@@ -38,6 +38,10 @@ Setting
                             <input type="text" class="form-control" name="sizeCount" id="sizeCount" required>
                         </div>
                         <div class="form-group">
+                            <label class="control-label" for="folder360p">Day Files</label>
+                            <input type="text" class="form-control" name="dayFiles" id="dayFiles" required>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label" for="folder360p">Token Drive Admin</label>
                             <input type="text" class="form-control" name="tokenDriveAdmin" id="tokenDriveAdmin"
                                 required>
@@ -120,6 +124,7 @@ $(document).ready(function() {
                 $("input[name=viuMinggu]").val(data[0].viuMinggu);
                 $("input[name=sizeCount]").val(data[0].sizeCount);
                 $("input[name=expiresCacheAt]").val(data[0].expiresCacheAt);
+                $("input[name=dayFiles]").val(data[0].dayFiles);
             },
             error: function(data) {
                 $(".alert-danger").text("Error")
