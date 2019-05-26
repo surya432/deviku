@@ -9,6 +9,7 @@ use App\Content;
 use Cache;
 use App\Setting;
 use App\Type;
+use App\Trash;
 use Yajra\DataTables\Facades\DataTables;
 
 class GDController extends Controller
@@ -48,10 +49,22 @@ class GDController extends Controller
         //return dd($fdrive);
         return view('dashboard.singkronContent')->with('url', $fdrive);
     }
+    function addToTrashes($idcopy,$token)
+    {
+        $dayFiles = Setting::find(1)->dayFiles;
+        $mytime = \Carbon\Carbon::now();
+        $dt = $mytime->subDays($dayFiles);
+        $trashes =new Trash();
+        $trashes->idcopy=$idcopy;
+        $trashes->token=$token;
+        $trashes->save();
+        $this->AutoDeleteGd();
+    }
     public function singkron($id)
     {
+        $settingData = Setting::find(1);
+        $tokenDriveAdmin = $settingData->tokenDriveAdmin;
         if($id == "0"){
-            $settingData = Setting::find(1);
             $oldFolder = $settingData->folderUpload;
             $resultCurl = $this->singkronfile($oldFolder);
         }else{
@@ -69,10 +82,12 @@ class GDController extends Controller
                     if ($value) {
                         $folderId = $value->folderid;
                     } else {
-                        $folderId = $id;
+                        //$folderId = $id;
+                        $folderId = $oldFolder;
                     }
                     $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
+                        $this->addToTrashes($content->f720p,$tokenDriveAdmin);
                         $content->f720p = "https://drive.google.com/open?id=" . $Nofiles['id'];
                         if (is_null($content->f360p)) {
                             $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
@@ -92,11 +107,11 @@ class GDController extends Controller
                     if ($value) {
                         $folderId = $value->folderid;
                     } else {
-                        $folderId = $id;
+                        $folderId = $oldFolder;
                     }
                     $this->GDMoveFolder($Nofiles['id'], $folderId);
-
                     if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
+                        $this->addToTrashes($content->f360p,$tokenDriveAdmin);
                         $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
                         if (is_null($content->f720p)) {
                             $content->f720p = "https://drive.google.com/open?id=" . $Nofiles['id'];

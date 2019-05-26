@@ -46,6 +46,7 @@ class EmbedController extends Controller
             $trashes->idcopy=$datass->idcopy;
             $trashes->token=$datass->token;
             $trashes->save();
+            Mirror::where('idcopy',$datass->idcopy)->delete();
           }
         }
         $this->AutoDeleteGd();
