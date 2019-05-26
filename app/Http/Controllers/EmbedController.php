@@ -54,7 +54,6 @@ class EmbedController extends Controller
     function MirrorCheck($url)
     {
         $content = Content::where('url', $url)->first();
-        $this->addToTrashes();
         $save = false;
         if (preg_match("/upload_id=/", $content->mirror1)) {
             $resultCheck360 = $this->check_openload360($content->mirror1);
@@ -107,7 +106,7 @@ class EmbedController extends Controller
     }
     function MethodBrokenlinks($id, $kualitas, $options){
         $seconds = 1000 * 60 * 4;
-        $value = Cache::remember('MethodBrokenlinks', $seconds, function () {
+        $value = Cache::remember('MethodBrokenlinks', $seconds, function () use($id, $kualitas, $options) {
             $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
             if ($checkLaporanBroken && $options == "delete") {
                 $laporBrokenLinks->delete();
