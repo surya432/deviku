@@ -34,7 +34,7 @@ Setting
                             <input type="text" class="form-control" name="folderUpload" id="folderUpload" required>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="folder360p">Folder Upload</label>
+                            <label class="control-label" for="folder360p">Size Count</label>
                             <input type="text" class="form-control" name="sizeCount" id="sizeCount" required>
                         </div>
                         <div class="form-group">
@@ -49,6 +49,10 @@ Setting
                         <div class="form-group">
                             <label class="control-label" for="folder360p">Token Viu</label>
                             <input type="text" class="form-control" name="tokenViu" id="tokenViu" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="folder360p">expiresCacheAt</label>
+                            <input type="text" class="form-control" name="expiresCacheAt" id="expiresCacheAt" required>
                         </div>
                         <div class="form-group col-md-12">
                             <div class="col-md-3">
@@ -115,6 +119,7 @@ $(document).ready(function() {
                 $("input[name=viuSabtu]").val(data[0].viuSabtu);
                 $("input[name=viuMinggu]").val(data[0].viuMinggu);
                 $("input[name=sizeCount]").val(data[0].sizeCount);
+                $("input[name=expiresCacheAt]").val(data[0].expiresCacheAt);
             },
             error: function(data) {
                 $(".alert-danger").text("Error")

@@ -35,6 +35,7 @@ class SettingController extends Controller
         $data->viuSabtu = $request->input("viuSabtu");
         $data->viuMinggu = $request->input("viuMinggu");
         $data->sizeCount = $request->input("sizeCount");
+        $data->expiresCacheAt = $request->input("expiresCacheAt");
         $data->save();
         return response()->json($data, 201);
     }
