@@ -315,7 +315,7 @@ trait HelperController
   {
     if (!Cache::has('CHECKHEADER-' . md5($idDrive))) {
       $expiresCacheAt =Setting::find(1)->expiresCacheAt;
-      $statusCode = $this->getHeaderFolderCode($idDrive);
+      $statusCode = $this->getHeaderFolderCode($this->GetIdDrive($idDrive));
       Cache::put('CHECKHEADER-' . md5($idDrive), $statusCode, $expiresCacheAt);
       return $statusCode;
     }
@@ -344,9 +344,9 @@ trait HelperController
   function GetIdDrive($urlVideoDrive)
   {
     if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
-      return $this->CheckHeaderCode($id[1]);
+      return $id[1];
     } else {
-      return "error link";
+      return null;
     }
   }
   public function copygd($driveId, $folderid, $title, $token)
