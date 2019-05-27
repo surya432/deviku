@@ -52,14 +52,15 @@ class GDController extends Controller
     }
     function addToTrashes($idcopy,$token)
     {
-        $dayFiles = Setting::find(1)->dayFiles;
-        $mytime = \Carbon\Carbon::now();
-        $dt = $mytime->subDays($dayFiles);
-        $trashes =new Trash();
-        $trashes->idcopy=$idcopy;
-        $trashes->token=$token;
-        $trashes->save();
-        $this->AutoDeleteGd();
+        try{
+            $trashes =new Trash();
+            $trashes->idcopy=$idcopy;
+            $trashes->token=$token;
+            $trashes->save();
+        }catch(Exception $e){
+            echo $e->errorMessage();
+        }
+        
     }
     public function singkron($id)
     {
@@ -88,7 +89,9 @@ class GDController extends Controller
                     }
                     $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                        $this->addToTrashes($content->f720p,$tokenDriveAdmin);
+                        if(!is_null($content->f720p)){
+                            $this->addToTrashes($content->f720p,$tokenDriveAdmin);
+                        }                        
                         $content->f720p = "https://drive.google.com/open?id=" . $Nofiles['id'];
                         if (is_null($content->f360p)) {
                             $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
@@ -112,7 +115,9 @@ class GDController extends Controller
                     }
                     $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                        $this->addToTrashes($content->f360p,$tokenDriveAdmin);
+                        if(!is_null($content->f360p)){
+                            $this->addToTrashes($content->f360p,$tokenDriveAdmin);
+                        }
                         $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
                         if (is_null($content->f720p)) {
                             $content->f720p = "https://drive.google.com/open?id=" . $Nofiles['id'];
