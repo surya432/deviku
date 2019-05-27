@@ -544,6 +544,8 @@ trait HelperController
             if ($this->deletegd($idcopy, $tokens)) {
               $datass->delete();
             }
+          }else{
+            $datass->delete();
           }
         }
       }
