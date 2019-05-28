@@ -107,8 +107,8 @@ class EmbedController extends Controller
         $seconds = 1000 * 60 * 4;
         $value = Cache::remember('MethodBrokenlinks', $seconds, function () use($id, $kualitas, $options) {
             $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
-            if ($checkLaporanBroken && $options == "delete") {
-                $laporBrokenLinks->delete();
+            if (!is_null($checkLaporanBroken) && $options == "delete") {
+                Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->delete();
             }elseif(is_null($checkLaporanBroken) && $options == "add"){
                 $laporBrokenLinks = new Brokenlink;
                 $laporBrokenLinks->contents_id = $id;
@@ -125,7 +125,7 @@ class EmbedController extends Controller
         switch ($request->input('player')) {
             case 'gd360':
                 $f360p = $this->CheckHeaderCode($content->f360p);
-                if ($f360p == '200') {
+                if ($f360p) {
                     $this->MethodBrokenlinks($content->id, "SD","delete");
                     return $this->CopyGoogleDriveID($content->f360p, $url, "SD");
                 } else {
@@ -135,7 +135,7 @@ class EmbedController extends Controller
                 break;
             case 'gd720':
                 $s720p = $this->CheckHeaderCode($content->f720p);
-                if ($s720p == '200') {
+                if ($s720p) {
                     $this->MethodBrokenlinks($content->id, "HD","delete");
                     return $this->CopyGoogleDriveID($content->f720p, $url, "HD");
                 } else {
