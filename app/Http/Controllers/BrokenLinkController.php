@@ -66,16 +66,16 @@ class BrokenLinkController extends Controller
         return Datatables::of($data)
             ->addColumn('f360ps', function ($data) {
 
-                $f360p = $this->GetIdDrive($data->f360p);
-                return ($f360p == '200') ? "Ok" : "false";
+                $f360p = $this->CheckHeaderCode($data->f360p);
+                return ($f360p) ? "Ok" : "false";
             })
             ->addColumn('f720ps', function ($data) {
-                $f720p = $this->GetIdDrive($data->f720p);
-                return ($f720p == '200') ? "Ok" : "false";
+                $f720p = $this->CheckHeaderCode($data->f720p);
+                return ($f720p) ? "Ok" : "false";
             })
             ->addColumn('action', function ($data) {
-                $f360p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="https://www.googleapis.com/drive/v3/files/' . $this->CheckHeaderCode($data->f360p) . '?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=' . $data->url . '-360p.mp4" class="btn btn-xs btn-primary btncopy">Copy 360p</button>';
-                $f720p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="https://www.googleapis.com/drive/v3/files/' . $this->CheckHeaderCode($data->f720p) . '?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=' . $data->url . '-720p.mp4" class="btn btn-xs btn-primary btncopy">Copy 720p</button>';
+                $f360p = '<button type="button" name="url_f360p" id="url_f360p" data-clipboard-text="https://www.googleapis.com/drive/v3/files/' . $this->GetIdDrive($data->f360p) . '?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=' . $data->url . '-360p.mp4" value="https://www.googleapis.com/drive/v3/files/' . $this->GetIdDrive($data->f360p) . '?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=' . $data->url . '-360p.mp4" class="btn btn-xs btn-primary btncopy btncopy360p">Copy 360p</button>';
+                $f720p = '<button type="button" name="url_f720p" id="url_f720p" data-clipboard-text="https://www.googleapis.com/drive/v3/files/' . $this->GetIdDrive($data->f720p) . '?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=' . $data->url . '-720p.mp4"  value="https://www.googleapis.com/drive/v3/files/' . $this->GetIdDrive($data->f720p) . '?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=' . $data->url . '-720p.mp4" class="btn btn-xs btn-primary btncopy btncopy720p">Copy 720p</button>';
 
                 return '<div class="btn-group" role="group" aria-label="Command Action">
                 ' . $f360p . $f720p . '
