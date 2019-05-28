@@ -107,7 +107,7 @@ class EmbedController extends Controller
         $seconds = 1000 * 60 * 4;
         $value = Cache::remember('MethodBrokenlinks', $seconds, function () use($id, $kualitas, $options) {
             $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
-            if ($checkLaporanBroken && $options == "delete") {
+            if (!is_null($checkLaporanBroken) && $options == "delete") {
                 $laporBrokenLinks->delete();
             }elseif(is_null($checkLaporanBroken) && $options == "add"){
                 $laporBrokenLinks = new Brokenlink;
