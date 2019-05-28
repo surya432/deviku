@@ -111,14 +111,51 @@ Drama {{$result->title}}
                                     <input type="text" class="form-control" name="Tags" id="Tags">
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label" for="email">Iframe</label>
-                                    <textarea class="form-control" id="iframe"
+                                    <label class="control-label" for="email">BrokenLinks</label>
+                                    <textarea class="form-control" id="iframe23"
                                         style="margin: 0px 3px 3px 0px; width: 566px; height: 146px;"
-                                        name="iframe"></textarea>
+                                        name="iframe23"></textarea>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId21">
+                    Launch
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modelId21" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="control-label" for="email">Action</label>
+                                    <button type="button" class="btn btn-primary" id="btn720p">720p</button>
+                                    <button type="button" class="btn btn-primary" id="btn360p">360p</button>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="email">Links</label>
+                                    <textarea class="form-control" id="linkbrokens"
+                                        style="margin: 0px 3px 3px 0px; width: 566px; height: 146px;"
+                                        name="linkbrokens"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save</button>
                             </div>
                         </div>
                     </div>
@@ -161,6 +198,18 @@ $(document).ready(function() {
         $("input[name=f720p]").val($(this).attr('data-f720p'));
         $("input[name=f360p]").val($(this).attr('data-f360p'));
     });
+    $("#btn360p").on("click", function() {
+        var texts = $(".btncopy360p").map(function() {
+            return $(this).attr('data-clipboard-text')+"\n" ;
+        }).get();
+        $("textarea[name=linkbrokens]").html(texts);
+    })
+    $("#btn720p").on("click", function() {
+        var texts = $(".btncopy720p").map(function() {
+            return $(this).attr('data-clipboard-text')+"\n" ;
+        }).get();
+        $("textarea[name=linkbrokens]").html(texts);
+    })
     $("#btnaddFolder").on("click", function() {
         var fn = $(this).attr('data-title');
         var ids = $(this).attr('data-id');
