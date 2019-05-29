@@ -11,6 +11,7 @@ use App\Trash;
 
 trait HelperController
 {
+<<<<<<< HEAD
 
   function seoUrl($string)
   {
@@ -25,6 +26,15 @@ trait HelperController
 
     $string = preg_replace("/[\s_]/", "-", $string); //Convert whitespaces and underscore to dash
 
+=======
+  function seoUrl($string)
+  {
+    $string = trim($string); // Trim String
+    $string = strtolower($string); //Unwanted:  {UPPERCASE} ; / ? : @ & = + $ , . ! ~ * ' ( )
+    $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);  //Strip any unwanted characters
+    $string = preg_replace("/[\s-]+/", " ", $string); // Clean multiple dashes or whitespaces
+    $string = preg_replace("/[\s_]/", "-", $string); //Convert whitespaces and underscore to dash
+>>>>>>> surya12
     return $string;
   }
   function getHeaderCode($url)
@@ -34,6 +44,11 @@ trait HelperController
     curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
     curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+<<<<<<< HEAD
+=======
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+>>>>>>> surya12
     curl_setopt($ch, CURLOPT_TIMEOUT, 100);
     $output = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -75,7 +90,10 @@ trait HelperController
   //
   function singkronfile($id_folder, $tokenPage = null)
   {
+<<<<<<< HEAD
  
+=======
+>>>>>>> surya12
     $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime" );
     return json_decode($curl, true);
   }
@@ -119,6 +137,11 @@ trait HelperController
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 300,
+<<<<<<< HEAD
+=======
+      CURLOPT_SSL_VERIFYHOST=>FALSE,
+      CURLOPT_SSL_VERIFYPEER=>FALSE,
+>>>>>>> surya12
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "POST",
       CURLOPT_POSTFIELDS => $body,
@@ -148,6 +171,11 @@ trait HelperController
     }
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+<<<<<<< HEAD
+=======
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+>>>>>>> surya12
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     $headers    = [];
     $headers[]  = 'cache-control: no-cache';
@@ -269,6 +297,11 @@ trait HelperController
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
+<<<<<<< HEAD
+=======
+      CURLOPT_SSL_VERIFYHOST=>FALSE,
+      CURLOPT_SSL_VERIFYPEER=>FALSE,
+>>>>>>> surya12
       CURLOPT_TIMEOUT => 300,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "POST",
@@ -358,6 +391,12 @@ trait HelperController
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 300,
+<<<<<<< HEAD
+=======
+      
+      CURLOPT_SSL_VERIFYHOST=>FALSE,
+      CURLOPT_SSL_VERIFYPEER=>FALSE,
+>>>>>>> surya12
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "POST",
       CURLOPT_POSTFIELDS => "{\"name\":\"$title\",\"parents\":[\"$folderid\"]}",
@@ -389,6 +428,12 @@ trait HelperController
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 300,
+<<<<<<< HEAD
+=======
+      
+      CURLOPT_SSL_VERIFYHOST=>FALSE,
+      CURLOPT_SSL_VERIFYPEER=>FALSE,
+>>>>>>> surya12
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "DELETE",
       CURLOPT_HTTPHEADER => array(
@@ -417,6 +462,11 @@ trait HelperController
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 300,
+<<<<<<< HEAD
+=======
+      CURLOPT_SSL_VERIFYHOST=>FALSE,
+      CURLOPT_SSL_VERIFYPEER=>FALSE,
+>>>>>>> surya12
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "DELETE",
       CURLOPT_HTTPHEADER => array(
@@ -479,6 +529,11 @@ trait HelperController
     curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/drive/v3/files/' . $id . '?addParents=' . $uploadfolder . '&removeParents=' . $oldFolder);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
+<<<<<<< HEAD
+=======
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+>>>>>>> surya12
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
     $headers = array();
@@ -503,6 +558,12 @@ trait HelperController
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"name\": \"$title\",\"parents\": [\"$folderid\"],\"mimeType\": \"application/vnd.google-apps.folder\"}");
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+<<<<<<< HEAD
+=======
+    
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+>>>>>>> surya12
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
     $headers = array();
     $headers[] = 'Authorization: ' . $this->get_token($tokenAdmin);
@@ -512,7 +573,11 @@ trait HelperController
 
     $result = curl_exec($ch);
     if (curl_errno($ch)) {
+<<<<<<< HEAD
       echo 'Error:' . curl_error($ch);
+=======
+      return curl_error($ch);
+>>>>>>> surya12
     }
       curl_close($ch);
       $response = json_decode($result, true);
