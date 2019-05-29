@@ -25,10 +25,12 @@ Route::post('/ajax/videos/{url}', ['as'=>'ajaxEps','uses'=>'EmbedController@getD
 Route::get('/login', ['as'=>'login','uses'=>'LoginController@login']);
 
 Route::post('/login',['as'=>'loginPost','uses'=>'LoginController@loginPost']);
+Route::get('/dramasqq',['as'=>'dramasqq','uses'=>'DramaController@dramas']);
 
 Route::group(['middleware' => ['web']], function(){
     Route::post('/admin/logout',['as'=>'logout','uses'=>'LoginController@logout']);
 });
+Route::get('/singkron/drama/{id}', ['as'=>'singkrons','uses'=>'GDController@singkron']);
 
 Route::group(['middleware' => ['admin','web']], function(){
     Route::get('/admin/drive/deleteall/', ['as'=>'driveDramaDelete','uses'=>'EmbedController@deletegdbydate']);

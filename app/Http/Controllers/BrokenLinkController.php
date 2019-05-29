@@ -25,7 +25,7 @@ class BrokenLinkController extends Controller
 
         $data = DB::table('dramas')->whereIn('id', function ($query) {
             $query->from('contents')->select('drama_id')->whereIn('id', function ($query) {
-                $query->from('brokenlinks')->select('contents_id')->get();
+                $query->from('brokenlinks')->select('contents_id')->groupBy('contents_id')->get();
             })->select('drama_id')->groupBy('drama_id')->get();
         })->orderBy('id', 'desc')->get();
         return Datatables::of($data)
