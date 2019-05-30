@@ -50,7 +50,9 @@ class ViuController extends Controller
                 if ($driveid360p) {
                     $this->addToTrash($driveid360p);
                 }
-                Content::where('id', $datas->id)->delete();
+                if($driveid360p && $driveid720p){
+                    Content::where('id', $datas->id)->delete();
+                }
             }
         }
     }
