@@ -104,7 +104,7 @@ class GDController extends Controller
                     if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
 
                         if (!is_null($content->f720p)) {
-                            $this->addToTrashes($content->f720p, $tokenDriveAdmin);
+                            $this->addToTrashes($this->GetIdDrive($content->f720p), $tokenDriveAdmin);
                         }
                         $content->f720p = "https://drive.google.com/open?id=" .  $Nofiles['id'];
                         if (is_null($content->f360p)) {
@@ -141,7 +141,7 @@ class GDController extends Controller
                     if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
 
                         if (!is_null($content->f360p)) {
-                            $this->addToTrashes($content->f360p, $tokenDriveAdmin);
+                            $this->addToTrashes($this->GetIdDrive($content->f360p), $tokenDriveAdmin);
                         }
                         $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
                         if (is_null($content->f720p)) {
