@@ -47,8 +47,8 @@ class EmbedController extends Controller
             $trashes->save();
             Mirror::where('idcopy',$datass->idcopy)->delete();
           }
+          $this->AutoDeleteGd();
         }
-        $this->AutoDeleteGd();
     }
     function MirrorCheck($url)
     {
