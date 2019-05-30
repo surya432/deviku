@@ -121,7 +121,6 @@ class GDController extends Controller
                 $url = str_replace('-360p.mp4', '', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
                 if ($content) {
-
                     $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->first();
                     if (!is_null($checkLaporanBroken)) {
                         Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->delete();

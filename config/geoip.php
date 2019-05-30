@@ -130,7 +130,7 @@ return [
 
     'default_location' => [
         'ip' => '127.0.0.0',
-        'iso_code' => 'ID',
+        'iso_code' => 'US',
         'country' => 'United States',
         'city' => 'New Haven',
         'state' => 'CT',

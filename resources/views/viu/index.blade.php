@@ -55,6 +55,7 @@ Viu Generator
                             <input type="text" class="form-control" id="inputIdViu" placeholder="ID Drama Viu ">
                             <input type="text" class="form-control" id="inputStartEp" placeholder="Start Eps">
                             <input type="text" class="form-control" id="inputEndEp" placeholder="End Eps">
+                            <input type="text" class="form-control" id="dramaId" placeholder="Drama id">
                         </div>
                         <button type="submit" onclick="getById()" class="btn btn-primary mb-2">Generate</button>
                     </div>
@@ -84,6 +85,7 @@ function getById() {
     var inputIdViu = $("#inputIdViu").val();
     var inputStartEp = $("#inputStartEp").val();
     var inputEndEp = $("#inputEndEp").val();
+    var dramaId = $("#dramaId").val();
     $.ajax({
         type: "post",
         url: "{{ route('viugetdata') }}",
@@ -92,6 +94,7 @@ function getById() {
             id: inputIdViu,
             inputStartEp: inputStartEp,
             inputEndEp: inputEndEp,
+            dramaId: dramaId,
 
         },
         success: function(data) {
