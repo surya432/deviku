@@ -28,7 +28,6 @@ class ViuController extends Controller
     function store($name, $slug, $dramaId)
     {
         if ($dramaId != null) {
-            $this->deleteEps($dramaId);
             $content = new Content();
             $content->title = $name;
             $content->url = $slug;
@@ -72,7 +71,6 @@ class ViuController extends Controller
         if ($end == null) {
             $end = "150";
         }
-
         $settingData = Setting::find(1);
         $jwt = $settingData->tokenViu;
         switch ($request->input("id")) {
@@ -111,6 +109,7 @@ class ViuController extends Controller
 
         $data = $number['response']['container']['item'];
         if (isset($data)) {
+            $this->deleteEps($dramaId);
             return $this->data($data, $dramaId);
         }
         return response($number, 404);
