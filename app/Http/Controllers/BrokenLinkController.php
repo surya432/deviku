@@ -62,7 +62,7 @@ class BrokenLinkController extends Controller
     {
         $data = DB::table('contents')->whereIn('id', function ($query) {
             $query->from('brokenlinks')->select('contents_id')->get();
-        })->where('drama_id', $id)->get();
+        })->where('drama_id', $id)->orderBy('title','asc')->get();
         return Datatables::of($data)
             ->addColumn('f360ps', function ($data) {
 
