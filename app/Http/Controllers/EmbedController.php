@@ -140,7 +140,8 @@ class EmbedController extends Controller
                     return $this->CopyGoogleDriveID($content->f720p, $url, "HD");
                 } else {
                     $this->MethodBrokenlinks($content->id, "HD","add");
-                    return $linkError;
+                    return $this->GetPlayer('1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu');
+
                 }
                 break;
             case 'mirror1':

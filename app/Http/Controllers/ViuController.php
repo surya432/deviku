@@ -4,15 +4,56 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Setting;
+use App\Content;
+use App\Trash;
 
 class ViuController extends Controller
 {
+
+    use HelperController;
     public function boot()
     {
         //set whatever level you want
         error_reporting(E_ALL ^ E_NOTICE);
     }
+    function addToTrash($idDrive)
+    {
+        $tokenDriveAdmin = Setting::find(1)->tokenDriveAdmin;
+        $trashes = new Trash();
+        $trashes->idcopy = $idDrive;
+        $trashes->token = $tokenDriveAdmin;
+        $trashes->save();
+    }
     //
+    function store($name, $slug, $dramaId)
+    {
+        if ($dramaId != null) {
+            $this->deleteEps($dramaId);
+            $content = new Content();
+            $content->title = $name;
+            $content->url = $slug;
+            $content->drama_id = $dramaId;
+            $content->status = "HARDSUB";
+            $content->save();
+        }
+    }
+    function deleteEps($idDrama)
+    {
+        $dramaEps = Content::where('drama_id', $idDrama)->get();
+        if (!is_null($dramaEps)) {
+            foreach ($dramaEps as $datas) {
+                $driveid720p = $this->GetIdDrive($datas->f720p);
+                if ($driveid720p) {
+                    $this->addToTrash($driveid720p);
+                }
+                $driveid360p = $this->GetIdDrive($datas->f360p);
+                if ($driveid360p) {
+                    $this->addToTrash($driveid360p);
+                }
+                Content::where('id', $datas->id)->delete();
+            }
+        }
+    }
     function index()
     {
         return view("viu.index");
@@ -22,14 +63,16 @@ class ViuController extends Controller
         $jwt = "Bearer eyJhbGciOiJBMTI4S1ciLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0.LDSvNGddmlR5CP6UayTgmVZ5r1I9a_MToNABYP9MMXs64s965H7itA.Ltt6pWKOI3iPWgkJFQtpNA.mxIIs6D8ZOLbfUwJzs1zZmlszdPy6CuJAZk3kg1Xb5l30kVlRcQNk-TQHkwcZ9oiZmkbe_bbrlwAXMDOv2pwGvpdZWvi1yZu4Tq3sACFqqQbPOd3YzBtOFY07iHPVyTjuSqNmJl8CyTlNaVoqewgp0jObdsQ13pvYRM1UUUHvaLuVhtt1JolqbdEw_yNaTSs7SrLueWZl-HfFLXg3Noweg.jzK0VZNcr30kiYGRxs_-8Q";
         $start = $request->input('inputStartEp') - 1;
         $end = $request->input('inputEndEp');
+        $dramaId = $request->input('dramaId');
         if ($start == null) {
             $start = "0";
         }
         if ($end == null) {
             $end = "150";
         }
+
         $settingData = Setting::find(1);
-		$jwt = $settingData->tokenViu;
+        $jwt = $settingData->tokenViu;
         switch ($request->input("id")) {
             case "senin":
                 $id_hari = $settingData->viuSenin;
@@ -62,16 +105,15 @@ class ViuController extends Controller
             default:
                 $result = $this->curl_viu($request->input("id"), $jwt, $start, $end);
         }
-		$number = json_decode($result, true);
-		
+        $number = json_decode($result, true);
+
         $data = $number['response']['container']['item'];
         if (isset($data)) {
-			return $this->data($data);
+            return $this->data($data, $dramaId);
         }
-		return response($number, 404);
-
+        return response($number, 404);
     }
-    function data($result)
+    function data($result, $dramaId)
     {
         $path_sub = "R:\\";
         $subtext = "'FontSize=22,PrimaryColour=&H00FFFF&'";
@@ -85,10 +127,12 @@ class ViuController extends Controller
             if (!empty($item["subtitle_id_srt"])) {
                 $subtitle_indo = $item["subtitle_id_srt"];
                 $slug = $item["slug"];
+                $title = $item["title"];
                 $slug = $this->seoUrl($slug);
+                $this->store($title,$slug,$dramaId);
                 $subtitle_code .= "powershell.exe wget '" . $subtitle_indo . "' -OutFile 'sub/" . $slug . ".srt' \n";
                 //$ffmpeg_code .= " \n" . '' . $path_sub . '\ffmpeg\ffmpeg.exe -y -i "' . $item["href"] . '" -c copy ' . $path_sub . '\\' . $slug . '.ts;';
-				$ffmpeg_code .= " \n" .'start "Encoding '.$slug.'" powershell.exe "'. 'ffmpeg -y -i "' . $item["href"] . '" -c copy ' . $path_sub .  $slug . '.ts;"';
+                $ffmpeg_code .= " \n" . 'start "Encoding ' . $title . '" powershell.exe "' . 'ffmpeg -y -i "' . $item["href"] . '" -c copy ' . $path_sub .  $slug . '.ts;"';
                 //$ffmpeg_code .= " \n".'start "Encoding '.$slug.'" powershell.exe "'.$path_sub.':\ffmpeg\ffmpeg.exe" -y -i "'.$items["href"].'" '.$command_ffmpeg.' "'.$path_sub.':\\'.$slug.'.720p.mp4"'.$hardsub360p;
                 //$subbes= $slug." Sub<br>";
             }
