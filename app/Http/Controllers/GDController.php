@@ -91,7 +91,6 @@ class GDController extends Controller
                     if ($value) {
                         $folderId = $value->folderid;
                     } else {
-                        //$folderId = $id;
                         $folderId = $oldFolder;
                     }
                     $this->GDMoveFolder($Nofiles['id'], $folderId);
