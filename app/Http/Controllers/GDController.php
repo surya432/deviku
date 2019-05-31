@@ -85,12 +85,7 @@ class GDController extends Controller
                     $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
                     if (!is_null($checkLaporanBroken)) {
                         Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
-                        if ($content->f720p != $content->f360p) {
-                            $trashes = new Trash();
-                            $trashes->idcopy = $this->GetIdDrive($content->f720p);
-                            $trashes->token = $tokenDriveAdmin;
-                            $trashes->save();
-                        }
+                        $this->addToTrashes($this->GetIdDrive($content->f720p), $tokenDriveAdmin);
                     }
 
                     $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->where('dramas.id', $content->drama_id)->first();
@@ -102,10 +97,6 @@ class GDController extends Controller
                     }
                     $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-
-                        if (!is_null($content->f720p)) {
-                            $this->addToTrashes($this->GetIdDrive($content->f720p), $tokenDriveAdmin);
-                        }
                         $content->f720p = "https://drive.google.com/open?id=" .  $Nofiles['id'];
                         if (is_null($content->f360p)) {
                             $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
@@ -125,10 +116,7 @@ class GDController extends Controller
                     if (!is_null($checkLaporanBroken)) {
                         Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->delete();
                         if ($content->f720p != $content->f360p) {
-                            $trashes = new Trash();
-                            $trashes->idcopy = $this->GetIdDrive($content->f360p);
-                            $trashes->token = $tokenDriveAdmin;
-                            $trashes->save();
+                            $this->addToTrashes($this->GetIdDrive($content->f360p), $tokenDriveAdmin);
                         }
                     }
                     $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->where('dramas.id', $content->drama_id)->first();
@@ -139,10 +127,6 @@ class GDController extends Controller
                     }
                     $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-
-                        if (!is_null($content->f360p)) {
-                            $this->addToTrashes($this->GetIdDrive($content->f360p), $tokenDriveAdmin);
-                        }
                         $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
                         if (is_null($content->f720p)) {
                             $content->f720p = "https://drive.google.com/open?id=" . $Nofiles['id'];
