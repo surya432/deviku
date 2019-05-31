@@ -87,7 +87,6 @@ class GDController extends Controller
                         Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
                         $this->addToTrashes($this->GetIdDrive($content->f720p), $tokenDriveAdmin);
                     }
-
                     $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->where('dramas.id', $content->drama_id)->first();
                     if ($value) {
                         $folderId = $value->folderid;
