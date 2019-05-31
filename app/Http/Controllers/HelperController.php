@@ -37,11 +37,11 @@ trait HelperController
   }
   function getHeaderFolderCode($id)
   {
-    $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M" );
-    $data=  json_decode($curl, true);
-    if(isset($data["shared"])){
+    $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M");
+    $data =  json_decode($curl, true);
+    if (isset($data["shared"])) {
       return $data["shared"];
-    }else{
+    } else {
       return false;
     }
   }
@@ -70,13 +70,13 @@ trait HelperController
   //
   function singkronfile($id_folder, $tokenPage = null)
   {
-    $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime" );
+    $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime");
     return json_decode($curl, true);
   }
   function singkronToWeb($id_folder, $tokenPage = null)
   {
 
-    $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime" );
+    $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime");
     return json_decode($curl, true);
   }
   function getEmbed($data)
@@ -113,8 +113,8 @@ trait HelperController
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 300,
-      CURLOPT_SSL_VERIFYHOST=>FALSE,
-      CURLOPT_SSL_VERIFYPEER=>FALSE,
+      CURLOPT_SSL_VERIFYHOST => FALSE,
+      CURLOPT_SSL_VERIFYPEER => FALSE,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "POST",
       CURLOPT_POSTFIELDS => $body,
@@ -267,8 +267,8 @@ trait HelperController
       CURLOPT_RETURNTRANSFER => true,
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
-      CURLOPT_SSL_VERIFYHOST=>FALSE,
-      CURLOPT_SSL_VERIFYPEER=>FALSE,
+      CURLOPT_SSL_VERIFYHOST => FALSE,
+      CURLOPT_SSL_VERIFYPEER => FALSE,
       CURLOPT_TIMEOUT => 300,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "POST",
@@ -314,7 +314,7 @@ trait HelperController
   function CheckHeaderCode($idDrive)
   {
     if (!Cache::has('CHECKHEADER-' . md5($idDrive))) {
-      $expiresCacheAt =Setting::find(1)->expiresCacheAt;
+      $expiresCacheAt = Setting::find(1)->expiresCacheAt;
       $statusCode = $this->getHeaderFolderCode($this->GetIdDrive($idDrive));
       Cache::put('CHECKHEADER-' . md5($idDrive), $statusCode, $expiresCacheAt);
       return $statusCode;
@@ -325,7 +325,7 @@ trait HelperController
   function CheckHeaderFolderCode($idDrive)
   {
     if (!Cache::has('FolderCode' . md5($idDrive))) {
-      $expiresCacheAt =Setting::find(1)->expiresCacheAt;
+      $expiresCacheAt = Setting::find(1)->expiresCacheAt;
       $statusCode = $this->getHeaderFolderCode($idDrive);
       Cache::put('FolderCode' . md5($idDrive), $statusCode, $expiresCacheAt);
       return $statusCode;
@@ -358,8 +358,8 @@ trait HelperController
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 300,
-      CURLOPT_SSL_VERIFYHOST=>FALSE,
-      CURLOPT_SSL_VERIFYPEER=>FALSE,
+      CURLOPT_SSL_VERIFYHOST => FALSE,
+      CURLOPT_SSL_VERIFYPEER => FALSE,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "POST",
       CURLOPT_POSTFIELDS => "{\"name\":\"$title\",\"parents\":[\"$folderid\"]}",
@@ -391,8 +391,8 @@ trait HelperController
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 300,
-      CURLOPT_SSL_VERIFYHOST=>FALSE,
-      CURLOPT_SSL_VERIFYPEER=>FALSE,
+      CURLOPT_SSL_VERIFYHOST => FALSE,
+      CURLOPT_SSL_VERIFYPEER => FALSE,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "DELETE",
       CURLOPT_HTTPHEADER => array(
@@ -421,8 +421,8 @@ trait HelperController
       CURLOPT_ENCODING => "",
       CURLOPT_MAXREDIRS => 10,
       CURLOPT_TIMEOUT => 300,
-      CURLOPT_SSL_VERIFYHOST=>FALSE,
-      CURLOPT_SSL_VERIFYPEER=>FALSE,
+      CURLOPT_SSL_VERIFYHOST => FALSE,
+      CURLOPT_SSL_VERIFYPEER => FALSE,
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => "DELETE",
       CURLOPT_HTTPHEADER => array(
@@ -446,15 +446,15 @@ trait HelperController
     //$gmails =  DB::table('gmails')->inRandomOrder()->first();
     if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideo, $id)) {
       $sizeCount = Setting::find(1)->sizeCount;
-      $gmails = Gmail::whereNotIn('token', function($query)use ($sizeCount){
-                  $query->select('token')
-                  ->from('mirrors')->groupBy('token')->havingRaw('COUNT(*) >= '. $sizeCount);
-                })->inRandomOrder()->first();  
+      $gmails = Gmail::whereNotIn('token', function ($query) use ($sizeCount) {
+        $query->select('token')
+          ->from('mirrors')->groupBy('token')->havingRaw('COUNT(*) >= ' . $sizeCount);
+      })->inRandomOrder()->first();
       $title = $nameVideo . '-' . $kualitas . '.mp4';
       if (is_null($gmails)) {
         return null;
       } else {
-        try{
+        try {
           $copyid = $this->copygd($id['1'], $gmails->folderid, $title, $gmails->token);
           if (isset($copyid['id'])) {
             $fieldMirror =  array("id" => $copyid['id'], "kualitas" => $kualitas, "url" => $urlVideo);
@@ -468,10 +468,9 @@ trait HelperController
           } else {
             return null;
           }
-        }catch(Exception $e){
+        } catch (Exception $e) {
           return $e->errorMessage();
         }
-       
       }
     }
   }
@@ -524,9 +523,9 @@ trait HelperController
     if (curl_errno($ch)) {
       return curl_error($ch);
     }
-      curl_close($ch);
-      $response = json_decode($result, true);
-      return $response;
+    curl_close($ch);
+    $response = json_decode($result, true);
+    return $response;
   }
   function AutoDeleteGd()
   {
@@ -541,7 +540,7 @@ trait HelperController
             if ($this->deletegd($idcopy, $tokens)) {
               $datass->delete();
             }
-          }else{
+          } else {
             $datass->delete();
           }
         }

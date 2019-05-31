@@ -49,7 +49,7 @@ class ViuController extends Controller
                 if ($driveid360p) {
                     $this->addToTrash($driveid360p);
                 }
-                if($driveid360p && $driveid720p){
+                if ($driveid360p && $driveid720p) {
                     Content::where('id', $datas->id)->delete();
                 }
             }
@@ -130,7 +130,7 @@ class ViuController extends Controller
                 $slug = $item["slug"];
                 $title = $item["title"];
                 $slug = $this->seoUrl($slug);
-                $this->store($title,$slug,$dramaId);
+                $this->store($title, $slug, $dramaId);
                 $subtitle_code .= "powershell.exe wget '" . $subtitle_indo . "' -OutFile 'sub/" . $slug . ".srt' \n";
                 //$ffmpeg_code .= " \n" . '' . $path_sub . '\ffmpeg\ffmpeg.exe -y -i "' . $item["href"] . '" -c copy ' . $path_sub . '\\' . $slug . '.ts;';
                 $ffmpeg_code .= " \n" . 'start "Encoding ' . $title . '" powershell.exe "' . 'ffmpeg -y -i "' . $item["href"] . '" -c copy ' . $path_sub .  $slug . '.ts;"';

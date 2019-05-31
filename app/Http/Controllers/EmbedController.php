@@ -19,7 +19,7 @@ class EmbedController extends Controller
     function index(Request $request, $url)
     {
         $contentCheck = Content::where('url', $url)->first();
-        if (is_null($contentCheck) ) {
+        if (is_null($contentCheck)) {
             return abort(404);
         }
         $agent = new Agent();
@@ -40,14 +40,14 @@ class EmbedController extends Controller
         $dt = $mytime->subDays($dayFiles);
         $datas = Mirror::where("created_at", '<=', date_format($dt, "Y/m/d H:i:s"))->take(20)->get();
         if ($datas) {
-          foreach ($datas as $datass) {
-            $trashes =new Trash();
-            $trashes->idcopy=$datass->idcopy;
-            $trashes->token=$datass->token;
-            $trashes->save();
-            Mirror::where('idcopy',$datass->idcopy)->delete();
-          }
-          $this->AutoDeleteGd();
+            foreach ($datas as $datass) {
+                $trashes = new Trash();
+                $trashes->idcopy = $datass->idcopy;
+                $trashes->token = $datass->token;
+                $trashes->save();
+                Mirror::where('idcopy', $datass->idcopy)->delete();
+            }
+            $this->AutoDeleteGd();
         }
     }
     function MirrorCheck($url)
@@ -103,13 +103,14 @@ class EmbedController extends Controller
         }
         return $content;
     }
-    function MethodBrokenlinks($id, $kualitas, $options){
+    function MethodBrokenlinks($id, $kualitas, $options)
+    {
         $seconds = 1000 * 60 * 4;
-        $value = Cache::remember('MethodBrokenlinks', $seconds, function () use($id, $kualitas, $options) {
-            $checkLaporanBroken = Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->first();
+        $value = Cache::remember('MethodBrokenlinks', $seconds, function () use ($id, $kualitas, $options) {
+            $checkLaporanBroken = Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->first();
             if (!is_null($checkLaporanBroken) && $options == "delete") {
-                Brokenlink::where(['contents_id'=> $id,"kualitas"=>$kualitas])->delete();
-            }elseif(is_null($checkLaporanBroken) && $options == "add"){
+                Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->delete();
+            } elseif (is_null($checkLaporanBroken) && $options == "add") {
                 $laporBrokenLinks = new Brokenlink;
                 $laporBrokenLinks->contents_id = $id;
                 $laporBrokenLinks->kualitas = $kualitas;
@@ -126,22 +127,21 @@ class EmbedController extends Controller
             case 'gd360':
                 $f360p = $this->CheckHeaderCode($content->f360p);
                 if ($f360p) {
-                    $this->MethodBrokenlinks($content->id, "SD","delete");
+                    $this->MethodBrokenlinks($content->id, "SD", "delete");
                     return $this->CopyGoogleDriveID($content->f360p, $url, "SD");
                 } else {
-                    $this->MethodBrokenlinks($content->id, "SD","add");
+                    $this->MethodBrokenlinks($content->id, "SD", "add");
                     return '<script type="text/javascript">showPlayer("gd720");</script>';
                 }
                 break;
             case 'gd720':
                 $s720p = $this->CheckHeaderCode($content->f720p);
                 if ($s720p) {
-                    $this->MethodBrokenlinks($content->id, "HD","delete");
+                    $this->MethodBrokenlinks($content->id, "HD", "delete");
                     return $this->CopyGoogleDriveID($content->f720p, $url, "HD");
                 } else {
-                    $this->MethodBrokenlinks($content->id, "HD","add");
+                    $this->MethodBrokenlinks($content->id, "HD", "add");
                     return $this->GetPlayer('1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu');
-
                 }
                 break;
             case 'mirror1':
@@ -199,5 +199,4 @@ class EmbedController extends Controller
     {
         return $this->viewsource("https://player.nontonindramaonline.com/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
     }
-    
 }

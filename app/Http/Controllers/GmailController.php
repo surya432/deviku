@@ -8,6 +8,7 @@ use App\Gmail;
 use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\Facades\DataTables;
 use DB;
+
 class GmailController extends Controller
 {
     //
@@ -20,18 +21,19 @@ class GmailController extends Controller
     public function Data()
     {
         $data = DB::table('gmails')
-                    ->select('gmails.*',
-                        DB::raw("(SELECT Count(*) FROM mirrors where mirrors.token = gmails.token) as totalfiles")
-                    )
-                    ->get();
+            ->select(
+                'gmails.*',
+                DB::raw("(SELECT Count(*) FROM mirrors where mirrors.token = gmails.token) as totalfiles")
+            )
+            ->get();
         return Datatables::of($data)
             ->addColumn('statusFolder', function ($data) {
                 //$this->getHeaderFolderCode($idDrive);
-                $folderCode = $this->CheckHeaderFolderCode( $data->folderid);
-                return ($folderCode)?"true":"false";
+                $folderCode = $this->CheckHeaderFolderCode($data->folderid);
+                return ($folderCode) ? "true" : "false";
             })
             ->addColumn('action', function ($data) {
-            return '
+                return '
                 <a href="https://drive.google.com/drive/folders/' . $data->folderid . '"  class="btn btn-xs btn-primary" target="_blank">Folder</a>
                 <a href="/admin/gmail/token?id=' . $data->id . '"  class="btn btn-xs btn-primary" target="_blank">Check Token</a>
                 <button type="button" id="btnShow" data-id="' . $data->id . '" data-email="' . $data->email . '" data-token="' . $data->token . '" data-folderid="' . $data->folderid . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>

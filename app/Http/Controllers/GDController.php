@@ -87,7 +87,7 @@ class GDController extends Controller
                         Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
                         if ($content->f720p != $content->f360p) {
                             $trashes = new Trash();
-                            $trashes->idcopy =$this->GetIdDrive($content->f720p);
+                            $trashes->idcopy = $this->GetIdDrive($content->f720p);
                             $trashes->token = $tokenDriveAdmin;
                             $trashes->save();
                         }
@@ -117,7 +117,7 @@ class GDController extends Controller
                         array_push($fdrive, $url);
                     }
                 }
-            } elseif (preg_match("/-360p.mp4/", $Nofiles['name'])) {
+            } elseif (prenpg_match("/-360p.mp4/", $Nofiles['name'])) {
                 $url = str_replace('-360p.mp4', '', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
                 if ($content) {
@@ -126,7 +126,7 @@ class GDController extends Controller
                         Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->delete();
                         if ($content->f720p != $content->f360p) {
                             $trashes = new Trash();
-                            $trashes->idcopy =$this->GetIdDrive($content->f360p);
+                            $trashes->idcopy = $this->GetIdDrive($content->f360p);
                             $trashes->token = $tokenDriveAdmin;
                             $trashes->save();
                         }
