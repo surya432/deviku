@@ -22,22 +22,22 @@ class ProxyDriveController extends Controller
             if ($counts == 0) {
                 return response()->json($result['reason'], 404);
             } else {
-                $parse1=$result['data'];
-                foreach ( $parse1 as $a ) {
-                    if ($a['label'] == '360p' ) {
+                $parse1 = $result['data'];
+                foreach ($parse1 as $a) {
+                    if ($a['label'] == '360p') {
                         return Redirect::away($this->getLinkAndRedirect($a['src']));
                     } else {
-                        if ($a['label'] == '480p' ) {
-                        return Redirect::away($this->getLinkAndRedirect($a['src']));
+                        if ($a['label'] == '480p') {
+                            return Redirect::away($this->getLinkAndRedirect($a['src']));
                         } else {
-						return Redirect::away("https://www.googleapis.com/drive/v3/files/".$idDrive ."?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=".$videoName."-720p.mp4");
+                            return Redirect::away("https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4");
                         }
                     }
                 }
             }
-        }else{
-			return response()->json($result, 404);
-		}
+        } else {
+            return response()->json($result, 404);
+        }
     }
     function getLinkAndRedirect($links)
     {
@@ -45,6 +45,5 @@ class ProxyDriveController extends Controller
         return $result = preg_replace_callback("/rest-drive01.herokuapp.com/", function () use ($values) {
             return $values[array_rand($values)];
         }, $links);
-        
     }
 }
