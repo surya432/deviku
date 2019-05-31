@@ -44,9 +44,9 @@ class DramaController extends Controller
             ->addColumn('action', function ($data) {
                 $extBtn = "";
                 if ($data->folderid == "" || is_null($data->folderid)) {
-                    $extBtn ='<a href="' . route("createFolderDrive") . '?id='.$data->id.'" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> Create Folder</a>';
+                    $extBtn = '<a href="' . route("createFolderDrive") . '?id=' . $data->id . '" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> Create Folder</a>';
                 }
-            return '<div class="btn-group" role="group" aria-label="Command Action">' . $extBtn . '
+                return '<div class="btn-group" role="group" aria-label="Command Action">' . $extBtn . '
                 <a href="' . route("eps", $data->id) . '" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
                 <button type="button" id="btnShow" data-id="' . $data->id . '" data-status="' . $data->status . '" data-folderid="' . $data->folderid . '" data-type_id="' . $data->type_id . '" data-country_id="' . $data->country_id . '"data-title="' . $data->title . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
                 <button type="button" id="btnDelete" data-id="' . $data->id . '" data-status="' . $data->status . '" data-folderid="' . $data->folderid . '" data-type_id="' . $data->type_id . '" data-country_id="' . $data->country_id . '"data-title="' . $data->title . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
