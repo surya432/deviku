@@ -117,7 +117,7 @@ class GDController extends Controller
                         array_push($fdrive, $url);
                     }
                 }
-            } elseif (prenpg_match("/-360p.mp4/", $Nofiles['name'])) {
+            } elseif (preg_match("/-360p.mp4/", $Nofiles['name'])) {
                 $url = str_replace('-360p.mp4', '', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
                 if ($content) {
