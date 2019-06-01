@@ -478,7 +478,6 @@ trait HelperController
   {
     $settingData = Setting::find(1);
     $oldFolder = $settingData->folderUpload;
-    $apiUrl = $settingData->apiUrl;
     $tokenAdmin =  $settingData->tokenDriveAdmin;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/drive/v3/files/' . $id . '?addParents=' . $uploadfolder . '&removeParents=' . $oldFolder);

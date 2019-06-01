@@ -74,6 +74,7 @@ class GDController extends Controller
         } else {
             $settingData = Drama::find($id);
             $oldFolder = $settingData->folderid;
+            return $oldFolder;
             $resultCurl = $this->singkronfile($oldFolder);
         }
         $fdrive = array();
@@ -82,19 +83,19 @@ class GDController extends Controller
                 $url = str_replace('-720p.mp4', '', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
                 if ($content) {
-                    $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
-                    if (!is_null($checkLaporanBroken)) {
-                        Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
-                        $this->addToTrashes($this->GetIdDrive($content->f720p), $tokenDriveAdmin);
-                    }
-                    $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->where('dramas.id', $content->drama_id)->first();
+                    $value = Drama::find($content->drama_id);
                     if ($value) {
                         $folderId = $value->folderid;
                     } else {
                         $folderId = $oldFolder;
                     }
-                    $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
+                        $this->addToTrashes($this->GetIdDrive($content->f720p), $tokenDriveAdmin);
+                        $this->GDMoveFolder($Nofiles['id'], $folderId);
+                        $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
+                        if (!is_null($checkLaporanBroken)) {
+                            Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
+                        }
                         $content->f720p = "https://drive.google.com/open?id=" .  $Nofiles['id'];
                         if (is_null($content->f360p)) {
                             $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
@@ -110,21 +111,19 @@ class GDController extends Controller
                 $url = str_replace('-360p.mp4', '', $Nofiles['name']);
                 $content = Content::where('url', $url)->first();
                 if ($content) {
-                    $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->first();
-                    if (!is_null($checkLaporanBroken)) {
-                        Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->delete();
-                        if ($content->f720p != $content->f360p) {
-                            $this->addToTrashes($this->GetIdDrive($content->f360p), $tokenDriveAdmin);
-                        }
-                    }
-                    $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->where('dramas.id', $content->drama_id)->first();
+                    $value = Drama::find($content->drama_id);
                     if ($value) {
                         $folderId = $value->folderid;
                     } else {
                         $folderId = $oldFolder;
                     }
-                    $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
+                        $this->GDMoveFolder($Nofiles['id'], $folderId);
+                        $this->addToTrashes($this->GetIdDrive($content->f360p), $tokenDriveAdmin);
+                        $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->first();
+                        if (!is_null($checkLaporanBroken)) {
+                            Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->delete();
+                        }
                         $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
                         if (is_null($content->f720p)) {
                             $content->f720p = "https://drive.google.com/open?id=" . $Nofiles['id'];

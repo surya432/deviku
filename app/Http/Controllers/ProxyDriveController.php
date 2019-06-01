@@ -31,17 +31,15 @@ class ProxyDriveController extends Controller
                 foreach ($parse1 as $a) {
                     if ($a['label'] == '360p') {
                         return $this->getLinkAndRedirect($a['src']);
+                    } else if ($a['label'] == '480p') {
+                        return $this->getLinkAndRedirect($a['src']);
                     } else {
-                        if ($a['label'] == '480p') {
-                            return $this->getLinkAndRedirect($a['src']);
-                        } else {
-                            return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
-                        }
+                        return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
                     }
                 }
             }
         } else {
-            return $result['reason'];
+            return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
         }
     }
     function getLinkAndRedirect($links)
