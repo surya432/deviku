@@ -41,8 +41,8 @@ class ProxyDriveController extends Controller
     }
     function getLinkAndRedirect($links)
     {
-        $values = array("rest-drive01.herokuapp.com", "rest-drive03.herokuapp.com", "rest-drive04.herokuapp.com", "rest-drive02.herokuapp.com");
-        return $result = preg_replace_callback("/rest-drive01.herokuapp.com/", function () use ($values) {
+        $values = array("drive01.herokuapp.com", "drive03.herokuapp.com", "drive04.herokuapp.com", "drive02.herokuapp.com");
+        return $result = preg_replace_callback("/drive01.herokuapp.com/", function () use ($values) {
             return $values[array_rand($values)];
         }, $links);
     }
