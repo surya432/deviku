@@ -199,12 +199,14 @@ Drama {{$result->title}}
         })
         $("#btn360pProxy").on("click", function() {
             var texts = $(".btncopy360p").map(function() {
+                window.open($(this).attr('value'), '_blank');
                 return $(this).attr('value') + "\n";
             }).get();
             $("textarea[name=linkbrokens]").html(texts);
         })
         $("#btn720pProxy").on("click", function() {
             var texts = $(".btncopy720p").map(function() {
+                window.open($(this).attr('value'), '_blank');
                 return $(this).attr('value') + "\n";
             }).get();
             $("textarea[name=linkbrokens]").html(texts);
