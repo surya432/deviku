@@ -84,6 +84,7 @@ class GDController extends Controller
                 $content = Content::where('url', $url)->first();
                 if ($content) {
                     $value = Drama::find($content->drama_id);
+
                     if ($value) {
                         $folderId = $value->folderid;
                     } else {
@@ -118,8 +119,8 @@ class GDController extends Controller
                         $folderId = $oldFolder;
                     }
                     if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                        $this->GDMoveFolder($Nofiles['id'], $folderId);
                         $this->addToTrashes($this->GetIdDrive($content->f360p), $tokenDriveAdmin);
+                        $this->GDMoveFolder($Nofiles['id'], $folderId);
                         $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->first();
                         if (!is_null($checkLaporanBroken)) {
                             Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->delete();
