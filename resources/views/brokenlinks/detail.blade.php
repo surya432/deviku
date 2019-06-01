@@ -133,6 +133,7 @@ Drama {{$result->title}}
                                     <button type="button" class="btn btn-primary" id="btn360p">360p</button>
                                     <button type="button" class="btn btn-primary" id="btn720pProxy">720p Proxy</button>
                                     <button type="button" class="btn btn-primary" id="btn360pProxy">360p Proxy</button>
+                                    <button type="button" class="btn btn-primary" id="GenerateLinks">GenerateLinks</button>
 
 
                                 </div>
@@ -210,7 +211,25 @@ Drama {{$result->title}}
             }).get();
             $("textarea[name=linkbrokens]").html(texts);
         })
-       
+        $("#GenerateLinks").on("click", function() {
+            event.preventDefault()
+            $.ajax({
+                type: "get",
+                url: "{{ route('ProxyDriveContents', $result->id) }}",
+                success: function(data) {
+                    $("textarea[name=linkbrokens]").html(data);
+                    $(".alert-success").fadeOut(20000);
+
+                },
+                error: function(data) {
+                    $(".alert-danger").fadeIn().html(data).wait(20000).fadeOut('slow');
+                    $('#modelId').modal('hide');
+                    $(".alert-danger").fadeOut(20000);
+
+                }
+            });
+
+        });
         $("#btnaddFolder").on("click", function() {
             var fn = $(this).attr('data-title');
             var ids = $(this).attr('data-id');

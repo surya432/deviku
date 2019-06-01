@@ -59,8 +59,8 @@ trait HelperController
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
     curl_setopt($ch, CURLOPT_REFERER, 'http://dldramaid.xyz/');
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
     $page = curl_exec($ch);

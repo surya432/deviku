@@ -32,6 +32,7 @@ Route::group(['middleware' => ['web']], function () {
 });
 Route::get('/singkron/drama/{id}', ['as' => 'singkrons', 'uses' => 'GDController@singkron']);
 Route::get('/proxyDrive', ['as' => 'ProxyDriveIndex', 'uses' => 'ProxyDriveController@index']);
+Route::get('/proxyDrive/{id}', ['as' => 'ProxyDriveContents', 'uses' => 'ProxyDriveController@getBrokenLink']);
 
 Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/drive/deleteall/', ['as' => 'driveDramaDelete', 'uses' => 'EmbedController@deletegdbydate']);
