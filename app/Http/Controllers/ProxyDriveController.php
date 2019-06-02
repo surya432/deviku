@@ -74,4 +74,32 @@ class ProxyDriveController extends Controller
         }
         return response()->json("Nothing Broken link", 404);
     }
+    function fileBrokenLinkPs1()
+    {
+        $data = DB::table('contents')->whereIn('id', function ($query) {
+            $query->from('brokenlinks')->select('contents_id')->get();
+        })->take(60)->get();
+        if (!is_null($data)) {
+            $urlhost = request()->getHost();
+            $returnData = null;
+            foreach ($data as $content) {
+                if (!$this->CheckHeaderCode($content->f720p && $this->CheckHeaderCode($content->f360p))) {
+                    //untuk brokenlink 720p
+                    $idDrive = $this->GetIdDrive($content->f360p);
+                    if ($idDrive) {
+                        $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f360p) . '&videoName=' . $content->url . '-720p "/a /n '." \n";
+                    }
+                }
+                if (!$this->CheckHeaderCode($content->f360p) && $this->CheckHeaderCode($content->f720p)) {
+                    //untuk brokenlink 350p
+                    $idDrive = $this->GetIdDrive($content->f720p);
+                    if ($idDrive) {
+                        $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f720p) . '&videoName=' . $content->url . '-360p "/a /n '." \n";
+                    }
+                }
+            }
+            $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /s';
+            return $returnData;
+        }
+    }
 }
