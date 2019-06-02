@@ -39,7 +39,7 @@ class ProxyDriveController extends Controller
                 }
             }
         } else {
-            return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
+            return "";
         }
     }
     function getLinkAndRedirect($links)
@@ -83,7 +83,7 @@ class ProxyDriveController extends Controller
             $urlhost = request()->getHost();
             $returnData = null;
             foreach ($data as $content) {
-                if (!$this->CheckHeaderCode($content->f720p && $this->CheckHeaderCode($content->f360p))) {
+                if (!$this->CheckHeaderCode($content->f720p) && $this->CheckHeaderCode($content->f360p)) {
                     //untuk brokenlink 720p
                     $idDrive = $this->GetIdDrive($content->f360p);
                     if ($idDrive) {
