@@ -87,14 +87,14 @@ class ProxyDriveController extends Controller
                     //untuk brokenlink 720p
                     $idDrive = $this->GetIdDrive($content->f360p);
                     if ($idDrive) {
-                        $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f360p) . '&videoName=' . $content->url . '-720p "/a /n '." \n";
+                        $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f360p) . '&videoName=' . $content->url . '-720p" /a /n '." \n";
                     }
                 }
                 if (!$this->CheckHeaderCode($content->f360p) && $this->CheckHeaderCode($content->f720p)) {
                     //untuk brokenlink 350p
                     $idDrive = $this->GetIdDrive($content->f720p);
                     if ($idDrive) {
-                        $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f720p) . '&videoName=' . $content->url . '-360p "/a /n '." \n";
+                        $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f720p) . '&videoName=' . $content->url . '-360p" /a /n '." \n";
                     }
                 }
             }
