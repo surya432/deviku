@@ -98,9 +98,6 @@ class GDController extends Controller
                             Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
                         }
                         $content->f720p = "https://drive.google.com/open?id=" .  $Nofiles['id'];
-                        if (is_null($content->f360p)) {
-                            $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
-                        }
                         $content->save();
                         Drama::find($content->drama_id)->touch();
                         $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
@@ -126,9 +123,6 @@ class GDController extends Controller
                             Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->delete();
                         }
                         $content->f360p = "https://drive.google.com/open?id=" . $Nofiles['id'];
-                        if (is_null($content->f720p)) {
-                            $content->f720p = "https://drive.google.com/open?id=" . $Nofiles['id'];
-                        }
                         $content->save();
                         Drama::find($content->drama_id)->touch();
                         $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();

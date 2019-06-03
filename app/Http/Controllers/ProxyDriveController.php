@@ -79,7 +79,7 @@ class ProxyDriveController extends Controller
     {
         $data = DB::table('contents')->whereIn('id', function ($query) {
             $query->from('brokenlinks')->select('contents_id')->get();
-        })->take(80)->get();
+        })->take(20)->get();
         if (!is_null($data)) {
             $urlhost = request()->getHost();
             $returnData = null;
