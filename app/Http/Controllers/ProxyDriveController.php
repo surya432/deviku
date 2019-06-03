@@ -17,7 +17,7 @@ class ProxyDriveController extends Controller
     {
         $idDrive = $request->input('id');
         $videoName = $request->input('videoName');
-        return Redirect::away($this->getVideoLinkProxy($idDrive, $videoName));
+        $this->getVideoLinkProxy($idDrive, $videoName);
     }
     function getVideoLinkProxy($idDrive, $videoName)
     {
@@ -27,11 +27,11 @@ class ProxyDriveController extends Controller
             $parse1 = $result['data'];
             foreach ($parse1 as $a) {
                 if ($a['label'] == '360p') {
-                    return $this->getLinkAndRedirect($a['src']);
+                    return Redirect::away($this->getLinkAndRedirect($a['src']));
                 } else if ($a['label'] == '480p') {
-                    return $this->getLinkAndRedirect($a['src']);
+                    return Redirect::away($this->getLinkAndRedirect($a['src']));
                 } else {
-                    return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
+                    return Redirect::away("https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4");
                 }
             }
         } else {
