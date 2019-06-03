@@ -40,7 +40,7 @@ class ProxyDriveController extends Controller
                 }
             }
         } else {
-            return "";
+            return response()->json($result["reason"],500);
         }
     }
     function getLinkAndRedirect($links)
