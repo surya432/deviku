@@ -24,23 +24,18 @@ class ProxyDriveController extends Controller
         $getlinkproxy = $this->viewsource("https://drive01.herokuapp.com/api/proxy/" . $idDrive . "?token=ndo&videoName=" . $videoName);
         $result = json_decode($getlinkproxy, true);
         if (isset($result['data'])) {
-            $counts = count($result['data']);
-            if ($counts == 0) {
-                return null;
-            } else {
-                $parse1 = $result['data'];
-                foreach ($parse1 as $a) {
-                    if ($a['label'] == '360p') {
-                        return $this->getLinkAndRedirect($a['src']);
-                    } else if ($a['label'] == '480p') {
-                        return $this->getLinkAndRedirect($a['src']);
-                    } else {
-                        return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
-                    }
+            $parse1 = $result['data'];
+            foreach ($parse1 as $a) {
+                if ($a['label'] == '360p') {
+                    return $this->getLinkAndRedirect($a['src']);
+                } else if ($a['label'] == '480p') {
+                    return $this->getLinkAndRedirect($a['src']);
+                } else {
+                    return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
                 }
             }
         } else {
-            return response()->json($result["reason"],500);
+            return response()->json($result["reason"], 500);
         }
     }
     function getLinkAndRedirect($links)
