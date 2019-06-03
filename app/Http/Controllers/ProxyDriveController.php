@@ -97,7 +97,7 @@ class ProxyDriveController extends Controller
                         $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f720p) . '&videoName=' . $content->url . '-360p" /a /n ' . " \n";
                     }
                 } else {
-                    Brokenlink::where("content_id", $content->id)->delete();
+                    Brokenlink::where("contents_id", $content->id)->delete();
                 }
             }
             $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /s';
