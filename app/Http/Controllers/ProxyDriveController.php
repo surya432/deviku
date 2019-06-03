@@ -84,23 +84,20 @@ class ProxyDriveController extends Controller
             $urlhost = request()->getHost();
             $returnData = null;
             foreach ($data as $content) {
-                if ($this->CheckHeaderCode($content->f720p) && $this->CheckHeaderCode($content->f360p)) {
-                    if (!$this->CheckHeaderCode($content->f720p) && $this->CheckHeaderCode($content->f360p)) {
-                        //untuk brokenlink 720p
-                        $idDrive = $this->GetIdDrive($content->f360p);
-                        if ($idDrive) {
-                            $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f360p) . '&videoName=' . $content->url . '-720p" /a /n ' . " \n";
-                        }
+                if (!$this->CheckHeaderCode($content->f720p) && $this->CheckHeaderCode($content->f360p)) {
+                    //untuk brokenlink 720p
+                    $idDrive = $this->GetIdDrive($content->f360p);
+                    if ($idDrive) {
+                        $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f360p) . '&videoName=' . $content->url . '-720p" /a /n ' . " \n";
                     }
-                    if (!$this->CheckHeaderCode($content->f360p) && $this->CheckHeaderCode($content->f720p)) {
-                        //untuk brokenlink 350p
-                        $idDrive = $this->GetIdDrive($content->f720p);
-                        if ($idDrive) {
-                            $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f720p) . '&videoName=' . $content->url . '-360p" /a /n ' . " \n";
-                        }
+                } else if (!$this->CheckHeaderCode($content->f360p) && $this->CheckHeaderCode($content->f720p)) {
+                    //untuk brokenlink 350p
+                    $idDrive = $this->GetIdDrive($content->f720p);
+                    if ($idDrive) {
+                        $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f720p) . '&videoName=' . $content->url . '-360p" /a /n ' . " \n";
                     }
-                }else{
-                    Brokenlink::where("content_id",$content->id)->delete();
+                } else {
+                    Brokenlink::where("content_id", $content->id)->delete();
                 }
             }
             $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /s';
