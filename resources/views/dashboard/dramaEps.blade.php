@@ -130,27 +130,27 @@ Drama {{$result->title}}
                                 </div>
                                 <div class="modal-body">
                                     <div class="container-fluid">
-                                        <input type="hidden" name="id" id="id" hidden>
+                                        <input type="hidden" name="id" id="idDrama" hidden>
                                         {{ csrf_field() }}
                                         <div class="form-group">
                                             <label class="control-label" for="email">Name</label>
-                                            <input type="text" class="form-control" name="title" id="title" required>
+                                            <input type="text" class="form-control" name="title" id="titleDrama" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="email">Folder ID</label>
-                                            <input type="text" class="form-control" name="folderid" id="folderid">
+                                            <input type="text" class="form-control" name="folderid" id="folderidDrama">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="email">torrentlink</label>
-                                            <input type="text" class="form-control" name="torrentlink" id="torrentlink">
+                                            <input type="text" class="form-control" name="torrentlink" id="torrentlinkDrama">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="email">Link Subscanes</label>
-                                            <input type="text" class="form-control" name="subsceneslink" id="subsceneslink">
+                                            <input type="text" class="form-control" name="subsceneslink" id="subsceneslinkDrama">
                                         </div>
                                         <div class="form-group">
                                             <label for="type" class="form-label">Status</label>
-                                            <select class="custom-select form-control" name="status" id="status" required>
+                                            <select class="custom-select form-control" name="status" id="statusDrama" required>
                                                 <option selected>Select one</option>
                                                 @foreach($status as $status){
                                                 <option value="{{$status->status}}">{{$status->status}}</option>
@@ -159,7 +159,7 @@ Drama {{$result->title}}
                                         </div>
                                         <div class="form-group">
                                             <label for="type" class="form-label">Country</label>
-                                            <select class="custom-select form-control" name="country_id" id="country_id" required>
+                                            <select class="custom-select form-control" name="country_id" id="country_idDrama" required>
                                                 <option selected>Select one</option>
                                                 @foreach($country as $country){
                                                 <option value="{{$country->id}}">{{$country->name}}</option>
@@ -168,7 +168,7 @@ Drama {{$result->title}}
                                         </div>
                                         <div class="form-group">
                                             <label for="type" class="form-label">Type</label>
-                                            <select class="custom-select form-control" name="type_id" id="type_id" required>
+                                            <select class="custom-select form-control" name="type_id" id="type_idDrama" required>
                                                 <option selected>Select one</option>
                                                 @foreach($Type as $Type){
                                                 <option value="{{$Type->id}}">{{$Type->name}}</option>
@@ -212,14 +212,14 @@ Drama {{$result->title}}
         new Clipboard('.btncopy');
 
         $("#btnEdit").on("click", function() {
-            $("input[id=id]").val($(this).attr('data-id'));
-            $("input[id=title]").val($(this).attr('data-title'));
-            $("input[id=folderid]").val($(this).attr('data-folderid'));
-            $("select[id=status]").val($(this).attr('data-status'));
-            $("select[id=type_id]").val($(this).attr('data-type_id'));
-            $("select[id=country_id]").val($(this).attr('data-country_id'));
-            $("input[id=subsceneslink]").val($(this).attr('data-subsceneslink'));
-            $("input[id=torrentlink]").val($(this).attr('data-torrentlink'));
+            $("input[id=idDrama]").val($(this).attr('data-id'));
+            $("input[id=titleDrama]").val($(this).attr('data-title'));
+            $("input[id=folderidDrama]").val($(this).attr('data-folderid'));
+            $("select[id=statusDrama]").val($(this).attr('data-status'));
+            $("select[id=type_idDrama]").val($(this).attr('data-type_id'));
+            $("select[id=country_idDrama]").val($(this).attr('data-country_id'));
+            $("input[id=subsceneslinkDrama]").val($(this).attr('data-subsceneslink'));
+            $("input[id=torrentlinkDrama]").val($(this).attr('data-torrentlink'));
         });
         $("#formDramaEdit").on("submit", function() {
             event.preventDefault()

@@ -96,7 +96,6 @@ Drama
                     <th>No</th>
                     <th>Title</th>
                     <th>Status</th>
-                    <th>Country</th>
                     <th>Type</th>
                     <th>Action</th>
                 </tr>
@@ -186,12 +185,6 @@ Drama
                     {
                         data: 'status',
                         name: 'status'
-                    },
-                    {
-                        data: 'country',
-                        name: 'country',
-                        orderable: false,
-                        searchable: false
                     },
                     {
                         data: 'type',
