@@ -35,7 +35,6 @@ Drama
                                     <div class="container-fluid">
                                         <input type="hidden" name="id" id="id" hidden>
                                         {{ csrf_field() }}
-
                                         <div class="form-group">
                                             <label class="control-label" for="email">Name</label>
                                             <input type="text" class="form-control" name="title" id="title" required>
@@ -43,6 +42,14 @@ Drama
                                         <div class="form-group">
                                             <label class="control-label" for="email">Folder ID</label>
                                             <input type="text" class="form-control" name="folderid" id="folderid">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="email">torrentlink</label>
+                                            <input type="text" class="form-control" name="torrentlink" id="torrentlink">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="email">Link Subscanes</label>
+                                            <input type="text" class="form-control" name="subsceneslink" id="subsceneslink">
                                         </div>
                                         <div class="form-group">
                                             <label for="type" class="form-label">Status</label>
@@ -105,7 +112,6 @@ Drama
         $("#table-users").on("click", "#btnShow", function() {
             event.preventDefault()
             $('#modelId').modal('show');
-
             $("#formDrama")[0].reset()
             $("input[name=id]").val($(this).attr('data-id'));
             $("input[name=title]").val($(this).attr('data-title'));
@@ -113,6 +119,8 @@ Drama
             $("select[name=status]").val($(this).attr('data-status'));
             $("select[name=type_id]").val($(this).attr('data-type_id'));
             $("select[name=country_id]").val($(this).attr('data-country_id'));
+            $("input[name=subsceneslink]").val($(this).attr('data-subsceneslink'));
+            $("input[name=torrentlink]").val($(this).attr('data-torrentlink'));
         });
         $("#formDrama").on("submit", function() {
             event.preventDefault()

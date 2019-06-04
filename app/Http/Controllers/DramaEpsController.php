@@ -33,13 +33,9 @@ class DramaEpsController extends Controller
         if (!Drama::find($id)) {
             return abort('404');
         }
-        if (Cache::get('Drama')) {
-            $value = Cache::get('Drama')->where('id', $id)->first();
-        } else {
-            $value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->get();
-            Cache::forever('Drama', $value);
-            $value = Cache::get('Drama')->where('id', $id)->first();
-        }
+
+        //$value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->get();
+        $value = Drama::where('id', $id)->with('country')->with('type')->with('eps')->orderBy('id', 'desc')->first();
         $result = $this->GetTags($value);
         return response()->json($result);
     }

@@ -34,9 +34,6 @@ class DramaController extends Controller
         $data = Drama::with('country')->with('type')->orderBy('id', 'desc')->get();
 
         return Datatables::of($data)
-            ->addColumn('country', function ($data) {
-                return $data->country->name;
-            })
             ->addColumn('type', function ($data) {
                 return $data->type->name;
             })
@@ -48,8 +45,8 @@ class DramaController extends Controller
                 }
                 return '<div class="btn-group" role="group" aria-label="Command Action">' . $extBtn . '
                 <a href="' . route("eps", $data->id) . '" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
-                <button type="button" id="btnShow" data-id="' . $data->id . '" data-status="' . $data->status . '" data-folderid="' . $data->folderid . '" data-type_id="' . $data->type_id . '" data-country_id="' . $data->country_id . '"data-title="' . $data->title . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
-                <button type="button" id="btnDelete" data-id="' . $data->id . '" data-status="' . $data->status . '" data-folderid="' . $data->folderid . '" data-type_id="' . $data->type_id . '" data-country_id="' . $data->country_id . '"data-title="' . $data->title . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
+                <button type="button" id="btnShow" data-id="' . $data->id . '" data-status="' . $data->status . '" data-folderid="' . $data->folderid . '" data-type_id="' . $data->type_id . '" data-country_id="' . $data->country_id . '" data-title="' . $data->title . '"  data-torrentlink="' . $data->torrentlink . '"  data-torrentlink="' . $data->subsceneslink . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
+                <button type="button" id="btnDelete" data-id="' . $data->id . '" data-status="' . $data->status . '" data-folderid="' . $data->folderid . '" data-type_id="' . $data->type_id . '" data-country_id="' . $data->country_id . '" data-title="' . $data->title . '"  data-torrentlink="' . $data->torrentlink . '"  data-torrentlink="' . $data->torrentlink . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
             })
             ->order(function ($query) {
                 if (request()->has('id')) {
@@ -69,6 +66,8 @@ class DramaController extends Controller
             $dataType->status = $request->input("status");
             $dataType->country_id = $request->input("country_id");
             $dataType->type_id = $request->input("type_id");
+            $dataType->subsceneslink = $request->input("subsceneslink");
+            $dataType->torrentlink = $request->input("torrentlink");
             $dataType->save();
             $dataTypeasd = "Update Success";
             return response()->json($dataTypeasd, 201);
@@ -80,6 +79,8 @@ class DramaController extends Controller
         $dataType->status = $request->input("status");
         $dataType->country_id = $request->input("country_id");
         $dataType->type_id = $request->input("type_id");
+        $dataType->subsceneslink = $request->input("subsceneslink");
+        $dataType->torrentlink = $request->input("torrentlink");
         $dataType->save();
         $folderName =  $dataType->title . " [$dataType->id]";
         $resultCurl = $this->GDCreateFolder($folderName);

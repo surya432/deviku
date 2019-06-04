@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\drama;
+
 class CreateDataBaseDrama extends Migration
 {
     /**
@@ -18,10 +19,11 @@ class CreateDataBaseDrama extends Migration
             $table->string('title');
             $table->string('country_id');
             $table->string('type_id');
-            //$table->string('type_id');
             $table->string('status');
             $table->string('slug');
             $table->string('folderid');
+            $table->string('subsceneslink');
+            $table->string('torrentlink');
             $table->timestamps();
         });
     }

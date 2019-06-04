@@ -86,8 +86,8 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::delete('/admin/type', ['as' => 'typeDelete', 'uses' => 'TypeController@Delete']);
 
     Route::get('/admin/drama/{id}/eps/', ['as' => 'eps', 'uses' => 'DramaEpsController@Index']);
-    Route::get('/admin/drama/{id}/eps/data"', ['as' => 'epsData', 'uses' => 'DramaEpsController@get']);
-    Route::get('/admin/drama/{id}/eps/detail"', ['as' => 'epsDetail', 'uses' => 'DramaEpsController@indexDetail']);
+    Route::get('/admin/drama/{id}/eps/data', ['as' => 'epsData', 'uses' => 'DramaEpsController@get']);
+    Route::get('/admin/drama/{id}/eps/detail', ['as' => 'epsDetail', 'uses' => 'DramaEpsController@indexDetail']);
     Route::Post('/admin/drama/{id}/eps/', ['as' => 'epsPost', 'uses' => 'DramaEpsController@Post']);
     Route::get('/admin/drama/{id}/eps/delete', ['as' => 'epsDelete', 'uses' => 'DramaEpsController@Delete']);
 
