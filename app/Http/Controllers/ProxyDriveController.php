@@ -36,7 +36,7 @@ class ProxyDriveController extends Controller
                 }
             }
         }
-        return json_encode($result["reason"]);
+        return "https://nontonindramaonline.com/505";
     }
     function getLinkAndRedirect($links)
     {
