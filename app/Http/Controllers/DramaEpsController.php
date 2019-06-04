@@ -23,8 +23,11 @@ class DramaEpsController extends Controller
         if (is_null($checkPost)) {
             return abort('404');
         }
+        $country = Country::all();
+        $Type = Type::all();
+        $status = Drama::groupBy('status')->select('status')->get();
         $value = Drama::where('id', $id)->with('country')->with('type')->with('eps')->orderBy('id', 'desc')->first();
-        return view('dashboard.dramaEps')->with('result', $value);
+        return view('dashboard.dramaEps')->with('result', $value)->with("country", $country)->with("status", $status)->with("Type", $Type);
     }
     public function indexDetail($id)
     {

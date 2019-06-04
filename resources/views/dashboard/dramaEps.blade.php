@@ -78,7 +78,7 @@ Drama {{$result->title}}
                     <i class="fa fa-film fa-fw"></i> Detail Drama
                 </button>
                 @if($result->folderid =="")
-                <button type="button" id="btnaddFolder" data-id="{{$result->id}}" data-status="{{$result->status}}" data-folderid="{{$result->folderid}}" data-title="{{$result->title}}" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i> Create Folder</button>
+                <button type="button" id="btnaddFolder" data-id="{{$result->id}}" data-status="{{$result->status}}" data-torrentlink="' . $data->torrentlink . '" data-torrentlink="' . $data->subsceneslink . '" data-folderid="{{$result->folderid}}" data-title="{{$result->title}}" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i> Create Folder</button>
                 @endif
                 <!-- Modal -->
                 <div class="modal fade" id="modelId2" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
@@ -116,6 +116,75 @@ Drama {{$result->title}}
                 @if($result->subsceneslink)
                 <a href="{{$result->subsceneslink}}" target="_blank" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-eye-open"></i> Subscenes</a>
                 @endif
+                <button type="button" id="btnEdit" data-toggle="modal" data-target="#modelId2343" data-id="{{$result->id}}" data-status="{{$result->status}}" data-type_id="{{$result->type_id}}" data-country_id="{{$result->country_id}}" data-torrentlink="{{$result->torrentlink}}" data-subsceneslink="{{$result->subsceneslink}}" data-folderid="{{$result->folderid}}" data-title="{{$result->title}}" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i> Edit Drama</button>
+                <!-- Modal -->
+                <div class="modal fade" id="modelId2343" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <form action="{{ route("dramaPost") }}" method="post" id="formDramaEdit" role="form">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title" id="modelTitleId">Drama</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <input type="hidden" name="id" id="id" hidden>
+                                        {{ csrf_field() }}
+                                        <div class="form-group">
+                                            <label class="control-label" for="email">Name</label>
+                                            <input type="text" class="form-control" name="title" id="title" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="email">Folder ID</label>
+                                            <input type="text" class="form-control" name="folderid" id="folderid">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="email">torrentlink</label>
+                                            <input type="text" class="form-control" name="torrentlink" id="torrentlink">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="email">Link Subscanes</label>
+                                            <input type="text" class="form-control" name="subsceneslink" id="subsceneslink">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="type" class="form-label">Status</label>
+                                            <select class="custom-select form-control" name="status" id="status" required>
+                                                <option selected>Select one</option>
+                                                @foreach($status as $status){
+                                                <option value="{{$status->status}}">{{$status->status}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="type" class="form-label">Country</label>
+                                            <select class="custom-select form-control" name="country_id" id="country_id" required>
+                                                <option selected>Select one</option>
+                                                @foreach($country as $country){
+                                                <option value="{{$country->id}}">{{$country->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="type" class="form-label">Type</label>
+                                            <select class="custom-select form-control" name="type_id" id="type_id" required>
+                                                <option selected>Select one</option>
+                                                @foreach($Type as $Type){
+                                                <option value="{{$Type->id}}">{{$Type->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <div id='content'>
@@ -142,6 +211,33 @@ Drama {{$result->title}}
     $(document).ready(function() {
         new Clipboard('.btncopy');
 
+        $("#btnEdit").on("click", function() {
+            $("input[id=id]").val($(this).attr('data-id'));
+            $("input[id=title]").val($(this).attr('data-title'));
+            $("input[id=folderid]").val($(this).attr('data-folderid'));
+            $("select[id=status]").val($(this).attr('data-status'));
+            $("select[id=type_id]").val($(this).attr('data-type_id'));
+            $("select[id=country_id]").val($(this).attr('data-country_id'));
+            $("input[id=subsceneslink]").val($(this).attr('data-subsceneslink'));
+            $("input[id=torrentlink]").val($(this).attr('data-torrentlink'));
+        });
+        $("#formDramaEdit").on("submit", function() {
+            event.preventDefault()
+            $.ajax({
+                type: "post",
+                url: "{{ route('dramaPost') }}",
+                data: $(this).serializeArray(),
+                success: function(data) {
+                    $(".alert-success").fadeIn().html(data).wait(2000).fadeOut('slow');
+                    $('#modelId2343').modal('hide');
+                },
+                error: function(data) {
+                    $(".alert-success").fadeIn().html(data).wait(2000).fadeOut('slow');
+                    $('#modelId2343').modal('hide');
+
+                }
+            });
+        });
         $("#table-users").on("click", "#btnShow", function() {
             event.preventDefault()
             $('#modelId').modal('show');
@@ -297,6 +393,8 @@ Drama {{$result->title}}
             });
         });
     });
+
+
 
     function btnAdd() {
         $("#formDrama")[0].reset()
