@@ -35,7 +35,7 @@ class ProxyDriveController extends Controller
                 }
             }
         }
-        return response()->json($result["reason"], 500);
+        return json_encode($result["reason"]);
     }
     function getLinkAndRedirect($links)
     {
@@ -90,8 +90,12 @@ class ProxyDriveController extends Controller
                     if ($idDrive) {
                         $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "https://' . $urlhost . '/proxyDrive?id=' . $this->GetIdDrive($content->f720p) . '&videoName=' . $content->url . '-360p" /a /n ' . " \n";
                     }
-                } else {
+                } else if (!$this->CheckHeaderCode($content->f360p) && !$this->CheckHeaderCode($content->f720p)) {
                     Brokenlink::where("contents_id", $content->id)->delete();
+                    $dataContent = Content::find($content->id);
+                    $dataContent->f360p = null;
+                    $dataContent->f720p = null;
+                    $dataContent->save();
                 }
             }
             $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /s';
