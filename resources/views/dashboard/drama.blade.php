@@ -23,7 +23,7 @@ Drama
                 <!-- Modal -->
                 <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                        <form action="{{ route("dramaPost") }}" method="post" id="formDrama" role="form">
+                        <form action="{{ route("dramaPost") }}" method="post" id="formDrama" role="form" autocomplete="off">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
