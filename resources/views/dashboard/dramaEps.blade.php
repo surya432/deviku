@@ -80,7 +80,7 @@ Drama {{$result->title}}
                 @if($result->folderid =="")
                 <button type="button" id="btnaddFolder" data-id="{{$result->id}}" data-status="{{$result->status}}" data-torrentlink="' . $data->torrentlink . '" data-torrentlink="' . $data->subsceneslink . '" data-folderid="{{$result->folderid}}" data-title="{{$result->title}}" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-plus"></i> Create Folder</button>
                 @else
-                <a href="https://drive.google.com/drive/folders/{{$result->id}}" class="btn btn-sm btn-primary" target="_blank">Folder</a>
+                <a href="https://drive.google.com/drive/folders/{{$result->folderid}}" class="btn btn-sm btn-primary" target="_blank">Folder</a>
                 @endif
                 <!-- Modal -->
                 <div class="modal fade" id="modelId2" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
