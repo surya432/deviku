@@ -8,6 +8,7 @@ use function Matrix\trace;
 use Illuminate\Support\Facades\Redirect;
 use DB;
 use App\Brokenlink;
+use App\Content;
 
 class ProxyDriveController extends Controller
 {
@@ -73,7 +74,7 @@ class ProxyDriveController extends Controller
     {
         $data = DB::table('contents')->whereIn('id', function ($query) {
             $query->from('brokenlinks')->select('contents_id')->get();
-        })->inRandomOrder()->take(30)->get();
+        })->inRandomOrder()->take(50)->get();
         if (!is_null($data)) {
             $urlhost = request()->getHost();
             $returnData = null;
