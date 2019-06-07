@@ -30,6 +30,5 @@ class AddTrigerDrama extends Migration
     {
         //
         DB::unprepared('DROP TRIGGER `delete_drama');
-
     }
 }
