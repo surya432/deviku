@@ -15,9 +15,11 @@ class AddTrigerDramaEps extends Migration
     {
         //
         DB::unprepared('CREATE TRIGGER delete_episode_drama AFTER DELETE ON `contents` FOR EACH ROW
-                BEGIN
-                   DELETE FROM `brokenlinks` WHERE brokenlinks.contents_id = old.id ;
-                END');
+            BEGIN
+                INSERT INTO trashes SET  idcopy=old.f720p,token= (Select tokenDriveAdmin from settings where id="1");
+                DELETE FROM `backups` WHERE backups.f720p = old.f720p;
+                DELETE FROM `brokenlinks` WHERE brokenlinks.contents_id = old.id ;
+            END');
     }
 
     /**

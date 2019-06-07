@@ -349,6 +349,7 @@ trait HelperController
       return false;
     }
   }
+
   public function copygd($driveId, $folderid, $title, $token)
   {
     $curl = curl_init();
@@ -526,6 +527,14 @@ trait HelperController
     $response = json_decode($result, true);
     return $response;
   }
+  function GetIdDriveTrashed($urlVideoDrive)
+  {
+    if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
+      return $id[1];
+    } else {
+      return $urlVideoDrive;
+    }
+  }
   function AutoDeleteGd()
   {
     $seconds = 1000 * 60 * 5;
@@ -536,7 +545,7 @@ trait HelperController
           $idcopy = $datass->idcopy;
           $tokens = $datass->token;
           if (!is_null($idcopy) && !is_null($tokens)) {
-            if ($this->deletegd($idcopy, $tokens)) {
+            if ($this->deletegd($this->GetIdDriveTrashed($idcopy), $tokens)) {
               $datass->delete();
             }
           } else {

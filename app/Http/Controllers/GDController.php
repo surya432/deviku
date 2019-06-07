@@ -90,8 +90,8 @@ class GDController extends Controller
                     } else {
                         $folderId = $oldFolder;
                     }
+                    $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                        $this->GDMoveFolder($Nofiles['id'], $folderId);
                         $this->addToTrashes($this->GetIdDrive($content->f720p), $tokenDriveAdmin);
                         $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
                         if (!is_null($checkLaporanBroken)) {
@@ -115,8 +115,8 @@ class GDController extends Controller
                     } else {
                         $folderId = $oldFolder;
                     }
+                    $this->GDMoveFolder($Nofiles['id'], $folderId);
                     if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                        $this->GDMoveFolder($Nofiles['id'], $folderId);
                         $this->addToTrashes($this->GetIdDrive($content->f360p), $tokenDriveAdmin);
                         $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->first();
                         if (!is_null($checkLaporanBroken)) {
