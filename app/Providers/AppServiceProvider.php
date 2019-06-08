@@ -22,11 +22,14 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(UrlGenerator $url)
+    //public function boot(UrlGenerator $url)
+    public function boot()
     {
         //
         if (env('APP_ENV') !== 'local') {
-            $url->forceScheme('https');
+            //$url->forceScheme('https');
+            \URL::forceScheme('https');
+
         }
     }
 }
