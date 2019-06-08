@@ -74,7 +74,6 @@ class GDController extends Controller
         } else {
             $settingData = Drama::find($id);
             $oldFolder = $settingData->folderid;
-            return $oldFolder;
             $resultCurl = $this->singkronfile($oldFolder);
         }
         $fdrive = array();
@@ -84,7 +83,6 @@ class GDController extends Controller
                 $content = Content::where('url', $url)->first();
                 if ($content) {
                     $value = Drama::find($content->drama_id);
-
                     if ($value) {
                         $folderId = $value->folderid;
                     } else {
