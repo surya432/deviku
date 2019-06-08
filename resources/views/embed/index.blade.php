@@ -145,16 +145,23 @@
             },
         });
     </script>
+    @if(!empty($url->f360p))
     <script type="text/javascript">
         function getPlayer() {
-            @if($url - > f360p != "")
             var data = showPlayer('gd360');
-            @else
-            var data = showPlayer('gd720');
-            @endif
             return data;
         }
+    </script>
+    @else
+    <script type="text/javascript">
+        function getPlayer() {
+            var data = showPlayer('gd720');
+            return data;
+        }
+    </script>
+    @endif
 
+    <script type="text/javascript">
         function showPlayer(link_id) {
             $("#myElement").html(
                 '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Tunggu Sebentar Ya... :D :)</p></div>'
