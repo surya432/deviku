@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Cache;
 use App\Setting;
 use App\Mirror;
 use App\Trash;
-use App\backup;
-
+use App\Backup;
+use App\Content;
 trait HelperController
 {
   function seoUrl($string)
@@ -561,36 +561,32 @@ trait HelperController
   {
     $seconds = 1000 * 60 * 15;
     Cache::remember('backupgd', $seconds, function () {
-      $settingData = Setting::find(1);
-      $this->AutoDeleteGd();
-      $dataContent =  DB::table('contents')
-        ->whereNotIn('url', DB::table('backups')->pluck('url'))
-        ->where('f720p', 'NOT LIKE', '%picasa%')
-        ->where('f360p', 'NOT LIKE', '%picasa%')
-        ->take(12)
-        ->get();
-      foreach ($dataContent as $dataContents) {
-        $checkLaporanBroken = backup::where('url', $dataContents->url)->first();
-        if (is_null($checkLaporanBroken)) {
-          $f20p = $this->CheckHeaderCode($dataContents->f720p);
-          if ($f20p) {
-            $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
-            $checkLaporanBroken = backup::where('url', $dataContents->url)->first();
-            if (isset($copyID['id']) && is_null($checkLaporanBroken)) {
-              $backup = new backup();
-              $backup->title = $dataContents->title;
-              $backup->url = $dataContents->url;
-              $backup->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
-              $backup->save();
-            }else{
-              $datass = new Trash();
-              $datass->idcopy = $copyID['id'];
-              $datass->token = $settingData->tokenDriveAdmin;
-              $datass->save();
-            }
-          }
+    $settingData = Setting::find(1);
+    $this->AutoDeleteGd();
+    $dataContent =  DB::table('contents')
+      ->whereNotIn('url', DB::table('backups')->whereNotNull('f720p')->pluck('url'))
+      ->where('f720p', 'NOT LIKE', '%picasa%')
+      ->whereNotNull('f720p')
+      ->inRandomOrder()
+      ->take(5)
+      ->get();
+    foreach ($dataContent as $dataContents) {
+      $f20p = $this->CheckHeaderCode($dataContents->f720p);
+      if ($f20p) {
+        $content =array('url' => $dataContents->url, 'title' => $dataContents->title);
+        $datass = Backup::firstOrCreate($content);
+        $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
+        if (isset($copyID['id'])) {
+          //$datass = Content::where('title', $dataContents->title);
+          $datass->f720p = $copyID['id'];
+          $datass->save();
         }
+      }else{
+        $content = Content::find($dataContents->id);
+        $content->f720p =null;
+        $content->save();
       }
+    }
     });
   }
 }
