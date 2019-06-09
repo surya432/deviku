@@ -538,7 +538,7 @@ trait HelperController
   }
   function AutoDeleteGd()
   {
-    $seconds = 1000 * 60 * 5;
+    $seconds = 1000 * 60 * 25;
     $value = Cache::remember('deletegd', $seconds, function () {
       $datass = Trash::take(20)->get();
       if ($datass) {
