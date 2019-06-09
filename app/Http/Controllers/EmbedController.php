@@ -106,9 +106,7 @@ class EmbedController extends Controller
     {
         $seconds = 1000 * 60 * 4;
         Cache::remember('MethodBrokenlinks', $seconds, function () use ($id, $kualitas, $options) {
-            
-            $this->AutoBackupDrive();
-            $checkLaporanBroken = Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->first();
+                        $checkLaporanBroken = Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->first();
             if (!is_null($checkLaporanBroken) && $options == "delete") {
                 Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->delete();
             } elseif (is_null($checkLaporanBroken) && $options == "add") {
@@ -123,6 +121,7 @@ class EmbedController extends Controller
     {
         $content = Content::where('url', $url)->first();
         $this->addToTrashes();
+        $this->AutoBackupDrive();
         $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Ya Link Sudah Di Rusak!! Coba Server Lain Kak. :( </br> #LaporDenganKomentarDibawah</p></div>';
         switch ($request->input('player')) {
             case 'gd360':
