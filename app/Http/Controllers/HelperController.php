@@ -10,6 +10,7 @@ use App\Mirror;
 use App\Trash;
 use App\BackupFilesDrive;
 use App\Content;
+
 trait HelperController
 {
   function seoUrl($string)
@@ -561,32 +562,32 @@ trait HelperController
   {
     $seconds = 1000 * 60 * 15;
     Cache::remember('backupgd', $seconds, function () {
-    $settingData = Setting::find(1);
-    $this->AutoDeleteGd();
-    $dataContent =  DB::table('contents')
-      ->whereNotIn('url', DB::table('backups')->whereNotNull('f720p')->pluck('url'))
-      ->where('f720p', 'NOT LIKE', '%picasa%')
-      ->whereNotNull('f720p')
-      ->inRandomOrder()
-      ->take(5)
-      ->get();
-    foreach ($dataContent as $dataContents) {
-      $f20p = $this->CheckHeaderCode($dataContents->f720p);
-      if ($f20p) {
-        $content =array('url' => $dataContents->url, 'title' => $dataContents->title);
-        $datass = BackupFilesDrive::firstOrCreate($content);
-        $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
-        if (isset($copyID['id'])) {
-          //$datass = Content::where('title', $dataContents->title);
-          $datass->f720p = $copyID['id'];
-          $datass->save();
+      $settingData = Setting::find(1);
+      $this->AutoDeleteGd();
+      $dataContent =  DB::table('contents')
+        ->whereNotIn('url', DB::table('backups')->whereNotNull('f720p')->pluck('url'))
+        ->where('f720p', 'NOT LIKE', '%picasa%')
+        ->whereNotNull('f720p')
+        ->inRandomOrder()
+        ->take(5)
+        ->get();
+      foreach ($dataContent as $dataContents) {
+        $f20p = $this->CheckHeaderCode($dataContents->f720p);
+        if ($f20p) {
+          $content = array('url' => $dataContents->url, 'title' => $dataContents->title);
+          $datass = BackupFilesDrive::firstOrCreate($content);
+          $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
+          if (isset($copyID['id'])) {
+            //$datass = Content::where('title', $dataContents->title);
+            $datass->f720p = $copyID['id'];
+            $datass->save();
+          }
+        } else {
+          $content = Content::find($dataContents->id);
+          $content->f720p = null;
+          $content->save();
         }
-      }else{
-        $content = Content::find($dataContents->id);
-        $content->f720p =null;
-        $content->save();
       }
-    }
     });
   }
 }
