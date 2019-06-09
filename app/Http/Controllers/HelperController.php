@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Setting;
 use App\Mirror;
 use App\Trash;
+use App\backup;
 
 trait HelperController
 {
@@ -539,9 +540,9 @@ trait HelperController
   {
     $seconds = 1000 * 60 * 5;
     $value = Cache::remember('deletegd', $seconds, function () {
-      $datas = Trash::take(20)->get();
-      if ($datas) {
-        foreach ($datas as $datass) {
+      $datass = Trash::take(20)->get();
+      if ($datass) {
+        foreach ($datass as $datass) {
           $idcopy = $datass->idcopy;
           $tokens = $datass->token;
           if (!is_null($idcopy) && !is_null($tokens)) {
@@ -551,6 +552,32 @@ trait HelperController
           } else {
             $datass->delete();
           }
+        }
+      }
+    });
+    return $value;
+  }
+  function AutoBackupDrive()
+  {
+    $seconds = 1000 * 60 * 15;
+    Cache::remember('backupgd', $seconds, function () {
+      $settingData = Setting::find(1);
+      $dataContent =  DB::table('delivery_sap')
+        ->whereNotIn('url', DB::table('backups')->pluck('url'))
+        ->where('f720p', 'NOT LIKE', '%picasa%')
+        ->take(10)
+        ->get();
+      foreach ($dataContent as $dataContent) {
+        $f20p = $this->CheckHeaderCode($dataContent->f20p);
+        if ($f20p) {
+          $copyID = $this->copygd($dataContent->f20p,$settingData->folderbackup, $dataContent->url,$settingData->tokenDriveAdmin);
+          if (!is_null($copyID) || !isset($copyID['error'])) {
+              $backup = new backup();
+              $backup->title = $dataContent->title;
+              $backup->url = $dataContent->url;
+              $backup->f720p = "https://drive.google.com/open?id=" .$copyID;
+              $backup->save();
+          };
         }
       }
     });

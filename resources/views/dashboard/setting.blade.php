@@ -34,6 +34,10 @@ Setting
                             <input type="text" class="form-control" name="folderUpload" id="folderUpload" required>
                         </div>
                         <div class="form-group">
+                            <label class="control-label" for="folder360p">Folder BackUp</label>
+                            <input type="text" class="form-control" name="folderbackup" id="folderbackup" required>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label" for="folder360p">Size Count</label>
                             <input type="text" class="form-control" name="sizeCount" id="sizeCount" required>
                         </div>
@@ -111,6 +115,7 @@ Setting
                     $("input[name=folder720p]").val(data[0].folder720p);
                     $("input[name=folder360p]").val(data[0].folder360p);
                     $("input[name=folderUpload]").val(data[0].folderUpload);
+                    $("input[name=folderbackup]").val(data[0].folderbackup);
                     $("input[name=tokenDriveAdmin]").val(data[0].tokenDriveAdmin);
                     $("input[name=apiUrl]").val(data[0].apiUrl);
                     $("input[name=tokenViu]").val(data[0].tokenViu);
@@ -145,6 +150,7 @@ Setting
                     $("input[name=folder720p]").val(data.folder720p);
                     $("input[name=folder360p]").val(data.folder360p);
                     $("input[name=folderUpload]").val(data.folderUpload);
+                    $("input[name=folderbackup]").val(data[0].folderbackup);
                     $("input[name=tokenDriveAdmin]").val(data.tokenDriveAdmin);
                     $("input[name=apiUrl]").val(data.apiUrl);
                     $("input[name=tokenViu]").val(data.tokenViu);
@@ -164,6 +170,7 @@ Setting
                     $("input[name=folder720p]").val(data.folder720p);
                     $("input[name=folder360p]").val(data.folder360p);
                     $("input[name=folderUpload]").val(data.folderUpload);
+                    $("input[name=folderbackup]").val(data[0].folderbackup);
                     $("input[name=tokenDriveAdmin]").val(data.tokenDriveAdmin);
                     $("input[name=apiUrl]").val(data.apiUrl);
                     $("input[name=tokenViu]").val(data.tokenViu);

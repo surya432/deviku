@@ -25,6 +25,7 @@ class SettingController extends Controller
         $data->folder360p = $request->input("folder360p");
         $data->folderUpload = $request->input("folderUpload");
         $data->tokenDriveAdmin = $request->input("tokenDriveAdmin");
+        $data->folderbackup = $request->input("folderbackup");
         $data->apiUrl = $request->input("apiUrl");
         $data->tokenViu = $request->input("tokenViu");
         $data->viuSenin = $request->input("viuSenin");
