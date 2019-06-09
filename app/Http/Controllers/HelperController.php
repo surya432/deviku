@@ -562,6 +562,7 @@ trait HelperController
     $seconds = 1000 * 60 * 15;
     Cache::remember('backupgd', $seconds, function () {
       $settingData = Setting::find(1);
+      $this->AutoDeleteGd();
       $dataContent =  DB::table('contents')
         ->whereNotIn('url', DB::table('backups')->pluck('url'))
         ->where('f720p', 'NOT LIKE', '%picasa%')
