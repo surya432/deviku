@@ -569,16 +569,19 @@ trait HelperController
         ->take(12)
         ->get();
       foreach ($dataContent as $dataContents) {
-        $f20p = $this->CheckHeaderCode($dataContents->f720p);
-        if ($f20p) {
-          $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p),$settingData->folderbackup, $dataContents->url,$settingData->tokenDriveAdmin);
-          if (isset($copyID['id'])) {
+        $checkLaporanBroken = backup::where('url' ,$dataContents->url)->first();
+        if (is_null($checkLaporanBroken)) {
+          $f20p = $this->CheckHeaderCode($dataContents->f720p);
+          if ($f20p) {
+            $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
+            if (isset($copyID['id'])) {
               $backup = new backup();
               $backup->title = $dataContents->title;
               $backup->url = $dataContents->url;
-              $backup->f720p = "https://drive.google.com/open?id=" .$copyID['id'];
+              $backup->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
               $backup->save();
-          };
+            };
+          }
         }
       }
     });
