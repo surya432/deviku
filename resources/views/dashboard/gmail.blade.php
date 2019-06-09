@@ -27,6 +27,10 @@ Accounts Gmail
                         <label class="control-label" for="folderid">Folder Id</label>
                         <input type="text" class="form-control" name="folderid" id="folderid" required>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label" for="folderid">API URL</label>
+                        <input type="text" class="form-control" name="apiUrl" id="apiUrl" required>
+                    </div>
                     <button type="reset" class="btn btn-danger">Reset</button>
                     <button class="btn btn-primary text-center" type="submit">Save</button>
                 </form>
@@ -56,6 +60,7 @@ Accounts Gmail
             $("input[name=id]").val($(this).attr('data-id'));
             $("input[name=email]").val($(this).attr('data-email'));
             $("input[name=token]").val($(this).attr('data-token'));
+            $("input[name=apiUrl]").val($(this).attr('data-apiUrl'));
             $("input[name=folderid]").val($(this).attr('data-folderid'));
         });
         $("#formGmail").on("submit", function() {

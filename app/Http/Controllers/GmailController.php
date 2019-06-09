@@ -36,7 +36,7 @@ class GmailController extends Controller
                 return '
                 <a href="https://drive.google.com/drive/folders/' . $data->folderid . '"  class="btn btn-xs btn-primary" target="_blank">Folder</a>
                 <a href="/admin/gmail/token?id=' . $data->id . '"  class="btn btn-xs btn-primary" target="_blank">Check Token</a>
-                <button type="button" id="btnShow" data-id="' . $data->id . '" data-email="' . $data->email . '" data-token="' . $data->token . '" data-folderid="' . $data->folderid . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
+                <button type="button" id="btnShow" data-apiUrl="'.$data->apiUrl.'" data-id="' . $data->id . '" data-email="' . $data->email . '" data-token="' . $data->token . '" data-folderid="' . $data->folderid . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
                 <button type="button" id="btnDelete" data-id="' . $data->id . '" data-email="' . $data->email . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button>';
             })
             ->make(true);
@@ -47,6 +47,7 @@ class GmailController extends Controller
             $gmail = Gmail::find($request->input("id"));
             $gmail->email = Input::get("email");
             $gmail->token = Input::get("token");
+            $gmail->apiUrl = Input::get("apiUrl");
             $gmail->folderid = Input::get("folderid");
             $gmail->save();
             return response()->json($gmail, 201);
@@ -54,6 +55,7 @@ class GmailController extends Controller
         $gmail = new Gmail;
         $gmail->email = Input::get("email");
         $gmail->token = Input::get("token");
+        $gmail->apiUrl = Input::get("apiUrl");
         $gmail->folderid = Input::get("folderid");
         $gmail->save();
         return response()->json($gmail, 201);

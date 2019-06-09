@@ -261,8 +261,13 @@ trait HelperController
   public function refresh_token($token)
   {
     $tokenencode = urlencode($token);
-    $settingData = Setting::find(1);
-    $apiUrl = $settingData->apiUrl;
+    $gmail = Gmail::where('token',$token)->first();
+    if($gmail){
+      $apiUrl  = $gmail->apiUrl;
+    }else{
+      $settingData = Setting::find(1);
+      $apiUrl = $settingData->apiUrl;
+    }
     $curl = curl_init();
     curl_setopt_array($curl, array(
       CURLOPT_URL => "https://www.googleapis.com/oauth2/v4/token",
@@ -461,7 +466,6 @@ trait HelperController
         try {
           $copyid = $this->copygd($id['1'], $gmails->folderid, $title, $gmails->token);
           if (isset($copyid['id'])) {
-            $fieldMirror =  array("id" => $copyid['id'], "kualitas" => $kualitas, "url" => $urlVideo);
             $mirror = new Mirror();
             $mirror->idcopy = $copyid['id'];
             $mirror->kualitas = $kualitas;
