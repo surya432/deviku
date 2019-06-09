@@ -562,20 +562,21 @@ trait HelperController
     $seconds = 1000 * 60 * 15;
     Cache::remember('backupgd', $seconds, function () {
       $settingData = Setting::find(1);
-      $dataContent =  DB::table('delivery_sap')
+      $dataContent =  DB::table('contents')
         ->whereNotIn('url', DB::table('backups')->pluck('url'))
         ->where('f720p', 'NOT LIKE', '%picasa%')
-        ->take(10)
+        ->where('f360p', 'NOT LIKE', '%picasa%')
+        ->take(12)
         ->get();
-      foreach ($dataContent as $dataContent) {
-        $f20p = $this->CheckHeaderCode($dataContent->f20p);
+      foreach ($dataContent as $dataContents) {
+        $f20p = $this->CheckHeaderCode($dataContents->f720p);
         if ($f20p) {
-          $copyID = $this->copygd($dataContent->f20p,$settingData->folderbackup, $dataContent->url,$settingData->tokenDriveAdmin);
-          if (!is_null($copyID) || !isset($copyID['error'])) {
+          $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p),$settingData->folderbackup, $dataContents->url,$settingData->tokenDriveAdmin);
+          if (isset($copyID['id'])) {
               $backup = new backup();
-              $backup->title = $dataContent->title;
-              $backup->url = $dataContent->url;
-              $backup->f720p = "https://drive.google.com/open?id=" .$copyID;
+              $backup->title = $dataContents->title;
+              $backup->url = $dataContents->url;
+              $backup->f720p = "https://drive.google.com/open?id=" .$copyID['id'];
               $backup->save();
           };
         }
