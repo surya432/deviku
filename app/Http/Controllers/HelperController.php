@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Setting;
 use App\Mirror;
 use App\Trash;
-use App\Backup;
+use App\BackupFilesDrive;
 use App\Content;
 trait HelperController
 {
@@ -574,7 +574,7 @@ trait HelperController
       $f20p = $this->CheckHeaderCode($dataContents->f720p);
       if ($f20p) {
         $content =array('url' => $dataContents->url, 'title' => $dataContents->title);
-        $datass = Backup::firstOrCreate($content);
+        $datass = BackupFilesDrive::firstOrCreate($content);
         $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
         if (isset($copyID['id'])) {
           //$datass = Content::where('title', $dataContents->title);
