@@ -411,7 +411,10 @@ trait HelperController
     if ($err) {
       return false;
     } else {
-      $this->emptytrash($token);
+      $value = Cache::remember('empty'.$token, "86400‬", function () {
+        $this->emptytrash($token);
+
+      });
       return true;
     }
   }
@@ -561,7 +564,7 @@ trait HelperController
   function AutoBackupDrive()
   {
     $seconds = 1000 * 60 * 15;
-    Cache::remember('backupgd', $seconds, function () {
+    $value = Cache::remember('backupgd', $seconds, function () {
       $settingData = Setting::find(1);
       $this->AutoDeleteGd();
       $dataContent =  DB::table('contents')

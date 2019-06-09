@@ -27,6 +27,8 @@ Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@login']);
 Route::post('/login', ['as' => 'loginPost', 'uses' => 'LoginController@loginPost']);
 Route::get('/dramasqq', ['as' => 'dramasqq', 'uses' => 'DramaController@dramas']);
 
+Route::get('/backup/dramasqq', ['as' => 'backup', 'uses' => 'BackupController@index']);
+
 Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
 });
