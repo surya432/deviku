@@ -24,7 +24,6 @@ class BackupController extends Controller
           ->whereNotIn('url', DB::table('backups')->whereNotNull('f720p')->pluck('url'))
           ->where('f720p', 'NOT LIKE', '%picasa%')
           ->whereNotNull('f720p')
-          ->inRandomOrder()
           ->take(5)
           ->get();
         $dataresult = array();
