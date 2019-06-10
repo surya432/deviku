@@ -29,7 +29,7 @@ Route::get('/dramasqq', ['as' => 'dramasqq', 'uses' => 'DramaController@dramas']
 
 Route::get('/backup/dramasqq', ['as' => 'backup', 'uses' => 'BackupController@index']);
 Route::post('/gmail/update', ['as' => 'gmailPostUpdate', 'uses' => 'GmailController@Post']);
-Route::get('/gmail/deletegd', ['as' => 'gmailPostUpdate', 'uses' => 'GmailController@deletegdFromDB']);
+Route::get('/gmail/deletegd', ['as' => 'gmailPostUpdate', 'uses' => 'BackupController@deletegdFromDB']);
 
 Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
