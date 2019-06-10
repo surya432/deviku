@@ -27,8 +27,10 @@ class GmailController extends Controller
             )
             ->get();
         return Datatables::of($data)
+            ->addColumn('apiUrl', function ($data) {
+                return (!empty($data->apiUrl)) ? "true" : "false";
+            })
             ->addColumn('statusFolder', function ($data) {
-                //$this->getHeaderFolderCode($idDrive);
                 $folderCode = $this->CheckHeaderFolderCode($data->folderid);
                 return ($folderCode) ? "true" : "false";
             })
@@ -36,7 +38,7 @@ class GmailController extends Controller
                 return '
                 <a href="https://drive.google.com/drive/folders/' . $data->folderid . '"  class="btn btn-xs btn-primary" target="_blank">Folder</a>
                 <a href="/admin/gmail/token?id=' . $data->id . '"  class="btn btn-xs btn-primary" target="_blank">Check Token</a>
-                <button type="button" id="btnShow" data-apiUrl="'.$data->apiUrl.'" data-id="' . $data->id . '" data-email="' . $data->email . '" data-token="' . $data->token . '" data-folderid="' . $data->folderid . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
+                <button type="button" id="btnShow" data-apiUrl="' . $data->apiUrl . '" data-id="' . $data->id . '" data-email="' . $data->email . '" data-token="' . $data->token . '" data-folderid="' . $data->folderid . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
                 <button type="button" id="btnDelete" data-id="' . $data->id . '" data-email="' . $data->email . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button>';
             })
             ->make(true);
@@ -45,16 +47,16 @@ class GmailController extends Controller
     {
         if (!empty($request->input("id"))) {
             $gmail = Gmail::find($request->input("id"));
-            if(!empty($request->input("email"))){
+            if (!empty($request->input("email"))) {
                 $gmail->email = Input::get("email");
             }
-            if(!empty($request->input("token"))){
+            if (!empty($request->input("token"))) {
                 $gmail->token = Input::get("token");
             }
-            if(!empty($request->input("apiUrl"))){
+            if (!empty($request->input("apiUrl"))) {
                 $gmail->apiUrl = Input::get("apiUrl");
             }
-            if(!empty($request->input("folderid"))){
+            if (!empty($request->input("folderid"))) {
                 $gmail->folderid = Input::get("folderid");
             }
             $gmail->save();
@@ -81,7 +83,7 @@ class GmailController extends Controller
     }
     public function getToken(Request $request)
     {
-        $email = Gmail::where("id",$request->input("id"))->first();
+        $email = Gmail::where("id", $request->input("id"))->first();
         return dd($this->get_token($email->token));
     }
     public function getTokenAdmin()

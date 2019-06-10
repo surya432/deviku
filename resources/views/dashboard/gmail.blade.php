@@ -43,6 +43,7 @@ Accounts Gmail
                     <th>Email</th>
                     <th>Total Files</th>
                     <th>Status Folder</th>
+                    <th>apiUrl</th>
                     <th>Update At</th>
                     <th>Action</th>
                 </tr>
@@ -134,6 +135,10 @@ Accounts Gmail
                     {
                         data: 'statusFolder',
                         name: 'statusFolder'
+                    },
+                    {
+                        data: 'apiUrl',
+                        name: 'apiUrl'
                     },
                     {
                         data: 'updated_at',
