@@ -114,11 +114,11 @@ Accounts Gmail
                 "pageLength": 10,
                 "ajax": "{{ route('gmailData') }}",
                 "order": [
-                    [4, "asc"]
+                    [5, "asc"]
                 ],
                 columnDefs: [{
                     type: 'date-euro',
-                    targets: 4
+                    targets: 5
                 }],
                 "columns": [{
                         data: 'id',

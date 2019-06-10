@@ -60,7 +60,7 @@ class GmailController extends Controller
                 $gmail->folderid = Input::get("folderid");
             }
             $gmail->save();
-            return response()->json($gmail, 201);
+            return response()->json($gmail, 200);
         }
         $gmail = new Gmail;
         $gmail->email = Input::get("email");
@@ -68,7 +68,7 @@ class GmailController extends Controller
         $gmail->apiUrl = Input::get("apiUrl");
         $gmail->folderid = Input::get("folderid");
         $gmail->save();
-        return response()->json($gmail, 201);
+        return response()->json($gmail, 200);
     }
 
     public function Delete(Request $request)
@@ -77,9 +77,9 @@ class GmailController extends Controller
         if (!is_null($dataContent)) {
             $dataContent->delete();
             $dataContent = "Delete Success";
-            return response()->json($dataContent, 201);
+            return response()->json($dataContent, 200);
         }
-        return response()->json("error Delete", 201);
+        return response()->json("error Delete", 404);
     }
     public function getToken(Request $request)
     {

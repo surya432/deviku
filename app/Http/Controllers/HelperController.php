@@ -290,12 +290,11 @@ trait HelperController
   function get_token($tokens)
   {
     if (!Cache::has($tokens)) {
-      $gmail = Gmail::where('token', $tokens)->first();
+      $settingData = Setting::find(1);
+      $apiUrl = $settingData->apiUrl;
+      $gmail = Gmail::where('token', $tokens)->whereNotNull('apiUrl')->first();
       if ($gmail) {
         $apiUrl  = $gmail->apiUrl;
-      } else {
-        $settingData = Setting::find(1);
-        $apiUrl = $settingData->apiUrl;
       }
       $result_curl23 = $this->refresh_token($tokens, $apiUrl);
       if ($result_curl23) {
