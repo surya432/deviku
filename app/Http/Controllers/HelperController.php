@@ -542,7 +542,7 @@ trait HelperController
   {
     $seconds = 60;
     $value = Cache::remember('deletegd', $seconds, function () {
-      $datass = Trash::take(25)->get();
+      $datass = Trash::take(5)->get();
       if ($datass) {
         foreach ($datass as $datass) {
           $idcopy = $datass->idcopy;
