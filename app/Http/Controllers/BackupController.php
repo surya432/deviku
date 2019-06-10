@@ -20,8 +20,9 @@ class BackupController extends Controller
         //
         $settingData = Setting::find(1);
         $this->AutoDeleteGd();
+        DB::table('backups')->whereNull('f720p')->delete();
         $dataContent =  DB::table('contents')
-          ->whereNotIn('url', DB::table('backups')->whereNotNull('f720p')->pluck('url'))
+          ->whereNotIn('url', DB::table('backups')->pluck('url'))
           ->where('f720p', 'NOT LIKE', '%picasa%')
           ->whereNotNull('f720p')
           ->take(5)
