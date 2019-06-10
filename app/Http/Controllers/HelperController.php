@@ -258,16 +258,9 @@ trait HelperController
     }
     return null;
   }
-  public function refresh_token($token)
+  public function refresh_token($token,$apiUrl)
   {
     $tokenencode = urlencode($token);
-    $gmail = Gmail::where('token',$token)->first();
-    if($gmail){
-      $apiUrl  = $gmail->apiUrl;
-    }else{
-      $settingData = Setting::find(1);
-      $apiUrl = $settingData->apiUrl;
-    }
     $curl = curl_init();
     curl_setopt_array($curl, array(
       CURLOPT_URL => "https://www.googleapis.com/oauth2/v4/token",
@@ -296,9 +289,15 @@ trait HelperController
   }
   function get_token($tokens)
   {
-    $seconds = 1000 * 60 * 50;
     if (!Cache::has($tokens)) {
-      $result_curl23 = $this->refresh_token($tokens);
+      $gmail = Gmail::where('token', $tokens)->first();
+      if ($gmail) {
+        $apiUrl  = $gmail->apiUrl;
+      } else {
+        $settingData = Setting::find(1);
+        $apiUrl = $settingData->apiUrl;
+      }
+      $result_curl23 = $this->refresh_token($tokens,$apiUrl);
       if ($result_curl23) {
         $checklinkerror = json_decode($result_curl23, true);
         if (isset($checklinkerror['access_token'])) {
@@ -415,7 +414,7 @@ trait HelperController
     if ($err) {
       return false;
     } else {
-      $value = Cache::remember('empty'.$token,1000 * 60 * 60, function () use($token) {
+      $value = Cache::remember('empty' . $token, 1000 * 60 * 60, function () use ($token) {
         $this->emptytrash($token);
       });
       return true;
@@ -576,19 +575,19 @@ trait HelperController
         ->inRandomOrder()
         ->take(5)
         ->get();
-      foreach ($dataContent as $dataContents) {
-        $f20p = $this->CheckHeaderCode($dataContents->f720p);
+      foreach ($dataContent as $dataContent) {
+        $f20p = $this->CheckHeaderCode($dataContent->f720p);
         if ($f20p) {
-          $content = array('url' => $dataContents->url, 'title' => $dataContents->title);
+          $content = array('url' => $dataContent->url, 'title' => $dataContent->title);
           $datass = BackupFilesDrive::firstOrCreate($content);
-          $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
+          $copyID = $this->copygd($this->GetIdDriveTrashed($dataContent->f720p), $settingData->folderbackup, $dataContent->url, $settingData->tokenDriveAdmin);
           if (isset($copyID['id'])) {
             //$datass = Content::where('title', $dataContents->title);
             $datass->f720p = $copyID['id'];
             $datass->save();
           }
         } else {
-          $content = Content::find($dataContents->id);
+          $content = Content::find($dataContent->id);
           $content->f720p = null;
           $content->save();
         }
