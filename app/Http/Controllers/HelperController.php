@@ -258,7 +258,7 @@ trait HelperController
     }
     return null;
   }
-  public function refresh_token($token,$apiUrl)
+  public function refresh_token($token, $apiUrl)
   {
     $tokenencode = urlencode($token);
     $curl = curl_init();
@@ -291,13 +291,13 @@ trait HelperController
   {
     if (!Cache::has($tokens)) {
       $gmail = Gmail::where('token', $tokens)->first();
-      if (!is_null($gmail->apiUrl)) {
+      if ($gmail) {
         $apiUrl  = $gmail->apiUrl;
       } else {
         $settingData = Setting::find(1);
         $apiUrl = $settingData->apiUrl;
       }
-      $result_curl23 = $this->refresh_token($tokens,$apiUrl);
+      $result_curl23 = $this->refresh_token($tokens, $apiUrl);
       if ($result_curl23) {
         $checklinkerror = json_decode($result_curl23, true);
         if (isset($checklinkerror['access_token'])) {
