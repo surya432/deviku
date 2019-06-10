@@ -413,9 +413,7 @@ trait HelperController
     if ($err) {
       return false;
     } else {
-      $value = Cache::remember('empty' . $token, 1000 * 60 * 60, function () use ($token) {
         $this->emptytrash($token);
-      });
       return true;
     }
   }
@@ -542,9 +540,9 @@ trait HelperController
   }
   function AutoDeleteGd()
   {
-    $seconds = 1000 * 60 * 60;
+    $seconds = 60;
     $value = Cache::remember('deletegd', $seconds, function () {
-      $datass = Trash::take(20)->get();
+      $datass = Trash::take(25)->get();
       if ($datass) {
         foreach ($datass as $datass) {
           $idcopy = $datass->idcopy;
