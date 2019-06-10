@@ -229,11 +229,11 @@ Drama {{$result->title}}
                 url: "{{ route('dramaPost') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    $(".alert-success").fadeIn().html(data).wait(2000).fadeOut('slow');
+                    swal("SUCCESS", data, "success");
                     $('#modelId2343').modal('hide');
                 },
                 error: function(data) {
-                    $(".alert-success").fadeIn().html(data).wait(2000).fadeOut('slow');
+                    swal("error",data, "error");
                     $('#modelId2343').modal('hide');
 
                 }
@@ -275,14 +275,12 @@ Drama {{$result->title}}
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        $(".alert-success").fadeIn().html('Create Success').wait(2000).fadeOut(
-                            'slow');
+                        swal("SUCCESS", data, "success");
                         $("#table-users").DataTable().ajax.reload(null, false);
                         document.location.reload();
                     },
                     error: function(data) {
-                        $(".alert-success").fadeIn().html('Create Error').wait(2000).fadeOut(
-                            'slow');
+                        swal("error", "error", "error");
                         $("#table-users").DataTable().ajax.reload(null, false);
                     }
                 });
@@ -295,7 +293,7 @@ Drama {{$result->title}}
                 url: "{{ route('epsPost', $result->id) }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    $(".alert-success").fadeIn().html(data).wait(20000).fadeOut('slow');
+                    swal("SUCCESS", data, "success");
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -303,7 +301,7 @@ Drama {{$result->title}}
 
                 },
                 error: function(data) {
-                    $(".alert-success").fadeIn().html(data).wait(20000).fadeOut('slow');
+                    swal("error", "error", "error");
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -344,13 +342,13 @@ Drama {{$result->title}}
                         id: id,
                     },
                     success: function(data) {
-                        $(".alert-success").fadeIn().html('Delete User ' + fn + ' success')
-                            .wait(20000).fadeOut('slow');
+                        swal("SUCCESS", fn, "success");
+
                         $("#table-users").DataTable().ajax.reload(null, false);
                     },
                     error: function(data) {
-                        $(".alert-success").fadeIn().html('Delete User ' + fn + ' Failed').wait(
-                            20000).fadeOut('slow');
+                        swal("error", fn, "error");
+
                         $("#table-users").DataTable().ajax.reload(null, false);
 
                     }

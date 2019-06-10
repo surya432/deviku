@@ -116,15 +116,16 @@ All Users
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        $(".alert-success").text("Delete User " + fn + " success")
-                        $(".alert-success").show()
+                        /* $(".alert-success").text("Delete User " + fn + " success")
+                        $(".alert-success").show() */
+                        swal("SUCCESS", "Success Save", "success")
+
                         $('#modelId').modal('hide');
                         $("#table-users").DataTable().ajax.reload(null, false);
 
                     },
                     error: function(data) {
-                        $(".alert-danger").text("Delete User " + fn + " failed")
-                        $(".alert-danger").show()
+                        swal("Error!!", "Something Error", "error")
                     }
                 });
             }
@@ -136,15 +137,16 @@ All Users
                 url: "{{ route('users.add') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    $(".alert-success").text(data.success)
-                    $(".alert-success").show()
+                    swal("SUCCESS", "Success Save", "success")
+
                     $('#modelId').modal('hide');
                     $("#table-users").DataTable().ajax.reload(null, false);
 
                 },
                 error: function(data) {
-                    $(".alert-danger").text(data.responseJSON.alert)
-                    $(".alert-danger").show()
+                    
+                    swal("Error!!", data.responseJSON.alert, "error")
+
                     $("#table-users").ajax.reload();
                     $('#modelId').modal('hide');
 

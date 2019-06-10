@@ -70,15 +70,13 @@ Accounts Gmail
                 url: "{{ route('gmailPost') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    $(".alert-success").text("Update Success")
-                    $(".alert-success").show()
+                    swal("success", "success Update", "success")
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formGmail")[0].reset()
 
                 },
                 error: function(data) {
-                    $(".alert-danger").text("Failed Update")
-                    $(".alert-danger").show()
+                    swal("error", "fail Update", "error")
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formGmail")[0].reset()
                 }
@@ -95,13 +93,13 @@ Accounts Gmail
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        $(".alert-success").text("Delete User " + fn + " success")
+                        swal("SUCCESS", fn, "success")
                         $(".alert-success").show();
                         $("#table-users").DataTable().ajax.reload(null, false);
 
                     },
                     error: function(data) {
-                        $(".alert-danger").text("Delete User " + fn + " failed")
+                        swal("error", fn, "error")
                         $(".alert-danger").show()
                         $("#table-users").DataTable().ajax.reload(null, false);
                     }
@@ -115,11 +113,11 @@ Accounts Gmail
                 "pageLength": 10,
                 "ajax": "{{ route('gmailData') }}",
                 "order": [
-                    [3, "asc"]
+                    [4, "asc"]
                 ],
                 columnDefs: [{
                     type: 'date-euro',
-                    targets: 3
+                    targets: 4
                 }],
                 "columns": [{
                         data: 'id',

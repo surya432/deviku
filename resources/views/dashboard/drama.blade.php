@@ -128,7 +128,7 @@ Drama
                 url: "{{ route('dramaPost') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    $(".alert-success").fadeIn().html(data).wait(2000).fadeOut('slow');
+                    swal("SUCCESS", data, "success")
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -136,7 +136,7 @@ Drama
 
                 },
                 error: function(data) {
-                    $(".alert-success").fadeIn().html(data).wait(2000).fadeOut('slow');
+                    swal("SUCCESS", data, "error")
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -155,14 +155,14 @@ Drama
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        $(".alert-success").fadeIn().html('Delete Success').wait(2000).fadeOut(
-                            'slow');
+                        swal("SUCCESS", data, "success")
+
                         $("#table-users").DataTable().ajax.reload(null, false);
 
                     },
                     error: function(data) {
-                        $(".alert-success").fadeIn().html('Delete Error').wait(2000).fadeOut(
-                            'slow');
+                        swal("Error", "Error Delete", "error")
+
                         $("#table-users").DataTable().ajax.reload(null, false);
                     }
                 });
@@ -215,12 +215,12 @@ Drama
             type: "get",
 
             success: function(data) {
-                $(".alert-success").fadeIn().html('Singkron Success').wait(2000).fadeOut('slow');
+                swal("SUCCESS", 'Singkron Success', "success")
                 $("#table-users").DataTable().ajax.reload(null, false);
 
             },
             error: function(data) {
-                $(".alert-success").fadeIn().html('Singkron Error').wait(2000).fadeOut('slow');
+                swal("error", 'Singkron error', "error")
                 $("#table-users").DataTable().ajax.reload(null, false);
             }
         });

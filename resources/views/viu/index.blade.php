@@ -98,11 +98,11 @@ function getById() {
 
         },
         success: function(data) {
-            $(".alert-success").fadeIn().html("Berhasil Di Dapatkan").wait(20000).fadeOut('slow');
+            swal("success", "success", "success");
             $('#exampleFormControlTextarea1').html(data);
         },
         error: function(request, status, error) {
-            $(".alert-danger").fadeIn().html("Gagal Di Dapatkan").wait(20000).fadeOut('slow');
+            swal("error", "error", "error");
             $('#exampleFormControlTextarea1').html("");
             alert(request.responseText);
         }

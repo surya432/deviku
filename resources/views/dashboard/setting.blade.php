@@ -145,6 +145,7 @@ Setting
                 url: "{{ route('setting.postData') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
+                    swal("success", "success", "success");
                     $("input[name=id]").val(data.id);
                     $("input[name=site_name]").val(data.site_name);
                     $("input[name=folder720p]").val(data.folder720p);
@@ -165,6 +166,8 @@ Setting
                     $(".alert-success").show()
                 },
                 error: function(data) {
+                    swal("error", "error", "error");
+
                     $("input[name=id]").val(data.id);
                     $("input[name=site_name]").val(data.site_name);
                     $("input[name=folder720p]").val(data.folder720p);
