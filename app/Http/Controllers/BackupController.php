@@ -18,7 +18,8 @@ class BackupController extends Controller
   use HelperController;
   public function deletegdFromDB()
   {
-    return ($this->AutoDeleteGd()) ? response()->json("OK", 200) : response()->json("OK", 521);
+    $this->AutoDeleteGd();
+    return response()->json("OK", 200);
   }
   public function index()
   {
