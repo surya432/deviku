@@ -291,7 +291,7 @@ trait HelperController
   {
     if (!Cache::has($tokens)) {
       $gmail = Gmail::where('token', $tokens)->first();
-      if ($gmail) {
+      if (!is_null($gmail->apiUrl)) {
         $apiUrl  = $gmail->apiUrl;
       } else {
         $settingData = Setting::find(1);
