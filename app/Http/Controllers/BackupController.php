@@ -42,9 +42,6 @@ class BackupController extends Controller
         $datass = BackupFilesDrive::firstOrCreate($content);
         $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
         if (isset($copyID['id'])) {
-          //$datass = new BackupFilesDrive::where('url',$dataContents->url);
-
-          //$datass = Content::where('title', $dataContents->title);
           $datass->f720p = $copyID['id'];
           $datass->save();
         }

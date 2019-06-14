@@ -557,6 +557,7 @@ trait HelperController
         }
       }
     }
+    return true;
   }
   function AutoBackupDrive()
   {
@@ -589,5 +590,7 @@ trait HelperController
         }
       }
     });
+    return true;
+
   }
 }
