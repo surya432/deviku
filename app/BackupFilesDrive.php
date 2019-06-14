@@ -9,5 +9,7 @@ class BackupFilesDrive extends Model
     //
     protected $fillable = ['url', 'title','f720p'];
     protected $table = 'backups';
+    protected $dateFormat = 'Y/m/d H:m:i';
+
 
 }

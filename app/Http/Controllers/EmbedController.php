@@ -38,7 +38,7 @@ class EmbedController extends Controller
         $dayFiles = Setting::find(1)->dayFiles;
         $mytime = \Carbon\Carbon::now();
         $dt = $mytime->subDays($dayFiles);
-        $datas = Mirror::where("DATE_FORMAT(created_at, '%d/%m/%Y %H:%i:%s')", '<=', date_format($dt, "Y/m/d H:i:s"))->take(20)->get();
+        $datas = Mirror::where("created_at", '<=', date_format($dt, "Y/m/d H:i:s"))->take(20)->get();
         if ($datas) {
             foreach ($datas as $datass) {
                 $trashes = new Trash();

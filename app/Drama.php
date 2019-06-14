@@ -9,6 +9,8 @@ use App\Content;
 class Drama extends Model
 {
     //
+    protected $dateFormat = 'Y/m/d H:m:i';
+
     public function country(){
         return $this->belongsTo(Country::class);
     }
