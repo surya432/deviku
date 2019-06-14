@@ -25,14 +25,14 @@ class BackupController extends Controller
   {
     //
     $settingData = Setting::find(1);
-    $this->AutoDeleteGd();
+    //$this->AutoDeleteGd();
     DB::table('backups')->whereNull('f720p')->delete();
     $dataContent =  DB::table('contents')
       ->whereNotIn('url', DB::table('backups')->pluck('url'))
       ->where('f720p', 'NOT LIKE', '%picasa%')
       ->whereNotNull('f720p')
       ->orderBy('id', 'desc')
-      ->take(5)
+      ->take(10)
       ->get();
     $dataresult = array();
     foreach ($dataContent as $dataContents) {
@@ -42,11 +42,13 @@ class BackupController extends Controller
         $datass = BackupFilesDrive::firstOrCreate($content);
         $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
         if (isset($copyID['id'])) {
+          //$datass = new BackupFilesDrive::where('url',$dataContents->url);
+
           //$datass = Content::where('title', $dataContents->title);
           $datass->f720p = $copyID['id'];
           $datass->save();
         }
-        array_push($dataresult, $copyID);
+        array_push($dataresult, $datass);
       } else {
         $content = Content::find($dataContents->id);
         $content->f720p = null;
