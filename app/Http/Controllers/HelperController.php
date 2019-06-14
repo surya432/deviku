@@ -10,6 +10,9 @@ use App\Mirror;
 use App\Trash;
 use App\BackupFilesDrive;
 use App\Content;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 
 trait HelperController
 {
@@ -413,7 +416,7 @@ trait HelperController
     if ($err) {
       return false;
     } else {
-        $this->emptytrash($token);
+      $this->emptytrash($token);
       return true;
     }
   }
@@ -540,24 +543,20 @@ trait HelperController
   }
   function AutoDeleteGd()
   {
-    $seconds = 60;
-    $value = Cache::remember('deletegd', $seconds, function () {
-      $datass = Trash::take(10)->get();
-      if ($datass) {
-        foreach ($datass as $datass) {
-          $idcopy = $datass->idcopy;
-          $tokens = $datass->token;
-          if (!is_null($idcopy) && !is_null($tokens)) {
-            if ($this->deletegd($this->GetIdDriveTrashed($idcopy), $tokens)) {
-              $datass->delete();
-            }
-          } else {
+    $datass = Trash::take(10)->get();
+    if ($datass) {
+      foreach ($datass as $datass) {
+        $idcopy = $datass->idcopy;
+        $tokens = $datass->token;
+        if (!is_null($idcopy) && !is_null($tokens)) {
+          if ($this->deletegd($this->GetIdDriveTrashed($idcopy), $tokens)) {
             $datass->delete();
           }
+        } else {
+          $datass->delete();
         }
       }
-    });
-    return $value;
+    }
   }
   function AutoBackupDrive()
   {
