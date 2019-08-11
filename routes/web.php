@@ -56,7 +56,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/users/laporan', ['as' => 'users.laporan', 'uses' => 'UsersController@index']);
     Route::get('/admin/users/getlaporan', ['as' => 'users.getlaporan', 'uses' => 'UsersController@getlaporan']);
     Route::post('/admin/users/addlaporan', ['as' => 'users.addlaporan', 'uses' => 'UsersController@addlaporan']);
-    Route::delete('/admin/users', ['as' => 'users.delete', 'uses' => 'RegistrationController@DeleteUser']);
+    Route::get('/admin/users', ['as' => 'users.delete', 'uses' => 'RegistrationController@DeleteUser']);
     Route::get('/admin/users/', ['as' => 'users', 'uses' => 'RegistrationController@ListUser']);
     Route::get('/admin/users-data', ['as' => 'users.getData', 'uses' => 'RegistrationController@ListUserData']);
     Route::get('/admin/users/roles/', ['as' => 'users.roles', 'uses' => 'RolesController@index']);
@@ -77,7 +77,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/country', ['as' => 'country', 'uses' => 'CountryController@Index']);
     Route::get('/admin/country-data', ['as' => 'countryData', 'uses' => 'CountryController@Data']);
     Route::post('/admin/country', ['as' => 'countryPost', 'uses' => 'CountryController@Post']);
-    Route::delete('/admin/country', ['as' => 'countryDelete', 'uses' => 'CountryController@Delete']);
+    Route::get('/admin/country', ['as' => 'countryDelete', 'uses' => 'CountryController@Delete']);
 
     Route::get('/admin/drama', ['as' => 'drama', 'uses' => 'DramaController@Index']);
     Route::get('/admin/drama-data', ['as' => 'dramaData', 'uses' => 'DramaController@get']);
@@ -87,7 +87,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/type', ['as' => 'type', 'uses' => 'TypeController@Index']);
     Route::get('/admin/ajax/type-data', ['as' => 'typeData', 'uses' => 'TypeController@get']);
     Route::Post('/admin/type', ['as' => 'typePost', 'uses' => 'TypeController@Post']);
-    Route::delete('/admin/type', ['as' => 'typeDelete', 'uses' => 'TypeController@Delete']);
+    Route::get('/admin/type', ['as' => 'typeDelete', 'uses' => 'TypeController@Delete']);
 
     Route::get('/admin/drama/{id}/eps/', ['as' => 'eps', 'uses' => 'DramaEpsController@Index']);
     Route::get('/admin/drama/{id}/eps/data', ['as' => 'epsData', 'uses' => 'DramaEpsController@get']);
@@ -110,7 +110,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
 
     Route::get('/admin/webfront/', ['as' => 'webfront', 'uses' => 'WebfrontsController@index']);
     Route::get('/admin/webfront-data/', ['as' => 'webfrontGet', 'uses' => 'WebfrontsController@get']);
-    Route::delete('/admin/webfront-data/', ['as' => 'webfrontDelete', 'uses' => 'WebfrontsController@delete']);
+    Route::get('/admin/webfront-data/', ['as' => 'webfrontDelete', 'uses' => 'WebfrontsController@delete']);
     Route::post('/admin/webfront-data/', ['as' => 'webfrontPost', 'uses' => 'WebfrontsController@post']);
     Route::get('/admin/webfront/singkron', ['as' => 'webfrontSingkron', 'uses' => 'WebfrontsController@seachdrama']);
     Route::post('/admin/webfront/singkron/{idSite}', ['as' => 'singkronToWeb', 'uses' => 'WebfrontsController@singkronToWeb']);

@@ -233,7 +233,13 @@ Drama {{$result->title}}
                     $('#modelId2343').modal('hide');
                 },
                 error: function(data) {
-                    swal("error",data, "error");
+                    Swal.fire({
+                        position: 'top-end',
+                        type: 'error',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                     $('#modelId2343').modal('hide');
 
                 }
@@ -275,12 +281,24 @@ Drama {{$result->title}}
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        swal("SUCCESS", data, "success");
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                         $("#table-users").DataTable().ajax.reload(null, false);
                         document.location.reload();
                     },
                     error: function(data) {
-                        swal("error", "error", "error");
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'error',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                         $("#table-users").DataTable().ajax.reload(null, false);
                     }
                 });
@@ -297,7 +315,13 @@ Drama {{$result->title}}
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
-                    $(".alert-success").fadeOut(20000);
+                    Swal.fire({
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
 
                 },
                 error: function(data) {
@@ -305,7 +329,13 @@ Drama {{$result->title}}
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
-                    $(".alert-danger").fadeOut(20000);
+                    Swal.fire({
+                        position: 'top-end',
+                        type: 'error',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
 
                 }
             });
@@ -336,19 +366,29 @@ Drama {{$result->title}}
             if (confirm('Are you sure you want to delete ' + fn + '?')) {
                 $.ajax({
                     url: "{{ route('epsDelete',$result->id) }}",
-                    type: "get",
+                    type: "delete",
                     data: {
                         _method: 'delete',
                         id: id,
                     },
                     success: function(data) {
-                        swal("SUCCESS", fn, "success");
-
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                         $("#table-users").DataTable().ajax.reload(null, false);
                     },
                     error: function(data) {
-                        swal("error", fn, "error");
-
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'error',
+                            title: fn+ ' not Delete',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                         $("#table-users").DataTable().ajax.reload(null, false);
 
                     }
