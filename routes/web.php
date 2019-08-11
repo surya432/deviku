@@ -77,7 +77,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/countries', ['as' => 'countries', 'uses' => 'CountryController@Index']);
     Route::get('/admin/country-data', ['as' => 'countryData', 'uses' => 'CountryController@Data']);
     Route::post('/admin/country', ['as' => 'countryPost', 'uses' => 'CountryController@Post']);
-    Route::get('/admin/country', ['as' => 'countryDelete', 'uses' => 'CountryController@Delete']);
+    Route::delete('/admin/country', ['as' => 'countryDelete', 'uses' => 'CountryController@Delete']);
 
     Route::get('/admin/drama', ['as' => 'drama', 'uses' => 'DramaController@Index']);
     Route::get('/admin/drama-data', ['as' => 'dramaData', 'uses' => 'DramaController@get']);
