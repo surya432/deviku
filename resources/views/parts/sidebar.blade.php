@@ -4,7 +4,7 @@
 
         <ul class="nav" id="side-menu">
 
-            {{--   <li class="sidebar-search">
+            {{-- <li class="sidebar-search">
 
                 <div class="input-group custom-search-form">
 
@@ -44,7 +44,7 @@
                     </li>
                     <li>
 
-                        <a href="{{ route('country') }}"><i class="fa fa-flag fa-fw"></i> Country </a>
+                        <a href="{{ route('countries') }}"><i class="fa fa-flag fa-fw"></i> Country </a>
 
                     </li>
 
