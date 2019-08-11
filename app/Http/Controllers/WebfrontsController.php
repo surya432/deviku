@@ -60,7 +60,7 @@ class WebfrontsController extends Controller
     {
         $sites = Webfront::find($request->input('id'));
         $post = $this->viewsource($sites->site . '/wp-json/wp/v2/posts/?search=' . urlencode($request->input('seacrh')));
-        return $post;
+        return response()->json($post);
         $post  = json_decode($post, true);
         if (is_null($post)) {
             return "$post";
