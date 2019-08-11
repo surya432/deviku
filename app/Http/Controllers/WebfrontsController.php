@@ -58,9 +58,9 @@ class WebfrontsController extends Controller
     }
     public function postDrama(Request $request)
     {
-        $sites = Webfront::find($request->input('id'));
+        $sites = Webfront::where('id',$request->input('id'));
         $post = $this->viewsource($sites->site . '/wp-json/wp/v2/posts/?search=' . urlencode($request->input('seacrh')));
-        return response()->json($post);
+
         $post  = json_decode($post, true);
         if (is_null($post)) {
             return "$post";
