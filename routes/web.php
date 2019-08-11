@@ -110,7 +110,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
 
     Route::get('/admin/webfront/', ['as' => 'webfront', 'uses' => 'WebfrontsController@index']);
     Route::get('/admin/webfront-data/', ['as' => 'webfrontGet', 'uses' => 'WebfrontsController@get']);
-    Route::get('/admin/webfront-data/', ['as' => 'webfrontDelete', 'uses' => 'WebfrontsController@delete']);
+    Route::delete('/admin/webfront-data/', ['as' => 'webfrontDelete', 'uses' => 'WebfrontsController@delete']);
     Route::post('/admin/webfront-data/', ['as' => 'webfrontPost', 'uses' => 'WebfrontsController@post']);
     Route::get('/admin/webfront/singkron', ['as' => 'webfrontSingkron', 'uses' => 'WebfrontsController@seachdrama']);
     Route::post('/admin/webfront/singkron/{idSite}', ['as' => 'singkronToWeb', 'uses' => 'WebfrontsController@singkronToWeb']);
