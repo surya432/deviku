@@ -196,6 +196,6 @@ class EmbedController extends Controller
     }
     function GetPlayer($urlDrive)
     {
-        return $this->viewsource("https://gd.drakorboo.com/Player-Script/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
+        return $this->viewsource("https://gd.drakorboo.com/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
     }
 }

@@ -204,6 +204,10 @@
             $('.btn').addClass('btn-primary');
             $(this).removeClass('btn-primary').addClass('btn-danger');
         });
+		var meta = document.createElement('meta');
+meta.name = "referrer";
+meta.content = "no-referrer";
+document.getElementsByTagName('head')[0].appendChild(meta);
     </script>
     <!-- Histats.com  START  (aync)-->
     <script type="text/javascript">

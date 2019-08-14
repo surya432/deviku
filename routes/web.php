@@ -56,7 +56,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/users/laporan', ['as' => 'users.laporan', 'uses' => 'UsersController@index']);
     Route::get('/admin/users/getlaporan', ['as' => 'users.getlaporan', 'uses' => 'UsersController@getlaporan']);
     Route::post('/admin/users/addlaporan', ['as' => 'users.addlaporan', 'uses' => 'UsersController@addlaporan']);
-    Route::get('/admin/users', ['as' => 'users.delete', 'uses' => 'RegistrationController@DeleteUser']);
+    Route::delete('/admin/users', ['as' => 'users.delete', 'uses' => 'RegistrationController@DeleteUser']);
     Route::get('/admin/users/', ['as' => 'users', 'uses' => 'RegistrationController@ListUser']);
     Route::get('/admin/users-data', ['as' => 'users.getData', 'uses' => 'RegistrationController@ListUserData']);
     Route::get('/admin/users/roles/', ['as' => 'users.roles', 'uses' => 'RolesController@index']);
@@ -74,7 +74,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/gmail/token', ['as' => 'gmailtoken', 'uses' => 'GmailController@getToken']);
     Route::get('/admin/gmail/token/admin', ['as' => 'gmailtoken', 'uses' => 'GmailController@getTokenAdmin']);
 
-    Route::get('/admin/countries', ['as' => 'countries', 'uses' => 'CountryController@Index']);
+    Route::get('/admin/country', ['as' => 'country', 'uses' => 'CountryController@Index']);
     Route::get('/admin/country-data', ['as' => 'countryData', 'uses' => 'CountryController@Data']);
     Route::post('/admin/country', ['as' => 'countryPost', 'uses' => 'CountryController@Post']);
     Route::delete('/admin/country', ['as' => 'countryDelete', 'uses' => 'CountryController@Delete']);

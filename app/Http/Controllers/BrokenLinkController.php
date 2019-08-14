@@ -27,7 +27,7 @@ class BrokenLinkController extends Controller
             $query->from('contents')->select('drama_id')->whereIn('id', function ($query) {
                 $query->from('brokenlinks')->select('contents_id')->groupBy('contents_id')->get();
             })->select('drama_id')->groupBy('drama_id')->get();
-        })->inRandomOrder()->orderBy('id', 'desc')->get();
+        })->orderBy('id', 'desc')->get();
         return Datatables::of($data)
             ->addColumn('folderids', function ($data) {
                 if ($data->folderid !== "") {

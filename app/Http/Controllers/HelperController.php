@@ -305,8 +305,9 @@ trait HelperController
         if (isset($checklinkerror['access_token'])) {
           $gmail = Gmail::where('token', $tokens)->first();
           if (!is_null($gmail)) {
-            Gmail::find($gmail->id)->touch();
-          }
+            $dataGmail = Gmail::where('id',$gmail->id)->first();
+            $dataGmail->touch();
+          }          
           $get_info23 = "Bearer " . $checklinkerror['access_token'];
           Cache::put($tokens, $get_info23, now()->addMinutes(50));
           return $get_info23;

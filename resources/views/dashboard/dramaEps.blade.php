@@ -233,13 +233,7 @@ Drama {{$result->title}}
                     $('#modelId2343').modal('hide');
                 },
                 error: function(data) {
-                    Swal.fire({
-                        position: 'top-end',
-                        type: 'error',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    swal("error",data, "error");
                     $('#modelId2343').modal('hide');
 
                 }
@@ -281,24 +275,12 @@ Drama {{$result->title}}
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        Swal.fire({
-                            position: 'top-end',
-                            type: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        swal("SUCCESS", data, "success");
                         $("#table-users").DataTable().ajax.reload(null, false);
                         document.location.reload();
                     },
                     error: function(data) {
-                        Swal.fire({
-                            position: 'top-end',
-                            type: 'error',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        swal("error", "error", "error");
                         $("#table-users").DataTable().ajax.reload(null, false);
                     }
                 });
@@ -315,13 +297,7 @@ Drama {{$result->title}}
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
-                    Swal.fire({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    $(".alert-success").fadeOut(20000);
 
                 },
                 error: function(data) {
@@ -329,13 +305,7 @@ Drama {{$result->title}}
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
-                    Swal.fire({
-                        position: 'top-end',
-                        type: 'error',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    $(".alert-danger").fadeOut(20000);
 
                 }
             });
@@ -372,23 +342,13 @@ Drama {{$result->title}}
                         id: id,
                     },
                     success: function(data) {
-                        Swal.fire({
-                            position: 'top-end',
-                            type: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        swal("SUCCESS", fn, "success");
+
                         $("#table-users").DataTable().ajax.reload(null, false);
                     },
                     error: function(data) {
-                        Swal.fire({
-                            position: 'top-end',
-                            type: 'error',
-                            title: fn+ ' not Delete',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        swal("error", fn, "error");
+
                         $("#table-users").DataTable().ajax.reload(null, false);
 
                     }

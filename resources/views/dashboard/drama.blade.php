@@ -128,13 +128,7 @@ Drama
                 url: "{{ route('dramaPost') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    Swal.fire({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    swal("SUCCESS", data, "success")
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -142,13 +136,7 @@ Drama
 
                 },
                 error: function(data) {
-                    Swal.fire({
-                        position: 'top-end',
-                        type: 'error',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    swal("SUCCESS", data, "error")
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -167,25 +155,13 @@ Drama
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        Swal.fire({
-                            position: 'top-end',
-                            type: 'success',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        swal("SUCCESS", data, "success")
 
                         $("#table-users").DataTable().ajax.reload(null, false);
 
                     },
                     error: function(data) {
-                        Swal.fire({
-                            position: 'top-end',
-                            type: 'error',
-                            title: 'Your work has been saved',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                        swal("Error", "Error Delete", "error")
 
                         $("#table-users").DataTable().ajax.reload(null, false);
                     }
@@ -239,24 +215,12 @@ Drama
             type: "get",
 
             success: function(data) {
-                Swal.fire({
-                    position: 'top-end',
-                    type: 'success',
-                    title: 'Your work has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                swal("SUCCESS", 'Singkron Success', "success")
                 $("#table-users").DataTable().ajax.reload(null, false);
 
             },
             error: function(data) {
-                Swal.fire({
-                    position: 'top-end',
-                    type: 'error',
-                    title: 'Your work has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                swal("error", 'Singkron error', "error")
                 $("#table-users").DataTable().ajax.reload(null, false);
             }
         });

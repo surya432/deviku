@@ -18,7 +18,8 @@ class ProxyDriveController extends Controller
     {
         $idDrive = $request->input('id');
         $videoName = $request->input('videoName');
-        return Redirect::away($this->getVideoLinkProxy($idDrive, $videoName));
+		$src = str_replace('https://','http://',$this->getVideoLinkProxy($idDrive, $videoName));
+        return Redirect::away($src);
     }
     function getVideoLinkProxy($idDrive, $videoName)
     {
@@ -40,8 +41,9 @@ class ProxyDriveController extends Controller
     }
     function getLinkAndRedirect($links)
     {
-        $values = array("drive01.herokuapp.com", "drive03.herokuapp.com", "drive04.herokuapp.com", "drive02.herokuapp.com");
-        return preg_replace_callback("/drive01.herokuapp.com/", function () use ($values) {
+        //$values = array("http://drive01.herokuapp.com", "http://drive03.herokuapp.com", "http://drive04.herokuapp.com", "http://drive02.herokuapp.com");
+        $values = array("localhost:5000", "localhost:5000", "localhost:5000", "localhost:5000");
+		return preg_replace_callback("/drive01.herokuapp.com/", function () use ($values) {
             return $values[array_rand($values)];
         }, $links);
     }
@@ -74,7 +76,7 @@ class ProxyDriveController extends Controller
     {
         $data = DB::table('contents')->whereIn('id', function ($query) {
             $query->from('brokenlinks')->select('contents_id')->get();
-        })->where('f720p', 'NOT LIKE', '%picasa%')->inRandomOrder()->take(50)->get();
+        })->where('f720p', 'NOT LIKE', '%picasa%')->orderBy('id','desc')->take(10)->get();
         if (!is_null($data)) {
             $urlhost = request()->getHost();
             $returnData = null;
