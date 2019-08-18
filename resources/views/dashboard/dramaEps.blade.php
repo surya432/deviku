@@ -40,6 +40,10 @@ Drama {{$result->title}}
                                             <input type="text" class="form-control" name="title" id="title" required>
                                         </div>
                                         <div class="form-group">
+                                            <label class="control-label" for="email">Jumlah Eps</label>
+                                            <input type="number" value="1" class="form-control" name="totalEps" id="totalEps" required>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="type" class="form-label">Status</label>
                                             <select class="custom-select form-control" name="status" id="status" required>
                                                 <option value="Hardsub" selected>Hardsub</option>
@@ -233,7 +237,7 @@ Drama {{$result->title}}
                     $('#modelId2343').modal('hide');
                 },
                 error: function(data) {
-                    swal("error",data, "error");
+                    swal("error", data, "error");
                     $('#modelId2343').modal('hide');
 
                 }

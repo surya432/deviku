@@ -98,16 +98,43 @@ class DramaEpsController extends Controller
             $dataContentasd = "Update Success";
             return response()->json($dataContentasd, 201);
         }
-        $dataContent = new Content;
-        $dataContent->title = $request->input("title");
-        $dataContent->url = $this->seoUrl($request->input("title"));
-        $dataContent->drama_id = $request->input("drama_id");
-        $dataContent->status = $request->input("status");
-        $dataContent->f360p = $request->input("f360p");
-        $dataContent->f720p = $request->input("f720p");
-        $dataContent->save();
-        $dataContentasd = "Insert Success";
-        return response()->json($dataContentasd, 201);
+        //totalEps
+        if ($request->input("totalEps") < 2) {
+            $dataContent = new Content;
+            $dataContent->title = $request->input("title");
+            $dataContent->url = $this->seoUrl($request->input("title"));
+            $dataContent->drama_id = $request->input("drama_id");
+            $dataContent->status = $request->input("status");
+            $dataContent->f360p = $request->input("f360p");
+            $dataContent->f720p = $request->input("f720p");
+            $dataContent->save();
+            $dataContentasd = "Insert Success";
+            return response()->json($dataContentasd, 201);
+        }else{
+            $countEps = Content::where('drama_id',$request->input("drama_id"))->count();
+            $countBatchEps = $request->input("totalEps");
+            $title = $request->input("title");
+            for($i = 0; $i < $countBatchEps ;$i++){
+                $dataContent = new Content;
+                $j = $i+1;
+                $datacount =  $countEps + $j;
+                if($datacount <10){
+                    $datacount ="0". $datacount;
+                }
+                
+                $titles = $title."".$datacount;
+                $dataContent->title = $titles;
+                $dataContent->url = $this->seoUrl($titles);
+                $dataContent->drama_id = $request->input("drama_id");
+                $dataContent->status = $request->input("status");
+                $dataContent->f360p = $request->input("f360p");
+                $dataContent->f720p = $request->input("f720p");
+                $dataContent->save();
+            }
+            $dataContentasd = "Insert BatchEps Success ";
+            return response()->json($dataContentasd, 201);
+        }
+       
     }
     public function Delete(Request $request, $id)
     {
