@@ -29,9 +29,13 @@ class ProxyDriveController extends Controller
             $parse1 = $result['data'];
             foreach ($parse1 as $a) {
                 if ($a['label'] == '360p') {
-                    return str_replace('https://','http://',$this->getLinkAndRedirect($a['src']));
+                    // return str_replace('https://','http://',$this->getLinkAndRedirect($a['src']));
+
+                    return $a['src'];
                 } else if ($a['label'] == '480p') {
-                    return str_replace('https://', 'http://', $this->getLinkAndRedirect($a['src']));
+                    // return str_replace('https://', 'http://', $this->getLinkAndRedirect($a['src']));
+
+return $a['src'];
                 } else {
                     return "http://192.241.150.152:5000/videos/apis/" . $idDrive . "/" . $videoName . ".mp4";
                 }
