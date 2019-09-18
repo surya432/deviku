@@ -37,7 +37,7 @@ class ProxyDriveController extends Controller
                 }
             }
         }
-        return response()->json($result['reason'], 404);
+        return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
     }
     function getLinkAndRedirect($links)
     {
