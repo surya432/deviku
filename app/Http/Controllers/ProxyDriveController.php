@@ -37,7 +37,7 @@ class ProxyDriveController extends Controller
                 }
             }
         }
-        return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName ;
+        return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . ".mp4" ;
     }
     function getLinkAndRedirect($links)
     {
