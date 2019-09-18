@@ -17,7 +17,7 @@ class ProxyDriveController extends Controller
     {
         $idDrive = $request->input('id');
         $videoName = $request->input('videoName');
-		$src = $this->getVideoLinkProxy($idDrive, $videoName));
+		$src = $this->getVideoLinkProxy($idDrive, $videoName);
         return Redirect::away($src);
     }
     function getVideoLinkProxy($idDrive, $videoName)
