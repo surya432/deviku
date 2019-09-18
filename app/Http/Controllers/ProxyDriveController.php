@@ -22,7 +22,9 @@ class ProxyDriveController extends Controller
     }
     function getVideoLinkProxy($idDrive, $videoName)
     {
-        $getlinkproxy = $this->viewsource("http://192.241.150.152:5000/api/proxy/" . $idDrive . "?token=ndo&videoName=" . $videoName);
+        $dataurl = "http://192.241.150.152:5000/api/proxy/" . $idDrive . "?token=ndo&videoName=" . $videoName;
+        return $dataurl;
+        $getlinkproxy = $this->viewsource($dataurl);
         $result = json_decode($getlinkproxy, true);
         if (isset($result['data'])) {
             $parse1 = $result['data'];
