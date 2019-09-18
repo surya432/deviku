@@ -12,7 +12,6 @@ use App\Content;
 
 class ProxyDriveController extends Controller
 {
-    //
     use HelperController;
     function index(Request $request)
     {
