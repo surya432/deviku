@@ -36,7 +36,7 @@ class ProxyDriveController extends Controller
                 }
             }
         }
-        return response()->json($result, 404);
+        return response()->json($getlinkproxy, 404);
     }
     function getLinkAndRedirect($links)
     {
