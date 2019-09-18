@@ -33,11 +33,11 @@ class ProxyDriveController extends Controller
                 } else if ($a['label'] == '480p') {
                     return str_replace('https://', 'http://', $this->getLinkAndRedirect($a['src']));
                 } else {
-                    return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
+                    return "http://192.241.150.152:5000/videos/apis/" . $idDrive . "/" . $videoName . ".mp4";
                 }
             }
         }
-        return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . ".mp4" ;
+        return "http://192.241.150.152:5000/videos/apis/". $idDrive."/".$videoName.".mp4" ;
     }
     function getLinkAndRedirect($links)
     {
