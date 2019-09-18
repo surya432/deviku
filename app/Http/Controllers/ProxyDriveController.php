@@ -29,9 +29,9 @@ class ProxyDriveController extends Controller
             $parse1 = $result['data'];
             foreach ($parse1 as $a) {
                 if ($a['label'] == '360p') {
-                    return str_replace('https://','http://',$this->getLinkAndRedirect($a['src']));
+                    return str_replace('https://','http://',$a['src']);
                 } else if ($a['label'] == '480p') {
-                    return str_replace('https://', 'http://', $this->getLinkAndRedirect($a['src']));
+                    return str_replace('https://', 'http://', $a['src']);
                 } else {
                     return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
                 }
