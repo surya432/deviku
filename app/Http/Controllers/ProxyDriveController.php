@@ -29,9 +29,9 @@ class ProxyDriveController extends Controller
             $parse1 = $result['data'];
             foreach ($parse1 as $a) {
                 if ($a['label'] == '360p') {
-                    return str_replace('https://','http://',$a['src']);
+                    return str_replace('https://','http://',$this->getLinkAndRedirect($a['src']));
                 } else if ($a['label'] == '480p') {
-                    return str_replace('https://', 'http://', $a['src']);
+                    return str_replace('https://', 'http://', $this->getLinkAndRedirect($a['src']));
                 } else {
                     return "https://www.googleapis.com/drive/v3/files/" . $idDrive . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&name=" . $videoName . "-720p.mp4";
                 }
@@ -43,7 +43,7 @@ class ProxyDriveController extends Controller
     {
         //$values = array("http://drive01.herokuapp.com", "http://drive03.herokuapp.com", "http://drive04.herokuapp.com", "http://drive02.herokuapp.com");
         $values = array("localhost:5000", "localhost:5000", "localhost:5000", "localhost:5000");
-		return preg_replace_callback("/drive01.herokuapp.com/", function () use ($values) {
+		return preg_replace_callback("/192.241.150.152/", function () use ($values) {
             return $values[array_rand($values)];
         }, $links);
     }
