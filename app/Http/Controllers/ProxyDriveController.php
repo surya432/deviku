@@ -36,7 +36,7 @@ class ProxyDriveController extends Controller
                 }
             }
         }
-        return "https://player.nontonindrama.com/505";
+        return response()->json($result, 404);
     }
     function getLinkAndRedirect($links)
     {
