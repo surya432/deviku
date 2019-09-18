@@ -92,6 +92,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/drama/{id}/eps/', ['as' => 'eps', 'uses' => 'DramaEpsController@Index']);
     Route::get('/admin/drama/{id}/eps/data', ['as' => 'epsData', 'uses' => 'DramaEpsController@get']);
     Route::get('/admin/drama/{id}/eps/detail', ['as' => 'epsDetail', 'uses' => 'DramaEpsController@indexDetail']);
+    Route::get('/admin/drama/{id}/detail', ['as' => 'DetailExt', 'uses' => 'DramaEpsController@Detail']);
     Route::Post('/admin/drama/{id}/eps/', ['as' => 'epsPost', 'uses' => 'DramaEpsController@Post']);
     Route::delete('/admin/drama/{id}/eps/delete', ['as' => 'epsDelete', 'uses' => 'DramaEpsController@Delete']);
 

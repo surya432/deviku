@@ -11,8 +11,8 @@ use App\Trash;
 use App\BackupFilesDrive;
 use App\Content;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Client;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Goutte\Client ;
 
 trait HelperController
 {
@@ -592,6 +592,25 @@ trait HelperController
       }
     });
     return true;
-
+  }
+  function getDetailDrama($url){
+    $client = new Client();
+    $guzzleclient = new \GuzzleHttp\Client([
+      'timeout' => 300,
+      'verify' => false,
+    ]);
+    $client->setClient($guzzleclient);
+    $crawler = $client->request('GET', $url);
+    $getCrawler = array();
+    //  $crawler->filter('.left >p:nth-of-type(1)')->each(function ($node){
+    $getCrawler =  $crawler->filter('.left >p')->each(function ($node){
+      return array(strtolower($node->filter('strong')->text())  => $node->filter('span')->text());
+    });
+    $getCrawler =  $crawler->filter('.left >p')->each(function ($node) {
+      return array(strtolower($node->filter('strong')->text())  => $node->filter('span')->text());
+    });
+    return  $getCrawler;
+  //>span:nth-of-type(1)
+   // return  $crawler->filter('.left')->text();
   }
 }

@@ -23,7 +23,7 @@ class ProxyDriveController extends Controller
     }
     function getVideoLinkProxy($idDrive, $videoName)
     {
-        $getlinkproxy = $this->viewsource("https://drive01.herokuapp.com/api/proxy/" . $idDrive . "?token=ndo&videoName=" . $videoName);
+        $getlinkproxy = $this->viewsource("http://192.241.150.152/api/proxy/" . $idDrive . "?token=ndo&videoName=" . $videoName);
         $result = json_decode($getlinkproxy, true);
         if (isset($result['data'])) {
             $parse1 = $result['data'];
@@ -37,7 +37,7 @@ class ProxyDriveController extends Controller
                 }
             }
         }
-        return "https://nontonindramaonline.com/505";
+        return "https://player.nontonindrama.com/505";
     }
     function getLinkAndRedirect($links)
     {
