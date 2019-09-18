@@ -42,7 +42,7 @@ class ProxyDriveController extends Controller
     function getLinkAndRedirect($links)
     {
         //$values = array("http://drive01.herokuapp.com", "http://drive03.herokuapp.com", "http://drive04.herokuapp.com", "http://drive02.herokuapp.com");
-        $values = array("localhost:5000", "localhost:5000", "localhost:5000", "localhost:5000");
+        $values = array("192.241.150.152:5000", "192.241.150.152:5000", "192.241.150.152:5000", "192.241.150.152:5000");
 		return preg_replace_callback("/192.241.150.152/", function () use ($values) {
             return $values[array_rand($values)];
         }, $links);
