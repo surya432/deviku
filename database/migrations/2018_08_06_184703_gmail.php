@@ -18,6 +18,7 @@ class Gmail extends Migration
             $table->string('email');
             $table->longText('token');
             $table->string('folderid');
+            $table->string('tipe')->default("copy");
             $table->timestamps();
         }); 
     }

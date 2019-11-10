@@ -24,7 +24,7 @@ class BackupController extends Controller
   public function index()
   {
     //
-    $settingData = Setting::find(1);
+    $settingData = \Gmail::where('tipe','backup')->first();
     //$this->AutoDeleteGd();
     DB::table('backups')->whereNull('f720p')->delete();
     $dataContent =  DB::table('contents')
@@ -40,7 +40,7 @@ class BackupController extends Controller
       if ($f20p) {
         $content = array('url' => $dataContents->url, 'title' => $dataContents->title);
         $datass = BackupFilesDrive::firstOrCreate($content);
-        $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderbackup, $dataContents->url, $settingData->tokenDriveAdmin);
+        $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->url, $settingData->token);
         if (isset($copyID['id'])) {
           $datass->f720p = $copyID['id'];
           $datass->save();

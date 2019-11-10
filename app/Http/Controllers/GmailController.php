@@ -48,7 +48,7 @@ class GmailController extends Controller
         if (!empty($request->input("id"))) {
             $gmail = Gmail::find($request->input("id"));
             if (!empty($request->input("email"))) {
-                $gmail->email = Input::get("email");
+                $gmail->email = strtolower(Input::get("email"));
             }
             if (!empty($request->input("token"))) {
                 $gmail->token = Input::get("token");
@@ -59,14 +59,18 @@ class GmailController extends Controller
             if (!empty($request->input("folderid"))) {
                 $gmail->folderid = Input::get("folderid");
             }
+            if (!empty($request->input("tipe"))) {
+                $gmail->folderid = Input::get("tipe");
+            }
             $gmail->save();
             return response()->json($gmail, 200);
         }
         $gmail = new Gmail;
-        $gmail->email = Input::get("email");
+        $gmail->email = strtolower(Input::get("email"));
         $gmail->token = Input::get("token");
         $gmail->apiUrl = Input::get("apiUrl");
         $gmail->folderid = Input::get("folderid");
+        $gmail->tipe = Input::get("tipe");
         $gmail->save();
         return response()->json($gmail, 200);
     }
