@@ -312,7 +312,7 @@ trait HelperController
           Cache::put($tokens, $get_info23, now()->addMinutes(50));
           return $get_info23;
         } else {
-          return "Bearer ";
+          return "Bearer Error";
         }
       }
     } else {
