@@ -35,15 +35,16 @@ class BackupController extends Controller
                 ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
-                ->take(10)
+                ->take(2)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $f20p = $this->CheckHeaderCode($dataContents->f720p);
                 if ($f20p) {
                     $content = array('url' => $dataContents->url, 'title' => $dataContents->title . "-720p");
                     $datass = BackupFilesDrive::firstOrCreate($content);
-                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->title . "-720p", $settingData->token);
+                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->url . "-720p", $settingData->token);
                     if (isset($copyID['id'])) {
+                        $this->changePermission($copyID['id'],$settingData->token);
                         $datass->f720p = $copyID['id'];
                         $datass->save();
                         array_push($dataresult, $datass);
@@ -60,8 +61,9 @@ class BackupController extends Controller
                 if ($f360p) {
                     $content = array('url' => $dataContents->url, 'title' => $dataContents->title . "-360p");
                     $datass = BackupFilesDrive::firstOrCreate($content);
-                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->title . "-360p", $settingData->token);
+                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
                     if (isset($copyID['id'])) {
+                      $this->changePermission($copyID['id'],$settingData->token);
                         $datass->f720p = $copyID['id'];
                         $datass->save();
                         array_push($dataresult, $datass);
