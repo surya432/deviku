@@ -458,7 +458,7 @@ trait HelperController
       $gmails = Gmail::whereNotIn('token', function ($query) use ($sizeCount) {
         $query->select('token')
           ->from('mirrors')->groupBy('token')->havingRaw('COUNT(*) >= ' . $sizeCount);
-      })->inRandomOrder()->first();
+      })->where('tipe', "copy")->inRandomOrder()->first();
       $title = $nameVideo . '-' . $kualitas . '.mp4';
       if (is_null($gmails)) {
         return null;
@@ -570,6 +570,9 @@ trait HelperController
         ->whereNotIn('url', DB::table('backups')->whereNotNull('f720p')->pluck('url'))
         ->where('f720p', 'NOT LIKE', '%picasa%')
         ->whereNotNull('f720p')
+        ->whereNotIn('url', DB::table('backups')->whereNotNull('f360p')->pluck('url'))
+        ->where('f360p', 'NOT LIKE', '%picasa%')
+        ->whereNotNull('f360p')
         ->inRandomOrder()
         ->take(5)
         ->get();

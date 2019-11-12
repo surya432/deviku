@@ -29,6 +29,7 @@ Route::get('/dramasqq', ['as' => 'dramasqq', 'uses' => 'DramaController@dramas']
 
 Route::get('/backup/dramasqq', ['as' => 'backup', 'uses' => 'BackupController@index']);
 Route::post('/gmail/update', ['as' => 'gmailPostUpdate', 'uses' => 'GmailController@Post']);
+Route::post('/gmail/post', ['as' => 'gmailPostaddEmail', 'uses' => 'GmailController@addEmail']);
 Route::get('/deletegd', ['as' => 'gmailPostUpdate', 'uses' => 'BackupController@deletegdFromDB']);
 
 Route::group(['middleware' => ['web']], function () {

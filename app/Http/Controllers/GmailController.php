@@ -96,4 +96,14 @@ class GmailController extends Controller
 
         return $this->get_token($data->tokenDriveAdmin);
     }
+    public function addEmail(Request $request){
+        $gmail = new Gmail;
+        $gmail->email = strtolower($request->input('email'));
+        $gmail->token = $request->input("token");
+        $gmail->apiUrl = $request->input("apiUrl");
+        $gmail->folderid = $request->input("folderid");
+        $gmail->tipe = $request->input("tipe");
+        $gmail->save();
+        return response()->json($gmail, 200);
+    }
 }
