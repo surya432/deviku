@@ -26,7 +26,7 @@ class BackupController extends Controller
         //
         $dataresult = array();
 
-        $settingData = gmail::where('tipe', 'backup')->first();
+        $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
         if ($settingData) {
             //$this->AutoDeleteGd();
             DB::table('backups')->whereNull('f720p')->delete();
@@ -44,7 +44,7 @@ class BackupController extends Controller
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->url . "-720p", $settingData->token);
                     if (isset($copyID['id'])) {
-                        $this->changePermission($copyID['id'],$settingData->token);
+                        $this->changePermission($copyID['id'], $settingData->token);
                         $datass->f720p = $copyID['id'];
                         $datass->save();
                         array_push($dataresult, $datass);
@@ -63,7 +63,7 @@ class BackupController extends Controller
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
                     if (isset($copyID['id'])) {
-                      $this->changePermission($copyID['id'],$settingData->token);
+                        $this->changePermission($copyID['id'], $settingData->token);
                         $datass->f720p = $copyID['id'];
                         $datass->save();
                         array_push($dataresult, $datass);
