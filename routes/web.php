@@ -21,6 +21,7 @@ Route::get('/embed/{url}', ['as' => 'viewEps', 'uses' => 'EmbedController@Index'
 Route::get('/ajax/videos/{url}', function () {
     return abort(404);
 });
+
 Route::post('/ajax/videos/{url}', ['as' => 'ajaxEps', 'uses' => 'EmbedController@getDetail']);
 Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@login']);
 
@@ -29,7 +30,7 @@ Route::get('/dramasqq', ['as' => 'dramasqq', 'uses' => 'DramaController@dramas']
 
 Route::get('/backup/dramasqq', ['as' => 'backup', 'uses' => 'BackupController@index']);
 Route::post('/gmail/update', ['as' => 'gmailPostUpdate', 'uses' => 'GmailController@Post']);
-Route::post('/gmail/post', ['as' => 'gmailPostaddEmail', 'uses' => 'GmailController@addEmail']);
+Route::post('/gmail/post', ['as' => 'gmailPostaddEmail', 'uses' => 'GmailController@Post']);
 Route::get('/deletegd', ['as' => 'gmailPostUpdate', 'uses' => 'BackupController@deletegdFromDB']);
 
 Route::group(['middleware' => ['web']], function () {

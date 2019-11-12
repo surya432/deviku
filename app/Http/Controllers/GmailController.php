@@ -70,7 +70,11 @@ class GmailController extends Controller
         $gmail->token = Input::get("token");
         $gmail->apiUrl = Input::get("apiUrl");
         $gmail->folderid = Input::get("folderid");
-        $gmail->tipe = Input::get("tipe");
+        if($request->input('tipe')!== null){
+            $gmail->tipe = "copy";
+        }else{
+            $gmail->tipe = $request->input("tipe");
+        }
         $gmail->save();
         return response()->json($gmail, 200);
     }
@@ -102,7 +106,11 @@ class GmailController extends Controller
         $gmail->token = $request->input("token");
         $gmail->apiUrl = $request->input("apiUrl");
         $gmail->folderid = $request->input("folderid");
-        $gmail->tipe = $request->input("tipe");
+        if($request->input('tipe')!== null){
+            $gmail->tipe = "copy";
+        }else{
+            $gmail->tipe = $request->input("tipe");
+        }
         $gmail->save();
         return response()->json($gmail, 200);
     }
