@@ -40,11 +40,11 @@ class BackupController extends Controller
             foreach ($dataContent as $dataContents) {
                 $f20p = $this->CheckHeaderCode($dataContents->f720p);
                 if ($f20p) {
-                    $content = array('url' => $dataContents->url, 'title' => $dataContents->title . "-720p");
+                    $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-720p");
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->url . "-720p", $settingData->token);
                     if (isset($copyID['id'])) {
-                        $this->changePermission($copyID['id'], $settingData->token);
+                        $this->changePermission($copyID['id'],$settingData->token);
                         $datass->f720p = $copyID['id'];
                         $datass->save();
                         array_push($dataresult, $datass);
@@ -59,11 +59,11 @@ class BackupController extends Controller
                 }
                 $f360p = $this->CheckHeaderCode($dataContents->f360p);
                 if ($f360p) {
-                    $content = array('url' => $dataContents->url, 'title' => $dataContents->title . "-360p");
+                    $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-360p");
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
                     if (isset($copyID['id'])) {
-                        $this->changePermission($copyID['id'], $settingData->token);
+                      $this->changePermission($copyID['id'],$settingData->token);
                         $datass->f720p = $copyID['id'];
                         $datass->save();
                         array_push($dataresult, $datass);
