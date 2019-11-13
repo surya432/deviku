@@ -22,14 +22,14 @@ class EmbedController extends Controller
         if (is_null($contentCheck)) {
             return abort(404);
         }
-        // $agent = new Agent();
-        // $location = GeoIP::getLocation();
-        // $country = $location->iso_code;
-        // if ($country == "KR" || $country == "US" && !$agent->isMobile() || $country == "US" && !$agent->isTablet()) {
-        //     //if($country == "KR" ){
-        //     return abort(404);
-        // }
-        $country = "id";
+        $agent = new Agent();
+        $location = GeoIP::getLocation();
+        $country = $location->iso_code;
+        if ($country == "KR" || $country == "US" && !$agent->isMobile() || $country == "US" && !$agent->isTablet()) {
+            //if($country == "KR" ){
+            return abort(404);
+        }
+        // $country = "id";
         $value = $this->MirrorCheck($url);
         return view("embed.index")->with("url", $value)->with('GeoIP', $country);
     }
