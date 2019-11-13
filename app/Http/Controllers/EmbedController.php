@@ -196,8 +196,8 @@ class EmbedController extends Controller
     }
     function GetPlayer($urlDrive)
     {
-         return url('/')."/embed.php?id=".$this->my_simple_crypt($urlDrive);
-// return $this->viewsource();
+        //  return ;
+return $this->viewsource(url('/')."/embed.php?id=".$this->my_simple_crypt($urlDrive));
     }
     function my_simple_crypt($string, $action = 'e')
     {
