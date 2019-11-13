@@ -22,13 +22,13 @@ class EmbedController extends Controller
         if (is_null($contentCheck)) {
             return abort(404);
         }
-        $agent = new Agent();
-        $location = GeoIP::getLocation();
-        $country = $location->iso_code;
-        if ($country == "KR" || $country == "US" && !$agent->isMobile() || $country == "US" && !$agent->isTablet()) {
-            //if($country == "KR" ){
-            return abort(404);
-        }
+        // $agent = new Agent();
+        // $location = GeoIP::getLocation();
+        // $country = $location->iso_code;
+        // if ($country == "KR" || $country == "US" && !$agent->isMobile() || $country == "US" && !$agent->isTablet()) {
+        //     //if($country == "KR" ){
+        //     return abort(404);
+        // }
         $country = "id";
         $value = $this->MirrorCheck($url);
         return view("embed.index")->with("url", $value)->with('GeoIP', $country);
@@ -196,6 +196,22 @@ class EmbedController extends Controller
     }
     function GetPlayer($urlDrive)
     {
-        return $this->viewsource("https://gd.drakorboo.com/Player-Script/json.php?url=https://drive.google.com/open?id=" . $urlDrive);
+         return url('/')."/embed.php?id=".$this->my_simple_crypt($urlDrive);
+// return $this->viewsource();
+    }
+    function my_simple_crypt($string, $action = 'e')
+    {
+        $secret_key = 'GReg7rNx2z[2';
+        $secret_iv = 'C0?s9rh4';
+        $output = false;
+        $encrypt_method = "AES-256-CBC";
+        $key = hash('sha256', $secret_key);
+        $iv = substr(hash('sha256', $secret_iv), 0, 16);
+        if ($action == 'e') {
+            $output = base64_encode(openssl_encrypt($string, $encrypt_method, $key, 0, $iv));
+        } else if ($action == 'd') {
+            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+        }
+        return $output;
     }
 }

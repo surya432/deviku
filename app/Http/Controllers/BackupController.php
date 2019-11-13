@@ -50,32 +50,31 @@ class BackupController extends Controller
                         array_push($dataresult, $datass);
                     } else {
                         array_push($dataresult, $copyID);
-
                     }
                 } else {
                     $content = Content::find($dataContents->id);
                     $content->f720p = null;
                     $content->save();
                 }
-                $f360p = $this->CheckHeaderCode($dataContents->f360p);
-                if ($f360p) {
-                    $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-360p");
-                    $datass = BackupFilesDrive::firstOrCreate($content);
-                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
-                    if (isset($copyID['id'])) {
-                      $this->changePermission($copyID['id'],$settingData->token);
-                        $datass->f720p = $copyID['id'];
-                        $datass->save();
-                        array_push($dataresult, $datass);
-                    } else {
-                        array_push($dataresult, $copyID);
+                  $f360p = $this->CheckHeaderCode($dataContents->f360p);
+                  if ($f360p) {
+                      $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-360p");
+                      $datass = BackupFilesDrive::firstOrCreate($content);
+                      $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
+                      if (isset($copyID['id'])) {
+                        $this->changePermission($copyID['id'],$settingData->token);
+                          $datass->f720p = $copyID['id'];
+                          $datass->save();
+                          array_push($dataresult, $datass);
+                      } else {
+                          array_push($dataresult, $copyID);
 
-                    }
-                } else {
-                    $content = Content::find($dataContents->id);
-                    $content->f720p = null;
-                    $content->save();
-                }
+                      }
+                  } else {
+                      $content = Content::find($dataContents->id);
+                      $content->f720p = null;
+                      $content->save();
+                  }
             }
         }
         return response()->json($dataresult);
