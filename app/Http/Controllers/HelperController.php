@@ -291,7 +291,6 @@ trait HelperController
     {
         if (!Cache::has($tokens)) {
             $settingData = Setting::find(1);
-            $apiUrl = "client_id=340252279758-6237oibftvlr7523oq2bbbsi67btoe8n.apps.googleusercontent.com&client_secret=9XUUzKJsATodbmpwc2lCTts6";
             $gmail = Gmail::where('token', $tokens)->whereNotNull('apiUrl')->first();
 
             if ($gmail) {
