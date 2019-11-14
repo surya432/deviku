@@ -23,7 +23,7 @@ class VerifyCsrfToken extends Middleware
         '/admin/*',
         '/gmail/update',
         '/gmail/post',
-        '/ajax/videos',
+        '/ajax/videos/*',
         
     ];
 }
