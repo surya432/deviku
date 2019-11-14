@@ -52,54 +52,54 @@ class EmbedController extends Controller
     function MirrorCheck($url)
     {
         $content = Content::where('url', $url)->first();
-        $save = false;
-        if (preg_match("/upload_id=/", $content->mirror1)) {
-            $resultCheck360 = $this->check_openload360($content->mirror1);
-            if (!is_null($resultCheck360) || !empty($resultCheck360) || $resultCheck360 != "") {
-                $this->renameopenload360($resultCheck360, $resultCheck360 . "-360p.mp4");
-                $save = true;
-                $content->mirror1 = $resultCheck360;
-            }
-        }
-        if (is_null($content->mirror1) || $content->mirror1 == "0" || $content->mirror1 == "") {
-            $video360p = $content->f360p;
-            $openload360 = $this->iframesd($video360p);
-            if (!is_null($openload360)) {
-                $save = true;
-                $content->mirror1 = $openload360;
-            }
-        } else {
-            $openload360 = $this->checkfile_openload360($content->mirror1);
-            if (is_null($openload360)) {
-                $save = true;
-                $content->mirror1 = null;
-            }
-        }
-        if (preg_match("/upload_id=/", $content->mirror3)) {
-            $resultCheck720 = $this->check_openload720($content->mirror3);
-            if (!is_null($resultCheck720) || !empty($resultCheck720) || $resultCheck720 != "") {
-                $this->renameopenload720($resultCheck720, $resultCheck720 . "-720p.mp4");
-                $save = true;
-                $content->mirror3 = $resultCheck720;
-            }
-        }
-        if (is_null($content->mirror3) || $content->mirror3 == "" || $content->mirror3 == "0") {
-            $video720p = $content->f360p;
-            $openload720 = $this->iframehd($video720p);
-            if (!is_null($openload720)) {
-                $save = true;
-                $content->mirror3 = $openload720;
-            }
-        } else {
-            $openload720 = $this->checkfile_openload720($content->mirror3);
-            if (is_null($openload720)) {
-                $save = true;
-                $content->mirror3 = null;
-            }
-        }
-        if ($save) {
-            $content->save();
-        }
+        // $save = false;
+        // if (preg_match("/upload_id=/", $content->mirror1)) {
+        //     $resultCheck360 = $this->check_openload360($content->mirror1);
+        //     if (!is_null($resultCheck360) || !empty($resultCheck360) || $resultCheck360 != "") {
+        //         $this->renameopenload360($resultCheck360, $resultCheck360 . "-360p.mp4");
+        //         $save = true;
+        //         $content->mirror1 = $resultCheck360;
+        //     }
+        // }
+        // if (is_null($content->mirror1) || $content->mirror1 == "0" || $content->mirror1 == "") {
+        //     $video360p = $content->f360p;
+        //     $openload360 = $this->iframesd($video360p);
+        //     if (!is_null($openload360)) {
+        //         $save = true;
+        //         $content->mirror1 = $openload360;
+        //     }
+        // } else {
+        //     $openload360 = $this->checkfile_openload360($content->mirror1);
+        //     if (is_null($openload360)) {
+        //         $save = true;
+        //         $content->mirror1 = null;
+        //     }
+        // }
+        // if (preg_match("/upload_id=/", $content->mirror3)) {
+        //     $resultCheck720 = $this->check_openload720($content->mirror3);
+        //     if (!is_null($resultCheck720) || !empty($resultCheck720) || $resultCheck720 != "") {
+        //         $this->renameopenload720($resultCheck720, $resultCheck720 . "-720p.mp4");
+        //         $save = true;
+        //         $content->mirror3 = $resultCheck720;
+        //     }
+        // }
+        // if (is_null($content->mirror3) || $content->mirror3 == "" || $content->mirror3 == "0") {
+        //     $video720p = $content->f360p;
+        //     $openload720 = $this->iframehd($video720p);
+        //     if (!is_null($openload720)) {
+        //         $save = true;
+        //         $content->mirror3 = $openload720;
+        //     }
+        // } else {
+        //     $openload720 = $this->checkfile_openload720($content->mirror3);
+        //     if (is_null($openload720)) {
+        //         $save = true;
+        //         $content->mirror3 = null;
+        //     }
+        // }
+        // if ($save) {
+        //     $content->save();
+        // }
         return $content;
     }
     function MethodBrokenlinks($id, $kualitas, $options)
@@ -197,7 +197,7 @@ class EmbedController extends Controller
     function GetPlayer($urlDrive)
     {
         //  return ;
-return $this->viewsource(url('/')."/embed.php?id=".$this->my_simple_crypt($urlDrive));
+return url('/')."/embed.php?id=".$this->my_simple_crypt($urlDrive);
     }
     function my_simple_crypt($string, $action = 'e')
     {
