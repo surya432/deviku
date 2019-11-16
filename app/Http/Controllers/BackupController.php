@@ -35,7 +35,7 @@ class BackupController extends Controller
                 ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
-                ->take(10)
+                ->take(5)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $f20p = $this->CheckHeaderCode($dataContents->f720p);
@@ -46,6 +46,7 @@ class BackupController extends Controller
                     if (isset($copyID['id'])) {
                         $this->changePermission($copyID['id'],$settingData->token);
                         $datass->f720p = $copyID['id'];
+                        $datass->tokenfcm = $settingData->token;
                         $datass->save();
                         array_push($dataresult, $datass);
                     } else {
@@ -67,7 +68,7 @@ class BackupController extends Controller
                 ->where('f360p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f360p')
                 ->orderBy('id', 'desc')
-                ->take(10)
+                ->take(5)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $f20p = $this->CheckHeaderCode($dataContents->f360p);
@@ -78,6 +79,7 @@ class BackupController extends Controller
                     if (isset($copyID['id'])) {
                         $this->changePermission($copyID['id'],$settingData->token);
                         $datass->f720p = $copyID['id'];
+                        $datass->tokenfcm = $settingData->token;
                         $datass->save();
                         array_push($dataresult, $datass);
                     } else {

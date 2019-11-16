@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Setting;
-use Illuminate\Http\Request;
 use App\Gmail;
+use App\Setting;
+use DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Yajra\DataTables\Facades\DataTables;
-use DB;
 
 class GmailController extends Controller
 {
@@ -70,9 +70,9 @@ class GmailController extends Controller
         $gmail->token = Input::get("token");
         $gmail->apiUrl = Input::get("apiUrl");
         $gmail->folderid = Input::get("folderid");
-        if($request->input('tipe')!== null){
+        if ($request->input('tipe') !== null) {
             $gmail->tipe = "copy";
-        }else{
+        } else {
             $gmail->tipe = $request->input("tipe");
         }
         $gmail->save();
@@ -81,13 +81,35 @@ class GmailController extends Controller
 
     public function Delete(Request $request)
     {
+        // $dataContent = Gmail::find($request->input("id"));
+        // if (!is_null($dataContent)) {
+        //     $dataContent->delete();
+        //     $dataContent = "Delete Success";
+        //     return response()->json($dataContent, 200);
+        // }
+        // return response()->json("error Delete", 404);
         $dataContent = Gmail::find($request->input("id"));
-        if (!is_null($dataContent)) {
+        $content = \App\BackupFilesDrive::where("tokenfcm", $dataContent->token)->get();
+        if ($content) {
+            foreach ($content as $content) {
+                $idcopy = $content->f720p;
+                $tokens = $dataContent->token;
+                if (!is_null($idcopy) && !is_null($tokens)) {
+                    if ($this->deletegd($this->GetIdDriveTrashed($idcopy), $tokens)) {
+                        $content->delete();
+                    }
+                } else {
+                    $content->delete();
+                }
+            }
+        }
+        $dataContent = Trash::where("token",$dataContent->token)->get();
+        if (is_null($dataContent)) {
             $dataContent->delete();
             $dataContent = "Delete Success";
             return response()->json($dataContent, 200);
         }
-        return response()->json("error Delete", 404);
+        return response()->json("Error Delete", 404);
     }
     public function getToken(Request $request)
     {
@@ -100,15 +122,16 @@ class GmailController extends Controller
 
         return $this->get_token($data->tokenDriveAdmin);
     }
-    public function addEmail(Request $request){
+    public function addEmail(Request $request)
+    {
         $gmail = new Gmail;
         $gmail->email = strtolower($request->input('email'));
         $gmail->token = $request->input("token");
         $gmail->apiUrl = $request->input("apiUrl");
         $gmail->folderid = $request->input("folderid");
-        if($request->input('tipe')!== null){
+        if ($request->input('tipe') !== null) {
             $gmail->tipe = "copy";
-        }else{
+        } else {
             $gmail->tipe = $request->input("tipe");
         }
         $gmail->save();
