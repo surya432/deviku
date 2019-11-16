@@ -13,12 +13,14 @@ class CreateBackupsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('backups');    
         Schema::create('backups', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('url');
-            $table->string('f720p');
-            $table->timestamps();
+            $table->string('f720p')->nullable();
+            $table->string('tokenfcm')->nullable();
+                $table->timestamps();
         });
     }
 
