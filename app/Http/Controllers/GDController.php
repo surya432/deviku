@@ -51,17 +51,7 @@ class GDController extends Controller
         //return dd($fdrive);
         return view('dashboard.singkronContent')->with('url', $fdrive);
     }
-    function addToTrashes($idcopy, $token)
-    {
-        try {
-            $trashes = new Trash();
-            $trashes->idcopy = $idcopy;
-            $trashes->token = $token;
-            $trashes->save();
-        } catch (Exception $e) {
-            echo $e->errorMessage();
-        }
-    }
+    
 
     public function singkron($id)
     {

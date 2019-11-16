@@ -356,7 +356,17 @@ trait HelperController
             return false;
         }
     }
-
+    public function addToTrashes($idcopy, $token)
+    {
+        try {
+            $trashes = new \App\Trash();
+            $trashes->idcopy = $idcopy;
+            $trashes->token = $token;
+            $trashes->save();
+        } catch (Exception $e) {
+            echo $e->errorMessage();
+        }
+    }
     public function copygd($driveId, $folderid, $title, $token)
     {
         $curl = curl_init();

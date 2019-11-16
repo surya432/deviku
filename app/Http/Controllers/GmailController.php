@@ -95,13 +95,13 @@ class GmailController extends Controller
                 $idcopy = $content->f720p;
                 $tokens = $dataContent->token;
                 if (!is_null($idcopy) && !is_null($tokens)) {
-                    if ($this->deletegd($this->GetIdDriveTrashed($idcopy), $tokens)) {
-                        $content->delete();
-                    }
+                    $this->addToTrashes($this->GetIdDrive($idcopy), $tokens);
                 } else {
                     $content->delete();
                 }
             }
+            $dataContent->tipe="";
+            $dataContent->save();
         }
         $dataContent = \App\Trash::where("token",$dataContent->token)->get();
         if (is_null($dataContent)) {
