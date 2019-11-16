@@ -61,6 +61,10 @@ Setting
                             <label class="control-label" for="folder360p">expiresCacheAt</label>
                             <input type="text" class="form-control" name="expiresCacheAt" id="expiresCacheAt" required>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label" for="path_hardsub">path_hardsub</label>
+                            <input type="text" class="form-control" name="path_hardsub" id="path_hardsub" required>
+                        </div>  
                         <div class="form-group col-md-12">
                             <div class="col-md-3">
                                 <label class="control-label" for="folder360p">ViuSenin</label>
@@ -128,6 +132,7 @@ Setting
                     $("input[name=viuMinggu]").val(data[0].viuMinggu);
                     $("input[name=sizeCount]").val(data[0].sizeCount);
                     $("input[name=expiresCacheAt]").val(data[0].expiresCacheAt);
+                    $("input[name=path_hardsub]").val(data[0].path_hardsub);
                     $("input[name=dayFiles]").val(data[0].dayFiles);
                 },
                 error: function(data) {
@@ -153,6 +158,7 @@ Setting
                     $("input[name=folderUpload]").val(data.folderUpload);
                     $("input[name=folderbackup]").val(data[0].folderbackup);
                     $("input[name=tokenDriveAdmin]").val(data.tokenDriveAdmin);
+                    $("input[name=path_hardsub]").val(data.path_hardsub);
                     $("input[name=apiUrl]").val(data.apiUrl);
                     $("input[name=tokenViu]").val(data.tokenViu);
                     $("input[name=viuSenin]").val(data.viuSenin);
@@ -175,6 +181,7 @@ Setting
                     $("input[name=folderUpload]").val(data.folderUpload);
                     $("input[name=folderbackup]").val(data[0].folderbackup);
                     $("input[name=tokenDriveAdmin]").val(data.tokenDriveAdmin);
+                    $("input[name=path_hardsub]").val(data.path_hardsub);
                     $("input[name=apiUrl]").val(data.apiUrl);
                     $("input[name=tokenViu]").val(data.tokenViu);
                     $("input[name=viuSenin]").val(data.viuSenin);

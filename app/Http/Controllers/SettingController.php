@@ -28,6 +28,7 @@ class SettingController extends Controller
         $data->folderbackup = $request->input("folderbackup");
         $data->apiUrl = $request->input("apiUrl");
         $data->tokenViu = $request->input("tokenViu");
+        $data->path_hardsub = $request->input("path_hardsub");
         $data->viuSenin = $request->input("viuSenin");
         $data->viuSelasa = $request->input("viuSelasa");
         $data->viuRabu = $request->input("viuRabu");

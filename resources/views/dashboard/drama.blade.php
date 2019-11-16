@@ -128,7 +128,14 @@ Drama
                 url: "{{ route('dramaPost') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    swal("SUCCESS", data, "success")
+                    
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -136,7 +143,13 @@ Drama
 
                 },
                 error: function(data) {
-                    swal("SUCCESS", data, "error")
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -155,13 +168,25 @@ Drama
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        swal("SUCCESS", data, "success")
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
 
                         $("#table-users").DataTable().ajax.reload(null, false);
 
                     },
                     error: function(data) {
-                        swal("Error", "Error Delete", "error")
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
 
                         $("#table-users").DataTable().ajax.reload(null, false);
                     }

@@ -292,26 +292,27 @@ trait HelperController
         if (!Cache::has($tokens)) {
             $settingData = Setting::find(1);
             $gmail = Gmail::where('token', $tokens)->whereNotNull('apiUrl')->first();
-
+            $apiUrl = false;
             if ($gmail) {
                 $apiUrl = $gmail->apiUrl;
-            }
-            $result_curl23 = $this->refresh_token($tokens, $apiUrl);
-            if ($result_curl23) {
-                $checklinkerror = json_decode($result_curl23, true);
-                if (isset($checklinkerror['access_token'])) {
-                    $gmail = Gmail::where('token', $tokens)->first();
-                    if (!is_null($gmail)) {
-                        $dataGmail = Gmail::where('id', $gmail->id)->first();
-                        $dataGmail->touch();
+                $result_curl23 = $this->refresh_token($tokens, $apiUrl);
+                if ($result_curl23) {
+                    $checklinkerror = json_decode($result_curl23, true);
+                    if (isset($checklinkerror['access_token'])) {
+                        $gmail = Gmail::where('token', $tokens)->first();
+                        if (!is_null($gmail)) {
+                            $dataGmail = Gmail::where('id', $gmail->id)->first();
+                            $dataGmail->touch();
+                        }
+                        $get_info23 = "Bearer " . $checklinkerror['access_token'];
+                        Cache::put($tokens, $get_info23, now()->addMinutes(50));
+                        return $get_info23;
+                    } else {
+                        return "Bearer Error";
                     }
-                    $get_info23 = "Bearer " . $checklinkerror['access_token'];
-                    Cache::put($tokens, $get_info23, now()->addMinutes(50));
-                    return $get_info23;
-                } else {
-                    return "Bearer Error";
                 }
             }
+
         } else {
             return Cache::get($tokens);
         }

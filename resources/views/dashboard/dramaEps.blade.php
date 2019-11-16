@@ -233,11 +233,23 @@ Drama {{$result->title}}
                 url: "{{ route('dramaPost') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    swal("SUCCESS", data, "success");
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
                     $('#modelId2343').modal('hide');
                 },
                 error: function(data) {
-                    swal("error", data, "error");
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
                     $('#modelId2343').modal('hide');
 
                 }
@@ -279,12 +291,24 @@ Drama {{$result->title}}
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        swal("SUCCESS", data, "success");
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
                         $("#table-users").DataTable().ajax.reload(null, false);
                         document.location.reload();
                     },
                     error: function(data) {
-                        swal("error", "error", "error");
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
                         $("#table-users").DataTable().ajax.reload(null, false);
                     }
                 });
@@ -297,7 +321,13 @@ Drama {{$result->title}}
                 url: "{{ route('epsPost', $result->id) }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    swal("SUCCESS", data, "success");
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -305,7 +335,13 @@ Drama {{$result->title}}
 
                 },
                 error: function(data) {
-                    swal("error", "error", "error");
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
@@ -346,12 +382,24 @@ Drama {{$result->title}}
                         id: id,
                     },
                     success: function(data) {
-                        swal("SUCCESS", fn, "success");
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
 
                         $("#table-users").DataTable().ajax.reload(null, false);
                     },
                     error: function(data) {
-                        swal("error", fn, "error");
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
 
                         $("#table-users").DataTable().ajax.reload(null, false);
 
