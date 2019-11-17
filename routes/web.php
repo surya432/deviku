@@ -98,8 +98,8 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::Post('/admin/drama/{id}/eps/', ['as' => 'epsPost', 'uses' => 'DramaEpsController@Post']);
     Route::delete('/admin/drama/{id}/eps/delete', ['as' => 'epsDelete', 'uses' => 'DramaEpsController@Delete']);
 
-    Route::get('/admin/drive/content/{id}', ['as' => 'driveEps', 'uses' => 'GDController@singkron']);
-    Route::get('/admin/drive/drama/{id}', ['as' => 'driveDrama', 'uses' => 'GDController@syncFolder']);
+    Route::get('/admin/drive/content/{id}', ['as' => 'driveEps', 'uses' => 'GDController@syncFolder']);
+    Route::get('/admin/drive/drama/{id}', ['as' => 'driveDrama', 'uses' => 'GDController@foldersingkron']);
     Route::post('/admin/webfront/singkron', ['as' => 'webfrontSingkronpost', 'uses' => 'WebfrontsController@postDrama']);
 
     Route::get('/admin/brokenlinks/', ['as' => 'brokenlinksIndex', 'uses' => 'BrokenLinkController@index']);
