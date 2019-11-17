@@ -9,7 +9,11 @@
             @if(!$url)
             Tidak ada Singkron
             @else
-            Berhasil
+            <div class="list-group">
+                @foreach($url as $a =>$b)
+                <a href="javascript:;" class="list-group-item">{{$b}}</a>
+                @endforeach
+            </div>
             @endif
 
         </div>

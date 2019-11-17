@@ -82,13 +82,13 @@ class DramaController extends Controller
         $dataType->subsceneslink = $request->input("subsceneslink");
         $dataType->torrentlink = $request->input("torrentlink");
         $dataType->save();
-        $folderName =  $dataType->title . " [$dataType->id]";
-        $resultCurl = $this->GDCreateFolder($folderName);
-        $dataType = Drama::find($dataType->id);
-        if ($dataType) {
-            $dataType->folderid = $resultCurl['id'];
-            $dataType->save();
-        }
+        // $folderName =  $dataType->title . " [$dataType->id]";
+        // $resultCurl = $this->GDCreateFolder($folderName);
+        // $dataType = Drama::find($dataType->id);
+        // if ($dataType) {
+        //     $dataType->folderid = $resultCurl['id'];
+        //     $dataType->save();
+        // }
         $dataTypeasd = "Insert Success";
         return response()->json($dataTypeasd, 201);
     }

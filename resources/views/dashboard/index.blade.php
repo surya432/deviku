@@ -218,7 +218,7 @@ Dahsboard
             success: function(data) {
                 swal("success", "success", "success")
                 $("#table-users").DataTable().ajax.reload(null, false);
-
+                $('#alert-succes').html(data);
             },
             error: function(data) {
                 swal("error", "error", "error")

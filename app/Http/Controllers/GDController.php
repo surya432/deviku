@@ -122,76 +122,67 @@ class GDController extends Controller
         $gmail = \App\gmail::where('tipe', 'master')->first();
         $fdrive = array();
         foreach ($resultCurl['files'] as $Nofiles) {
-            if (preg_match("/-720p.mp4/", $Nofiles['name'])) {
-                $url = str_replace('-720p.mp4', '', $Nofiles['name']);
-                $content = Content::where('url', $url)->first();
-                if ($content) {
-                    $value = Drama::find($content->drama_id);
-                    if ($value) {
-                        $folderId = $value->folderid;
-                    } else {
-                        $folderId = $oldFolder;
-                    }
-                    if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                        $copyID = $this->copygd($Nofiles['id'], $gmail->folderid, $content->title . "-720p",  $gmail->token);
-                        if (is_null($copyID) || isset($copyID['error'])) {
-                            array_push($fdrive, $url . " Error");
-                        } else {
-                            if (isset($copyID['id'])) {
-                                $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
-                                if (!is_null($checkLaporanBroken)) {
-                                    Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
+            $trash = \App\Trash::where("idcopy", $Nofiles['id'])->first();
+            if($trash){
+                array_push($fdrive,$Nofiles['id'] . " In Trash");
+            }else{
+                if (preg_match("/-720p.mp4/", $Nofiles['name'])) {
+                    $url = str_replace('-720p.mp4', '', $Nofiles['name']);
+                    $content = Content::where('url', $url)->first();
+                    if ($content) {
+                        $value = Drama::find($content->drama_id);
+                        if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
+                            $copyID = $this->copygd($Nofiles['id'], $gmail->folderid, $content->url . "-720p",  $gmail->token);
+                            if (is_null($copyID) || isset($copyID['error'])) {
+                                array_push($fdrive, $url . " Error");
+                            } else {
+                                if (isset($copyID['id'])) {
+                                    $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
+                                    if (!is_null($checkLaporanBroken)) {
+                                        Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
+                                    }
+                                    $content->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
+                                    $content->save();
+                                    Drama::find($content->drama_id)->touch();
+                                    $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
+                                    Cache::forever('Content' . $id, $data);
+                                    array_push($fdrive, $url);
                                 }
-                                $content->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
-                                $content->save();
-                                Drama::find($content->drama_id)->touch();
-                                $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
-                                Cache::forever('Content' . $id, $data);
-                                array_push($fdrive, $url);
                             }
+                            $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                         }
-                        $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                     } else {
-                        array_push($fdrive, $url . " Link Sama");
+                        array_push($fdrive, $url . " Tidak Ditemukan");
                     }
-                } else {
-                    array_push($fdrive, $url . " Tidak Ditemukan");
-                }
-            } elseif (preg_match("/-360p.mp4/", $Nofiles['name'])) {
-                $url = str_replace('-360p.mp4', '', $Nofiles['name']);
-                $content = Content::where('url', $url)->first();
-                if ($content) {
-                    $value = Drama::find($content->drama_id);
-                    if ($value) {
-                        $folderId = $value->folderid;
-                    } else {
-                        $folderId = $oldFolder;
-                    }
-                    // $this->GDMoveFolder($Nofiles['id'], $folderId);
-                    if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                        $copyID = $this->copygd($Nofiles['id'], $gmail->folderid, $content->title . "-360p",  $gmail->token);
-                        if (is_null($copyID) || isset($copyID['error'])) {
-                            array_push($fdrive, $url . " Error");
-                        } else {
-                            if (isset($copyID['id'])) {
-                                $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
-                                if (!is_null($checkLaporanBroken)) {
-                                    Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
+                } elseif (preg_match("/-360p.mp4/", $Nofiles['name'])) {
+                    $url = str_replace('-360p.mp4', '', $Nofiles['name']);
+                    $content = Content::where('url', $url)->first();
+                    if ($content) {
+                        $value = Drama::find($content->drama_id);
+                        // $this->GDMoveFolder($Nofiles['id'], $folderId);
+                        if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
+                            $copyID = $this->copygd($Nofiles['id'], $gmail->folderid, $content->url . "-360p",  $gmail->token);
+                            if (is_null($copyID) || isset($copyID['error'])) {
+                                array_push($fdrive, $url . " Error");
+                            } else {
+                                if (isset($copyID['id'])) {
+                                    $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
+                                    if (!is_null($checkLaporanBroken)) {
+                                        Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
+                                    }
+                                    $content->f360p = "https://drive.google.com/open?id=" . $copyID['id'];
+                                    $content->save();
+                                    Drama::find($content->drama_id)->touch();
+                                    $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
+                                    Cache::forever('Content' . $id, $data);
+                                    array_push($fdrive, $url." Update");
                                 }
-                                $content->f360p = "https://drive.google.com/open?id=" . $copyID['id'];
-                                $content->save();
-                                Drama::find($content->drama_id)->touch();
-                                $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
-                                Cache::forever('Content' . $id, $data);
-                                array_push($fdrive, $url);
                             }
+                            $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                         }
-                        $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                     } else {
-                        array_push($fdrive, $url . " Link Sama");
+                        array_push($fdrive, $url . " Tidak Ditemukan");
                     }
-                } else {
-                    array_push($fdrive, $url . " Tidak Ditemukan");
                 }
             }
         }
@@ -200,6 +191,7 @@ class GDController extends Controller
     public function syncFolder($id)
     {
         $gmail = \App\gmail::where('tipe', 'upload')->first();
+
         if ($id == 0) {
             $resultCurl = $this->singkronfile($gmail->folderid);
             $oldFolder = $gmail->folderid;
