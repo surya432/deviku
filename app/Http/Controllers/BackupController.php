@@ -25,7 +25,6 @@ class BackupController extends Controller
     {
         //
         $dataresult = array();
-
         $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
         if ($settingData) {
             //$this->AutoDeleteGd();

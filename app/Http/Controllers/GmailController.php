@@ -38,13 +38,22 @@ class GmailController extends Controller
                 return '
                 <a href="https://drive.google.com/drive/folders/' . $data->folderid . '"  class="btn btn-xs btn-primary" target="_blank">Folder</a>
                 <a href="/admin/gmail/token?id=' . $data->id . '"  class="btn btn-xs btn-primary" target="_blank">Check Token</a>
-                <button type="button" id="btnShow" data-apiUrl="' . $data->apiUrl . '" data-id="' . $data->id . '" data-email="' . $data->email . '" data-token="' . $data->token . '" data-folderid="' . $data->folderid . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
+                <button type="button" id="btnShow" data-apiUrl="' . $data->apiUrl . '" data-tipe="' . $data->tipe . '" data-id="' . $data->id . '" data-email="' . $data->email . '" data-token="' . $data->token . '" data-folderid="' . $data->folderid . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
                 <button type="button" id="btnDelete" data-id="' . $data->id . '" data-email="' . $data->email . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button>';
             })
             ->make(true);
     }
     public function Post(Request $request)
     {
+        // if ($request->input('tipe') !== null) {
+        //    $tipe = "copy";
+        // } else {
+        //     $tipe = $request->input("tipe");
+        // }
+        // $gmail = \App\gmail::updateOrCreate(
+        //     ['email' => strtolower($request->input("email")), 'folderid' => $request->input("folderid")],
+        //     ['tipe' => $tipe, 'apiUrl' => Input::get("apiUrl"),'token'=>$request->input("token")]
+        // );
         if (!empty($request->input("id"))) {
             $gmail = Gmail::find($request->input("id"));
             if (!empty($request->input("email"))) {
@@ -60,7 +69,7 @@ class GmailController extends Controller
                 $gmail->folderid = Input::get("folderid");
             }
             if (!empty($request->input("tipe"))) {
-                $gmail->folderid = Input::get("tipe");
+                $gmail->tipe = Input::get("tipe");
             }
             $gmail->save();
             return response()->json($gmail, 200);
@@ -70,10 +79,10 @@ class GmailController extends Controller
         $gmail->token = Input::get("token");
         $gmail->apiUrl = Input::get("apiUrl");
         $gmail->folderid = Input::get("folderid");
-        if ($request->input('tipe') !== null) {
-            $gmail->tipe = "copy";
-        } else {
+        if (!empty($request->input("tipe"))) {
             $gmail->tipe = $request->input("tipe");
+        } else {
+            $gmail->tipe = "copy";
         }
         $gmail->save();
         return response()->json($gmail, 200);
@@ -81,13 +90,6 @@ class GmailController extends Controller
 
     public function Delete(Request $request)
     {
-        // $dataContent = Gmail::find($request->input("id"));
-        // if (!is_null($dataContent)) {
-        //     $dataContent->delete();
-        //     $dataContent = "Delete Success";
-        //     return response()->json($dataContent, 200);
-        // }
-        // return response()->json("error Delete", 404);
         $dataContent = Gmail::find($request->input("id"));
         $content = \App\BackupFilesDrive::where("tokenfcm", $dataContent->token)->get();
         if ($content) {
@@ -120,7 +122,7 @@ class GmailController extends Controller
     {
         $data = Setting::find(1);
 
-        return $this->get_token($data->tokenDriveAdmin);
+        return dd($this->get_token($data->tokenDriveAdmin));
     }
     public function addEmail(Request $request)
     {
@@ -135,6 +137,7 @@ class GmailController extends Controller
             $gmail->tipe = $request->input("tipe");
         }
         $gmail->save();
+
         return response()->json($gmail, 200);
     }
 }

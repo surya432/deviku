@@ -31,6 +31,10 @@ Accounts Gmail
                         <label class="control-label" for="folderid">API URL</label>
                         <input type="text" class="form-control" name="apiUrl" id="apiUrl" required>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label" for="tipe">Tipe</label>
+                        <input type="text" class="form-control" name="tipe" id="tipe" required>
+                    </div>
                     <button type="reset" class="btn btn-danger">Reset</button>
                     <button class="btn btn-primary text-center" type="submit">Save</button>
                 </form>
@@ -44,6 +48,7 @@ Accounts Gmail
                     <th>Total Files</th>
                     <th>Status Folder</th>
                     <th>apiUrl</th>
+                    <th>Tipe</th>
                     <th>Update At</th>
                     <th>Action</th>
                 </tr>
@@ -63,6 +68,7 @@ Accounts Gmail
             $("input[name=token]").val($(this).attr('data-token'));
             $("input[name=apiUrl]").val($(this).attr('data-apiUrl'));
             $("input[name=folderid]").val($(this).attr('data-folderid'));
+            $("input[name=tipe]").val($(this).attr('data-tipe'));
         });
         $("#formGmail").on("submit", function() {
             event.preventDefault()
@@ -139,6 +145,10 @@ Accounts Gmail
                     {
                         data: 'apiUrl',
                         name: 'apiUrl'
+                    },
+                    {
+                        data: 'tipe',
+                        name: 'tipe'
                     },
                     {
                         data: 'updated_at',

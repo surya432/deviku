@@ -290,7 +290,6 @@ trait HelperController
     public function get_token($tokens)
     {
         if (!Cache::has($tokens)) {
-            $settingData = Setting::find(1);
             $gmail = Gmail::where('token', $tokens)->whereNotNull('apiUrl')->first();
             $apiUrl = false;
             if ($gmail) {
@@ -305,7 +304,7 @@ trait HelperController
                             $dataGmail->touch();
                         }
                         $get_info23 = "Bearer " . $checklinkerror['access_token'];
-                        Cache::put($tokens, $get_info23, now()->addMinutes(50));
+                        Cache::put($tokens, $get_info23, now()->addMinutes(55));
                         return $get_info23;
                     } else {
                         return "Bearer Error";
@@ -542,9 +541,9 @@ trait HelperController
     }
     public function GDCreateFolder($title)
     {
-        $settingData = Setting::find(1);
-        $folderid = $settingData->folder720p;
-        $tokenAdmin = $settingData->tokenDriveAdmin;
+        $gmail = Gmail::where('tipe', "master")->whereNotNull('apiUrl')->first();
+        $folderid = $gmail->foderid;
+        $tokenAdmin = $gmail->token;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/drive/v3/files');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -577,7 +576,7 @@ trait HelperController
     }
     public function AutoDeleteGd()
     {
-        $datass = Trash::take(10)->get();
+        $datass = Trash::take(20)->get();
         if ($datass) {
             foreach ($datass as $datass) {
                 $idcopy = $datass->idcopy;
