@@ -150,8 +150,13 @@ Setting
                 url: "{{ route('setting.postData') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    swal("success", "success", "success");
-                    $("input[name=id]").val(data.id);
+           Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});                    $("input[name=id]").val(data.id);
                     $("input[name=site_name]").val(data.site_name);
                     $("input[name=folder720p]").val(data.folder720p);
                     $("input[name=folder360p]").val(data.folder360p);
@@ -172,7 +177,13 @@ Setting
                     $(".alert-success").show()
                 },
                 error: function(data) {
-                    swal("error", "error", "error");
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
 
                     $("input[name=id]").val(data.id);
                     $("input[name=site_name]").val(data.site_name);

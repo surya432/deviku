@@ -99,12 +99,23 @@ function getById() {
         },
         success: function(data) {
             $('#exampleFormControlTextarea1').html(data);
-            swal("success", "success", "success");
-        },
+   Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});        },
         error: function(request, status, error) {
             
             $('#exampleFormControlTextarea1').html("");
-            swal("error", "error", "error");
+            Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: data,
+  showConfirmButton: false,
+  timer: 1500
+});
             alert(request.responseText);
         }
     });
