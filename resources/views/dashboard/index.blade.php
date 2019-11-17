@@ -155,15 +155,15 @@ Dahsboard
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
+                        $("#table-users").DataTable().ajax.reload(null, false);
                         swal("success", data, "success")
 
-                        $("#table-users").DataTable().ajax.reload(null, false);
 
                     },
                     error: function(data) {
+                        $("#table-users").DataTable().ajax.reload(null, false);
                         swal("error", data, "error")
 
-                        $("#table-users").DataTable().ajax.reload(null, false);
                     }
                 });
             }
@@ -216,13 +216,13 @@ Dahsboard
             type: "get",
 
             success: function(data) {
+                $('#alert-succes').html(data);
                 swal("success", "success", "success")
                 $("#table-users").DataTable().ajax.reload(null, false);
-                $('#alert-succes').html(data);
             },
             error: function(data) {
-                swal("error", "error", "error")
                 $("#table-users").DataTable().ajax.reload(null, false);
+                swal("error", "error", "error")
             }
         });
     }

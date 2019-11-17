@@ -98,12 +98,13 @@ function getById() {
 
         },
         success: function(data) {
-            swal("success", "success", "success");
             $('#exampleFormControlTextarea1').html(data);
+            swal("success", "success", "success");
         },
         error: function(request, status, error) {
-            swal("error", "error", "error");
+            
             $('#exampleFormControlTextarea1').html("");
+            swal("error", "error", "error");
             alert(request.responseText);
         }
     });
