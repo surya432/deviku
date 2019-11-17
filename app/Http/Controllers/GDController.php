@@ -123,9 +123,7 @@ class GDController extends Controller
         $fdrive = array();
         foreach ($resultCurl['files'] as $Nofiles) {
             $trash = \App\Trash::where("idcopy", $Nofiles['id'])->first();
-            if($trash){
-                array_push($fdrive,$Nofiles['id'] . " In Trash");
-            }else{
+            if(is_null($trash)){
                 if (preg_match("/-720p.mp4/", $Nofiles['name'])) {
                     $url = str_replace('-720p.mp4', '', $Nofiles['name']);
                     $content = Content::where('url', $url)->first();
