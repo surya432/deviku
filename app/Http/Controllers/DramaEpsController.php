@@ -77,8 +77,8 @@ class DramaEpsController extends Controller
                 return '<div class="btn-group" role="group" aria-label="Command Action">
                 ' . $f360p . $f720p . '
                 <a href="' . route("viewEps", $data->url) . '" target="_blank" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>
-                <button type="button" id="btnShow" data-id="' . $data->id . '" data-drama_id="' . $data->drama_id . '" data-status="' . $data->status . '" data-title="' . $data->title . '" data-f720p="' . $data->f720p . '" data-f360p="' . $data->f360p . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
-                <button type="button" id="btnDelete" data-id="' . $data->id . '" data-drama_id="' . $data->drama_id . '" data-status="' . $data->status . '" data-title="' . $data->title . '" data-f720p="' . $data->f720p . '" data-f360p="' . $data->f360p . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button></div>';
+                <button type="button" id="btnShow" data-id="' . $data->id . '" data-drama_id="' . $data->drama_id . '" data-status="' . $data->status . '" data-title="' . $data->title . '" data-f720p="' . $data->f720p . '" data-f360p="' . $data->f360p . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></button>
+                <button type="button" id="btnDelete" data-id="' . $data->id . '" data-drama_id="' . $data->drama_id . '" data-status="' . $data->status . '" data-title="' . $data->title . '" data-f720p="' . $data->f720p . '" data-f360p="' . $data->f360p . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></button></div>';
             })
             ->order(function ($data) {
                 if (request()->has('id')) {

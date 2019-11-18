@@ -199,8 +199,10 @@ Dahsboard
                 ],
                 "ajax": "{{ route('dramaDataUpdate') }}",
                 "columns": [{
-                        data: 'id',
-                        name: 'id'
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'title',

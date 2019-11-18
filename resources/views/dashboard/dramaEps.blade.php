@@ -411,8 +411,10 @@ Drama {{$result->title}}
                 "serverSide": true,
                 "ajax": "{{ route('epsData',$result->id) }}",
                 "columns": [{
-                        data: 'id',
-                        name: 'id'
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'title',
