@@ -26,6 +26,7 @@ class TypeController extends Controller
             $data = Cache::get('Type', $data);
         }
         return Datatables::of($data)
+        ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return '<div class="btn-group" role="group" aria-label="Basic example">
                     <a href="http://asdasdsad/' . $data->id . '" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>

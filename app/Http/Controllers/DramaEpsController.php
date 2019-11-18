@@ -49,6 +49,9 @@ class DramaEpsController extends Controller
     {
         $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
         return Datatables::of($data)
+        ->addIndexColumn()
+
+
             ->addColumn('f360ps', function ($data) {
                 if ($data->f360p) {
                     return 'true';

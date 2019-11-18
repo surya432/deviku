@@ -21,6 +21,9 @@ class CountryController extends Controller
         $cache = Cache::rememberForever('Country', function () {
             $data = Country::all();
             return Datatables::of($data)
+            ->addIndexColumn()
+
+
                 ->addColumn('action', function ($data) {
                     return '<button type="button" id="btnShow" data-id="' . $data->id . '" data-title="' . $data->name . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>
                     <button type="button" id="btnDelete" data-id="' . $data->id . '" data-title="' . $data->name . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button>';

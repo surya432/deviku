@@ -97,8 +97,8 @@ $(document).ready(function() {
             "serverSide": true,
             "ajax": "{{ route('typeData') }}",
             "columns": [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_Row_Index',
+                    name: 'DT_Row_Index'
                 },
                 {
                     data: 'name',

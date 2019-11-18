@@ -21,6 +21,7 @@ class UsersController extends Controller
     {
         $data = DB::table('laporans')->join('users', 'laporans.username', '=', 'users.id')->select('laporans.*', 'users.first_name')->orderBy('laporans.created_at', 'desc')->get();
         return Datatables::of($data)
+        ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return '<button type="button" id="btnShow" data-id="' . $data->id . '" data-date="' . $data->created_at . '" data-userid="' . $data->username . '" data-comment="' . $data->laporan . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button>';
             })

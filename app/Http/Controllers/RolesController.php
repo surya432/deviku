@@ -17,6 +17,7 @@ class RolesController extends Controller
     {
         $roles = Sentinel::getRoleRepository()->get();
         return Datatables::of($roles)
+        ->addIndexColumn()
             ->addColumn('action', function ($roles) {
                 return '<button type="button" id="btnShow" data-id="' . $roles->id . '" data-name="' . $roles->name . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</button><button type="button" id="btnDelete" data-id="' . $roles->id . '" data-name="' . $roles->name . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</button>';
             })

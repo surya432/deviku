@@ -160,8 +160,8 @@ All Users
             "serverSide": true,
             "ajax": "{{ route('users.getData') }}",
             "columns": [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_Row_Index',
+                    name: 'DT_Row_Index'
                 },
                 {
                     data: 'first_name',

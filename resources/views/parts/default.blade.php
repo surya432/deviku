@@ -56,7 +56,11 @@
 
     <link href="{!! asset('theme/vendor/font-awesome/css/font-awesome.min.css') !!}" rel="stylesheet" type="text/css">
    
-
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 </head>
 
@@ -144,7 +148,41 @@
 <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script> -->
     @yield('scripts')
 
+    <script>
+        (function($, dataTable) {
+            $.extend(true, $.fn.dataTable.defaults, {
+                pageLength: 25,
+                paging: true,
+                lengthChange: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                autoWidth: true,
+                aoColumnDefs: [{
+                    'bSortable': false,
+                    'aTargets': ['nosort']
+                }],
+                language: {
+                    "emptyTable": "Data Kosong",
+                    "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    "infoEmpty": "Menampilkan 0 sampai 0 dari 0 data",
+                    "infoFiltered": "(disaring dari _MAX_ total data)",
+                    "search": "Cari:",
+                    "lengthMenu": "Tampilkan _MENU_ Data",
+                    "zeroRecords": "Tidak Ada Data yang Ditampilkan",
+                    "processing": "Silahkan Tunggu...",
+                    "oPaginate": {
+                        "sFirst": "Awal",
+                        "sLast": "Akhir",
+                        "sNext": "Selanjutnya",
+                        "sPrevious": "Sebelumnya"
+                    },
+                },
 
+
+            });
+        })(jQuery, jQuery.fn.dataTable);
+    </script>
 
 </body>
 

@@ -34,6 +34,9 @@ class DramaController extends Controller
         $data = Drama::with('country')->with('type')->orderBy('id', 'desc')->get();
 
         return Datatables::of($data)
+        ->addIndexColumn()
+
+
             ->addColumn('type', function ($data) {
                 return $data->type->name;
             })

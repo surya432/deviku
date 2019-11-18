@@ -131,8 +131,8 @@ $("#table-users").ready(function() {
         "serverSide": true,
         "ajax": "{{ route('users.roleData') }}",
         "columns": [{
-                data: 'id',
-                name: 'id'
+                data: 'DT_Row_Index',
+                name: 'DT_Row_Index'
             },
             {
                 data: 'name',

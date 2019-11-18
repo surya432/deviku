@@ -97,8 +97,8 @@ $(document).ready(function() {
             "serverSide": true,
             "ajax": "{{ route('countryData') }}",
             "columns": [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
+                        data: 'DT_Row_Index',
+                        name: 'DT_Row_Index',
                         orderable: false,
                         searchable: false
                     },

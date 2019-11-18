@@ -64,6 +64,9 @@ class BrokenLinkController extends Controller
             $query->from('brokenlinks')->select('contents_id')->get();
         })->where('drama_id', $id)->orderBy('title', 'asc')->get();
         return Datatables::of($data)
+        ->addIndexColumn()
+
+
             ->addColumn('f360ps', function ($data) {
 
                 $f360p = $this->CheckHeaderCode($data->f360p);

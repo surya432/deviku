@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $data = Drama::with('country')->with('type')->orderBy('updated_at', 'desc')->get();
 
         return Datatables::of($data)
-
+            ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return '<div class="btn-group" role="group" aria-label="Command Action">
                     <a href="' . route("eps", $data->id) . '" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i> show</a>

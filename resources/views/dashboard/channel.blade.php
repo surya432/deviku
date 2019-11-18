@@ -105,8 +105,8 @@ $(document).ready(function() {
             "serverSide": true,
             "ajax": "{{ route('countryData') }}",
             "columns": [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_Row_Index',
+                    name: 'DT_Row_Index'
                 },
                 {
                     data: 'name',
