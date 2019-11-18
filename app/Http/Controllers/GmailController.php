@@ -90,26 +90,26 @@ class GmailController extends Controller
 
     public function Delete(Request $request)
     {
-        $dataContent = Gmail::find($request->input("id"));
+        $dataContent = Gmail::where('id', $request->input("id"))->first();
         $content = \App\BackupFilesDrive::where("tokenfcm", $dataContent->token)->get();
         if ($content) {
             foreach ($content as $content) {
                 $idcopy = $content->f720p;
                 $tokens = $dataContent->token;
                 if (!is_null($idcopy) && !is_null($tokens)) {
-                    $this->addToTrashes($this->GetIdDrive($idcopy), $tokens);
+                    $this->deletegd($this->GetIdDrive($idcopy), $tokens);
+                    $content->delete();
+
                 } else {
                     $content->delete();
                 }
             }
-            $dataContent->tipe="";
-            $dataContent->save();
         }
-        $dataContent = \App\Trash::where("token",$dataContent->token)->get();
-        if (!isset($dataContent)) {
+        $dataContent22 = \App\Trash::where('token', $dataContent->token)->first();
+        if (is_null($dataContent22)) {
             $dataContent->delete();
-            $dataContent = "Delete Success";
-            return response()->json($dataContent, 200);
+            $dataContent22 = "Delete Success";
+            return response()->json($dataContent22, 200);
         }
         return response()->json("Error Delete", 404);
     }
