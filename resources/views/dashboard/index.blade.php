@@ -132,7 +132,13 @@ Dahsboard
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
-
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'success',
+  showConfirmButton: false,
+  timer: 1500
+});
 
                 },
                 error: function(data) {
@@ -140,7 +146,13 @@ Dahsboard
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
-
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: 'error',
+  showConfirmButton: false,
+  timer: 1500
+});
                 }
             });
         });
@@ -156,14 +168,24 @@ Dahsboard
                     },
                     success: function(data) {
                         $("#table-users").DataTable().ajax.reload(null, false);
-                        swal("success", data, "success")
-
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'success',
+  showConfirmButton: false,
+  timer: 1500
+});
 
                     },
                     error: function(data) {
                         $("#table-users").DataTable().ajax.reload(null, false);
-                        swal("error", data, "error")
-
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: 'error',
+  showConfirmButton: false,
+  timer: 1500
+});
                     }
                 });
             }
@@ -217,12 +239,24 @@ Dahsboard
 
             success: function(data) {
                 $('#alert-succes').html(data);
-                swal("success", "success", "success")
                 $("#table-users").DataTable().ajax.reload(null, false);
+                Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'success',
+  showConfirmButton: false,
+  timer: 1500
+});
             },
             error: function(data) {
                 $("#table-users").DataTable().ajax.reload(null, false);
-                swal("error", "error", "error")
+                Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: 'error',
+  showConfirmButton: false,
+  timer: 1500
+});
             }
         });
     }

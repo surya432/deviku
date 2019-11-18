@@ -132,7 +132,7 @@ Drama
                     Swal.fire({
   position: 'top-end',
   icon: 'success',
-  title: data,
+  title: 'success',
   showConfirmButton: false,
   timer: 1500
 });
@@ -146,7 +146,7 @@ Drama
                     Swal.fire({
   position: 'top-end',
   icon: 'error',
-  title: data,
+  title: 'error',
   showConfirmButton: false,
   timer: 1500
 });
@@ -171,7 +171,7 @@ Drama
                         Swal.fire({
   position: 'top-end',
   icon: 'success',
-  title: data,
+  title: 'success',
   showConfirmButton: false,
   timer: 1500
 });
@@ -183,7 +183,7 @@ Drama
                         Swal.fire({
   position: 'top-end',
   icon: 'error',
-  title: data,
+  title: 'error',
   showConfirmButton: false,
   timer: 1500
 });
@@ -240,13 +240,24 @@ Drama
             type: "get",
 
             success: function(data) {
-                swal("SUCCESS", 'Singkron Success', "success")
                 $("#table-users").DataTable().ajax.reload(null, false);
-
+                Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'success',
+  showConfirmButton: false,
+  timer: 1500
+});
             },
             error: function(data) {
-                swal("error", 'Singkron error', "error")
                 $("#table-users").DataTable().ajax.reload(null, false);
+                Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: 'error',
+  showConfirmButton: false,
+  timer: 1500
+});
             }
         });
     }

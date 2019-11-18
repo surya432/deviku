@@ -18,8 +18,28 @@ class BackupController extends Controller
     use HelperController;
     public function deletegdFromDB()
     {
-        $this->AutoDeleteGd();
-        return response()->json("OK", 200);
+        // $this->AutoDeleteGd();
+        $dataresult = array();
+
+        $datass = \App\Trash::take(20)->get();
+        if ($datass) {
+            foreach ($datass as $datass) {
+                $idcopy = $datass->idcopy;
+                $tokens = $datass->token;
+                if (!is_null($idcopy) && !is_null($tokens)) {
+                    if ($this->deletegd($this->GetIdDriveTrashed($idcopy), $tokens)) {
+                        $datass->delete();
+                        array_push($dataresult, $datass->idcopy." Delete");
+                    }else{
+                        array_push($dataresult, $datass->idcopy." Delete Error");
+
+                    }
+                } else {
+                    $datass->delete();
+                }
+            }
+        }
+        return response()->json($dataresult, 200);
     }
     public function index()
     {

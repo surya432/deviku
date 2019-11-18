@@ -77,15 +77,29 @@ Accounts Gmail
                 url: "{{ route('gmailPost') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-                    swal("success", "success Update", "success")
+                 
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formGmail")[0].reset()
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'success',
+  showConfirmButton: false,
+  timer: 1500
+});
 
                 },
                 error: function(data) {
-                    swal("error", "fail Update", "error")
+                   
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formGmail")[0].reset()
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: 'Failed Update',
+  showConfirmButton: false,
+  timer: 1500
+});
                 }
             });
         });
@@ -100,15 +114,25 @@ Accounts Gmail
                         id: $(this).attr('data-id')
                     },
                     success: function(data) {
-                        swal("SUCCESS", fn, "success")
-                        $(".alert-success").show();
                         $("#table-users").DataTable().ajax.reload(null, false);
-
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'success',
+  showConfirmButton: false,
+  timer: 1500
+});
                     },
                     error: function(data) {
-                        swal("error", fn, "error")
-                        $(".alert-danger").show()
+                       
                         $("#table-users").DataTable().ajax.reload(null, false);
+                        Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: 'Failed Update',
+  showConfirmButton: false,
+  timer: 1500
+});
                     }
                 });
             }

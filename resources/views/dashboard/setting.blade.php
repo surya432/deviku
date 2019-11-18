@@ -150,18 +150,12 @@ Setting
                 url: "{{ route('setting.postData') }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
-           Swal.fire({
-  position: 'top-end',
-  icon: 'success',
-  title: data,
-  showConfirmButton: false,
-  timer: 1500
-});                    $("input[name=id]").val(data.id);
+                   $("input[name=id]").val(data.id);
                     $("input[name=site_name]").val(data.site_name);
                     $("input[name=folder720p]").val(data.folder720p);
                     $("input[name=folder360p]").val(data.folder360p);
                     $("input[name=folderUpload]").val(data.folderUpload);
-                    $("input[name=folderbackup]").val(data[0].folderbackup);
+                    $("input[name=folderbackup]").val(data.folderbackup);
                     $("input[name=tokenDriveAdmin]").val(data.tokenDriveAdmin);
                     $("input[name=path_hardsub]").val(data.path_hardsub);
                     $("input[name=apiUrl]").val(data.apiUrl);
@@ -175,22 +169,21 @@ Setting
                     $("input[name=viuMinggu]").val(data.viuMinggu);
                     $(".alert-success").text("Update Success")
                     $(".alert-success").show()
-                },
-                error: function(data) {
                     Swal.fire({
   position: 'top-end',
-  icon: 'error',
-  title: data,
+  icon: 'success',
+  title: 'success',
   showConfirmButton: false,
   timer: 1500
-});
-
+}); 
+                },
+                error: function(data) {
                     $("input[name=id]").val(data.id);
                     $("input[name=site_name]").val(data.site_name);
                     $("input[name=folder720p]").val(data.folder720p);
                     $("input[name=folder360p]").val(data.folder360p);
                     $("input[name=folderUpload]").val(data.folderUpload);
-                    $("input[name=folderbackup]").val(data[0].folderbackup);
+                    $("input[name=folderbackup]").val(data.folderbackup);
                     $("input[name=tokenDriveAdmin]").val(data.tokenDriveAdmin);
                     $("input[name=path_hardsub]").val(data.path_hardsub);
                     $("input[name=apiUrl]").val(data.apiUrl);
@@ -204,6 +197,13 @@ Setting
                     $("input[name=viuMinggu]").val(data.viuMinggu);
                     $(".alert-danger").text("Failed Update")
                     $(".alert-danger").show()
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: 'Failed Update',
+  showConfirmButton: false,
+  timer: 1500
+});
                 }
             });
         });

@@ -106,7 +106,7 @@ class GmailController extends Controller
             $dataContent->save();
         }
         $dataContent = \App\Trash::where("token",$dataContent->token)->get();
-        if (is_null($dataContent)) {
+        if (!isset($dataContent)) {
             $dataContent->delete();
             $dataContent = "Delete Success";
             return response()->json($dataContent, 200);

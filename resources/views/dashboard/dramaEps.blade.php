@@ -236,22 +236,21 @@ Drama {{$result->title}}
                     Swal.fire({
   position: 'top-end',
   icon: 'success',
-  title: data,
+  title: 'success',
   showConfirmButton: false,
   timer: 1500
 });
                     $('#modelId2343').modal('hide');
                 },
                 error: function(data) {
+                    $('#modelId2343').modal('hide');
                     Swal.fire({
   position: 'top-end',
   icon: 'error',
-  title: data,
+  title: 'error',
   showConfirmButton: false,
   timer: 1500
 });
-                    $('#modelId2343').modal('hide');
-
                 }
             });
         });
@@ -294,7 +293,7 @@ Drama {{$result->title}}
                         Swal.fire({
   position: 'top-end',
   icon: 'success',
-  title: data,
+  title: 'success',
   showConfirmButton: false,
   timer: 1500
 });
@@ -305,7 +304,7 @@ Drama {{$result->title}}
                         Swal.fire({
   position: 'top-end',
   icon: 'error',
-  title: data,
+  title: 'error',
   showConfirmButton: false,
   timer: 1500
 });
@@ -321,32 +320,30 @@ Drama {{$result->title}}
                 url: "{{ route('epsPost', $result->id) }}",
                 data: $(this).serializeArray(),
                 success: function(data) {
+                    $("#table-users").DataTable().ajax.reload(null, false);
+                    $("#formDrama")[0].reset()
+                    $('#modelId').modal('hide');
                     Swal.fire({
   position: 'top-end',
   icon: 'success',
-  title: data,
+  title: 'success',
   showConfirmButton: false,
   timer: 1500
 });
-                    $("#table-users").DataTable().ajax.reload(null, false);
-                    $("#formDrama")[0].reset()
-                    $('#modelId').modal('hide');
-                    $(".alert-success").fadeOut(20000);
 
                 },
                 error: function(data) {
-                    Swal.fire({
-  position: 'top-end',
-  icon: 'error',
-  title: data,
-  showConfirmButton: false,
-  timer: 1500
-});
+                    
                     $("#table-users").DataTable().ajax.reload(null, false);
                     $("#formDrama")[0].reset()
                     $('#modelId').modal('hide');
-                    $(".alert-danger").fadeOut(20000);
-
+                    Swal.fire({
+  position: 'top-end',
+  icon: 'error',
+  title: 'error',
+  showConfirmButton: false,
+  timer: 1500
+});
                 }
             });
 
@@ -385,7 +382,7 @@ Drama {{$result->title}}
                         Swal.fire({
   position: 'top-end',
   icon: 'success',
-  title: data,
+  title: 'success',
   showConfirmButton: false,
   timer: 1500
 });
@@ -396,7 +393,7 @@ Drama {{$result->title}}
                         Swal.fire({
   position: 'top-end',
   icon: 'error',
-  title: data,
+  title: 'error',
   showConfirmButton: false,
   timer: 1500
 });
