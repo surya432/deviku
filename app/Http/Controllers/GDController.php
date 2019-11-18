@@ -144,7 +144,7 @@ class GDController extends Controller
                                     Drama::find($content->drama_id)->touch();
                                     $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
-                                    array_push($fdrive, $url);
+                                    array_push($fdrive, $url." Update");
                                 }
                             }
                             $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
@@ -194,7 +194,7 @@ class GDController extends Controller
             $resultCurl = $this->singkronfile($gmail->folderid);
             $oldFolder = $gmail->folderid;
         } else {
-            $drama = \App\Drama::find($id)->first();
+            $drama = \App\Drama::where('id',$id)->first();
             $resultCurl = $this->singkronfile($drama->folderid);
             $oldFolder = $drama->folderid;
         }
