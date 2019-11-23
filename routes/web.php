@@ -22,6 +22,8 @@ Route::get('/ajax/videos/{url}', function () {
     return abort(404);
 });
 
+Route::get('/detail/drama', ['as' => 'dramacurl', 'uses' => 'WebfrontsController@asiawiki']);
+
 Route::post('/ajax/videos/{url}', ['as' => 'ajaxEps', 'uses' => 'EmbedController@getDetail']);
 Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@login']);
 
@@ -110,11 +112,13 @@ Route::group(['middleware' => ['admin', 'web']], function () {
 
     Route::get('/admin/lastupdate/', ['as' => 'DrakorUpdateIndex', 'uses' => 'DrakorController@index']);
     Route::get('/admin/lastupdate/data', ['as' => 'DrakorUpdateData', 'uses' => 'DrakorController@Data']);
-
+    
     Route::get('/admin/webfront/', ['as' => 'webfront', 'uses' => 'WebfrontsController@index']);
+    Route::get('/admin/webfront/new/{idDrama}', ['as' => 'webfrontAddPost', 'uses' => 'WebfrontsController@preCreatePost']);
     Route::get('/admin/webfront-data/', ['as' => 'webfrontGet', 'uses' => 'WebfrontsController@get']);
     Route::delete('/admin/webfront-data/', ['as' => 'webfrontDelete', 'uses' => 'WebfrontsController@delete']);
     Route::post('/admin/webfront-data/', ['as' => 'webfrontPost', 'uses' => 'WebfrontsController@post']);
+    Route::post('/admin/webfront-data/post', ['as' => 'preCreate', 'uses' => 'WebfrontsController@preCreate']);
     Route::get('/admin/webfront/singkron', ['as' => 'webfrontSingkron', 'uses' => 'WebfrontsController@seachdrama']);
     Route::post('/admin/webfront/singkron/{idSite}', ['as' => 'singkronToWeb', 'uses' => 'WebfrontsController@singkronToWeb']);
 });

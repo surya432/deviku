@@ -42,9 +42,7 @@ class DramaEpsController extends Controller
         $result = $this->GetTags($value);
         return response()->json($result);
     }
-    public function Detail($id){
-        dd($this->getDetailDrama('https://myasiantv.to/drama/mother-of-mine/')) ;
-    }
+   
     public function get($id)
     {
         $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();

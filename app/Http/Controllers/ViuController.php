@@ -189,4 +189,5 @@ class ViuController extends Controller
 
         return $string;
     }
+    
 }

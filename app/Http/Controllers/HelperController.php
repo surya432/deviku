@@ -9,6 +9,7 @@ use App\Setting;
 use App\Trash;
 use DB;
 use Goutte\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Support\Facades\Cache;
 
 trait HelperController
@@ -97,13 +98,14 @@ trait HelperController
         $eps = $data->eps;
         $title = $data->title;
         $category = $data->country->name;
+        $status = $data->status;
         $jenis = $data->type->name;
         $tag = "Nonton " . $title . " Subtile Indonesia, Nonton " . $title . " Sub Indonesia, Nonton " . $jenis . " " . $category . " " . $title . " Sub Indo, Nonton " . $jenis . " " . $category . " " . $title . " Subtitle Indo online, Nonton " . $title . " Sub Indonesia Online, Nonton " . $jenis . " " . $category . " Sub Indo, Nonton " . $jenis . " " . $category . " Subtitle Indo, Nonton " . $jenis . " " . $title . " Subtitle Indonesia, Download " . $jenis . " " . $category . " " . $title . " Sub Indo, Download " . $title . " Sub Indonesia, Download " . $title . " " . $category . " Subtitle Indonesia, Download " . $jenis . " " . $title . " Subtitle Indonesia, Download " . $category . " " . $title . " Subtitle Indonesia, Download " . $jenis . " " . $category . " Sub Indo, Download " . $jenis . " " . $category . " Subtitle Indo, nonton online drama korea sub indo,drakor id,nonton drama korea,nonton drama korea online,nonton streaming drama korea,nonton drama online,nontondrama tv,nonton online drama korea,nonton movie korea,nonton korea online,nonton streaming korea,nonton drama korea streaming,nonton movie drama korea,k drama online,nonton korea streaming,nonton streaming drama korea terbaru,nonton korea drama online,nonton online drama,nonton on line,nonton drama,nonton film online korea terbaru,streaming k drama,nonton film drama korea online,k drama streaming,nonton web drama korea,nonton film online drama korea sub indo,nonton drama korea indo sub,nonton movie,nonton film,nonton streaming,drama korea terbaru,nonton drakor,kdrama,nonton film korea,k drama sub indo,nonton streaming online, drakorindo,drakor,drama korea terbaru,nonton drakor,nonton online drama korea sub indo,drakor id,nonton drama korea,nonton drama korea online,nonton streaming drama korea,nonton drama online,nontondrama tv,nonton online drama korea,nonton movie korea,nonton korea online,nonton streaming korea,nonton drama korea streaming,nonton movie drama korea,k drama online,nonton korea streaming,nonton streaming drama korea terbaru,nonton korea drama online,nonton online drama,nonton on line,nonton drama,nonton film online korea terbaru,streaming k drama,nonton film drama korea online,k drama streaming,nonton web drama korea,nonton film online drama korea sub indo,nonton drama korea indo sub,nonton movie,nonton film,nonton streaming,drama korea terbaru,nonton drakor,kdrama,nonton film korea,k drama sub indo,nonton streaming online, drakorindo,drakor,drama korea terbaru,nonton drakor";
         foreach ($eps as $eps) {
             $embed .=
             '<h3>' . $eps->title . '</h3><p><iframe src="' . route("viewEps", $eps->url) . '" width="100%" height="400" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>';
         }
-        $result = array("title" => $title, "tag" => $tag, "iframe" => base64_encode($embed));
+        $result = array("title" => $title, "tag" => $tag, "country" => $category,  "category" => $jenis, "status" => $status, "iframe" => base64_encode($embed));
         return $result;
     }
     public function postWeb($site, $drama_id, $header, $body)
@@ -111,6 +113,35 @@ trait HelperController
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $site . "/wp-json/wp/v2/posts/" . $drama_id,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 300,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $body,
+            CURLOPT_HTTPHEADER => array(
+                "Authorization: Basic " . $header,
+                "Cache-Control: no-cache",
+                "Content-Type: application/x-www-form-urlencoded",
+            ),
+        ));
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        if ($err) {
+            return $err;
+        } else {
+            return $response;
+        }
+    }
+    public function postNewWeb($site, $header, $body)
+    {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $site . "/wp-json/wp/v2/posts/",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -647,23 +678,44 @@ trait HelperController
     }
     public function getDetailDrama($url)
     {
-        $client = new Client();
-        $guzzleclient = new \GuzzleHttp\Client([
-            'timeout' => 300,
+
+        $goutteClient = new Client();
+        $guzzleClient = new GuzzleClient(array(
+            'timeout' => 60,
             'verify' => false,
-        ]);
-        $client->setClient($guzzleclient);
-        $crawler = $client->request('GET', $url);
-        $getCrawler = array();
+
+        ));
+        $goutteClient->setClient($guzzleClient);
+        // $client = new Client();
+        // $guzzleClient = new \GuzzleHttp\Client(array( 'curl' => array( CURLOPT_SSL_VERIFYPEER => false, ), ));
+        $crawler = $goutteClient->request('GET', $url);
+        // $client->setClient($guzzleClient);
+        // $crawler = $client->request('GET', $url);
+        $keys = [];
         //  $crawler->filter('.left >p:nth-of-type(1)')->each(function ($node){
-        $getCrawler = $crawler->filter('.left >p')->each(function ($node) {
-            return array(strtolower($node->filter('strong')->text()) => $node->filter('span')->text());
+        $getkeys = $crawler->filter('.left >p')->each(function ($node) {
+            return array(strtolower($node->filter('strong')->text())=> $node->filter('span')->text());
         });
-        $getCrawler = $crawler->filter('.left >p')->each(function ($node) {
-            return array(strtolower($node->filter('strong')->text()) => $node->filter('span')->text());
+        foreach($getkeys as $a=>$b){
+            foreach($b as $c =>$d){
+                $ca = str_replace(":","",$c);
+                $keys[$ca] = $d;
+            }
+        }
+        $getPlot = $crawler->filter('.right >.info')->each(function ($node) {
+            return ["plot" => $node->filter('p')->text()];
         });
-        return $getCrawler;
+        foreach($getPlot as $a=>$b){
+            foreach($b as $c =>$d){
+                $keys[$c] = $d;
+            }
+        }
+        return $keys;
         //>span:nth-of-type(1)
         // return  $crawler->filter('.left')->text();
+    }
+    public function show_Spanish($n, $m)
+    {
+        return "The number {$n} is called {$m} in Spanish";
     }
 }
