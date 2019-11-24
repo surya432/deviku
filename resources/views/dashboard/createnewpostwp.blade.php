@@ -12,7 +12,8 @@ Add New Post Wordpress
             <div class="panel panel-primary">
                 <div class="panel-heading"> Add New Post Wordpress</div>
                 <div class="panel-body">
-                <form method="POST" action="{{route('preCreate')}}" id="formDrama2" enctype="multipart/form-data">
+                <form method="POST" autocomplete="off"
+action="{{route('preCreate')}}" id="formDrama2" enctype="multipart/form-data">
                         <div class="form-group">
                             <input type="text" class="form-control " name="urlLink" id="urlLink" required>
                             <button type="button" id="btnGet" name="btnGet" class="btn btn-md btn-primary "><i
