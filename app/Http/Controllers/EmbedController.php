@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Brokenlink;
 use App\Content;
 use App\Mirror;
-use DB;
-use Cache;
-use Jenssegers\Agent\Agent;
-use GeoIP;
-use App\Brokenlink;
 use App\Setting;
 use App\Trash;
+use Cache;
+use Illuminate\Http\Request;
 
 class EmbedController extends Controller
 {
     use HelperController;
-    function index(Request $request, $url)
+    public function index(Request $request, $url)
     {
         $contentCheck = Content::where('url', $url)->first();
         if (is_null($contentCheck)) {
@@ -30,10 +27,12 @@ class EmbedController extends Controller
             return abort(404);
         }
         // $country = "id";
-        $value = $this->MirrorCheck($url);
-        return view("embed.index")->with("url", $value)->with('GeoIP', $country);
+        $url = $this->MirrorCheck($url);
+        $setting = Setting::find(1);
+        
+        return view("embed.index",compact("url","country","setting"));
     }
-    function addToTrashes()
+    public function addToTrashes()
     {
         $dayFiles = Setting::find(1)->dayFiles;
         $mytime = \Carbon\Carbon::now();
@@ -49,8 +48,9 @@ class EmbedController extends Controller
             }
         }
     }
-    function MirrorCheck($url)
+    public function MirrorCheck($url)
     {
+
         $content = Content::where('url', $url)->first();
         // $save = false;
         // if (preg_match("/upload_id=/", $content->mirror1)) {
@@ -102,11 +102,11 @@ class EmbedController extends Controller
         // }
         return $content;
     }
-    function MethodBrokenlinks($id, $kualitas, $options)
+    public function MethodBrokenlinks($id, $kualitas, $options)
     {
         $seconds = 1000 * 60 * 4;
         Cache::remember('MethodBrokenlinks', $seconds, function () use ($id, $kualitas, $options) {
-                        $checkLaporanBroken = Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->first();
+            $checkLaporanBroken = Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->first();
             if (!is_null($checkLaporanBroken) && $options == "delete") {
                 Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->delete();
             } elseif (is_null($checkLaporanBroken) && $options == "add") {
@@ -117,7 +117,7 @@ class EmbedController extends Controller
             }
         });
     }
-    function getDetail(Request $request, $url)
+    public function getDetail(Request $request, $url)
     {
         $content = Content::where('url', $url)->first();
         $this->addToTrashes();
@@ -168,17 +168,17 @@ class EmbedController extends Controller
                         $returncontent .= "<a href='https://oload.stream/f/" . $content->mirror3 . "' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
                     }
                 }
-                /* if(!is_null($content->mirror2)){					
-                    if(!preg_match("/upload_id=/",$content->mirror2)){
-                    $returncontent .= "<a href='http://www.rapidvideo.com/d/".$content->mirror2."' class='btn btn-sm btn-primary' target='_blank'>RapidVideo 720p</a>";
-                    }
+                /* if(!is_null($content->mirror2)){
+                if(!preg_match("/upload_id=/",$content->mirror2)){
+                $returncontent .= "<a href='http://www.rapidvideo.com/d/".$content->mirror2."' class='btn btn-sm btn-primary' target='_blank'>RapidVideo 720p</a>";
+                }
                 } */
                 $returncontent .= '</p></div>';
                 return $returncontent;
                 break;
         }
     }
-    function CopyGoogleDriveID($urlDrive, $url, $kualitas)
+    public function CopyGoogleDriveID($urlDrive, $url, $kualitas)
     {
         $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Gagal Getlink video!! :( </br> #PERLU REFRESH</p></div>';
         $mytime = \Carbon\Carbon::now();
@@ -194,12 +194,12 @@ class EmbedController extends Controller
             return $this->GetPlayer($mirror->idcopy);
         }
     }
-    function GetPlayer($urlDrive)
+    public function GetPlayer($urlDrive)
     {
         //  return ;
-return url('/')."/embed.php?id=".$this->my_simple_crypt($urlDrive);
+        return url('/') . "/embed.php?id=" . $this->my_simple_crypt($urlDrive);
     }
-    function my_simple_crypt($string, $action = 'e')
+    public function my_simple_crypt($string, $action = 'e')
     {
         $secret_key = 'GReg7rNx2z[2';
         $secret_iv = 'C0?s9rh4';

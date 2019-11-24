@@ -107,12 +107,15 @@
     </script>
     <div id="server" class="text-left" style="padding-top:5px;">
         <!-- <button class="btn btn-sm btn-primary" disabled>Server:</button> -->
-        @if(isset($url->f360p))
+ 
+        @if($setting->folder360p == "true")
         <button class="btn btn-sm btn-danger" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
-        @elseif($url->f720p !="")
-        <button class="btn btn-sm btn-danger" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
+@endif
+        @if($setting->folder720p == "true")
+                <button class="btn btn-sm btn-danger" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
         @endif
-        @if($url->f720p !="")
+
+        @if($setting->folder720p == "true")
         <button class="btn btn-sm btn-primary" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
         @endif
         @if($url->mirror1 !="" && !preg_match("/upload_id=/",$url->mirror1))
@@ -145,14 +148,15 @@
             },
         });
     </script>
-    @if(!empty($url->f360p))
+    @if($setting->folder360p == "true")
     <script type="text/javascript">
         function getPlayer() {
             var data = showPlayer('gd360');
             return data;
         }
     </script>
-    @else
+    @endif
+    @if($setting->folder720p == "true")
     <script type="text/javascript">
         function getPlayer() {
             var data = showPlayer('gd720');

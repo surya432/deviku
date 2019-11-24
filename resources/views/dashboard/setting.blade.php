@@ -22,11 +22,11 @@ Setting
                             <label class="control-label" for="site_name">Site Name</label>
                             <input type="text" class="form-control" name="site_name" id="site_name" required></div>
                         <div class="form-group">
-                            <label class="control-label" for="folder 720p">Folder 720p</label>
+                            <label class="control-label" for="folder 720p">Player 720p</label>
                             <input type="text" class="form-control" name="folder720p" id="folder720p" required>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="folder360p">Folder 360p</label>
+                            <label class="control-label" for="folder360p">Player 360p</label>
                             <input type="text" class="form-control" name="folder360p" id="folder360p" required>
                         </div>
                         <div class="form-group">
