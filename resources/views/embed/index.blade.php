@@ -107,7 +107,7 @@
     </script>
     <div id="server" class="text-left" style="padding-top:5px;">
         <!-- <button class="btn btn-sm btn-primary" disabled>Server:</button> -->
- 
+
         @if($setting->folder360p == "true")
             <button class="btn btn-sm btn-danger" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
         @endif
