@@ -39,30 +39,30 @@ action="{{route('preCreate')}}" id="formDrama2" enctype="multipart/form-data">
                         <div class="form-group">
                             <label class="control-label" for="email">Tags</label>
                             <input type="text" class="form-control" name="post_tag" value="{{$result['tag']}}"
-                                id="post_tag">
+                                id="post_tag" required>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="email">Categories</label>
                             <input type="text" class="form-control" name="categories" value="{{$result['category']}}"
-                                id="categories">
+                                id="categories" required>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="email">Status</label>
                             <input type="text" class="form-control" value="{{$result['status']}}" name="status"
-                                id="status">
+                                id="status" required>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="email">Genre</label>
-                            <input type="text" class="form-control" name="genre" id="genre">
+                            <input type="text" class="form-control" name="genre" id="genre" required>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="email">Country</label>
                             <input type="text" class="form-control" name="country" value="{{$result['country']}}"
-                                id="country">
+                                id="country" required>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="email">Cast</label>
-                            <input type="text" class="form-control" name="cast" id="cast">
+                            <input type="text" class="form-control" name="cast" id="cast" required>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="email">Iframe</label>
