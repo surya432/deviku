@@ -12,7 +12,7 @@ Add New Post Wordpress
             <div class="panel panel-primary">
                 <div class="panel-heading"> Add New Post Wordpress</div>
                 <div class="panel-body">
-                    <form action='{{ route("preCreate") }}' method="post" id="formDrama2" role="form">
+                <form method="POST" action="{{route('preCreate')}}" id="formDrama2" enctype="multipart/form-data">
                         <div class="form-group">
                             <input type="text" class="form-control " name="urlLink" id="urlLink" required>
                             <button type="button" id="btnGet" name="btnGet" class="btn btn-md btn-primary "><i
@@ -30,6 +30,10 @@ Add New Post Wordpress
                             <label class="control-label" for="email">Name</label>
                             <input type="text" class="form-control" value="{{$result['title']}}" name="titleDetail"
                                 id="titleDetail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="email">Image</label>
+                            <input type="file" class="form-control" name="imageupload" id="imageupload" required>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="email">Tags</label>
@@ -87,7 +91,7 @@ $(document).ready(function() {
         if (urlSearch) {
 
             $.ajax({
-                url: "/detail/drama" + "?source=" + urlSearch,
+                url: "/detail/drama?source=" + urlSearch,
                 type: "get",
                 success: function(data) {
                     JSON.stringify(data); //to string
@@ -109,10 +113,15 @@ $(document).ready(function() {
     });
     $("#formDrama2").on("submit", function() {
         event.preventDefault()
+        var formData = new FormData(this);
+
         $.ajax({
             type: "post",
-            url: "{{ route('preCreate') }}",
-            data: $(this).serializeArray(),
+            url: $(this).attr('action'),
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
             success: function(data) {
                 // $("#table-users").DataTable().ajax.reload(null, false);
                 // $("#formDrama2")[0].reset()

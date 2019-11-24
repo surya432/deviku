@@ -102,17 +102,17 @@ function getById() {
    Swal.fire({
   position: 'top-end',
   icon: 'success',
-  title: data,
+  title: "success",
   showConfirmButton: false,
   timer: 1500
 });        },
         error: function(request, status, error) {
-            
+
             $('#exampleFormControlTextarea1').html("");
             Swal.fire({
   position: 'top-end',
   icon: 'error',
-  title: data,
+  title: "error",
   showConfirmButton: false,
   timer: 1500
 });

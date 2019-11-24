@@ -2,6 +2,7 @@ Result:
 <div class="list-group">
     @if(!$url)
     keyword not found
+    <button type="button" id="btnaddPostWp" name="btnaddPostWp" class="btn btn-md btn-primary">Create New Post</button>
     @endif
     @foreach($url as $post)
 

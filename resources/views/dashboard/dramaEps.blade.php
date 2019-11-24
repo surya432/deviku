@@ -276,6 +276,7 @@ Drama {{$result->title}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    var dramaidKode = {!! $result->id !!};
     new Clipboard('.btncopy');
     $("#btnEdit").on("click", function() {
         $("input[id=idDrama]").val($(this).attr('data-id'));
@@ -362,6 +363,11 @@ $(document).ready(function() {
                 });
             }
         });
+    });
+        $("#content").on("click", '#btnaddPostWp', function() {
+
+        window.open("{{ route('webfrontAddPost',$result->id) }}","_self");
+
     });
     $("#btnaddFolder").on("click", function() {
         var fn = $(this).attr('data-title');
