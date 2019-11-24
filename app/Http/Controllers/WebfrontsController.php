@@ -134,7 +134,7 @@ class WebfrontsController extends Controller
             'json' => [
                 'title' => $title,
                 'content' => $content,
-                'status' => 'publish',
+                'status' => "publish",
                 'format' => "video",
                 'featured_media' => intval($image['id']),
                 'terms' => array(
