@@ -192,11 +192,9 @@ class GDController extends Controller
 
         if ($id == 0) {
             $resultCurl = $this->singkronfile($gmail->folderid);
-            $oldFolder = $gmail->folderid;
         } else {
             $drama = \App\Drama::where('id',$id)->first();
             $resultCurl = $this->singkronfile($drama->folderid);
-            $oldFolder = $drama->folderid;
         }
         return view('dashboard.singkronContent')->with('url', $this->foreachFolder($resultCurl, $gmail->token, $id));
 
