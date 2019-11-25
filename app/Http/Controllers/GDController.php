@@ -117,7 +117,7 @@ class GDController extends Controller
         }
         return view('dashboard.singkronContent')->with('url', $fdrive);
     }
-    private function foreachFolder($resultCurl, $oldFolder, $tokenDriveAdmin, $id)
+    private function foreachFolder($resultCurl, $tokenDriveAdmin, $id)
     {
         $gmail = \App\gmail::where('tipe', 'master')->first();
         $fdrive = array();
@@ -198,7 +198,7 @@ class GDController extends Controller
             $resultCurl = $this->singkronfile($drama->folderid);
             $oldFolder = $drama->folderid;
         }
-        return view('dashboard.singkronContent')->with('url', $this->foreachFolder($resultCurl, $oldFolder, $gmail->token, $id));
+        return view('dashboard.singkronContent')->with('url', $this->foreachFolder($resultCurl, $gmail->token, $id));
 
     }
     public function createFolderDrive(Request $request)
