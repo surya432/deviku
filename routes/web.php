@@ -38,7 +38,7 @@ Route::get('/deletegd', ['as' => 'gmailPostUpdate', 'uses' => 'BackupController@
 Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
 });
-Route::get('/singkron/drama/{id}', ['as' => 'singkrons', 'uses' => 'GDController@singkron']);
+Route::get('/singkron/drama/{id}', ['as' => 'singkrons', 'uses' => 'GDController@syncFolder']);
 Route::get('/proxyDrive', ['as' => 'ProxyDriveIndex', 'uses' => 'ProxyDriveController@index']);
 Route::get('/proxyDrive/{id}', ['as' => 'ProxyDriveContents', 'uses' => 'ProxyDriveController@getBrokenLink']);
 Route::get('/proxyDriveps1', ['as' => 'ProxyDriveContentsps1', 'uses' => 'ProxyDriveController@fileBrokenLinkPs1']);
