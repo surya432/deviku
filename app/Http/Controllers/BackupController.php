@@ -206,61 +206,7 @@ class BackupController extends Controller
                     });
                     return "https://www.fembed.com/v/" . $copies['url'];
                 } else {
-                    $apikey = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror);
-                    $dataCurl = $fembed->fembedCheck($apikey);
-                    if ($dataCurl['success']) {
-                        $arrayid = array();
-                        foreach ($dataCurl['data'] as $a => $b) {
-                            $apikeys = $apikey . "&task_id=" . $b['id'];
-                            $dataMirror = \App\Mirrorcopy::where('apikey', $apikeys)->first();
-                            if ($b['status'] == 'Task is completed') {
-                                if ($dataMirror) {
-                                    $dataMirror->url = $b['file_id'];
-                                    $dataMirror->status = $b['status'];
-                                    $dataMirror->save();
-                                    array_push($arrayid, $b['id']);
-                                }
-                                if ($apikeys == $copies['apikey']) {
-                                    $url = "https://www.fembed.com/v/" . $b['file_id'];
-                                }
-                            } elseif ($b['status'] == "Could not connect to download server") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
-                            } elseif ($b['status'] == "Not an allowed video file") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
-                            } elseif ($b['status'] == "Timed out") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
-                            } elseif ($b['status'] == "could not connect to server") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
-                            } elseif ($b['status'] == "could not verify file to download") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
-                            } elseif ($b['status'] == "file is too small, minimum allow size is 10,240 bytes") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
-                            }
-                        }
-                        if (!empty($arrayid)) {
-                            $apikeyremove = $apikey . "&remove_ids=" . json_encode($arrayid);
-                            $dataCurl = $fembed->fembedCheck($apikeyremove);
-                        }
-
-                    }
+                    return "";
                     // });
                 }
                 return $url;
