@@ -14,10 +14,10 @@ class AddTrigerUpdateBackup extends Migration
     public function up()
     {
         //
-        DB::unprepared('CREATE TRIGGER tupdate_backupsFILES AFTER UPDATE ON `backups` FOR EACH ROW
-        BEGIN
-        INSERT INTO trashes SET  idcopy=old.f720p, token= (Select tokenDriveAdmin from settings where id="1");
-        END');
+        // DB::unprepared('CREATE TRIGGER tupdate_backupsFILES AFTER UPDATE ON `backups` FOR EACH ROW
+        // BEGIN
+        // INSERT INTO trashes SET  idcopy=old.f720p, token= (Select tokenDriveAdmin from settings where id="1");
+        // END');
     }
 
     /**
@@ -28,7 +28,7 @@ class AddTrigerUpdateBackup extends Migration
     public function down()
     {
         //
-        DB::unprepared('DROP TRIGGER `tupdate_backupsFILES');
+        // DB::unprepared('DROP TRIGGER `tupdate_backupsFILES');
 
     }
 }

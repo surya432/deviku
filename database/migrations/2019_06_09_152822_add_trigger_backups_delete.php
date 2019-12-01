@@ -14,10 +14,11 @@ class AddTriggerBackupsDelete extends Migration
     public function up()
     {
         //
-        DB::unprepared('CREATE TRIGGER delete_backup AFTER DELETE ON `backups` FOR EACH ROW
-        BEGIN
-            INSERT INTO trashes SET  idcopy=old.f720p, token= (Select tokenDriveAdmin from settings where id="1");
-        END');
+        // DB::unprepared('DROP TRIGGER `delete_backup');
+        // DB::unprepared('CREATE TRIGGER delete_backup AFTER DELETE ON `backups` FOR EACH ROW
+        // BEGIN
+        //     INSERT INTO trashes SET  idcopy=old.f720p, token= (Select token from gmails where tipe="backup" limit 0,1);
+        // END');
     }
 
     /**
@@ -28,6 +29,6 @@ class AddTriggerBackupsDelete extends Migration
     public function down()
     {
         //
-        DB::unprepared('DROP TRIGGER `delete_backup');
+        // DB::unprepared('DROP TRIGGER `delete_backup');
     }
 }
