@@ -144,6 +144,7 @@
     </script>
     <script type="text/javascript">
      $(document).ready(function() {
+        document.getElementsByClassName("btn-sm")[0].removeClass('btn-primary').addClass('btn-danger')
         var firstImg = document.getElementsByClassName("btn-sm")[0].getAttribute("qtylink");
             console.log(firstImg);
             var data = showPlayer(firstImg);
