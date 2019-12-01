@@ -14,6 +14,7 @@ class AddTrigerDrama extends Migration
     public function up()
     {
         //
+        DB::unprepared('DROP TRIGGER `delete_drama');
         DB::unprepared('CREATE TRIGGER delete_drama AFTER DELETE ON `dramas` FOR EACH ROW
         BEGIN
            DELETE FROM `brokenlinks` WHERE brokenlinks.contents_id in (select id from contents where drama_id = old.id);
