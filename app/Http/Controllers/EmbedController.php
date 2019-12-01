@@ -257,17 +257,22 @@ class EmbedController extends Controller
                                 if ($apikeys == $copies['apikey']) {
                                     $url = "https://www.fembed.com/v/" . $b['file_id'];
                                 }
-                            } elseif ($b['status'] == "Timed out") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
-                            }elseif ($b['status'] == "could not connect to server") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
                             } elseif ($b['status'] == "Could not connect to download server") {
+                                array_push($arrayid, $b['id']);
+                                if ($dataMirror) {
+                                    $dataMirror->delete();
+                                }
+                            } elseif ($b['status'] == "Not an allowed video file") {
+                                array_push($arrayid, $b['id']);
+                                if ($dataMirror) {
+                                    $dataMirror->delete();
+                                }
+                            } elseif ($b['status'] == "Request Time Out") {
+                                array_push($arrayid, $b['id']);
+                                if ($dataMirror) {
+                                    $dataMirror->delete();
+                                }
+                            } elseif ($b['status'] == "could not verify file to download") {
                                 array_push($arrayid, $b['id']);
                                 if ($dataMirror) {
                                     $dataMirror->delete();
@@ -289,28 +294,29 @@ class EmbedController extends Controller
                 }
                 return $url;
             } else {
-                if ($ClientID['status'] == "Up") {
-                    $urlDownload = [];
-                    $nameVideo = md5($data);
-                    $driveId = $this->GetIdDrive($data);
-                    $urlDownload[] = array("link" => "https://drive.google.com/file/d/" . $driveId);
-                    $datacurl = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&links=" . json_encode($urlDownload);
-                    $resultCurl = $fembed->fembedUpload($datacurl);
-                    if ($resultCurl['success']) {
-                        $mirrorcopies = new \App\Mirrorcopy();
-                        $mirrorcopies->url = null;
-                        $mirrorcopies->status = "uploaded";
-                        $mirrorcopies->drive = $data;
-                        $mirrorcopies->provider = $mirror;
-                        $mirrorcopies->apikey = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&task_id=" . $resultCurl['data'][0];
-                        $mirrorcopies->save();
-                        return "";
-                    } else {
-                        return "";
-                    }
-                } else {
+                // if ($ClientID['status'] == "Up") {
+                //     $urlDownload = [];
+                //     $nameVideo = md5($data);
+                //     $driveId = $this->GetIdDrive($data);
+                //     $severDownload = $this->getProviderStatus($data, "ServerDownload");
+                //     $urlDownload[] = array("link" => $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4", "headers" => "");
+                //     $datacurl = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&links=" . json_encode($urlDownload);
+                //     $resultCurl = $fembed->fembedUpload($datacurl);
+                //     if ($resultCurl['success']) {
+                //         $mirrorcopies = new \App\Mirrorcopy();
+                //         $mirrorcopies->url = null;
+                //         $mirrorcopies->status = "uploaded";
+                //         $mirrorcopies->drive = $data;
+                //         $mirrorcopies->provider = $mirror;
+                //         $mirrorcopies->apikey = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&task_id=" . $resultCurl['data'][0];
+                //         $mirrorcopies->save();
+                //         return "";
+                //     } else {
+                //         return "";
+                //     }
+                // } else {
                     return "";
-                }
+                // }
             }
         } else {
             return "";
@@ -326,24 +332,24 @@ class EmbedController extends Controller
             $rapidvideo = new \App\Classes\RapidVideo();
             $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
             if (is_null($copies)) {
-                if ($ClientID['status'] == "Up") {
-                    $nameVideo = md5($data);
-                    $driveId = $this->GetIdDrive($data);
-                    $severDownload = $this->getProviderStatus($data, "ServerDownload");
-                    $urlDownload = $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
-                    $datacurl = $rapidvideo->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&url=" . $urlDownload;
-                    $resultCurl = $rapidvideo->RapidVideoUpload($datacurl);
-                    if ($resultCurl['status'] == "OK") {
-                        $mirrorcopies = new \App\Mirrorcopy();
-                        $mirrorcopies->url = null;
-                        $mirrorcopies->status = "uploaded";
-                        $mirrorcopies->drive = $data;
-                        $mirrorcopies->provider = $mirror;
-                        $mirrorcopies->apikey = $rapidvideo->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $resultCurl['id'];
-                        $mirrorcopies->save();
-                    }
-                    return "";
-                }
+                // if ($ClientID['status'] == "Up") {
+                //     $nameVideo = md5($data);
+                //     $driveId = $this->GetIdDrive($data);
+                //     $severDownload = $this->getProviderStatus($data, "ServerDownload");
+                //     $urlDownload = $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
+                //     $datacurl = $rapidvideo->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&url=" . $urlDownload;
+                //     $resultCurl = $rapidvideo->RapidVideoUpload($datacurl);
+                //     if ($resultCurl['status'] == "OK") {
+                //         $mirrorcopies = new \App\Mirrorcopy();
+                //         $mirrorcopies->url = null;
+                //         $mirrorcopies->status = "uploaded";
+                //         $mirrorcopies->drive = $data;
+                //         $mirrorcopies->provider = $mirror;
+                //         $mirrorcopies->apikey = $rapidvideo->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $resultCurl['id'];
+                //         $mirrorcopies->save();
+                //     }
+                //     return "";
+                // }
                 return "";
             } else {
                 $urlID = "";
@@ -377,22 +383,22 @@ class EmbedController extends Controller
                 if ($ClientID['status'] != "Up") {
                     return "";
                 }
-                $nameVideo = md5($data);
-                $driveId = $this->GetIdDrive($data);
-                $severDownload = $this->getProviderStatus($data, "ServerDownload");
-                $urlDownload = $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
-                $datacurl = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&url=" . $urlDownload;
-                $resultCurl = $openload->OpenloadUpload($datacurl);
-                if ($resultCurl['msg'] != "OK") {
-                    return "";
-                }
-                $mirrorcopies = new \App\Mirrorcopy();
-                $mirrorcopies->url = null;
-                $mirrorcopies->status = "uploaded";
-                $mirrorcopies->drive = $data;
-                $mirrorcopies->provider = $mirror;
-                $mirrorcopies->apikey = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $resultCurl['id'];
-                $mirrorcopies->save();
+                // $nameVideo = md5($data);
+                // $driveId = $this->GetIdDrive($data);
+                // $severDownload = $this->getProviderStatus($data, "ServerDownload");
+                // $urlDownload = $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
+                // $datacurl = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&url=" . $urlDownload;
+                // $resultCurl = $openload->OpenloadUpload($datacurl);
+                // if ($resultCurl['msg'] != "OK") {
+                //     return "";
+                // }
+                // $mirrorcopies = new \App\Mirrorcopy();
+                // $mirrorcopies->url = null;
+                // $mirrorcopies->status = "uploaded";
+                // $mirrorcopies->drive = $data;
+                // $mirrorcopies->provider = $mirror;
+                // $mirrorcopies->apikey = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $resultCurl['id'];
+                // $mirrorcopies->save();
                 return "";
             } else {
                 $urlID = "";
@@ -404,7 +410,7 @@ class EmbedController extends Controller
                                 $copies->url = $b['extid'];
                                 $copies->status = "Task is completed";
                                 $copies->save();
-                                $keys = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $resultCurl['id'];
+                                $keys = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $b['extid'];
                                 if ($copies['apikey'] == $keys) {
                                     $urlID = "http://oload.stream/f/" . $b['extid'];
                                 }
@@ -414,68 +420,6 @@ class EmbedController extends Controller
                     return $urlID;
                 }
                 return "https://oload.stream/f/" . $copies['url'];
-            }
-        }
-    }
-    public function googledrive($data, $mirror)
-    {
-        $ClientID = $this->getProviderStatus($data, $mirror);
-        if (is_null($ClientID)) {
-            return "";
-        } else {
-            $googledrive = new \App\Classes\GoogleDriveAPIS();
-            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
-            if (!is_null($copies)) {
-                return $this->GetPlayer($copies['url']);
-            } else {
-                if ($ClientID['status'] != "Up") {
-                    return null;
-                }
-                $keys = $this->getProviderStatus($data, $mirror);
-                $driveId = $this->GetIdDrive($data);
-                $copyID = $googledrive->GDCopy($driveId, $keys);
-                if (is_null($copyID) || isset($copyID['error'])) {
-                    return "";
-                };
-                $mirrorcopies = new \App\Mirrorcopy();
-                $mirrorcopies->url = $copyID;
-                $mirrorcopies->status = "Task is completed";
-                $mirrorcopies->drive = $data;
-                $mirrorcopies->provider = $mirror;
-                $mirrorcopies->apikey = $keys['keys'];
-                $mirrorcopies->save();
-                return $this->GetPlayer($copyID);
-            }
-        }
-    }
-    public function googledriveBackup($data, $mirror)
-    {
-        $ClientID = $this->getProviderStatus($data, $mirror);
-        if (is_null($ClientID)) {
-            return "";
-        } else {
-            $googledrive = new \App\Classes\GoogleDriveAPIS();
-            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
-            if (!is_null($copies)) {
-                return false;
-            } else {
-                if ($ClientID['status'] != "Up") {
-                    return false;
-                }
-                $keys = $this->getProviderStatus($data, $mirror);
-                $driveId = $this->GetIdDrive($data);
-                $copyID = $googledrive->GDCopy($driveId, $keys);
-                if (is_null($copyID) || isset($copyID['error'])) {
-                    return false;
-                };
-                $mirrorcopies = new \App\Mirrorcopy();
-                $mirrorcopies->url = $copyID;
-                $mirrorcopies->status = "Task is Completed";
-                $mirrorcopies->drive = $data;
-                $mirrorcopies->provider = $mirror;
-                $mirrorcopies->apikey = $keys['keys'];
-                $mirrorcopies->save();
-                return true;
             }
         }
     }

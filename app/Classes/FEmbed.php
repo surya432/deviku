@@ -50,12 +50,12 @@ class FEmbed
 
    function fembedUpload($data)
    {
-      $response = $this->clientCurl("/transfer", $data);
+      $response = $this->clientCurl("/download", $data);
       return json_decode($response,true);
    }
    function fembedCheck($data)
    {
-      $response = $this->clientCurl("/transferring", $data);
+      $response = $this->clientCurl("/downloading", $data);
       return json_decode($response, true);
    }
    function fembedFile($data)
