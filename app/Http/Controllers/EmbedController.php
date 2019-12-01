@@ -40,7 +40,7 @@ class EmbedController extends Controller
             $openload = $this->getMirror($url['f720p'], "openload.com");
         }
         $setting = Setting::find(1);
-        return view("embed.index", compact("url", "country", "setting", "fembed", "rapidvideo", "openload"));
+        return view("embed.index", compact("url", "country", "setting", "fembed","rapidvideo","openload"));
     }
     public function addToTrashes()
     {
@@ -223,81 +223,61 @@ class EmbedController extends Controller
     }
     public function fembedCopy($data, $mirror)
     {
-        $fembed = new FEmbed();
-        $apikey = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror);
-        $dataCurl = $fembed->fembedCheck($apikey);
-        if ($dataCurl['success']) {
-            $arrayid = array();
-            foreach ($dataCurl['data'] as $a => $b) {
-                $apikeys = $apikey . "&task_id=" . $b['id'];
-                $dataMirror = \App\Mirrorcopy::where('apikey', $apikeys)->first();
-                if ($b['status'] == 'Task is completed') {
-                    if ($dataMirror) {
-                        $dataMirror->url = $b['file_id'];
-                        $dataMirror->status = $b['status'];
-                        $dataMirror->save();
-                        array_push($arrayid, $b['id']);
-                    }
-                    if ($apikeys ) {
-                        $url = "https://www.fembed.com/v/" . $b['file_id'];
-                    }
-                } elseif ($b['status'] == "Could not connect to download server") {
-                    array_push($arrayid, $b['id']);
-                    if ($dataMirror) {
-                        $dataMirror->delete();
-                    }
-                } elseif ($b['status'] == "Not an allowed video file") {
-                    array_push($arrayid, $b['id']);
-                    if ($dataMirror) {
-                        $dataMirror->delete();
-                    }
-                } elseif ($b['status'] == "could not connect to server") {
-                    array_push($arrayid, $b['id']);
-                    if ($dataMirror) {
-                        $dataMirror->delete();
-                    }
-                } elseif ($b['status'] == "Timed out") {
-                    array_push($arrayid, $b['id']);
-                    if ($dataMirror) {
-                        $dataMirror->delete();
-                    }
-                } elseif ($b['status'] == "could not verify file to download") {
-                    array_push($arrayid, $b['id']);
-                    if ($dataMirror) {
-                        $dataMirror->delete();
-                    }
-                } elseif ($b['status'] == "file is too small, minimum allow size is 10,240 bytes") {
-                    array_push($arrayid, $b['id']);
-                    if ($dataMirror) {
-                        $dataMirror->delete();
-                    }
-                }
-            }
-            if (!empty($arrayid)) {
-                $apikeyremove = $apikey . "&remove_ids=" . json_encode($arrayid);
-                $dataCurl = $fembed->fembedCheck($apikeyremove);
-            }
-            $response = [];
-            $ClientID = $this->getProviderStatus($data, $mirror);
-            if ($ClientID != null) {
-                $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
-                if ($copies) {
-                    $url = null;
-                    if ($copies['status'] == "Task is completed") {
-                        Cache::remember(md5($copies['url']), 3600 * 48, function () use ($data, $mirror, $fembed, $copies) {
-                            $keys = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&file_id=" . $copies['url'];
-                            $dataCheck = $fembed->fembedFile($keys);
-                            if ($dataCheck['data']['status'] != 'Live') {
-                                $copies->delete();
+        $response = [];
+        $ClientID = $this->getProviderStatus($data, $mirror);
+        if ($ClientID != null) {
+            $fembed = new FEmbed();
+            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
+            if ($copies) {
+                $url = null;
+                if ($copies['status'] == "Task is completed") {
+                    Cache::remember(md5($copies['url']), 3600 * 48, function () use ($data, $mirror, $fembed, $copies) {
+                        $keys = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&file_id=" . $copies['url'];
+                        $dataCheck = $fembed->fembedFile($keys);
+                        if ($dataCheck['data']['status'] != 'Live') {
+                            $copies->delete();
+                        }
+                    });
+                    return "https://www.fembed.com/v/" . $copies['url'];
+                } else {
+                    $apikey = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror);
+                    $dataCurl = $fembed->fembedCheck($apikey);
+                    if ($dataCurl['success']) {
+                        $arrayid = array();
+                        foreach ($dataCurl['data'] as $a => $b) {
+                            $apikeys = $apikey . "&task_id=" . $b['id'];
+                            $dataMirror = \App\Mirrorcopy::where('apikey', $apikeys)->first();
+                            if ($b['status'] == 'Task is completed') {
+                                if ($dataMirror) {
+                                    $dataMirror->url = $b['file_id'];
+                                    $dataMirror->status = $b['status'];
+                                    $dataMirror->save();
+                                    array_push($arrayid, $b['id']);
+                                }
+                                if ($apikeys == $copies['apikey']) {
+                                    $url = "https://www.fembed.com/v/" . $b['file_id'];
+                                }
+                            } elseif ($b['status'] == "Could not connect to download server") {
+                                array_push($arrayid, $b['id']);
+                                if ($dataMirror) {
+                                    $dataMirror->delete();
+                                }
+                            } elseif ($b['status'] == "file is too small, minimum allow size is 10,240 bytes") {
+                                array_push($arrayid, $b['id']);
+                                if ($dataMirror) {
+                                    $dataMirror->delete();
+                                }
                             }
-                        });
-                        return "https://www.fembed.com/v/" . $copies['url'];
-                    } else {
+                        }
+                        if (!empty($arrayid)) {
+                            $apikeyremove = $apikey . "&remove_ids=" . json_encode($arrayid);
+                            $dataCurl = $fembed->fembedCheck($apikeyremove);
+                        }
 
                     }
                     // });
                 }
-                return "";
+                return $url;
             } else {
                 // if ($ClientID['status'] == "Up") {
                 //     $urlDownload = [];
@@ -320,8 +300,10 @@ class EmbedController extends Controller
                 //         return "";
                 //     }
                 // } else {
-                return "";
+                //     return "";
                 // }
+                return "";
+
             }
         } else {
             return "";
@@ -415,7 +397,7 @@ class EmbedController extends Controller
                                 $copies->url = $b['extid'];
                                 $copies->status = "Task is completed";
                                 $copies->save();
-                                $keys = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $b['extid'];
+                                $keys = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $resultCurl['id'];
                                 if ($copies['apikey'] == $keys) {
                                     $urlID = "http://oload.stream/f/" . $b['extid'];
                                 }
@@ -425,6 +407,68 @@ class EmbedController extends Controller
                     return $urlID;
                 }
                 return "https://oload.stream/f/" . $copies['url'];
+            }
+        }
+    }
+    public function googledrive($data, $mirror)
+    {
+        $ClientID = $this->getProviderStatus($data, $mirror);
+        if (is_null($ClientID)) {
+            return "";
+        } else {
+            $googledrive = new \App\Classes\GoogleDriveAPIS();
+            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
+            if (!is_null($copies)) {
+                return $this->GetPlayer($copies['url']);
+            } else {
+                if ($ClientID['status'] != "Up") {
+                    return null;
+                }
+                $keys = $this->getProviderStatus($data, $mirror);
+                $driveId = $this->GetIdDrive($data);
+                $copyID = $googledrive->GDCopy($driveId, $keys);
+                if (is_null($copyID) || isset($copyID['error'])) {
+                    return "";
+                };
+                $mirrorcopies = new \App\Mirrorcopy();
+                $mirrorcopies->url = $copyID;
+                $mirrorcopies->status = "Task is completed";
+                $mirrorcopies->drive = $data;
+                $mirrorcopies->provider = $mirror;
+                $mirrorcopies->apikey = $keys['keys'];
+                $mirrorcopies->save();
+                return $this->GetPlayer($copyID);
+            }
+        }
+    }
+    public function googledriveBackup($data, $mirror)
+    {
+        $ClientID = $this->getProviderStatus($data, $mirror);
+        if (is_null($ClientID)) {
+            return "";
+        } else {
+            $googledrive = new \App\Classes\GoogleDriveAPIS();
+            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
+            if (!is_null($copies)) {
+                return false;
+            } else {
+                if ($ClientID['status'] != "Up") {
+                    return false;
+                }
+                $keys = $this->getProviderStatus($data, $mirror);
+                $driveId = $this->GetIdDrive($data);
+                $copyID = $googledrive->GDCopy($driveId, $keys);
+                if (is_null($copyID) || isset($copyID['error'])) {
+                    return false;
+                };
+                $mirrorcopies = new \App\Mirrorcopy();
+                $mirrorcopies->url = $copyID;
+                $mirrorcopies->status = "Task is Completed";
+                $mirrorcopies->drive = $data;
+                $mirrorcopies->provider = $mirror;
+                $mirrorcopies->apikey = $keys['keys'];
+                $mirrorcopies->save();
+                return true;
             }
         }
     }

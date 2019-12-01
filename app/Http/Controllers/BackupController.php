@@ -238,6 +238,11 @@ class BackupController extends Controller
                                 if ($dataMirror) {
                                     $dataMirror->delete();
                                 }
+                            } elseif ($b['status'] == "could not connect to server") {
+                                array_push($arrayid, $b['id']);
+                                if ($dataMirror) {
+                                    $dataMirror->delete();
+                                }
                             } elseif ($b['status'] == "could not verify file to download") {
                                 array_push($arrayid, $b['id']);
                                 if ($dataMirror) {
