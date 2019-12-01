@@ -148,7 +148,7 @@
             console.log(firstImg);
             var data = showPlayer(firstImg);
             coek.classList.remove('btn-primary');
-            coek.classList..add('btn-danger');
+            coek.classList.add('btn-danger');
      });
     </script>
     <script type="text/javascript">
