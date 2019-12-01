@@ -257,6 +257,16 @@ class EmbedController extends Controller
                                 if ($apikeys == $copies['apikey']) {
                                     $url = "https://www.fembed.com/v/" . $b['file_id'];
                                 }
+                            } elseif ($b['status'] == "Timed out") {
+                                array_push($arrayid, $b['id']);
+                                if ($dataMirror) {
+                                    $dataMirror->delete();
+                                }
+                            }elseif ($b['status'] == "could not connect to server") {
+                                array_push($arrayid, $b['id']);
+                                if ($dataMirror) {
+                                    $dataMirror->delete();
+                                }
                             } elseif ($b['status'] == "Could not connect to download server") {
                                 array_push($arrayid, $b['id']);
                                 if ($dataMirror) {
