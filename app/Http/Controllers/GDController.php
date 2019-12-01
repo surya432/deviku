@@ -123,14 +123,14 @@ class GDController extends Controller
         $fdrive = array();
         foreach ($resultCurl['files'] as $Nofiles) {
             $trash = \App\Trash::where("idcopy", $Nofiles['id'])->first();
-            if(is_null($trash)){
+            if (is_null($trash)) {
                 if (preg_match("/-720p.mp4/", $Nofiles['name'])) {
                     $url = str_replace('-720p.mp4', '', $Nofiles['name']);
                     $content = Content::where('url', $url)->first();
                     if ($content) {
                         $value = Drama::find($content->drama_id);
                         if ($content->f720p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                            $copyID = $this->copygd($Nofiles['id'], $gmail->folderid, $content->url . "-720p",  $gmail->token);
+                            $copyID = $this->copygd($Nofiles['id'], $gmail->folderid, $content->url . "-720p", $gmail->token);
                             if (is_null($copyID) || isset($copyID['error'])) {
                                 array_push($fdrive, $url . " Error");
                             } else {
@@ -144,7 +144,7 @@ class GDController extends Controller
                                     Drama::find($content->drama_id)->touch();
                                     $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
-                                    array_push($fdrive, $url." Update");
+                                    array_push($fdrive, $url . " Update");
                                 }
                             }
                             $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
@@ -159,7 +159,7 @@ class GDController extends Controller
                         $value = Drama::find($content->drama_id);
                         // $this->GDMoveFolder($Nofiles['id'], $folderId);
                         if ($content->f360p != "https://drive.google.com/open?id=" . $Nofiles['id']) {
-                            $copyID = $this->copygd($Nofiles['id'], $gmail->folderid, $content->url . "-360p",  $gmail->token);
+                            $copyID = $this->copygd($Nofiles['id'], $gmail->folderid, $content->url . "-360p", $gmail->token);
                             if (is_null($copyID) || isset($copyID['error'])) {
                                 array_push($fdrive, $url . " Error");
                             } else {
@@ -173,7 +173,7 @@ class GDController extends Controller
                                     Drama::find($content->drama_id)->touch();
                                     $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
-                                    array_push($fdrive, $url." Update");
+                                    array_push($fdrive, $url . " Update");
                                 }
                             }
                             $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
@@ -193,7 +193,7 @@ class GDController extends Controller
         if ($id == 0) {
             $resultCurl = $this->singkronfile($gmail->folderid);
         } else {
-            $drama = \App\Drama::where('id',$id)->first();
+            $drama = \App\Drama::where('id', $id)->first();
             $resultCurl = $this->singkronfile($drama->folderid);
         }
         return view('dashboard.singkronContent')->with('url', $this->foreachFolder($resultCurl, $gmail->token, $id));

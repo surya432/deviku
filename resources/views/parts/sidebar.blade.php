@@ -83,7 +83,12 @@
 
                     <li>
 
-                        <a href="#">Drive File</a>
+                        <a href="{{ route('masterMirrorController') }}">List Mirror</a>
+
+                    </li>
+                    <li>
+
+                        <a href="{{ route('MirrorkeyController') }}">List APi Key</a>
 
                     </li>
                 </ul>
@@ -117,6 +122,7 @@
                         <a href="{{ route('users') }}">List Users</a>
 
                     </li>
+                
 
                     <li>
 

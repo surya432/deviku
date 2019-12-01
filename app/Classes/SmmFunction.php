@@ -1,180 +1,38 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Classes;
 
-use App\Brokenlink;
 use App\Classes\FEmbed as FEmbed;
 use App\Classes\RapidVideo as RapidVideo;
-use App\Content;
-use App\Mirror;
-use App\Setting;
-use App\Trash;
 use Cache;
-use Illuminate\Http\Request;
+use Exception;
+use \App\Mirrorcopy;
 
-class EmbedController extends Controller
+class SmmFunction
 {
-    use HelperController;
-    public function index(Request $request, $url)
+    public function sendError($errorMessages = [], $code = 404)
     {
-        $contentCheck = Content::where('url', $url)->first();
-        if (is_null($contentCheck)) {
-            return abort(404);
+        $response = [
+            'success' => false,
+            'message' => $errorMessages,
+            'status' => 'error',
+        ];
+        if (!empty($errorMessages)) {
+            $response['data'] = $errorMessages;
         }
-        $environment = app()->environment();
-        if ($environment != "local") {
-            $agent = new \Agent();
-            $location = \GeoIP::getLocation();
-            $country = $location->iso_code;
-            if ($country == "KR" || $country == "US" && !$agent->isMobile() || $country == "US" && !$agent->isTablet()) {
-                //if($country == "KR" ){
-                return abort(404);
-            }
-        } else {
-            $country = "id";
-        }
-        $url = $this->MirrorCheck($url);
-        if (isset($url['f720p'])) {
-            $fembed = $this->getMirror($url['f720p'], "fembed.com");
-            $rapidvideo = $this->getMirror($url['f720p'], "rapidvideo.com");
-            $openload = $this->getMirror($url['f720p'], "openload.com");
-        }
-        $setting = Setting::find(1);
-        return view("embed.index", compact("url", "country", "setting", "fembed","rapidvideo","openload"));
+        return response()->json($response, $code);
     }
-    public function addToTrashes()
+    public function sendResponse($result, $message)
     {
-        $dayFiles = Setting::find(1)->dayFiles;
-        $mytime = \Carbon\Carbon::now();
-        $dt = $mytime->subDays($dayFiles);
-        $datas = Mirror::where("created_at", '<=', date_format($dt, "Y/m/d H:i:s"))->take(20)->get();
-        if ($datas) {
-            foreach ($datas as $datass) {
-                $trashes = new Trash();
-                $trashes->idcopy = $datass->idcopy;
-                $trashes->token = $datass->token;
-                $trashes->save();
-                Mirror::where('idcopy', $datass->idcopy)->delete();
-            }
-        }
-    }
-    public function MirrorCheck($url)
-    {
+        $response = [
+            'success' => true,
+            'data' => $result,
+            'message' => $message,
+            'status' => 'success',
 
-        $content = Content::where('url', $url)->first();
-        return $content;
-    }
-    public function MethodBrokenlinks($id, $kualitas, $options)
-    {
-        $seconds = 1000 * 60 * 4;
-        Cache::remember('MethodBrokenlinks', $seconds, function () use ($id, $kualitas, $options) {
-            $checkLaporanBroken = Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->first();
-            if (!is_null($checkLaporanBroken) && $options == "delete") {
-                Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->delete();
-            } elseif (is_null($checkLaporanBroken) && $options == "add") {
-                $laporBrokenLinks = new Brokenlink;
-                $laporBrokenLinks->contents_id = $id;
-                $laporBrokenLinks->kualitas = $kualitas;
-                $laporBrokenLinks->save();
-            }
-        });
-    }
-    public function getDetail(Request $request, $url)
-    {
-        $content = Content::where('url', $url)->first();
-        $this->addToTrashes();
-        $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Ya Link Sudah Di Rusak!! Coba Server Lain Kak. :( </br> #LaporDenganKomentarDibawah</p></div>';
-        switch ($request->input('player')) {
-            case 'gd360':
-                $f360p = $this->CheckHeaderCode($content->f360p);
-                if ($f360p) {
-                    $this->MethodBrokenlinks($content->id, "SD", "delete");
-                    return $this->CopyGoogleDriveID($content->f360p, $url, "SD");
-                } else {
-                    $this->MethodBrokenlinks($content->id, "SD", "add");
-                    return '<script type="text/javascript">showPlayer("gd720");</script>';
-                }
-                break;
-            case 'gd720':
-                $s720p = $this->CheckHeaderCode($content->f720p);
-                if ($s720p) {
-                    $this->MethodBrokenlinks($content->id, "HD", "delete");
-                    return $this->CopyGoogleDriveID($content->f720p, $url, "HD");
-                } else {
-                    $this->MethodBrokenlinks($content->id, "HD", "add");
-                    return $this->GetPlayer("1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu");
-                }
-                break;
-            case 'mirror1':
-                $iframe = $this->getMirror($content->f720p, "fembed.com");
-                return $iframe;
-                break;
-            case 'mirror2':
-                $iframe = $this->getMirror($content->f720p, "rapidvideo.com");
-                return $iframe;
-                break;
-            case 'mirror3':
-                $iframe = $this->getMirror($content->f720p, "openload.com");
-                return $iframe;
-                break;
-            case "download_links":
-                $returncontent = "";
-                $returncontent .= '<div id="notif" class="text-center"><p style="color: blue;">';
-                if (!is_null($content->mirror1)) {
-                    if (!preg_match("/upload_id=/", $content->mirror1)) {
-                        $returncontent .= "<a href='https://oload.stream/f/" . $content->mirror1 . "' class='btn btn-sm btn-primary' target='_blank'>Openload 360p</a>";
-                    }
-                }
-                if (!is_null($content->mirror3)) {
-                    if (!preg_match("/upload_id=/", $content->mirror3)) {
-                        $returncontent .= "<a href='https://oload.stream/f/" . $content->mirror3 . "' class='btn btn-sm btn-primary' target='_blank'>Openload 720p</a>";
-                    }
-                }
-                if (!is_null($content->mirror2)) {
-                    if (!preg_match("/upload_id=/", $content->mirror2)) {
-                        $returncontent .= "<a href='http://www.rapidvideo.com/d/" . $content->mirror2 . "' class='btn btn-sm btn-primary' target='_blank'>RapidVideo 720p</a>";
-                    }
-                }
-                $returncontent .= '</p></div>';
-                return $returncontent;
-                break;
-        }
-    }
-    public function CopyGoogleDriveID($urlDrive, $url, $kualitas)
-    {
-        $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Gagal Getlink video!! :( </br> #PERLU REFRESH</p></div>';
-        $mytime = \Carbon\Carbon::now();
-        $mirror = Mirror::select('idcopy')->where('url', $urlDrive)->where('kualitas', $kualitas)->first();
-        //return json_encode($mirror);
-        if (is_null($mirror)) {
-            $copyID = $this->GDCopy($urlDrive, md5($url . $mytime), $kualitas);
-            if (is_null($copyID) || isset($copyID['error'])) {
-                return $this->GetPlayer("1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu");
-            };
-            return $this->GetPlayer($copyID);
-        } else {
-            return $this->GetPlayer($mirror->idcopy);
-        }
-    }
-    public function GetPlayer($urlDrive)
-    {
-        //  return ;
-        return url('/') . "/embed.php?id=" . $this->my_simple_crypt($urlDrive);
-    }
-    public function my_simple_crypt($string, $action = 'e')
-    {
-        $secret_key = 'GReg7rNx2z[2';
-        $secret_iv = 'C0?s9rh4';
-        $output = false;
-        $encrypt_method = "AES-256-CBC";
-        $key = hash('sha256', $secret_key);
-        $iv = substr(hash('sha256', $secret_iv), 0, 16);
-        if ($action == 'e') {
-            $output = base64_encode(openssl_encrypt($string, $encrypt_method, $key, 0, $iv));
-        } else if ($action == 'd') {
-            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-        }
-        return $output;
+        ];
+
+        return response()->json($response, 200);
     }
     public function getMirror($data, $mirror)
     {
@@ -183,7 +41,7 @@ class EmbedController extends Controller
                 try {
                     return $this->fembedCopy($data, $mirror);
                 } catch (Exception $e) {
-                    return null;
+                    return $e->getMessage();
                 }
                 break;
             case "rapidvideo.com":
@@ -231,22 +89,24 @@ class EmbedController extends Controller
             if ($copies) {
                 $url = null;
                 if ($copies['status'] == "Task is completed") {
-                    Cache::remember(md5($copies['url']), 3600 * 48, function () use ($data, $mirror, $fembed, $copies) {
-                        $keys = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&file_id=" . $copies['url'];
+                    $url = $copies['url'];
+                    Cache::remember(md5($copies['url']), 3600 * 48, function () use ($url, $data, $mirror, $fembed, $copies) {
+                        $keys = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&file_id=" . $url;
                         $dataCheck = $fembed->fembedFile($keys);
+
                         if ($dataCheck['data']['status'] != 'Live') {
                             $copies->delete();
                         }
                     });
-                    return "https://www.fembed.com/v/" . $copies['url'];
                 } else {
                     $apikey = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror);
                     $dataCurl = $fembed->fembedCheck($apikey);
                     if ($dataCurl['success']) {
                         $arrayid = array();
+
                         foreach ($dataCurl['data'] as $a => $b) {
-                            $apikeys = $apikey . "&task_id=" . $b['id'];
-                            $dataMirror = \App\Mirrorcopy::where('apikey', $apikeys)->first();
+                            $apikeys = $apikey. "&task_id=" . $b['id'];
+                            $dataMirror = Mirrorcopy::where('apikey', $apikeys)->first();
                             if ($b['status'] == 'Task is completed') {
                                 if ($dataMirror) {
                                     $dataMirror->url = $b['file_id'];
@@ -259,18 +119,11 @@ class EmbedController extends Controller
                                 }
                             } elseif ($b['status'] == "Could not connect to download server") {
                                 array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
-                            } elseif ($b['status'] == "file is too small, minimum allow size is 10,240 bytes") {
-                                array_push($arrayid, $b['id']);
-                                if ($dataMirror) {
-                                    $dataMirror->delete();
-                                }
+                                
                             }
                         }
                         if (!empty($arrayid)) {
-                            $apikeyremove = $apikey . "&remove_ids=" . json_encode($arrayid);
+                            $apikeyremove = $dataMirror->apikey . "&remove_ids=" . json_encode($arrayid);
                             $dataCurl = $fembed->fembedCheck($apikeyremove);
                         }
 
@@ -287,6 +140,7 @@ class EmbedController extends Controller
                     $urlDownload[] = array("link" => $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4", "headers" => "");
                     $datacurl = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&links=" . json_encode($urlDownload);
                     $resultCurl = $fembed->fembedUpload($datacurl);
+
                     if ($resultCurl['success']) {
                         $mirrorcopies = new \App\Mirrorcopy();
                         $mirrorcopies->url = null;
@@ -312,9 +166,9 @@ class EmbedController extends Controller
     {
         $ClientID = $this->getProviderStatus($data, $mirror);
         if (is_null($ClientID)) {
-            return "";
+            return null;
         } else {
-            $rapidvideo = new \App\Classes\RapidVideo();
+            $rapidvideo = new RapidVideo();
             $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
             if (is_null($copies)) {
                 if ($ClientID['status'] == "Up") {
@@ -333,7 +187,7 @@ class EmbedController extends Controller
                         $mirrorcopies->apikey = $rapidvideo->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $resultCurl['id'];
                         $mirrorcopies->save();
                     }
-                    return "";
+                    return null;
                 }
                 return "";
             } else {
@@ -360,13 +214,13 @@ class EmbedController extends Controller
     {
         $ClientID = $this->getProviderStatus($data, $mirror);
         if (is_null($ClientID)) {
-            return "";
+            return null;
         } else {
             $openload = new \App\Classes\Openload();
             $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
             if (is_null($copies)) {
                 if ($ClientID['status'] != "Up") {
-                    return "";
+                    return null;
                 }
                 $nameVideo = md5($data);
                 $driveId = $this->GetIdDrive($data);
@@ -470,4 +324,25 @@ class EmbedController extends Controller
             }
         }
     }
+
+    public function GetPlayer($urlDrive)
+    {
+        return url('/') . "/embed.php?id=" . $this->my_simple_crypt($urlDrive);
+    }
+    public function my_simple_crypt($string, $action = 'e')
+    {
+        $secret_key = 'drivekey';
+        $secret_iv = 'google';
+        $output = false;
+        $encrypt_method = "AES-256-CBC";
+        $key = hash('sha256', $secret_key);
+        $iv = substr(hash('sha256', $secret_iv), 0, 16);
+        if ($action == 'e') {
+            $output = base64_encode(openssl_encrypt($string, $encrypt_method, $key, 0, $iv));
+        } else if ($action == 'd') {
+            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+        }
+        return $output;
+    }
+
 }

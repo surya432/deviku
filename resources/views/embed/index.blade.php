@@ -97,9 +97,6 @@
             width: $(window).width(),
             height: $(window).height() - h
         };
-        $(function() {
-            getPlayer();
-        });
         $(window).resize(function() {
             video.width = $(window).width(), video.height = $(window).height() - h, jwplayer().resize(video.width,
                 video.height)
@@ -109,24 +106,24 @@
         <!-- <button class="btn btn-sm btn-primary" disabled>Server:</button> -->
 
         @if($setting->folder360p == "true")
-            <button class="btn btn-sm btn-danger" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
+            <button class="btn btn-sm btn-danger" qtyLink="gd360" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
         @endif
 
         @if($setting->folder720p == "true")
-        <button class="btn btn-sm btn-primary" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
+        <button class="btn btn-sm btn-primary" qtyLink="gd360" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
         @endif
-        @if($url->mirror1 !="" && !preg_match("/upload_id=/",$url->mirror1))
-        <button class="btn btn-sm btn-primary" onclick="showPlayer('mirror1')">OP<sup>SD</sup></button>
+        @if(!empty($fembed))
+        <button class="btn btn-sm btn-primary" qtyLink="mirror1" onclick="showPlayer('mirror1')">Fembed</button>
         @endif
-        @if($url->mirror2 !="" && !preg_match("/upload_id=/",$url->mirror2))
-        <button class="btn btn-sm btn-primary" onclick="showPlayer('mirror2')">OP<sup>HD</sup></button>
+        @if(!empty($rapidvideo))
+        <button class="btn btn-sm btn-primary" qtyLink="mirror2" onclick="showPlayer('mirror2')">RapidVideo</button>
         @endif
-        @if($url->mirror3 !="" && !preg_match("/upload_id=/",$url->mirror3))
-        <button class="btn btn-sm btn-primary" onclick="showPlayer('mirror3')">OP<sup>HD</sup></button>
+        @if(!empty($openload))
+        <button class="btn btn-sm btn-primary" qtyLink="mirror3" onclick="showPlayer('mirror3')">Openload</button>
         @endif
         <button class="btn btn-sm btn-primary" onclick=showPlayer('download_links')>Download</button>
     </div>
-    <div id="myElement" style="width:100%!important;height:100%!important" onload="getPlayer()">
+    <div id="myElement" style="width:100%!important;height:100%!important">
         <div class="spinner">
             <div class="bounce1"></div>
             <div class="bounce2"></div>
@@ -145,23 +142,13 @@
             },
         });
     </script>
-    @if($setting->folder360p == "true")
     <script type="text/javascript">
-        function getPlayer() {
-            var data = showPlayer('gd360');
-            return data;
-        }
+     $(document).ready(function() {
+        var firstImg = document.getElementsByClassName("btn-sm")[0].getAttribute("qtylink");
+            console.log(firstImg);
+            var data = showPlayer(firstImg);
+     });
     </script>
-    @endif
-    @if($setting->folder720p == "true")
-    <script type="text/javascript">
-        function getPlayer() {
-            var data = showPlayer('gd720');
-            return data;
-        }
-    </script>
-    @endif
-
     <script type="text/javascript">
         function showPlayer(link_id) {
             $("#myElement").html(
@@ -229,7 +216,6 @@ document.getElementsByTagName('head')[0].appendChild(meta);
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
-
 </body>
 
 </html>

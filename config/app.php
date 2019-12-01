@@ -178,6 +178,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
 
     ],
 
@@ -236,6 +237,8 @@ return [
         'Input' => Illuminate\Support\Facades\Input::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
         'Goutte' => Weidner\Goutte\GoutteFacade::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

@@ -101,18 +101,16 @@
 				},
 				autostart: false,
 				"primary": "html5",
-				//"advertising": {
-				//	"tag": "https://www.vidcpm.com/watch.xml?key=e7e88d1f99faf712d70473161f657524&custom=%7B%27width%27%3A%27__player-width__%27%2C%27height%27%3A%27__player-height__%27%7D&vastref=__page-url__&cb=__random-number__",
-				//	"client": "vast",
-				//	"skipoffset": 5,
-				//	"skipmessage": 'Skip this ad in XX',
-				//	"vpaidmode": "insecure",
-				//	"companiondiv": {
-				//		"id": "sample-companion-div",
-				//		"height": 250,
-				//		"width": 300,
-				//	}
-				//},
+				"advertising": {
+					"tag": "https://www.movcpm.com/watch.xml?key=590b107a0857e0fb7cb70f5a0e73aff2",
+					"client": "vast",
+					"vpaidmode": "insecure",
+					"companiondiv": {
+						"id": "sample-companion-div",
+						"height": 250,
+						"width": 300,
+					}
+				},
 				abouttext: "nontonindrama.com",
 				aboutlink: "http://nontonindrama.com",
 				sources: sources_video

@@ -28,8 +28,6 @@ class GmailController extends Controller
             ->get();
         return Datatables::of($data)
         ->addIndexColumn()
-
-
             ->addColumn('apiUrl', function ($data) {
                 return (!empty($data->apiUrl)) ? "true" : "false";
             })

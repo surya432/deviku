@@ -157,11 +157,14 @@ All Users
     $("#table-users").ready(function() {
         oTable = $("#table-users").DataTable({
             "processing": true,
+            "pageLength": 25,
             "serverSide": true,
             "ajax": "{{ route('users.getData') }}",
             "columns": [{
-                    data: 'DT_Row_Index',
-                    name: 'DT_Row_Index'
+                data: 'id',
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                 },
                 {
                     data: 'first_name',

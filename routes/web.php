@@ -121,4 +121,22 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::post('/admin/webfront-data/post', ['as' => 'preCreate', 'uses' => 'WebfrontsController@preCreate']);
     Route::get('/admin/webfront/singkron', ['as' => 'webfrontSingkron', 'uses' => 'WebfrontsController@seachdrama']);
     Route::post('/admin/webfront/singkron/{idSite}', ['as' => 'singkronToWeb', 'uses' => 'WebfrontsController@singkronToWeb']);
+    
+    //New Feture
+    Route::get('/admin/mirror/datatabel', 'MirrorKeyController@json')->name('Apimirrorkeyjson');
+    Route::get('/admin/master-mirror', 'MasterMirrorController@index')->name('masterMirrorController');
+    Route::get('/admin/datatables/master-mirror', 'MasterMirrorController@create')->name('masterMirrorCreate');
+    Route::post('/admin/form/master-mirror-create', 'MasterMirrorController@store')->name('ApiMasterMirrorStore');
+    Route::patch('/admin/form/master-mirror-update/{id}', 'MasterMirrorController@update')->name('ApiMasterMirrorupdate');
+    Route::get('/admin/form/master-mirror-edit/{id}', 'MasterMirrorController@edit')->name('master-mirror.edit');
+    Route::delete('/admin/form/master-mirror-delete', 'MasterMirrorController@destroy')->name('master-mirror.destroy');
+    Route::get('/admin/apikey', 'MirrorkeyController@index')->name('MirrorkeyController');
+    Route::get('/admin/datatables/master-apikey', 'MirrorkeyController@json')->name('datatableapikey');
+    Route::get('/admin/form/master-apikey-create', 'MirrorkeyController@create')->name('mirrorkey.create');
+    Route::post('/admin/form/master-apikey-create', 'MirrorkeyController@store')->name('mirrorkey.store');
+    Route::patch('/admin/form/master-apikey-update/{id}', 'MirrorkeyController@update')->name('mirrorkey.update');
+    Route::get('/admin/form/master-apikey-edit/{id}', 'MirrorkeyController@edit')->name('mirrorkey.edit');
+    Route::delete('/admin/form/master-apikey-delete', 'MirrorkeyController@destroy')->name('mirrorkey.destroy');
+    
+    Route::get('/admin/form-master-mirror', 'MasterMirrorController@json')->name('ApiMasterMirrorJson');
 });
