@@ -251,6 +251,11 @@ class EmbedController extends Controller
                     if ($dataMirror) {
                         $dataMirror->delete();
                     }
+                } elseif ($b['status'] == "could not connect to server") {
+                    array_push($arrayid, $b['id']);
+                    if ($dataMirror) {
+                        $dataMirror->delete();
+                    }
                 } elseif ($b['status'] == "Timed out") {
                     array_push($arrayid, $b['id']);
                     if ($dataMirror) {
