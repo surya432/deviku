@@ -397,7 +397,7 @@ class EmbedController extends Controller
                                 $copies->url = $b['extid'];
                                 $copies->status = "Task is completed";
                                 $copies->save();
-                                $keys = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $resultCurl['id'];
+                                $keys = $openload->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&id=" . $b['extid'];
                                 if ($copies['apikey'] == $keys) {
                                     $urlID = "http://oload.stream/f/" . $b['extid'];
                                 }
