@@ -147,7 +147,8 @@
         var firstImg = document.getElementsByClassName("btn-sm")[0].getAttribute("qtylink");
             console.log(firstImg);
             var data = showPlayer(firstImg);
-            coek.classList.remove('btn-primary').add('btn-danger');
+            coek.classList.remove('btn-primary');
+            coek.classList..add('btn-danger');
      });
     </script>
     <script type="text/javascript">
