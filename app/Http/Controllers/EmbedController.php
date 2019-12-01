@@ -294,7 +294,7 @@ class EmbedController extends Controller
                     $nameVideo = md5($data);
                     $driveId = $this->GetIdDrive($data);
                     $severDownload = $this->getProviderStatus($data, "ServerDownload");
-                    $urlDownload[] = array("link" => $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4", "headers" => "");
+                    $urlDownload[] = array("link" => "https://docs.google.com/file/d/" . $driveId, "headers" => "");
                     $datacurl = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&links=" . json_encode($urlDownload);
                     $resultCurl = $fembed->fembedUpload($datacurl);
                     if ($resultCurl['success']) {
