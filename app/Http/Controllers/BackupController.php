@@ -29,9 +29,9 @@ class BackupController extends Controller
                 if (!is_null($idcopy) && !is_null($tokens)) {
                     if ($this->deletegd($this->GetIdDriveTrashed($idcopy), $tokens)) {
                         $datass->delete();
-                        array_push($dataresult, $datass->idcopy." Delete");
-                    }else{
-                        array_push($dataresult, $datass->idcopy." Delete Error");
+                        array_push($dataresult, $datass->idcopy . " Delete");
+                    } else {
+                        array_push($dataresult, $datass->idcopy . " Delete Error");
 
                     }
                 } else {
@@ -63,7 +63,7 @@ class BackupController extends Controller
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->url . "-720p", $settingData->token);
                     if (isset($copyID['id'])) {
-                        $this->changePermission($copyID['id'],$settingData->token);
+                        $this->changePermission($copyID['id'], $settingData->token);
                         $datass->f720p = $copyID['id'];
                         $datass->tokenfcm = $settingData->token;
                         $datass->save();
@@ -96,7 +96,7 @@ class BackupController extends Controller
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-f360p", $settingData->token);
                     if (isset($copyID['id'])) {
-                        $this->changePermission($copyID['id'],$settingData->token);
+                        $this->changePermission($copyID['id'], $settingData->token);
                         $datass->f720p = $copyID['id'];
                         $datass->tokenfcm = $settingData->token;
                         $datass->save();
@@ -113,19 +113,34 @@ class BackupController extends Controller
         }
         return response()->json($dataresult);
     }
-    public function getMirrorAlternatif(){
+    public function getMirrorAlternatif()
+    {
+        $dataresult = array();
+
         $dataContent = DB::table('contents')
-                ->whereNotIn('f720p', DB::table('mirrorcopies')->pluck('drive'))
-                ->where('f720p', 'NOT LIKE', '%picasa%')
-                ->whereNotNull('f720p')
-                ->orderBy('id', 'desc')
-                ->take(1)
-                ->get();
-            foreach ($dataContent as $dataContents) {
-                $this->getMirror($dataContents->f720p,"fembed.com");
-                $this->getMirror($dataContents->f720p,"rapidvideo.com");
-                $this->getMirror($dataContents->f720p,"openload.com");
+            ->whereNotIn('f720p', DB::table('mirrorcopies')->pluck('drive'))
+            ->where('f720p', 'NOT LIKE', '%picasa%')
+            ->whereNotNull('f720p')
+            ->orderBy('id', 'desc')
+            ->take(1)
+            ->get();
+        foreach ($dataContent as $dataContents) {
+            $f20p = $this->CheckHeaderCode($dataContents->f720p);
+            if ($f20p) {
+                $fembed = $this->getMirror($dataContents->f720p, "fembed.com");
+                $rapid = $this->getMirror($dataContents->f720p, "rapidvideo.com");
+                $openload =$this->getMirror($dataContents->f720p, "openload.com");
+                $copyID = array("fembed" => $fembed,"openload" => $openload,"rapid" => $rapid, "url" => $dataContents->f720p);
+                array_push($dataresult, $copyID);
+            } else {
+                $content = Content::find($dataContents->id);
+                $content->f720p = null;
+                $content->save();
             }
+
+        }
+        return response()->json($dataresult);
+
     }
     public function getMirror($data, $mirror)
     {
@@ -175,9 +190,9 @@ class BackupController extends Controller
     public function fembedCopy($data, $mirror)
     {
         $response = [];
+        $fembed = new \App\Classes\FEmbed();
         $ClientID = $this->getProviderStatus($data, $mirror);
         if ($ClientID != null) {
-            $fembed = new \App\Classes\FEmbed();
             $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
             if ($copies) {
                 $url = null;
@@ -218,7 +233,7 @@ class BackupController extends Controller
                                 if ($dataMirror) {
                                     $dataMirror->delete();
                                 }
-                            } elseif ($b['status'] == "Request Time Out") {
+                            } elseif ($b['status'] == "Timed out") {
                                 array_push($arrayid, $b['id']);
                                 if ($dataMirror) {
                                     $dataMirror->delete();
@@ -250,7 +265,9 @@ class BackupController extends Controller
                     $nameVideo = md5($data);
                     $driveId = $this->GetIdDrive($data);
                     $severDownload = $this->getProviderStatus($data, "ServerDownload");
-                    $urlDownload[] = array("link" => $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4", "headers" => "");
+                    $urlVideoDriveNode=$severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
+                    // $urlDownloadLink = $this->viewsource($urlVideoDriveNode);
+                    $urlDownload[] = array("link" => $urlVideoDriveNode, "headers" => "");
                     $datacurl = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&links=" . json_encode($urlDownload);
                     $resultCurl = $fembed->fembedUpload($datacurl);
                     if ($resultCurl['success']) {
@@ -261,7 +278,7 @@ class BackupController extends Controller
                         $mirrorcopies->provider = $mirror;
                         $mirrorcopies->apikey = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&task_id=" . $resultCurl['data'][0];
                         $mirrorcopies->save();
-                        return "";
+                        return $resultCurl['data'][0];
                     } else {
                         return "";
                     }
