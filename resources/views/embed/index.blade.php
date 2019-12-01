@@ -106,9 +106,8 @@
         <!-- <button class="btn btn-sm btn-primary" disabled>Server:</button> -->
 
         @if($setting->folder360p == "true")
-            <button class="btn btn-sm btn-danger" qtyLink="gd360" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
+            <button class="btn btn-sm btn-primary" qtyLink="gd360" onclick="showPlayer('gd360')">B.Fs<sup>SD</sup></button>
         @endif
-
         @if($setting->folder720p == "true")
         <button class="btn btn-sm btn-primary" qtyLink="gd360" id="btnDefault" onclick="showPlayer('gd720')">B.Fs<sup>HD</sup></button>
         @endif
