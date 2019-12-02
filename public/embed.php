@@ -86,12 +86,12 @@
 				displaytitle: true,
 				width: video.width,
 				aspectratio: "16:9",
-				flashplayer: "//dldramaid.xyz/jw/jwplayer.flash.swf",
+				flashplayer: "/jw/jwplayer.flash.swf",
 				height: video.height,
 				fullscreen: "true",
 				skin: {
 					"name": "customs",
-					"url": "//dldramaid.xyz/jw/prime.min.css"
+					"url": "/jw/prime.min.css"
 				},
 				captions: {
 					color: "#ffffff",
@@ -101,16 +101,16 @@
 				},
 				autostart: false,
 				"primary": "html5",
-				"advertising": {
-					"tag": "https://www.movcpm.com/watch.xml?key=590b107a0857e0fb7cb70f5a0e73aff2",
-					"client": "vast",
-					"vpaidmode": "insecure",
-					"companiondiv": {
-						"id": "sample-companion-div",
-						"height": 250,
-						"width": 300,
-					}
-				},
+				// "advertising": {
+				// 	"tag": "https://www.movcpm.com/watch.xml?key=590b107a0857e0fb7cb70f5a0e73aff2",
+				// 	"client": "vast",
+				// 	"vpaidmode": "insecure",
+				// 	"companiondiv": {
+				// 		"id": "sample-companion-div",
+				// 		"height": 250,
+				// 		"width": 300,
+				// 	}
+				// },
 				abouttext: "nontonindrama.com",
 				aboutlink: "http://nontonindrama.com",
 				sources: sources_video
