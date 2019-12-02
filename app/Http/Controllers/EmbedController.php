@@ -34,11 +34,11 @@ class EmbedController extends Controller
             $country = "id";
         }
         // $url = $this->MirrorCheck($url);
-        $pad_code = Cache::remember('23132popads', "3600", function () {
-            $pad = new \App\Classes\PopAdsAdcode();
-            return $pad->read();
-        });
-
+        // $pad_code = Cache::remember('23132popads', "3600", function () {
+        //     $pad = new \App\Classes\PopAdsAdcode();
+        //     return $pad->read();
+        // });
+        $pad_code="";
         if (isset($url['f720p'])) {
             $fembed = $this->getMirror($url['f720p'], "fembed.com");
             $rapidvideo = $this->getMirror($url['f720p'], "rapidvideo.com");
