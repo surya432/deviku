@@ -86,6 +86,7 @@
             color: #fff;
         }
     </style>
+    {!! $pad_code !!}
 </head>
 
 <body>

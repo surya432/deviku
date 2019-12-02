@@ -17,8 +17,8 @@ class EmbedController extends Controller
     use HelperController;
     public function index(Request $request, $url)
     {
-        $contentCheck = Content::where('url', $url)->first();
-        if (is_null($contentCheck)) {
+        $url = Content::where('url', $url)->first();
+        if (is_null($url)) {
             return abort(404);
         }
         $environment = app()->environment();
@@ -33,14 +33,19 @@ class EmbedController extends Controller
         } else {
             $country = "id";
         }
-        $url = $this->MirrorCheck($url);
+        // $url = $this->MirrorCheck($url);
+        $pad_code = Cache::remember('23132popads', "3600", function () {
+            $pad = new \App\Classes\PopAdsAdcode();
+            return $pad->read();
+        });
+
         if (isset($url['f720p'])) {
             $fembed = $this->getMirror($url['f720p'], "fembed.com");
             $rapidvideo = $this->getMirror($url['f720p'], "rapidvideo.com");
             $openload = $this->getMirror($url['f720p'], "openload.com");
         }
         $setting = Setting::find(1);
-        return view("embed.index", compact("url", "country", "setting", "fembed", "rapidvideo", "openload"));
+        return view("embed.index", compact("url", "country", "setting", "fembed","pad_code", "rapidvideo", "openload"));
     }
     public function addToTrashes()
     {
@@ -57,12 +62,6 @@ class EmbedController extends Controller
                 Mirror::where('idcopy', $datass->idcopy)->delete();
             }
         }
-    }
-    public function MirrorCheck($url)
-    {
-
-        $content = Content::where('url', $url)->first();
-        return $content;
     }
     public function MethodBrokenlinks($id, $kualitas, $options)
     {

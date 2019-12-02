@@ -1,20 +1,5 @@
-<!--<?php
-
-	/* PopAds simple adcode fetching library, second revision + 2017-03 patch
- * Compatible with PHP4-7
- *
- * Usage:
- * in your template, between <head> and </head>, insert:
- * <?php include('<path-to-this-file>/popads.php'); ?>
- *
- * Warning: it won't work with template systems like Smarty as-is! To make it working:
- * - remove <!-- from the beginning and $pa_orep = error_reporting(0); phrase
- * - remove everything from the /* 8<---- comment at the end onwards
- * - change var $verbose = true; to var $verbose = false;
- * - include this file, create new PopAdsAdcode() object and get the adcode via read() method, then bind it to template
- * Don't use get_* methods directly without caching on your side.
- *
- */
+<?php
+namespace App\Classes;
 
 $pa_orep = error_reporting(0);
 
@@ -341,10 +326,10 @@ class PopAdsAdcode
 
 /* 8<---- */
 
-$pad = new PopAdsAdcode();
-$pad_code = $pad->read();
+// $pad = new PopAdsAdcode();
+// $pad_code = $pad->read();
 
 error_reporting($pa_orep);
 
 ?>-->
-<?php print $pad_code; ?>
+<?php //print $pad_code; ?>
