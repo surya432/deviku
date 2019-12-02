@@ -11,6 +11,7 @@ use App\Setting;
 use App\Trash;
 use Cache;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
 
 class EmbedController extends Controller
 {
@@ -23,7 +24,7 @@ class EmbedController extends Controller
         }
         $environment = app()->environment();
         if ($environment != "local") {
-            $agent = new \Agent();
+            $agent = new Agent();
             $location = \GeoIP::getLocation();
             $country = $location->iso_code;
             if ($country == "KR" || $country == "US" && !$agent->isMobile() || $country == "US" && !$agent->isTablet()) {
