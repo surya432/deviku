@@ -80,11 +80,11 @@ function getlink($id)
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-    curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
-    curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
+    // curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
+    // curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
     curl_setopt($ch, CURLOPT_TIMEOUT, 300);
-    //curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
-    //curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
+    curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
+    curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
     $page = curl_exec($ch);
     $get = locheader($page);
     if (strpos($page, "Can&#39;t")) {
@@ -109,9 +109,11 @@ function getlink($id)
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_TIMEOUT, 600);
-            curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
-            curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
+            // curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
+            // curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
 
+            curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
+            curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
             // Getting binary data
             $page = curl_exec($ch);
             $get = locheader($page);
