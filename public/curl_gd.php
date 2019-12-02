@@ -18,7 +18,7 @@ function GoogleDrive($gid)
         $output = json_encode($output, JSON_PRETTY_PRINT);
         return $output;
     }
-    $output = ['label' => 'auto', 'file' => $streaming_vid, 'type' => 'video/mp4'];
+    $output = ['label' => 'auto', 'file' =>str_replace("&authuser=0","",$streaming_vid), 'type' => 'video/mp4'];
     $output = json_encode($output, JSON_PRETTY_PRINT);
     return $output;
 }
