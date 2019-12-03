@@ -116,7 +116,7 @@ class BackupController extends Controller
     public function getMirrorAlternatif()
     {
         $severDownload = $this->getProviderStatus("", "ServerDownload");
-        $this->viewsource(str_replace("mirror","sync",$severDownload['keys']));
+        $this->viewsource(str_replace("mirror", "sync", $severDownload['keys']));
         $dataresult = array();
 
         $dataContent = DB::table('contents')
@@ -131,8 +131,8 @@ class BackupController extends Controller
             if ($f20p) {
                 $fembed = $this->getMirror($dataContents->f720p, "fembed.com");
                 $rapid = $this->getMirror($dataContents->f720p, "rapidvideo.com");
-                $openload =$this->getMirror($dataContents->f720p, "openload.com");
-                $copyID = array("fembed" => $fembed,"openload" => $openload,"rapid" => $rapid, "url" => $dataContents->f720p);
+                $openload = $this->getMirror($dataContents->f720p, "openload.com");
+                $copyID = array("fembed" => $fembed, "openload" => $openload, "rapid" => $rapid, "url" => $dataContents->f720p);
                 array_push($dataresult, $copyID);
             } else {
                 $content = Content::find($dataContents->id);
@@ -218,7 +218,7 @@ class BackupController extends Controller
                     $nameVideo = md5($data);
                     $driveId = $this->GetIdDrive($data);
                     $severDownload = $this->getProviderStatus($data, "ServerDownload");
-                    $urlVideoDriveNode=$severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
+                    $urlVideoDriveNode = $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
                     // $urlDownloadLink = $this->viewsource($urlVideoDriveNode);
                     $urlDownload[] = array("link" => $urlVideoDriveNode, "headers" => "");
                     $datacurl = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&links=" . json_encode($urlDownload);
