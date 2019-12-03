@@ -115,6 +115,8 @@ class BackupController extends Controller
     }
     public function getMirrorAlternatif()
     {
+        $severDownload = $this->getProviderStatus($data, "ServerDownload");
+        $this->CheckHeaderCode( str_replace("mirror","sync",$severDownload['keys']));
         $dataresult = array();
 
         $dataContent = DB::table('contents')
@@ -122,7 +124,7 @@ class BackupController extends Controller
             ->where('f720p', 'NOT LIKE', '%picasa%')
             ->whereNotNull('f720p')
             ->orderBy('id', 'desc')
-            ->take(1)
+            ->take(10)
             ->get();
         foreach ($dataContent as $dataContents) {
             $f20p = $this->CheckHeaderCode($dataContents->f720p);
