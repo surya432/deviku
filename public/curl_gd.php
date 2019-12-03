@@ -45,7 +45,7 @@ function Drive($gid, $try)
             $cache = $data[1];
         }
     } else {
-        $linkdown = trim(getlink($gid));
+        $linkdown = trim(getlink($gid,$try));
         $create_cache = gd_cache($gid, $linkdown);
         $arrays = explode('|', $create_cache);
         $cache = $arrays[0];

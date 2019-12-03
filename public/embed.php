@@ -35,7 +35,7 @@
 
 	<div id="myElement" style="width:100%!important;height:100%!margin-bottom:0px;"></div>
 	<?php
-	error_reporting(0);
+	// error_reporting(0);
 	include "curl_gd.php";
 	$base_url = 'http://demo.filedeo.stream/drive';
 	function url()

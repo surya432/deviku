@@ -6,6 +6,8 @@ use App\BackupFilesDrive;
 use App\Content;
 use App\gmail;
 use DB;
+use Goutte\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Http\Request;
 
 class BackupController extends Controller
@@ -470,5 +472,72 @@ class BackupController extends Controller
     public function destroy(backup $backup)
     {
         //
+    }
+    public function testgd(Request $request)
+    {
+        $id =$this->my_simple_crypt($request->input('id'), "d");
+        $link = "https://drive.google.com/uc?export=download&id=" . $id;
+        $goutteClient = new Client();
+        $guzzleClient = new GuzzleClient(array(
+            'timeout' => 60,
+            'verify' => false,
+            'cookies' => true,
+        ));
+        $goutteClient->setClient($guzzleClient);
+        $crawler = $goutteClient->request('GET', $link);
+        // dd( $crawler->selectLink('Download anyway')->link());
+        $cookieJar = $goutteClient->getCookieJar();
+        $link = $crawler->filter('#uc-download-link')->eq(0)->attr('href');
+        $tmp = explode("confirm=", $link);
+        $tmp2 = explode("&", $tmp[1]);
+        $confirm = $tmp2[0];
+        $linkdowngoc = "https://drive.google.com/uc?export=download&id=$id&confirm=$confirm";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $linkdowngoc);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
+        curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
+
+        // Getting binary data
+        $page = curl_exec($ch);
+        $get = $this->locheader($page);
+
+        // }
+        curl_close($ch);
+        return $get;
+        return $crawler;
+    }
+    function locheader($page)
+{
+    $temp = explode("\r\n", $page);
+    foreach ($temp as $item) {
+        $temp2 = explode(": ", $item);
+        if (isset($temp2[1])) {
+            $infoheader[$temp2[0]] = $temp2[1];
+        }
+    }
+    if (!isset($infoheader['Location'])) {
+        return "";
+    }
+    $location = $infoheader['Location'];
+    return $location;
+}
+    public function my_simple_crypt($string, $action = 'e')
+    {
+        $secret_key = 'GReg7rNx2z[2';
+        $secret_iv = 'C0?s9rh4';
+        $output = false;
+        $encrypt_method = "AES-256-CBC";
+        $key = hash('sha256', $secret_key);
+        $iv = substr(hash('sha256', $secret_iv), 0, 16);
+        if ($action == 'e') {
+            $output = base64_encode(openssl_encrypt($string, $encrypt_method, $key, 0, $iv));
+        } else if ($action == 'd') {
+            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+        }
+        return $output;
     }
 }
