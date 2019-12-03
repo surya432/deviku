@@ -115,7 +115,7 @@ class BackupController extends Controller
     }
     public function getMirrorAlternatif()
     {
-        $severDownload = $this->getProviderStatus($data, "ServerDownload");
+        $severDownload = $this->getProviderStatus("", "ServerDownload");
         $this->viewsource(str_replace("mirror","sync",$severDownload['keys']));
         $dataresult = array();
 
