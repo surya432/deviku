@@ -18,8 +18,8 @@ class CreateBackupsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('url');
-            $table->string('f720p');
-            $table->string('tokenfcm');
+            $table->string('f720p')->nullable();
+            $table->string('tokenfcm')->nullable();
             $table->timestamps();
         });
     }

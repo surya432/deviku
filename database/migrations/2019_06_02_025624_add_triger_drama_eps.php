@@ -14,13 +14,13 @@ class AddTrigerDramaEps extends Migration
     public function up()
     {
         //
-        DB::unprepared('DROP TRIGGER `delete_episode_drama');
+        // DB::unprepared('DROP TRIGGER `delete_episode_drama');
 
-        DB::unprepared('CREATE TRIGGER delete_episode_drama AFTER DELETE ON `contents` FOR EACH ROW
-            BEGIN
-                  DELETE FROM `backups` WHERE backups.f720p = old.f720p;
-                DELETE FROM `brokenlinks` WHERE brokenlinks.contents_id = old.id ;
-            END');
+        // DB::unprepared('CREATE TRIGGER delete_episode_drama AFTER DELETE ON `contents` FOR EACH ROW
+        //     BEGIN
+        //         DELETE FROM `backups` WHERE backups.url = old.url;
+        //         DELETE FROM `brokenlinks` WHERE brokenlinks.contents_id = old.id ;
+        //     END');
     }
 
     /**
@@ -31,6 +31,6 @@ class AddTrigerDramaEps extends Migration
     public function down()
     {
         //
-        DB::unprepared('DROP TRIGGER `delete_episode_drama');
+        // DB::unprepared('DROP TRIGGER `delete_episode_drama');
     }
 }

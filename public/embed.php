@@ -14,7 +14,7 @@
 	</script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<?php include_once('popads.php');?>
+	<?php //include_once('popads.php');?>
 </head>
 
 <body style="margin:0px;">
@@ -63,18 +63,7 @@
 										echo '[' . $sourcesvideo . "];";
 									} else {
 										echo $sourcesvideo;
-									}/* else{
-									$start->vidlinks($row["embed"]); 
-									$start->url= $row["url"].'-'.md5($row["embed"]);
-									$link=$start->cloudstreamapi23($row["iframe2"]);
-									if($link!=""){
-										echo $link;	
-									}else{
-										echo '['.$file2."]";
-
-									}
-							} */
-									?>
+									}?>
 
 			var daplayer = jwplayer("myElement").setup({
 				tracks: [{

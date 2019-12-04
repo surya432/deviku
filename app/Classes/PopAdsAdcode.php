@@ -7,56 +7,56 @@ class PopAdsAdcode
 {
 
     /* Same as in Code Generator */
-    var $minBid = 0;
-    var $popundersPerIP = 0;
-    var $delayBetween = 0;
-    var $defaultPerDay = 0;
-    var $topmostLayer = 0;
+    public $minBid = 0;
+    public $popundersPerIP = 0;
+    public $delayBetween = 0;
+    public $defaultPerDay = 0;
+    public $topmostLayer = 0;
     /* URL or Base64-encoded Javascript */
-    var $default = "";
+    public $default = "";
     /* Your individually-assigned settings */
-    var $key = '3022c1090e405e1bfd68621d563fcb7695c85287';
-    var $siteId = "889544";
+    public $key = '3022c1090e405e1bfd68621d563fcb7695c85287';
+    public $siteId = "889544";
     /* It's better to leave below as-is, really */
-    var $antiAdblock = 1;
-    var $obfuscate = 1;
+    public $antiAdblock = 1;
+    public $obfuscate = 1;
 
     /* Set to true, if your server properly supports SSL (OpenSSL or equiv. installed, and IPv6 resolving disabled -
-   it is known to cause problems while trying to resolve our domain on certain configurations) */
-    var $ssl = false;
+    it is known to cause problems while trying to resolve our domain on certain configurations) */
+    public $ssl = false;
     /* Set to false to suppress outputting debug information */
-    var $verbose = true;
+    public $verbose = true;
     /* Set to override adcode cache directory */
-    var $adcodeDir = false;
+    public $adcodeDir = false;
 
     /* Advanced settings */
 
     /* cURL connection timeout (seconds) */
-    var $curlTimeout = 5;
-    var $curlConnectTimeout = 2;
+    public $curlTimeout = 5;
+    public $curlConnectTimeout = 2;
     /* TRUE to autodetect cURL, set to FALSE to enable fallback methods and skip cURL check (better leave as-is) */
-    var $curlInstalled = true;
+    public $curlInstalled = true;
 
     /* FGC timeout (seconds) */
-    var $fgcTimeout = 5;
+    public $fgcTimeout = 5;
     /* TRUE to autodetect FGC, set to FALSE to enable fallback methods and skip FGC check (better leave as-is) */
-    var $fgcInstalled = true;
+    public $fgcInstalled = true;
 
     /* fsockopen/stream_* timeouts (seconds) */
-    var $fsockTimeout = 5;
-    var $fsockConnectTimeout = 2;
+    public $fsockTimeout = 5;
+    public $fsockConnectTimeout = 2;
     /* TRUE to autodetect fsockopen/stream_*, set to FALSE to enable fallback methods and skip check (better leave as-is) */
-    var $fsockInstalled = true;
+    public $fsockInstalled = true;
 
     /* socket_* timeout (seconds) */
-    var $sockTimeout = 5;
+    public $sockTimeout = 5;
     /* TRUE to autodetect socket_*, set to FALSE to enable fallback methods and skip socket_* check (better leave as-is) */
-    var $sockInstalled = true;
+    public $sockInstalled = true;
 
     /* Allow library to send information about PHP version and results of transport verification (see getStatistics method) */
-    var $sendStatistics = true;
+    public $sendStatistics = true;
 
-    function getCurl($url)
+    public function getCurl($url)
     {
         /* Test capabilities */
         if ((!extension_loaded('curl')) || (!function_exists('curl_version'))) {
@@ -65,11 +65,11 @@ class PopAdsAdcode
         }
         /* Initialize object */
         curl_setopt_array($curl = curl_init(), array(
-            CURLOPT_RETURNTRANSFER => 1,			CURLOPT_USERAGENT => 'PopAds CGAPIL A',
-            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,	CURLOPT_FOLLOWLOCATION => false,
-            CURLOPT_SSL_VERIFYPEER => true,			CURLOPT_HEADER => false,
+            CURLOPT_RETURNTRANSFER => 1, CURLOPT_USERAGENT => 'PopAds CGAPIL A',
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4, CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_SSL_VERIFYPEER => true, CURLOPT_HEADER => false,
             CURLOPT_HTTPHEADER => array('Accept: text/plain,application/json;q=0.9'),
-            CURLOPT_TIMEOUT => $this->curlTimeout,	CURLOPT_CONNECTTIMEOUT => $this->curlConnectTimeout
+            CURLOPT_TIMEOUT => $this->curlTimeout, CURLOPT_CONNECTTIMEOUT => $this->curlConnectTimeout,
         ));
         /* Test capabilities for HTTPS */
         if ($this->ssl && (($version = curl_version()) && ($version['features'] & CURL_VERSION_SSL))) {
@@ -87,7 +87,7 @@ class PopAdsAdcode
     }
 
     /* Not recommended; does not send Accept header, no control over SSL peer verification, might try to resolve IPV6 */
-    function getFgc($url)
+    public function getFgc($url)
     {
         /* Test capabilities */
         if ((!function_exists('file_get_contents')) || (!ini_get('allow_url_fopen')) || ((function_exists('stream_get_wrappers')) && (!in_array('http', stream_get_wrappers())))) {
@@ -98,8 +98,10 @@ class PopAdsAdcode
         if ($this->ssl && ((!function_exists('stream_get_wrappers')) || (in_array('https', stream_get_wrappers())))) {
             $context = stream_context_create(array('http' => array('timeout' => $this->fgcTimeout))); /* http://php.net/manual/en/function.stream-context-create.php#74795 */
             $code = file_get_contents('https://www.popads.net' . $url, false, $context);
-            if ($code)
+            if ($code) {
                 return $code;
+            }
+
         }
         /* Proceed via HTTP */
         $context = stream_context_create(array('http' => array('timeout' => $this->fgcTimeout)));
@@ -107,7 +109,7 @@ class PopAdsAdcode
     }
 
     /* Not recommended; no control over SSL peer verification, might try to resolve IPV6 if using HTTPS */
-    function getFsock($url)
+    public function getFsock($url)
     {
         if ((function_exists('stream_get_wrappers')) && (!in_array('http', stream_get_wrappers()))) { /* Unlikely */
             $this->fsockInstalled = false;
@@ -119,8 +121,10 @@ class PopAdsAdcode
             $fp = fsockopen('ssl://' . 'www.popads.net', 443, $enum, $estr, $this->fsockConnectTimeout);
         }
         /* Initialize plain connection */
-        if ((!$fp) && (!($fp = fsockopen('tcp://' . gethostbyname('www.popads.net'), 80, $enum, $estr, $this->fsockConnectTimeout))))
+        if ((!$fp) && (!($fp = fsockopen('tcp://' . gethostbyname('www.popads.net'), 80, $enum, $estr, $this->fsockConnectTimeout)))) {
             return false;
+        }
+
         stream_set_timeout($fp, $this->fsockTimeout);
         $out .= "GET " . $url . " HTTP/1.1\r\n";
         $out .= "Host: www.popads.net\r\n";
@@ -136,7 +140,7 @@ class PopAdsAdcode
     }
 
     /* Not recommended; no SSL support at all */
-    function getSock($url)
+    public function getSock($url)
     {
         if (!function_exists('socket_create')) {
             $this->sockInstalled = false;
@@ -144,12 +148,16 @@ class PopAdsAdcode
         }
         $in = $out = '';
         /* Only HTTP, last resort */
-        if (!($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)))
+        if (!($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP))) {
             return false;
+        }
+
         socket_set_block($sock);
         socket_set_option($sock, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $this->sockTimeout, 'usec' => 0));
-        if (!socket_connect($sock, gethostbyname('www.popads.net'), 80))
+        if (!socket_connect($sock, gethostbyname('www.popads.net'), 80)) {
             return false;
+        }
+
         $out .= "GET " . $url . " HTTP/1.1\r\n";
         $out .= "Host: www.popads.net\r\n";
         $out .= "User-Agent: PopAds CGAPIL D\r\n";
@@ -161,7 +169,7 @@ class PopAdsAdcode
         return empty($in) ? false : substr($in, strpos($in, "\r\n\r\n") + 4);
     }
 
-    function tmpDir()
+    public function tmpDir()
     {
         $paths = array_unique(array_filter(array(
             'usr' => $this->adcodeDir,
@@ -172,22 +180,25 @@ class PopAdsAdcode
             'env3' => (!empty($_ENV['TMPDIR'])) ? realpath($_ENV['TMPDIR']) : false,
             'sgtd' => (function_exists('sys_get_temp_dir')) ? realpath(sys_get_temp_dir()) : false,
             'cwd' => realpath(getcwd()),
-            'cfd' => realpath(dirname(__FILE__))
+            'cfd' => realpath(dirname(__FILE__)),
         )));
         foreach ($paths as $key => $path) {
             if (($name = tempnam($path, 'popads-')) && (file_exists($name))) {
                 unlink($name);
                 if (strcasecmp(realpath(dirname($name)), $path) == 0) {
-                    if ($this->verbose) print 'T' . $key;
+                    //if ($this->verbose) print 'T' . $key;
                     return $path;
                 }
             }
         }
-        if ($this->verbose) print 'Terr';
+        if ($this->verbose) {
+            print 'Terr';
+        }
+
         return false;
     }
 
-    function buildQuery($query)
+    public function buildQuery($query)
     {
         if ((function_exists('http_build_query')) && ($line = http_build_query($query, '', '&', PHP_QUERY_RFC3986))) {
             return $line;
@@ -200,111 +211,143 @@ class PopAdsAdcode
         return $line;
     }
 
-    function formatUrl()
+    public function formatUrl()
     {
         $uri = '/api/website_code?';
         $uric = array(
             'key' => $this->key,
-            'website_id' => $this->siteId
+            'website_id' => $this->siteId,
         );
-        if ($this->minBid > 0)
+        if ($this->minBid > 0) {
             $uric['mb'] = $this->minBid;
-        if ($this->popundersPerIP > 0)
+        }
+
+        if ($this->popundersPerIP > 0) {
             $uric['ppip'] = $this->popundersPerIP;
-        if ($this->delayBetween > 0)
+        }
+
+        if ($this->delayBetween > 0) {
             $uric['db'] = $this->delayBetween;
-        if ($this->defaultPerDay > 0)
+        }
+
+        if ($this->defaultPerDay > 0) {
             $uric['dpd'] = $this->defaultPerDay;
-        if ($this->topmostLayer > 0)
+        }
+
+        if ($this->topmostLayer > 0) {
             $uric['tl'] = $this->topmostLayer;
+        }
+
         if ($this->antiAdblock) {
             $uric['aab'] = 1;
             $uric['of'] = 1;
         } else {
-            if ($this->obfuscate)
+            if ($this->obfuscate) {
                 $uric['of'] = intval($this->obfuscate);
+            }
+
         }
-        if (($this->default) && ($decoded_def = ($this->default)))
+        if (($this->default) && ($decoded_def = ($this->default))) {
             $uric['def'] = $decoded_def;
-        if ($this->sendStatistics)
+        }
+
+        if ($this->sendStatistics) {
             $uric['stat'] = $this->getStatistics();
+        }
+
         return $uri . $this->buildQuery($uric);
     }
 
     /* Verbose version for debugging purposes */
-    function read()
+    public function read()
     {
-        if ($this->verbose) print ' ';
+        if ($this->verbose) {
+            print ' ';
+        }
+
         $url = $this->formatUrl();
         $tmp_dir = $this->tmpDir();
-        if (!$tmp_dir)
+        if (!$tmp_dir) {
             return '';
+        }
+
         $fn = $tmp_dir . '/popads-' . md5($url) . '.js';
         /* If exists and not older than a day, return */
-        if (file_exists($fn) && (time() - filemtime($fn) < 3600))
+        if (file_exists($fn) && (time() - filemtime($fn) < 3600)) {
             return file_get_contents($fn);
+        }
+
         if (file_exists($fn . '.lock') && (time() - filemtime($fn . '.lock') < 60)) {
-            if ($this->verbose) print 'L';
+            if ($this->verbose) {
+                print 'L';
+            }
+
             return (file_exists($fn) ? file_get_contents($fn) : '');
         }
         $code = false;
-        if ($this->curlInstalled) {
-            if ($this->verbose) print 'A';
-            $code = $this->getCurl($url);
-        }
-        if (!$this->curlInstalled) {
-            if ($this->fsockInstalled) {
-                if (!$code) {
-                    if ($this->verbose) print 'B';
-                    $code = $this->getFsock($url);
-                }
-            }
-            if (!$this->fsockInstalled) {
-                if ($this->fgcInstalled) {
-                    if (!$code) {
-                        if ($this->verbose) print 'C';
-                        $code = $this->getFgc($url);
-                    }
-                }
-                if (!$this->fgcInstalled) {
-                    if ($this->sockInstalled) {
-                        if (!$code) {
-                            if ($this->verbose) print 'D';
-                            $code = $this->getSock($url);
-                        }
-                    }
-                    if (!$this->sockInstalled) {
-                        if (!$code) {
-                            if ($this->verbose) print 'E';
-                            $code = '';
-                        } /* Just indicate all transport failed (for debugging) */
-                    }
-                }
-            }
-        }
+        return $this->getCurl($url);
+
+        // if ($this->curlInstalled) {
+        //     // if ($this->verbose) print 'A';
+        //     $code = $this->getCurl($url);
+        // }
+        // if (!$this->curlInstalled) {
+        //     if ($this->fsockInstalled) {
+        //         if (!$code) {
+        //             // if ($this->verbose) print 'B';
+        //             $code = $this->getFsock($url);
+        //         }
+        //     }
+        //     if (!$this->fsockInstalled) {
+        //         if ($this->fgcInstalled) {
+        //             if (!$code) {
+        //                 // if ($this->verbose) print 'C';
+        //                 $code = $this->getFgc($url);
+        //             }
+        //         }
+        //         if (!$this->fgcInstalled) {
+        //             if ($this->sockInstalled) {
+        //                 if (!$code) {
+        //                     // if ($this->verbose) print 'D';
+        //                     $code = $this->getSock($url);
+        //                 }
+        //             }
+        //             if (!$this->sockInstalled) {
+        //                 if (!$code) {
+        //                     // if ($this->verbose) print 'E';
+        //                     $code = '';
+        //                 } /* Just indicate all transport failed (for debugging) */
+        //             }
+        //         }
+        //     }
+        // }
         if ((!empty($code)) && (strpos($code, '<!-- PopAds.net') !== false)) {
             if (file_put_contents($fn . '.test', $code) > 0) {
                 rename($fn . '.test', $fn);
                 chmod($fn, 0755);
                 clearstatcache(true, $fn);
             } else {
-                if (touch($fn)) /* Disk probably full, preserve until resolved */
+                if (touch($fn)) /* Disk probably full, preserve until resolved */ {
                     chmod($fn, 0755);
+                }
+
             }
             return $code;
         } else {
             if (!($success = file_put_contents($fn . '.lock', $code))) {
                 $success = touch($fn . '.lock');
             }
-            if ($success)
+            if ($success) {
                 chmod($fn . '.lock', 0755);
+            }
+
             return (file_exists($fn) ? file_get_contents($fn) : '');
         }
     }
 
-    /* We only collect this information for the purpose of targeting further development of this library. No client data is being associated with 
- * these indicators. You can disable sending us version by setting $sendStatistics to FALSE. PLEASE do not modify this function. */
-    function getStatistics()
+    /* We only collect this information for the purpose of targeting further development of this library. No client data is being associated with
+     * these indicators. You can disable sending us version by setting $sendStatistics to FALSE. PLEASE do not modify this function. */
+    public function getStatistics()
     {
         $ver = phpversion();
         /* If cURL installed */
@@ -323,13 +366,9 @@ class PopAdsAdcode
     }
 }
 
-
 /* 8<---- */
 
 // $pad = new PopAdsAdcode();
 // $pad_code = $pad->read();
 
 error_reporting($pa_orep);
-
-?>-->
-<?php //print $pad_code; ?>

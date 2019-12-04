@@ -14,12 +14,12 @@ class AddTrigerBackup extends Migration
     public function up()
     {
         //
-        DB::unprepared('DROP TRIGGER `update_backups');
-        DB::unprepared('CREATE TRIGGER update_backups AFTER UPDATE ON `contents` FOR EACH ROW
-        BEGIN
-        DELETE FROM `backups` WHERE backups.f720p = old.f720p;
-        DELETE FROM `backups` WHERE backups.f720p = old.f360p;
-        END');
+        // DB::unprepared('DROP TRIGGER `update_backups');
+        // DB::unprepared('CREATE TRIGGER update_backups AFTER UPDATE ON `contents` FOR EACH ROW
+        // BEGIN
+        // DELETE FROM `backups` WHERE backups.url = old.url;
+        // DELETE FROM `backups` WHERE backups.url = old.url;
+        // END');
     }
 
     /**
@@ -30,6 +30,6 @@ class AddTrigerBackup extends Migration
     public function down()
     {
         //
-        DB::unprepared('DROP TRIGGER `update_backups');
+        // DB::unprepared('DROP TRIGGER `update_backups');
     }
 }

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,7 +120,7 @@
         @if(!empty($openload))
         <button class="btn btn-sm btn-primary" qtyLink="mirror3" onclick="showPlayer('mirror3')">Openload</button>
         @endif
-        <button class="btn btn-sm btn-primary" onclick=showPlayer('download_links')>Download</button>
+        <button class="btn btn-sm btn-primary" onclick="showPlayer('download_links')">Download</button>
     </div>
     <div id="myElement" style="width:100%!important;height:100%!important">
         <div class="spinner">

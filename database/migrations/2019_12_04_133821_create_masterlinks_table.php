@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTrigerUpdateBackup extends Migration
+class CreateMasterlinksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class AddTrigerUpdateBackup extends Migration
      */
     public function up()
     {
-        //
-        // DB::unprepared('CREATE TRIGGER tupdate_backupsFILES AFTER UPDATE ON `backups` FOR EACH ROW
-        // BEGIN
-        // INSERT INTO trashes SET  idcopy=old.f720p, token= old.tokenfcm;
-        // END');
+        Schema::create('masterlinks', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -27,8 +26,6 @@ class AddTrigerUpdateBackup extends Migration
      */
     public function down()
     {
-        //
-        // DB::unprepared('DROP TRIGGER `tupdate_backupsFILES');
-
+        Schema::dropIfExists('masterlinks');
     }
 }

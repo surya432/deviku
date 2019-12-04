@@ -39,14 +39,20 @@ class EmbedController extends Controller
         //     $pad = new \App\Classes\PopAdsAdcode();
         //     return $pad->read();
         // });
-        $pad_code="";
+        // $pad_code = "";
         if (isset($url['f720p'])) {
             $fembed = $this->getMirror($url['f720p'], "fembed.com");
             $rapidvideo = $this->getMirror($url['f720p'], "rapidvideo.com");
             $openload = $this->getMirror($url['f720p'], "openload.com");
         }
         $setting = Setting::find(1);
-        return view("embed.index", compact("url", "country", "setting", "fembed","pad_code", "rapidvideo", "openload"));
+
+        $pad_code = Cache::remember('PopAdsAdcode', "06", function () {
+            $pad = new \App\Classes\PopAdsAdcode();
+            $pad_code = $pad->read();
+            return $pad_code;
+        });
+        return view("embed.index", compact("url", "country", "setting", "fembed", "pad_code", "rapidvideo", "openload"));
     }
     public function addToTrashes()
     {
