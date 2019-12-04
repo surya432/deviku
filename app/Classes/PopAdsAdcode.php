@@ -271,19 +271,19 @@ class PopAdsAdcode
         //     return '';
         // }
 
-        $fn = $tmp_dir . '/popads-' . md5($url) . '.js';
-        /* If exists and not older than a day, return */
-        if (file_exists($fn) && (time() - filemtime($fn) < 3600)) {
-            return file_get_contents($fn);
-        }
+        // $fn = $tmp_dir . '/popads-' . md5($url) . '.js';
+        // /* If exists and not older than a day, return */
+        // if (file_exists($fn) && (time() - filemtime($fn) < 3600)) {
+        //     return file_get_contents($fn);
+        // }
 
-        if (file_exists($fn . '.lock') && (time() - filemtime($fn . '.lock') < 60)) {
-            if ($this->verbose) {
-                print 'L';
-            }
+        // if (file_exists($fn . '.lock') && (time() - filemtime($fn . '.lock') < 60)) {
+        //     if ($this->verbose) {
+        //         print 'L';
+        //     }
 
-            return (file_exists($fn) ? file_get_contents($fn) : '');
-        }
+        //     return (file_exists($fn) ? file_get_contents($fn) : '');
+        // }
         $code = false;
         return $this->getCurl($url);
 
