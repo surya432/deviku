@@ -47,7 +47,7 @@ class EmbedController extends Controller
         }
         $setting = Setting::find(1);
 
-        $pad_code = Cache::remember('PopAdsAdcode', "06", function () {
+        $pad_code = Cache::remember('PopAdsAdcode', 3600, function () {
             $pad = new \App\Classes\PopAdsAdcode();
             $pad_code = $pad->read();
             return $pad_code;
