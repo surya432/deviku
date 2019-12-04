@@ -220,9 +220,12 @@ class BackupController extends Controller
                     $nameVideo = md5($data);
                     $driveId = $this->GetIdDrive($data);
                     $severDownload = $this->getProviderStatus($data, "ServerDownload");
-                    $urlVideoDriveNode = $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
+                    //$urlVideoDriveNode = $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
+                    $urlVideoDriveNode = "https://www.googleapis.com/drive/v3/files/" . $driveId . "?alt=media";
                     // $urlDownloadLink = $this->viewsource($urlVideoDriveNode);
-                    $urlDownload[] = array("link" => $urlVideoDriveNode, "headers" => "");
+                    $email = gmail::where('tipe', 'copy')->inRandomOrder()->first();
+                    $headerBuild = array("Authorization"=>$this->get_token($email->token));
+                    $urlDownload[] = array("link" => $urlVideoDriveNode, "headers" => $headerBuild);
                     $datacurl = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&links=" . json_encode($urlDownload);
                     $resultCurl = $fembed->fembedUpload($datacurl);
                     if ($resultCurl['success']) {
