@@ -219,7 +219,7 @@ class BackupController extends Controller
                     $urlDownload = [];
                     $nameVideo = md5($data);
                     $driveId = $this->GetIdDrive($data);
-                    $severDownload = $this->getProviderStatus($data, "ServerDownload");
+                    //$severDownload = $this->getProviderStatus($data, "ServerDownload");
                     //$urlVideoDriveNode = $severDownload['keys'] . "/" . $driveId . "/" . $nameVideo . ".mp4";
                     $urlVideoDriveNode = "https://www.googleapis.com/drive/v3/files/" . $driveId . "?alt=media";
                     // $urlDownloadLink = $this->viewsource($urlVideoDriveNode);
