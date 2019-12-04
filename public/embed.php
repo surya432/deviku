@@ -76,7 +76,6 @@
 				displaytitle: true,
 				width: video.width,
 				aspectratio: "16:9",
-				flashplayer: "/jw/jwplayer.flash.swf",
 				height: video.height,
 				fullscreen: "true",
 				skin: {
