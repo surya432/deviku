@@ -266,10 +266,10 @@ class PopAdsAdcode
         }
 
         $url = $this->formatUrl();
-        $tmp_dir = $this->tmpDir();
-        if (!$tmp_dir) {
-            return '';
-        }
+        // $tmp_dir = $this->tmpDir();
+        // if (!$tmp_dir) {
+        //     return '';
+        // }
 
         $fn = $tmp_dir . '/popads-' . md5($url) . '.js';
         /* If exists and not older than a day, return */
