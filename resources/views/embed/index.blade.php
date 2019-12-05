@@ -87,7 +87,7 @@
             color: #fff;
         }
     </style>
-    {!! $pad_code !!}
+    <?php include('popads.php');?>
 </head>
 
 <body>
