@@ -79,16 +79,6 @@ class BackupController extends Controller
                     $content->f720p = null;
                     $content->save();
                 }
-            }
-            //$this->AutoDeleteGd();
-            $dataContent = DB::table('contents')
-                ->whereNotIn('url', DB::table('backups')->pluck('url'))
-                ->where('f360p', 'NOT LIKE', '%picasa%')
-                ->whereNotNull('f360p')
-                ->orderBy('id', 'desc')
-                ->take(10)
-                ->get();
-            foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
 
                 $f20p = $this->CheckHeaderCode($dataContents->f360p);
