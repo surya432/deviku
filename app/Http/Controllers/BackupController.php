@@ -59,6 +59,7 @@ class BackupController extends Controller
                 ->take(10)
                 ->get();
             foreach ($dataContent as $dataContents) {
+                $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
                 $f20p = $this->CheckHeaderCode($dataContents->f720p);
                 if ($f20p) {
                     $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-720p");
