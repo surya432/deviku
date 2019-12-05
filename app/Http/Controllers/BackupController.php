@@ -56,7 +56,7 @@ class BackupController extends Controller
                 ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
-                ->take(15)
+                ->take(20)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
@@ -81,8 +81,8 @@ class BackupController extends Controller
                 }
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
 
-                $f20p = $this->CheckHeaderCode($dataContents->f360p);
-                if ($f20p) {
+                $f360p = $this->CheckHeaderCode($dataContents->f360p);
+                if ($f360p) {
                     $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-f360p");
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-f360p", $settingData->token);
@@ -97,7 +97,7 @@ class BackupController extends Controller
                     }
                 } else {
                     $content = Content::find($dataContents->id);
-                    $content->f720p = null;
+                    $content->f360p = null;
                     $content->save();
                 }
             }
