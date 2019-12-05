@@ -11,9 +11,8 @@
 |
 */
 Route::get('/', function () {
-    return abort(404);
+    return redirect("embed/the-lies-within-2019-e16");
 });
-
 Route::get('/register', function () {
     return abort(404);
 });
