@@ -13,8 +13,14 @@ class CreateMasterlinksTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('masterlinks');
         Schema::create('masterlinks', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('drive')->nullable();
+            $table->string('kualitas')->nullable();
+            $table->string('url')->nullable();
+            $table->string('status')->nullable();
+            $table->longText('apikey')->nullable();
             $table->timestamps();
         });
     }

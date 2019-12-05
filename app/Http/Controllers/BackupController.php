@@ -47,8 +47,8 @@ class BackupController extends Controller
     {
         //
         $dataresult = array();
-        $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
-        if ($settingData) {
+        $cekData = gmail::where('tipe', 'backup')->first();
+        if ($cekData) {
             //$this->AutoDeleteGd();
             DB::table('backups')->whereNull('f720p')->delete();
             $dataContent = DB::table('contents')
@@ -56,7 +56,7 @@ class BackupController extends Controller
                 ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
-                ->take(5)
+                ->take(10)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $f20p = $this->CheckHeaderCode($dataContents->f720p);
@@ -79,9 +79,6 @@ class BackupController extends Controller
                     $content->save();
                 }
             }
-        }
-        $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
-        if ($settingData) {
             //$this->AutoDeleteGd();
             DB::table('backups')->whereNull('f720p')->delete();
             $dataContent = DB::table('contents')
@@ -89,9 +86,11 @@ class BackupController extends Controller
                 ->where('f360p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f360p')
                 ->orderBy('id', 'desc')
-                ->take(5)
+                ->take(10)
                 ->get();
             foreach ($dataContent as $dataContents) {
+                $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
+
                 $f20p = $this->CheckHeaderCode($dataContents->f360p);
                 if ($f20p) {
                     $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-f360p");
@@ -224,7 +223,7 @@ class BackupController extends Controller
                     $urlVideoDriveNode = "https://www.googleapis.com/drive/v3/files/" . $driveId . "?alt=media";
                     // $urlDownloadLink = $this->viewsource($urlVideoDriveNode);
                     $email = gmail::where('tipe', 'copy')->inRandomOrder()->first();
-                    $headerBuild = array("Authorization"=>$this->get_token($email->token));
+                    $headerBuild = array("Authorization" => $this->get_token($email->token));
                     $urlDownload[] = array("link" => $urlVideoDriveNode, "headers" => $headerBuild);
                     $datacurl = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror) . "&links=" . json_encode($urlDownload);
                     $resultCurl = $fembed->fembedUpload($datacurl);
@@ -478,7 +477,7 @@ class BackupController extends Controller
     }
     public function testgd(Request $request)
     {
-        $id =$this->my_simple_crypt($request->input('id'), "d");
+        $id = $this->my_simple_crypt($request->input('id'), "d");
         $link = "https://drive.google.com/uc?export=download&id=" . $id;
         $goutteClient = new Client();
         $guzzleClient = new GuzzleClient(array(
@@ -513,21 +512,21 @@ class BackupController extends Controller
         return $get;
         return $crawler;
     }
-    function locheader($page)
-{
-    $temp = explode("\r\n", $page);
-    foreach ($temp as $item) {
-        $temp2 = explode(": ", $item);
-        if (isset($temp2[1])) {
-            $infoheader[$temp2[0]] = $temp2[1];
+    public function locheader($page)
+    {
+        $temp = explode("\r\n", $page);
+        foreach ($temp as $item) {
+            $temp2 = explode(": ", $item);
+            if (isset($temp2[1])) {
+                $infoheader[$temp2[0]] = $temp2[1];
+            }
         }
+        if (!isset($infoheader['Location'])) {
+            return "";
+        }
+        $location = $infoheader['Location'];
+        return $location;
     }
-    if (!isset($infoheader['Location'])) {
-        return "";
-    }
-    $location = $infoheader['Location'];
-    return $location;
-}
     public function my_simple_crypt($string, $action = 'e')
     {
         $secret_key = 'GReg7rNx2z[2';

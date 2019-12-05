@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Content;
 use App\Country;
 use App\Drama;
-use App\Content;
-use Cache;
 use App\Type;
 use DB;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class DramaEpsController extends Controller
@@ -42,13 +41,12 @@ class DramaEpsController extends Controller
         $result = $this->GetTags($value);
         return response()->json($result);
     }
-   
+
     public function get($id)
     {
         $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
         return Datatables::of($data)
-        ->addIndexColumn()
-
+            ->addIndexColumn()
 
             ->addColumn('f360ps', function ($data) {
                 if ($data->f360p) {
@@ -66,12 +64,12 @@ class DramaEpsController extends Controller
             })
             ->addColumn('action', function ($data) {
                 if ($data->f720p) {
-                    $f720p =  '';
+                    $f720p = '';
                 } else {
                     $f720p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="' . $data->url . '-720p" class="btn btn-xs btn-primary btncopy">Copy 720p</button>';
                 }
                 if ($data->f360p) {
-                    $f360p =  '';
+                    $f360p = '';
                 } else {
                     $f360p = '<button type="button" name="url_720p" id="url_720p" data-clipboard-text="' . $data->url . '-360p" class="btn btn-xs btn-primary btncopy">Copy 360p</button>';
                 }
@@ -114,19 +112,19 @@ class DramaEpsController extends Controller
             $dataContent->save();
             $dataContentasd = "Insert Success";
             return response()->json($dataContentasd, 201);
-        }else{
-            $countEps = Content::where('drama_id',$request->input("drama_id"))->count();
+        } else {
+            $countEps = Content::where('drama_id', $request->input("drama_id"))->count();
             $countBatchEps = $request->input("totalEps");
             $title = $request->input("title");
-            for($i = 0; $i < $countBatchEps ;$i++){
+            for ($i = 0; $i < $countBatchEps; $i++) {
                 $dataContent = new Content;
-                $j = $i+1;
-                $datacount =  $countEps + $j;
-                if($datacount <10){
-                    $datacount ="0". $datacount;
+                $j = $i + 1;
+                $datacount = $countEps + $j;
+                if ($datacount < 10) {
+                    $datacount = "0" . $datacount;
                 }
-                
-                $titles = $title."".$datacount;
+
+                $titles = $title . "" . $datacount;
                 $dataContent->title = $titles;
                 $dataContent->url = $this->seoUrl($titles);
                 $dataContent->drama_id = $request->input("drama_id");
@@ -138,7 +136,7 @@ class DramaEpsController extends Controller
             $dataContentasd = "Insert BatchEps Success ";
             return response()->json($dataContentasd, 201);
         }
-       
+
     }
     public function Delete(Request $request, $id)
     {

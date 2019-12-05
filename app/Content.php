@@ -13,4 +13,7 @@ class Content extends Model
     {
         return $this->belongsTo(Drama::class);
     }
+    public function link(){ 
+        return $this->hasMany('App\masterlinks'); 
+    }
 }
