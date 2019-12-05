@@ -47,12 +47,8 @@ class EmbedController extends Controller
         }
         $setting = Setting::find(1);
 
-        $pad_code = Cache::remember('PopAdsAdcode', 3600, function () {
-            $pad = new \App\Classes\PopAdsAdcode();
-            $pad_code = $pad->read();
-            return $pad_code;
-        });
-        return view("embed.index", compact("url", "country", "setting", "fembed", "pad_code", "rapidvideo", "openload"));
+       
+        return view("embed.index", compact("url", "country", "setting", "fembed",  "rapidvideo", "openload"));
     }
     public function addToTrashes()
     {
