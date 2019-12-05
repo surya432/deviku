@@ -50,7 +50,6 @@ class BackupController extends Controller
         $cekData = gmail::where('tipe', 'backup')->first();
         if ($cekData) {
             //$this->AutoDeleteGd();
-            DB::table('backups')->whereNull('f720p')->delete();
             $dataContent = DB::table('contents')
                 ->whereNotIn('url', DB::table('backups')->pluck('url'))
                 ->where('f720p', 'NOT LIKE', '%picasa%')
@@ -80,7 +79,6 @@ class BackupController extends Controller
                     $content->save();
                 }
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
-
                 $f360p = $this->CheckHeaderCode($dataContents->f360p);
                 if ($f360p) {
                     $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-f360p");
@@ -101,6 +99,8 @@ class BackupController extends Controller
                     $content->save();
                 }
             }
+            DB::table('backups')->whereNull('f720p')->delete();
+
         }
         return response()->json($dataresult);
     }
