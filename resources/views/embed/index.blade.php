@@ -87,7 +87,7 @@
             color: #fff;
         }
     </style>
-    <?php include('popads.php');?>
+<?php include 'popads.php';?>
 </head>
 
 <body>
