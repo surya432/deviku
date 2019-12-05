@@ -56,7 +56,7 @@ class BackupController extends Controller
                 ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
-                ->take(10)
+                ->take(50)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
