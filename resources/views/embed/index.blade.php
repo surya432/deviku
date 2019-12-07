@@ -100,11 +100,23 @@
             height: $(window).height() - h
         };
         $(window).resize(function() {
-            video.width = $(window).width(), video.height = $(window).height() - h, jwplayer().resize(video.width,
-                video.height)
+            // video.width = $(window).width(), video.height = $(window).height() - h, jwplayer().resize(video.width,
+            //     video.height)
+            resize();
         });
     </script>
-    <div id="server" class="text-left" style="padding-top:5px;">
+    <div id="myElement" style="width:100%!important;height:100%!important">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+        <div id="notif" class="text-center">
+            <p style="color: blue;"> Pilih Server Di atas!!!</br> Jangan Gunakan UCbrowser atau Browser mini
+                lainnya!!!</br> Jika Error Cepat Lapor Mimin atau Komentar di bawah... :D :)</p>
+        </div>
+    </div>
+    <div id="server" class="text-center">
         <!-- <button class="btn btn-sm btn-primary" disabled>Server:</button> -->
 
         @if($setting->folder360p == "true")
@@ -124,17 +136,7 @@
         @endif
         <button class="btn btn-sm btn-primary" onclick="showPlayer('download_links')">Download</button>
     </div>
-    <div id="myElement" style="width:100%!important;height:100%!important">
-        <div class="spinner">
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-        </div>
-        <div id="notif" class="text-center">
-            <p style="color: blue;"> Pilih Server Di atas!!!</br> Jangan Gunakan UCbrowser atau Browser mini
-                lainnya!!!</br> Jika Error Cepat Lapor Mimin atau Komentar di bawah... :D :)</p>
-        </div>
-    </div>
+    
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -230,8 +232,8 @@ if (width > widths) {
 width = widths;
 height = width * 9 / 16;
 }
-document.getElementById("playerEmbed").style.height = (heights) + "px";
-document.getElementById("playerEmbed").style.width = (width) + "px";
+document.getElementById("playerEmbed").height = (heights) + "px";
+document.getElementById("playerEmbed").width = "100%";
 }
 resize();
 window.onresize = function () {
