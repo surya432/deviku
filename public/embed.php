@@ -31,7 +31,7 @@
 
 		$(window).resize(function() {
 			video.width = $(window).width(),
-			video.height = $(window).height() - h, 
+			video.height = $(window).height(), 
 			jwplayer("myElement").resize(video.width,video.height)
 		});
 	</script>
