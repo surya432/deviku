@@ -57,7 +57,7 @@ class BackupController extends Controller
                 // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
                 // ->whereNotNull('contents.f720p')
                 ->orderBy('contents.id', 'desc')
-                ->take(10)
+                ->take(30)
                 ->get();
             foreach ($dataContent as $content) {
                 if (preg_match("/720p/", $content->title)) {
@@ -81,7 +81,7 @@ class BackupController extends Controller
     public function duplicateMaster($content,$kualitas)
     {
         // dd($content);
-        $f20p = $this->getHeaderCode($content->f720p);
+        $f20p = $this->getHeaderFolderCode($content->f720p);
         if($f20p){
             $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
             $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id,"kualitas"=>$kualitas);

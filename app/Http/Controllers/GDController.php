@@ -141,8 +141,16 @@ class GDController extends Controller
                                     }
                                     $content->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
                                     $content->save();
+                                    $links = new \App\masterlinks;
+                                    $links->drive = $copyID['id'];
+                                    $links->status = "success"; 
+                                    $links->kualitas = "720p"; 
+                                    $links->apikey = $gmail->token;
+                                    $links->content_id = $content->id;  
+                                    $links->url = $content->url;  
+                                    $links->save();
                                     Drama::find($content->drama_id)->touch();
-                                    $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
+                                    $data = Content::orderBy('id', 'desc')->with('links')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
                                     array_push($fdrive, $url . " Update");
                                     $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
@@ -171,7 +179,15 @@ class GDController extends Controller
                                     $content->f360p = "https://drive.google.com/open?id=" . $copyID['id'];
                                     $content->save();
                                     Drama::find($content->drama_id)->touch();
-                                    $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
+                                    $links = new \App\masterlinks;
+                                    $links->drive = $copyID['id'];
+                                    $links->status = "success"; 
+                                    $links->kualitas = "360p"; 
+                                    $links->apikey = $gmail->token;
+                                    $links->content_id = $content->id;  
+                                    $links->url = $content->url;  
+                                    $links->save();
+                                    $data = Content::orderBy('id', 'desc')->with('links')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
                                     array_push($fdrive, $url . " Update");
                                     $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);

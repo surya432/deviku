@@ -40,7 +40,7 @@ trait HelperController
     }
     public function getHeaderFolderCode($id)
     {
-        $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M");
+        $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&supportsAllDrives=true&supportsTeamDrives=true");
         $data = json_decode($curl, true);
         if (isset($data["shared"])) {
             return $data["shared"];
@@ -73,13 +73,13 @@ trait HelperController
     //
     public function singkronfile($id_folder, $tokenPage = null)
     {
-        $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime");
+        $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime&supportsAllDrives=true&supportsTeamDrives=true");
         return json_decode($curl, true);
     }
     public function singkronToWeb($id_folder, $tokenPage = null)
     {
 
-        $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime");
+        $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime&supportsAllDrives=true&supportsTeamDrives=true");
         return json_decode($curl, true);
     }
     public function getEmbed($data)
@@ -193,7 +193,7 @@ trait HelperController
         $links = null;
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $link, $id)) {
             //$links = "http://cdn.dldramaid.xyz:5000/videos/apis/".$id[1]."/".$name;
-            $links = urlencode("https://www.googleapis.com/drive/v3/files/" . $id[1] . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M");
+            $links = urlencode("https://www.googleapis.com/drive/v3/files/" . $id[1] . "?alt=media&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&supportsAllDrives=true&supportsTeamDrives=true");
         }
         return $links;
     }

@@ -17,7 +17,7 @@ Route::get('/register', function () {
     return abort(404);
 });
 Route::get('/test/{id}', function ($id) {
-    $getData = \App\Drama::where('id',$id)->with('country')->with('type')->with(['episode','episode.links','episode.backup',])->first();
+    $getData = \App\Drama::with('country')->with('type')->with(['episode','episode.links','episode.backup',])->findOrFail($id);
     return $getData;
 });
 Route::get('/generator/mirror', ['as' => 'getMirrorAlternatif', 'uses' => 'BackupController@getMirrorAlternatif']);
