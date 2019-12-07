@@ -60,6 +60,7 @@
 
 		<script type="text/javascript">
 			var currentTime = 0;
+			var hsdsd = 35;
 			var sources_video = <?php
 									if ($sourcesvideo) {
 										echo '[' . $sourcesvideo . "];";
@@ -78,7 +79,7 @@
 				displaytitle: true,
 				width: video.width,
 				aspectratio: "16:9",
-				height: video.height,
+				height: video.height - hsdsd,
 				fullscreen: "true",
 				skin: {
 					"name": "customs",

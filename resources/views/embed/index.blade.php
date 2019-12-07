@@ -217,7 +217,8 @@ document.getElementsByTagName('head')[0].appendChild(meta);
     </script>
     <script type="text/javascript">
 function resize() {
-var heights = window.innerHeight;
+    var hsd = 35;
+var heights = window.innerHeight - hsd;
 var widths = window.innerWidth;
 var height = widths * 9 / 16;
 var width = height * 16 / 9;
