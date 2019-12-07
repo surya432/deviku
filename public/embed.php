@@ -82,10 +82,10 @@
 				aspectratio: "16:9",
 				height: video.height,
 				fullscreen: "true",
-				skin: {
-					"name": "customs",
-					"url": "/jw/prime.min.css"
-				},
+				// skin: {
+				// 	"name": "customs",
+				// 	"url": "/jw/prime.min.css"
+				// },
 				captions: {
 					color: "#ffffff",
 					fontSize: 18,
