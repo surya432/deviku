@@ -57,7 +57,7 @@ class BackupController extends Controller
                 // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
                 // ->whereNotNull('contents.f720p')
                 ->orderBy('contents.id', 'desc')
-                ->take(30)
+                ->take(20)
                 ->get();
             foreach ($dataContent as $content) {
                 if (preg_match("/720p/", $content->title)) {
