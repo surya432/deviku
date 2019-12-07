@@ -173,9 +173,10 @@
                 success: function(html) {
                     if (html) {
                         if (html.match(/^http/g)) {
-                            $("#myElement").html('<iframe src="' + html +
+                            $("#myElement").html('<iframe id="playerEmbed" src="' + html +
                                 '" frameborder=0 marginwidth=0 marginheight=0 scrolling=no width="' + video
                                 .width + '" height="' + video.height + '" allowfullscreen></iframe>');
+                                resize();
                         } else
                             $("#myElement").html(html);
                         //                            console.log(html)
@@ -214,6 +215,28 @@ document.getElementsByTagName('head')[0].appendChild(meta);
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
         })();
     </script>
+    <script type="text/javascript">
+function resize() {
+var heights = window.innerHeight;
+var widths = window.innerWidth;
+var height = widths * 9 / 16;
+var width = height * 16 / 9;
+if (height > heights) {
+height = heights;
+width = height * 16 / 9;
+}
+if (width > widths) {
+width = widths;
+height = width * 9 / 16;
+}
+document.getElementById("playerEmbed").style.height = (heights) + "px";
+document.getElementById("playerEmbed").style.width = (width) + "px";
+}
+resize();
+window.onresize = function () {
+resize();
+};
+</script>
     <noscript><a href="/" target="_blank"><img src="//sstatic1.histats.com/0.gif?3848851&101" alt="" border="0"></a></noscript>
     <!-- Histats.com  END  -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->

@@ -13,7 +13,10 @@ class Content extends Model
     {
         return $this->belongsTo(Drama::class);
     }
-    public function link(){ 
-        return $this->hasMany('App\masterlinks'); 
+    public function backup(){ 
+        return $this->hasMany(\App\BackupFilesDrive::class,'url','url'); 
+    }
+    public function links(){ 
+        return $this->hasMany(\App\masterlinks::class); 
     }
 }

@@ -43,6 +43,68 @@ class BackupController extends Controller
         }
         return response()->json($dataresult, 200);
     }
+    public function changeMaster()
+    {
+        $dataresult = [];
+        DB::table('masterlinks')->whereNull('drive')->delete();
+
+        $cekData = gmail::where('tipe', 'master')->inRandomOrder()->first();
+        if ($cekData) {
+            $dataContent = DB::table('backups')
+                ->join("contents", "contents.url", "=", "backups.url")
+                ->select("contents.id", "contents.url", "backups.f720p", "backups.title",'contents.id as contentsId')
+                ->whereNotIn('contents.id', DB::table('masterlinks')->pluck('content_id'))
+                // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
+                // ->whereNotNull('contents.f720p')
+                ->orderBy('contents.id', 'desc')
+                ->take(10)
+                ->get();
+            foreach ($dataContent as $content) {
+                if (preg_match("/720p/", $content->title)) {
+                    $duplicateMaster = $this->duplicateMaster($content,"720p");
+                    array_push($dataresult, $duplicateMaster);
+
+                } else if (preg_match("/360p/", $content->title)) {
+                    $duplicateMaster = $this->duplicateMaster($content,"360p");
+                    array_push($dataresult, $duplicateMaster);
+
+                }
+            }
+            return $dataresult;
+
+        }else{
+            $errorMassage = array("name"=> "Gmail Master Nof found");
+            array_push($dataresult, $errorMassage);
+        }
+        return $dataresult;
+    }
+    public function duplicateMaster($content,$kualitas)
+    {
+        // dd($content);
+        $f20p = $this->getHeaderCode($content->f720p);
+        if($f20p){
+            $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
+            $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id,"kualitas"=>$kualitas);
+            $datass = \App\masterlinks::firstOrCreate($data);
+            $copyID = $this->copygd($content->f720p, $settingData->folderid, $content->url ."-". $kualitas, $settingData->token);
+            if (isset($copyID['id'])) {
+                $this->changePermission($copyID['id'], $settingData->token);
+                $datass->drive = $copyID['id'];
+                $datass->apikey = $settingData->token;
+                $datass->status = "success";
+                $datass->save();
+                return $datass;
+            } else {
+                $datass->delete();
+                \App\BackupFilesDrive::where("f720p",$content->f720p)->first()->delete();
+                return $copyID;
+            }
+        }else{
+            // \App\BackupFilesDrive::where("f720p",$content->f720p)->first()->delete();
+            $errorMassage = array("name"=> $content->title,"drive"=> $content->f720p,"massage"=>"File Not Found");
+            return $errorMassage; 
+        }
+    }
     public function index()
     {
         //
@@ -81,7 +143,7 @@ class BackupController extends Controller
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
                 $f360p = $this->CheckHeaderCode($dataContents->f360p);
                 if ($f360p) {
-                    $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-f360p");
+                    $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-360p");
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-f360p", $settingData->token);
                     if (isset($copyID['id'])) {
@@ -106,8 +168,8 @@ class BackupController extends Controller
     }
     public function getMirrorAlternatif()
     {
-        $severDownload = $this->getProviderStatus("", "ServerDownload");
-        $this->viewsource(str_replace("mirror", "sync", $severDownload['keys']));
+        // $severDownload = $this->getProviderStatus("", "ServerDownload");
+        // $this->viewsource(str_replace("mirror", "sync", $severDownload['keys']));
         $dataresult = array();
 
         $dataContent = DB::table('contents')

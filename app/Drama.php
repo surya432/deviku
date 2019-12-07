@@ -16,7 +16,8 @@ class Drama extends Model
     public function type(){
         return $this->belongsTo(Type::class);
     }
-    public function eps(){
+    public function episode(){
         return $this->hasMany(Content::class);
     }
+    
 }

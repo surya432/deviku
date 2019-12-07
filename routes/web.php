@@ -16,6 +16,12 @@ Route::get('/', function () {
 Route::get('/register', function () {
     return abort(404);
 });
+Route::get('/test/{id}', function ($id) {
+    $getData = \App\Drama::where('id',$id)->with('country')->with('type')->with(['episode','episode.links','episode.backup',])->first();
+    return $getData;
+});
+Route::get('/generator/mirror', ['as' => 'getMirrorAlternatif', 'uses' => 'BackupController@getMirrorAlternatif']);
+Route::get('/generator/links', ['as' => 'viewEpsCoeg', 'uses' => 'BackupController@changeMaster']);
 Route::get('/embed/{url}', ['as' => 'viewEps', 'uses' => 'EmbedController@Index']);
 Route::get('/ajax/videos/{url}', function () {
     return abort(404);
@@ -34,16 +40,15 @@ Route::post('/gmail/update', ['as' => 'gmailPostUpdate', 'uses' => 'GmailControl
 Route::post('/gmail/post', ['as' => 'gmailPostaddEmail', 'uses' => 'GmailController@Post']);
 Route::get('/deletegd', ['as' => 'gmailPostUpdate', 'uses' => 'BackupController@deletegdFromDB']);
 Route::get('/testGd', ['as' => 'testGd', 'uses' => 'BackupController@testgd']);
+Route::get('/singkron/drama/{id}', ['as' => 'singkrons', 'uses' => 'GDController@syncFolder']);
+Route::get('/proxyDrive', ['as' => 'ProxyDriveIndex', 'uses' => 'ProxyDriveController@index']);
+Route::get('/proxyDrive/{id}', ['as' => 'ProxyDriveContents', 'uses' => 'ProxyDriveController@getBrokenLink']);
+Route::get('/proxyDriveps1', ['as' => 'ProxyDriveContentsps1', 'uses' => 'ProxyDriveController@fileBrokenLinkPs1']);
 
 Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
 });
 
-Route::get('/generator/mirror', ['as' => 'getMirrorAlternatif', 'uses' => 'BackupController@getMirrorAlternatif']);
-Route::get('/singkron/drama/{id}', ['as' => 'singkrons', 'uses' => 'GDController@syncFolder']);
-Route::get('/proxyDrive', ['as' => 'ProxyDriveIndex', 'uses' => 'ProxyDriveController@index']);
-Route::get('/proxyDrive/{id}', ['as' => 'ProxyDriveContents', 'uses' => 'ProxyDriveController@getBrokenLink']);
-Route::get('/proxyDriveps1', ['as' => 'ProxyDriveContentsps1', 'uses' => 'ProxyDriveController@fileBrokenLinkPs1']);
 
 Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/drive/deleteall/', ['as' => 'driveDramaDelete', 'uses' => 'EmbedController@deletegdbydate']);

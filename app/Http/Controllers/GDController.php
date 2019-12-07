@@ -145,9 +145,9 @@ class GDController extends Controller
                                     $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
                                     array_push($fdrive, $url . " Update");
+                                    $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                                 }
                             }
-                            $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                         }
                     } else {
                         array_push($fdrive, $url . " Tidak Ditemukan");
@@ -174,9 +174,9 @@ class GDController extends Controller
                                     $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
                                     array_push($fdrive, $url . " Update");
+                                    $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                                 }
                             }
-                            $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                         }
                     } else {
                         array_push($fdrive, $url . " Tidak Ditemukan");
