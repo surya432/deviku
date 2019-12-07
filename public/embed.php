@@ -22,7 +22,7 @@
 <body style="margin:0px;">
 	<script type="text/javascript">
 		var bttCount = 4;
-		var h = 0;
+		var h = 35;
 		//if(bttCount<2) h=1; else {if($(window).width()>(100*bttCount)) h=35; else h=100;}
 		var video = {
 			width: $(window).width(),
@@ -30,8 +30,9 @@
 		};
 
 		$(window).resize(function() {
-			video.width = $(window).width(), video.height = $(window).height() - h, jwplayer().resize(video.width,
-				video.height)
+			video.width = $(window).width(),
+			video.height = $(window).height() - h, 
+			jwplayer("myElement").resize(video.width,video.height)
 		});
 	</script>
 
