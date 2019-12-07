@@ -100,7 +100,7 @@ class BackupController extends Controller
                 return $copyID;
             }
         }else{
-            // \App\BackupFilesDrive::where("f720p",$content->f720p)->first()->delete();
+            \App\BackupFilesDrive::where("f720p",$content->f720p)->first()->delete();
             $errorMassage = array("name"=> $content->title,"drive"=> $content->f720p,"massage"=>"File Not Found");
             return $errorMassage; 
         }
