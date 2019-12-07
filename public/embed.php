@@ -26,7 +26,7 @@
 		//if(bttCount<2) h=1; else {if($(window).width()>(100*bttCount)) h=35; else h=100;}
 		var video = {
 			width: $(window).width(),
-			height: $(window).height() - h
+			height: $(window).height()
 		};
 
 		$(window).resize(function() {
