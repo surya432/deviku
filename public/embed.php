@@ -80,7 +80,7 @@
 				displaytitle: true,
 				width: video.width,
 				aspectratio: "16:9",
-				height: video.height - hsdsd,
+				height: video.height,
 				fullscreen: "true",
 				skin: {
 					"name": "customs",
