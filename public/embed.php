@@ -38,7 +38,7 @@
 
 	<div id="myElement" style="width:100%!important;height:100%!margin-bottom:0px;"></div>
 	<?php
-	// error_reporting(0);
+	error_reporting(0);
 	include "curl_gd.php";
 	$base_url = 'http://demo.filedeo.stream/drive';
 	function url()
@@ -70,12 +70,6 @@
 									}?>
 
 			var daplayer = jwplayer("myElement").setup({
-				tracks: [{
-					file: '<?php if ($sub) echo $sub; ?>',
-					label: "Indonesia",
-					"default": true,
-					kind: "captions"
-				}],
 				controls: true,
 				displaytitle: true,
 				width: video.width,
