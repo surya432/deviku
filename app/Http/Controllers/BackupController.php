@@ -53,7 +53,7 @@ class BackupController extends Controller
             $dataContent = DB::table('backups')
                 ->join("contents", "contents.url", "=", "backups.url")
                 ->select("contents.id", "contents.url", "backups.f720p", "backups.title", 'contents.id as contentsId')
-                ->whereNotIn('contents.id', DB::table('masterlinks')->where("kualitas", "360p")->pluck('content_id'))
+                ->whereNotIn('contents.id', DB::table('masterlinks')->where("kualitas", "720p")->pluck('content_id'))
             // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
             // ->whereNotNull('contents.f720p')
                 ->orderBy('contents.id', 'desc')
