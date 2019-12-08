@@ -9,7 +9,7 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 Route::get('/', function () {
     return redirect("embed/the-lies-within-2019-e16");
 });
@@ -17,25 +17,20 @@ Route::get('/register', function () {
     return abort(404);
 });
 Route::get('/test/{id}', function ($id) {
-    $getData = \App\Drama::with('country')->with('type')->with(['episode','episode.links','episode.backup',])->findOrFail($id);
+    $getData = \App\Drama::with('country')->with('type')->with(['episode', 'episode.links', 'episode.backup'])->findOrFail($id);
     return $getData;
 });
+Route::get('/generator/backup', ['as' => 'backup', 'uses' => 'BackupController@index']);
 Route::get('/generator/mirror', ['as' => 'getMirrorAlternatif', 'uses' => 'BackupController@getMirrorAlternatif']);
 Route::get('/generator/links', ['as' => 'viewEpsCoeg', 'uses' => 'BackupController@changeMaster']);
 Route::get('/embed/{url}', ['as' => 'viewEps', 'uses' => 'EmbedController@Index']);
 Route::get('/ajax/videos/{url}', function () {
     return abort(404);
 });
-
 Route::get('/detail/drama', ['as' => 'dramacurl', 'uses' => 'WebfrontsController@asiawiki']);
-
 Route::post('/ajax/videos/{url}', ['as' => 'ajaxEps', 'uses' => 'EmbedController@getDetail']);
 Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@login']);
-
 Route::post('/login', ['as' => 'loginPost', 'uses' => 'LoginController@loginPost']);
-Route::get('/dramasqq', ['as' => 'dramasqq', 'uses' => 'DramaController@dramas']);
-
-Route::get('/backup/dramasqq', ['as' => 'backup', 'uses' => 'BackupController@index']);
 Route::post('/gmail/update', ['as' => 'gmailPostUpdate', 'uses' => 'GmailController@Post']);
 Route::post('/gmail/post', ['as' => 'gmailPostaddEmail', 'uses' => 'GmailController@Post']);
 Route::get('/deletegd', ['as' => 'gmailPostUpdate', 'uses' => 'BackupController@deletegdFromDB']);
@@ -44,15 +39,12 @@ Route::get('/singkron/drama/{id}', ['as' => 'singkrons', 'uses' => 'GDController
 Route::get('/proxyDrive', ['as' => 'ProxyDriveIndex', 'uses' => 'ProxyDriveController@index']);
 Route::get('/proxyDrive/{id}', ['as' => 'ProxyDriveContents', 'uses' => 'ProxyDriveController@getBrokenLink']);
 Route::get('/proxyDriveps1', ['as' => 'ProxyDriveContentsps1', 'uses' => 'ProxyDriveController@fileBrokenLinkPs1']);
-
 Route::group(['middleware' => ['web']], function () {
     Route::post('/admin/logout', ['as' => 'logout', 'uses' => 'LoginController@logout']);
 });
 
-
 Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/drive/deleteall/', ['as' => 'driveDramaDelete', 'uses' => 'EmbedController@deletegdbydate']);
-
 
     Route::get('/admin', ['as' => 'admin', 'uses' => 'DashboardController@index']);
     Route::get('/admin/list-update', ['as' => 'dramaDataUpdate', 'uses' => 'DashboardController@get']);
@@ -119,7 +111,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
 
     Route::get('/admin/lastupdate/', ['as' => 'DrakorUpdateIndex', 'uses' => 'DrakorController@index']);
     Route::get('/admin/lastupdate/data', ['as' => 'DrakorUpdateData', 'uses' => 'DrakorController@Data']);
-    
+
     Route::get('/admin/webfront/', ['as' => 'webfront', 'uses' => 'WebfrontsController@index']);
     Route::get('/admin/webfront/new/{idDrama}', ['as' => 'webfrontAddPost', 'uses' => 'WebfrontsController@preCreatePost']);
     Route::get('/admin/webfront-data/', ['as' => 'webfrontGet', 'uses' => 'WebfrontsController@get']);
@@ -128,7 +120,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::post('/admin/webfront-data/post', ['as' => 'preCreate', 'uses' => 'WebfrontsController@preCreate']);
     Route::get('/admin/webfront/singkron', ['as' => 'webfrontSingkron', 'uses' => 'WebfrontsController@seachdrama']);
     Route::post('/admin/webfront/singkron/{idSite}', ['as' => 'singkronToWeb', 'uses' => 'WebfrontsController@singkronToWeb']);
-    
+
     //New Feture
     Route::get('/admin/mirror/datatabel', 'MirrorKeyController@json')->name('Apimirrorkeyjson');
     Route::get('/admin/master-mirror', 'MasterMirrorController@index')->name('masterMirrorController');
@@ -144,6 +136,6 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::patch('/admin/form/master-apikey-update/{id}', 'MirrorkeyController@update')->name('mirrorkey.update');
     Route::get('/admin/form/master-apikey-edit/{id}', 'MirrorkeyController@edit')->name('mirrorkey.edit');
     Route::delete('/admin/form/master-apikey-delete', 'MirrorkeyController@destroy')->name('mirrorkey.destroy');
-    
+
     Route::get('/admin/form-master-mirror', 'MasterMirrorController@json')->name('ApiMasterMirrorJson');
 });
