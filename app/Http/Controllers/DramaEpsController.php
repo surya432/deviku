@@ -44,23 +44,32 @@ class DramaEpsController extends Controller
 
     public function get($id)
     {
-        $data = Content::orderBy('id', 'desc')->where('drama_id', $id)->get();
+        $data = Content::orderBy('id', 'desc')->with("links")->with("backup")->where('drama_id', $id)->get();
         return Datatables::of($data)
             ->addIndexColumn()
+            ->addColumn('links', function ($data) {
+                $linkvideo = "";
+                if ($data->links) {
+                    $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
+                    foreach($data->links as $link){
+                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$link->drive.'" target="_blank" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i>'.$link->kualitas.'</a>';
+                    }
+                    $linkvideo .= '</div>';
 
-            ->addColumn('f360ps', function ($data) {
-                if ($data->f360p) {
-                    return 'true';
-                } else {
-                    return 'false';
                 }
+                return $linkvideo;
             })
-            ->addColumn('f720ps', function ($data) {
-                if ($data->f720p) {
-                    return 'true';
-                } else {
-                    return 'false';
+            ->addColumn('backup', function ($data) {
+                $linkvideo = "";
+                if ($data->backup) {
+                    $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
+                    foreach($data->backup as $backup){
+                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$backup->f720p.'" target="_blank" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i>backup</a>';
+                    }
+                    $linkvideo .= '</div>';
+
                 }
+                return $linkvideo;
             })
             ->addColumn('action', function ($data) {
                 if ($data->f720p) {
@@ -84,6 +93,7 @@ class DramaEpsController extends Controller
                     $data->orderBy('id', 'desc');
                 }
             })
+            ->rawColumns(['backup','links', 'action'])
             ->make(true);
     }
     public function Post(Request $request)

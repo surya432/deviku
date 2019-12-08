@@ -263,8 +263,8 @@ Drama {{$result->title}}
                 <tr>
                     <th>No</th>
                     <th>Title</th>
-                    <th>720p</th>
-                    <th>360p</th>
+                    <th>Backup</th>
+                    <th>Link</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -546,14 +546,14 @@ $(document).ready(function() {
                     name: 'title'
                 },
                 {
-                    data: 'f720ps',
-                    name: 'f720p',
+                    data: 'links',
+                    name: 'Backup',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'f360ps',
-                    name: 'f360p',
+                    data: 'backup',
+                    name: 'Link',
                     orderable: false,
                     searchable: false
                 },
