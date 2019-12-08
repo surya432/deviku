@@ -129,7 +129,7 @@ class BackupController extends Controller
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
                 $f20p = $this->CheckHeaderCode($dataContents->f720p);
                 if ($f20p) {
-                    $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-720p");
+                    $content = array('url' => $dataContents->url, 'title' => "720p");
                     $datass = BackupFilesDrive::firstOrCreate($content);
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->url . "-720p", $settingData->token);
                     if (isset($copyID['id'])) {
@@ -149,9 +149,9 @@ class BackupController extends Controller
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
                 $f360p = $this->CheckHeaderCode($dataContents->f360p);
                 if ($f360p) {
-                    $content = array('url' => $dataContents->url, 'title' => $dataContents->url . "-360p");
+                    $content = array('url' => $dataContents->url, 'title' => "360p");
                     $datass = BackupFilesDrive::firstOrCreate($content);
-                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-f360p", $settingData->token);
+                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
                     if (isset($copyID['id'])) {
                         $this->changePermission($copyID['id'], $settingData->token);
                         $datass->f720p = $copyID['id'];
