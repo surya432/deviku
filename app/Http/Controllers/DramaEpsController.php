@@ -52,19 +52,19 @@ class DramaEpsController extends Controller
                 if ($data->links) {
                     $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
                     foreach($data->links as $link){
-                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$link->drive.'" target="_blank" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i>'.$link->kualitas.'</a>';
+                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$link->drive.'" target="_blank" class="btn btn-xs btn-success">'.$link->kualitas.'</a>';
                     }
                     $linkvideo .= '</div>';
 
                 }
                 return $linkvideo;
             })
-            ->addColumn('backup', function ($data) {
+            ->addColumn('backups', function ($data) {
                 $linkvideo = "";
                 if ($data->backup) {
                     $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
                     foreach($data->backup as $backup){
-                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$backup->f720p.'" target="_blank" class="btn btn-xs btn-success"><i class="glyphicon glyphicon-eye-open"></i>backup</a>';
+                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$backup->f720p.'" target="_blank" class="btn btn-xs btn-success">backup</a>';
                     }
                     $linkvideo .= '</div>';
 

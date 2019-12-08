@@ -263,8 +263,8 @@ Drama {{$result->title}}
                 <tr>
                     <th>No</th>
                     <th>Title</th>
-                    <th>Backup</th>
-                    <th>Link</th>
+                    <th>Links</th>
+                    <th>Backups</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -547,13 +547,13 @@ $(document).ready(function() {
                 },
                 {
                     data: 'links',
-                    name: 'Backup',
+                    name: 'Links',
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: 'backup',
-                    name: 'Link',
+                    data: 'backups',
+                    name: 'Backups',
                     orderable: false,
                     searchable: false
                 },

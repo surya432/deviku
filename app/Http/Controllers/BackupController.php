@@ -96,11 +96,17 @@ class BackupController extends Controller
                 return $datass;
             } else {
                 $datass->delete();
-                \App\BackupFilesDrive::where("f720p",$content->f720p)->first()->delete();
+                $dataDelete = \App\BackupFilesDrive::where("f720p",$content->f720p)->first();
+                if($dataDelete){
+                    $dataDelete->delete();
+                }
                 return $copyID;
             }
         }else{
-            \App\BackupFilesDrive::where("f720p",$content->f720p)->first()->delete();
+            $dataDelete = \App\BackupFilesDrive::where("f720p",$content->f720p)->first();
+            if($dataDelete){
+                $dataDelete->delete();
+            }
             $errorMassage = array("name"=> $content->title,"drive"=> $content->f720p,"massage"=>"File Not Found");
             return $errorMassage; 
         }
