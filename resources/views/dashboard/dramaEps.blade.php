@@ -55,17 +55,21 @@ Drama {{$result->title}}
                                                 <option value="SUB">SUB</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="control-label" for="email">Link 720p</label>
-                                            <input type="text" class="form-control" name="f720p" id="f720p">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label" for="email">Link 360p</label>
-                                            <input type="text" class="form-control" name="f360p" id="f360p">
+                                        <div class="form-group dynamicbox">
+                                            <strong>Link Video 1:</strong>
+                                            <div class="input-group control-group increment">
+                                                {!! Form::text('links[0][link]', null, array('placeholder'=> 'Link Google Drive','class' => 'form-control col-lg-8') ) !!}
+                                                {!! Form::text('links[0][kualitas]', null, array('placeholder' => 'Kualitas','class' => 'form-control ') ) !!}
+                                                <div class="input-group-btn">
+                                                    <button id="remove-tr" link="" class="btn btn-danger remove-tr"><i class="glyphicon glyphicon-trash"></i></button>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <div id="addlinkDrive" link="" count="0" class="btn btn-success addlinkDrive"><i class="glyphicon glyphicon-plus"></i></div>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
@@ -566,6 +570,53 @@ $(document).ready(function() {
             ],
 
         });
+    });
+    $('body').on('click', '.addlinkDrive', function(elemen) {
+            elemen.preventDefault();
+            var i = $(this).attr('count');
+            ++i;
+            j = i + 1;
+            $(".dynamicbox").append(
+                '<div class="form-group"><tr><strong>Link Video ' + j + ':</strong>' +
+                '<div class = "input-group control-group increment"> ' +
+                '<input type="text" name="links[' + i + '][link]" placeholder="Link Google Drive" class="form-control" /></td>' +
+                '<input type="text" name="links[' + i + '][kualitas]" placeholder="Kualitas" class="form-control" /></td>' +
+                '<div class="input-group-btn"><button type="button" link="" class="btn btn-danger remove-tr"><i class="glyphicon glyphicon-trash"></i></button></td>' +
+                '</tr></div>');
+            $(this).attr("count", i);
+
+    });
+
+    $('body').on('click', '.remove-tr', function(elemen) {
+            elemen.preventDefault();
+            const urlsdelete = $(this).attr('link');
+            if (urlsdelete == "") {
+                $(this).parent().parent().parent().remove();
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to delete this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios({
+                            url: urlsdelete,
+                            credentials: true,
+                            method: "DELETE",
+                        }).then(response => {
+                            console.log(response.data.status);
+                            $(this).parent().parent().parent().remove();
+                            swal2(response.data.status, response.data.message);
+                        }).catch(error => {
+                            console.log(error.response);
+                        });
+                    }
+                })
+            }
     });
 });
 

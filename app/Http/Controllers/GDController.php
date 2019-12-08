@@ -71,6 +71,7 @@ class GDController extends Controller
                                     }
                                     // $content->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
                                     // $content->save();
+                                    $this->changePermission($copyID['id'], $gmail->token);
                                     $links = new \App\masterlinks;
                                     $links->drive = $copyID['id'];
                                     $links->status = "success"; 
@@ -111,6 +112,8 @@ class GDController extends Controller
                                     if (!is_null($checkLaporanBroken)) {
                                         Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
                                     }
+                                    $this->changePermission($copyID['id'], $gmail->token);
+
                                     $content->f360p = "https://drive.google.com/open?id=" . $copyID['id'];
                                     $content->save();
                                     Drama::find($content->drama_id)->touch();
