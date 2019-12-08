@@ -238,7 +238,7 @@ class BackupController extends Controller
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
             return $id[1];
         } else {
-            return false;
+            return $urlVideoDrive;
         }
     }
     public function fembedCopy($data, $mirror)

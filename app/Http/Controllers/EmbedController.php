@@ -18,7 +18,7 @@ class EmbedController extends Controller
     use HelperController;
     public function index(Request $request, $url)
     {
-        $url = Content::where('url', $url)->first();
+        $url = Content::where('url', $url)->with("links")->first();
         if (is_null($url)) {
             return abort(404);
         }
@@ -40,15 +40,19 @@ class EmbedController extends Controller
         //     return $pad->read();
         // });
         // $pad_code = "";
-        if (isset($url['f720p'])) {
-            $fembed = $this->getMirror($url['f720p'], "fembed.com");
-            $rapidvideo = $this->getMirror($url['f720p'], "rapidvideo.com");
-            $openload = $this->getMirror($url['f720p'], "openload.com");
+        $fembed = null;
+        $rapidvideo = null;
+        $openload = null;
+        foreach ($url["links"] as $a => $b) {
+            if ($b["kualitas"] == "720p") {
+                $fembed = $this->getMirror($b['drive'], "fembed.com");
+                $rapidvideo = $this->getMirror($b['drive'], "rapidvideo.com");
+                $openload = $this->getMirror($b['drive'], "openload.com");
+            }
         }
         $setting = Setting::find(1);
 
-       
-        return view("embed.index", compact("url", "country", "setting", "fembed",  "rapidvideo", "openload"));
+        return view("embed.index", compact("url", "country", "setting", "fembed", "rapidvideo", "openload"));
     }
     public function addToTrashes()
     {
@@ -96,9 +100,9 @@ class EmbedController extends Controller
                 //     return '<script type="text/javascript">showPlayer("gd720");</script>';
                 // }
                 $dataLink = \App\masterlinks::where(["url" => $url, "kualitas" => "360p"])->first();
-                 if ($dataLink) {
+                if ($dataLink) {
                     $this->MethodBrokenlinks($dataLink->content_id, "SD", "delete");
-                    return $this->CopyGoogleDriveID("https://drive.google.com/open?id=".$dataLink->drive, $url, "SD");
+                    return $this->CopyGoogleDriveID("https://drive.google.com/open?id=" . $dataLink->drive, $url, "SD");
                 } else {
                     $this->MethodBrokenlinks($content->id, "SD", "add");
                     return '<script type="text/javascript">showPlayer("gd720");</script>';
@@ -106,9 +110,9 @@ class EmbedController extends Controller
                 break;
             case 'gd720':
                 $dataLink = \App\masterlinks::where(["url" => $url, "kualitas" => "720p"])->first();
-                 if ($dataLink) {
+                if ($dataLink) {
                     $this->MethodBrokenlinks($dataLink->content_id, "HD", "delete");
-                    return $this->CopyGoogleDriveID("https://drive.google.com/open?id=".$dataLink->drive, $url, "HD");
+                    return $this->CopyGoogleDriveID("https://drive.google.com/open?id=" . $dataLink->drive, $url, "HD");
                 } else {
                     $this->MethodBrokenlinks($content->id, "HD", "add");
                     return '<script type="text/javascript">showPlayer("mirror1");</script>';
@@ -231,7 +235,7 @@ class EmbedController extends Controller
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
             return $id[1];
         } else {
-            return false;
+            return $urlVideoDrive;
         }
     }
     public function syncFembed($data, $mirror)
