@@ -40,8 +40,9 @@ trait HelperController
     }
     public function getHeaderFolderCode($id)
     {
-        $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&supportsAllDrives=true&supportsTeamDrives=true");
+        $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?supportsAllDrives=true&supportsTeamDrives=true");
         $data = json_decode($curl, true);
+        return $data;
         if (isset($data["shared"])) {
             return $data["shared"];
         } else {
@@ -50,20 +51,22 @@ trait HelperController
     }
     public function viewsource($url)
     {
+        $tokens = gmail::where('tipe', 'copy')->select("token")->inRandomOrder()->first();
         $ch = @curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         $head[] = "Connection: keep-alive";
         $head[] = "Keep-Alive: 300";
         $head[] = "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7";
         $head[] = "Accept-Language: en-us,en;q=0.5";
+        $head[] = 'Authorization: ' . $this->get_token($tokens);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36');
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 300);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
         curl_setopt($ch, CURLOPT_REFERER, 'http://dldramaid.xyz/');
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $page = curl_exec($ch);
@@ -78,7 +81,6 @@ trait HelperController
     }
     public function singkronToWeb($id_folder, $tokenPage = null)
     {
-
         $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime&supportsAllDrives=true&supportsTeamDrives=true");
         return json_decode($curl, true);
     }
@@ -105,7 +107,7 @@ trait HelperController
             $embed .=
             '<h3>' . $eps->title . '</h3><p><iframe src="' . route("viewEps", $eps->url) . '" width="100%" height="400" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>';
         }
-        $result = array("title" => $title, "tag" => $tag, "country" => $category,  "category" => $jenis, "status" => $status, "iframe" => base64_encode($embed));
+        $result = array("title" => $title, "tag" => $tag, "country" => $category, "category" => $jenis, "status" => $status, "iframe" => base64_encode($embed));
         return $result;
     }
     public function postWeb($site, $drama_id, $header, $body)
@@ -197,7 +199,7 @@ trait HelperController
         }
         return $links;
     }
-    
+
     public function refresh_token($token, $apiUrl)
     {
         $tokenencode = urlencode($token);
@@ -314,7 +316,7 @@ trait HelperController
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 300,
+            CURLOPT_TIMEOUT => 60,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
@@ -603,19 +605,19 @@ trait HelperController
         $keys = [];
         //  $crawler->filter('.left >p:nth-of-type(1)')->each(function ($node){
         $getkeys = $crawler->filter('.left >p')->each(function ($node) {
-            return array(strtolower($node->filter('strong')->text())=> $node->filter('span')->text());
+            return array(strtolower($node->filter('strong')->text()) => $node->filter('span')->text());
         });
-        foreach($getkeys as $a=>$b){
-            foreach($b as $c =>$d){
-                $ca = str_replace(":","",$c);
+        foreach ($getkeys as $a => $b) {
+            foreach ($b as $c => $d) {
+                $ca = str_replace(":", "", $c);
                 $keys[$ca] = $d;
             }
         }
         $getPlot = $crawler->filter('.right >.info')->each(function ($node) {
             return ["plot" => $node->filter('p')->text()];
         });
-        foreach($getPlot as $a=>$b){
-            foreach($b as $c =>$d){
+        foreach ($getPlot as $a => $b) {
+            foreach ($b as $c => $d) {
                 $keys[$c] = $d;
             }
         }

@@ -47,37 +47,35 @@ class BackupController extends Controller
     {
         $dataresult = [];
         DB::table('masterlinks')->whereNull('drive')->delete();
-
         $cekData = gmail::where('tipe', 'master')->inRandomOrder()->first();
         if ($cekData) {
-            $dataContent = DB::table('backups')
-                ->join("contents", "contents.url", "=", "backups.url")
-                ->select("contents.id", "contents.url", "backups.f720p", "backups.title", 'contents.id as contentsId')
-                ->whereNotIn('contents.id', DB::table('masterlinks')->where("kualitas", "720p")->pluck('content_id'))
-            // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
-            // ->whereNotNull('contents.f720p')
-                ->orderBy('contents.id', 'desc')
-                ->take(10)
+            $dataContent = DB::table('contents')
+                ->select("url", "f720p", "id")
+
+                ->whereNotIn('id', DB::table('masterlinks')->where("kualitas", "720p")->pluck('content_id'))
+                ->where('f720p', 'NOT LIKE', '%picasa%')
+                ->whereNotNull('f720p')
+                ->orderBy('id', 'desc')
+                ->take(5)
                 ->get();
             foreach ($dataContent as $content) {
                 $duplicateMaster = $this->duplicateMaster($content, "720p");
                 array_push($dataresult, $duplicateMaster);
             }
-            $dataContent = DB::table('backups')
-                ->join("contents", "contents.url", "=", "backups.url")
-                ->select("contents.id", "contents.url", "backups.f720p", "backups.title", 'contents.id as contentsId')
-                ->whereNotIn('contents.id', DB::table('masterlinks')->where("kualitas", "360p")->pluck('content_id'))
-            // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
-            // ->whereNotNull('contents.f720p')
-                ->orderBy('contents.id', 'desc')
-                ->take(10)
+            $dataContent = DB::table('contents')
+                ->select("url", "f360p as f720p", "id")
+                ->whereNotIn('id', DB::table('masterlinks')->where("kualitas", "360p")->pluck('content_id'))
+                ->where('f360p', 'NOT LIKE', '%picasa%')
+                ->whereNotNull('f360p')
+                ->orderBy('id', 'desc')
+                ->take(5)
                 ->get();
+
             foreach ($dataContent as $content) {
                 $duplicateMaster = $this->duplicateMaster($content, "360p");
                 array_push($dataresult, $duplicateMaster);
             }
             return $dataresult;
-
         } else {
             $errorMassage = array("name" => "Gmail Master Nof found");
             array_push($dataresult, $errorMassage);
@@ -87,35 +85,30 @@ class BackupController extends Controller
     public function duplicateMaster($content, $kualitas)
     {
         // dd($content);
-        $f20p = $this->getHeaderFolderCode($content->f720p);
-        if ($f20p) {
-            $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
-            $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
-            $datass = \App\masterlinks::firstOrCreate($data);
-            $copyID = $this->copygd($content->f720p, $settingData->folderid, $content->url . "-" . $kualitas, $settingData->token);
-            if (isset($copyID['id'])) {
-                $this->changePermission($copyID['id'], $settingData->token);
-                $datass->drive = $copyID['id'];
-                $datass->apikey = $settingData->token;
-                $datass->status = "success";
-                $datass->save();
-                return $datass;
-            } else {
-                $datass->delete();
-                $dataDelete = \App\BackupFilesDrive::where("f720p", $content->f720p)->first();
-                if ($dataDelete) {
-                    $dataDelete->delete();
-                }
-                return $copyID;
-            }
+        $idDrive = $this->GetIdDrive($content->f720p);
+        // dd($idDrive);
+        // $f20p = $this->getHeaderFolderCode($idDrive);
+        // dd($f20p);
+        // if ($f20p) {
+        $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
+        $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
+        $datass = \App\masterlinks::firstOrCreate($data);
+        $copyID = $this->copygd($idDrive, $settingData->folderid, $content->url . "-" . $kualitas, $settingData->token);
+        if (isset($copyID['id'])) {
+            $this->changePermission($copyID['id'], $settingData->token);
+            $datass->drive = $copyID['id'];
+            $datass->apikey = $settingData->token;
+            $datass->status = "success";
+            $datass->save();
+            return $datass;
         } else {
-            $dataDelete = \App\BackupFilesDrive::where("f720p", $content->f720p)->first();
-            if ($dataDelete) {
-                $dataDelete->delete();
-            }
-            $errorMassage = array("name" => $content->title, "drive" => $content->f720p, "massage" => "File Not Found");
-            return $errorMassage;
+            $datass->delete();
+            return $copyID;
         }
+        // } else {
+        //     $errorMassage = array("url" => $content->url,"kualitas" => $kualitas, "drive" => $content->f720p, "massage" => "File Not Found");
+        //     return $errorMassage;
+        // }
     }
     public function index()
     {
@@ -133,26 +126,25 @@ class BackupController extends Controller
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
-                $f20p = $this->CheckHeaderCode($dataContents->f720p);
-                if ($f20p) {
-                    $content = array('url' => $dataContents->url, 'title' => "720p");
-                    $datass = BackupFilesDrive::firstOrCreate($content);
-                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->url . "-720p", $settingData->token);
-                    if (isset($copyID['id'])) {
-                        $this->changePermission($copyID['id'], $settingData->token);
-                        $datass->f720p = $copyID['id'];
-                        $datass->tokenfcm = $settingData->token;
-                        $datass->save();
-                        array_push($dataresult, $datass);
-                    } else {
-                        array_push($dataresult, $copyID);
-                    }
+                // $f20p = $this->CheckHeaderCode($dataContents->f720p);
+                // if ($f20p) {
+                $content = array('url' => $dataContents->url, 'title' => "720p");
+                $datass = BackupFilesDrive::firstOrCreate($content);
+                $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f720p), $settingData->folderid, $dataContents->url . "-720p", $settingData->token);
+                if (isset($copyID['id'])) {
+                    $this->changePermission($copyID['id'], $settingData->token);
+                    $datass->f720p = $copyID['id'];
+                    $datass->tokenfcm = $settingData->token;
+                    $datass->save();
+                    array_push($dataresult, $datass);
                 } else {
-                    $content = Content::find($dataContents->id);
-                    $content->f720p = null;
-                    $content->save();
+                    array_push($dataresult, $copyID);
                 }
-
+                // } else {
+                //     $content = Content::find($dataContents->id);
+                //     $content->f720p = null;
+                //     $content->save();
+                // }
             }
             $dataContent = DB::table('contents')
                 ->whereNotIn('url', DB::table('backups')->where("title", "360p")->pluck('url'))
@@ -163,25 +155,25 @@ class BackupController extends Controller
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
-                $f360p = $this->CheckHeaderCode($dataContents->f360p);
-                if ($f360p) {
-                    $content = array('url' => $dataContents->url, 'title' => "360p");
-                    $datass = BackupFilesDrive::firstOrCreate($content);
-                    $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
-                    if (isset($copyID['id'])) {
-                        $this->changePermission($copyID['id'], $settingData->token);
-                        $datass->f720p = $copyID['id'];
-                        $datass->tokenfcm = $settingData->token;
-                        $datass->save();
-                        array_push($dataresult, $datass);
-                    } else {
-                        array_push($dataresult, $copyID);
-                    }
+                // $f360p = $this->CheckHeaderCode($dataContents->f360p);
+                // if ($f360p) {
+                $content = array('url' => $dataContents->url, 'title' => "360p");
+                $datass = BackupFilesDrive::firstOrCreate($content);
+                $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->f360p), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
+                if (isset($copyID['id'])) {
+                    $this->changePermission($copyID['id'], $settingData->token);
+                    $datass->f720p = $copyID['id'];
+                    $datass->tokenfcm = $settingData->token;
+                    $datass->save();
+                    array_push($dataresult, $datass);
                 } else {
-                    $content = Content::find($dataContents->id);
-                    $content->f360p = null;
-                    $content->save();
+                    array_push($dataresult, $copyID);
                 }
+                // } else {
+                //     $content = Content::find($dataContents->id);
+                //     $content->f360p = null;
+                //     $content->save();
+                // }
             }
             DB::table('backups')->whereNull('f720p')->delete();
         }
