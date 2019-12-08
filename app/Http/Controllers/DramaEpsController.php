@@ -93,7 +93,7 @@ class DramaEpsController extends Controller
                     $data->orderBy('id', 'desc');
                 }
             })
-            ->rawColumns(['backup','links', 'action'])
+            ->rawColumns(['backups','links', 'action'])
             ->make(true);
     }
     public function Post(Request $request)
