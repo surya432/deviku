@@ -150,10 +150,10 @@ class GDController extends Controller
                                     $links->url = $content->url;  
                                     $links->save();
                                     Drama::find($content->drama_id)->touch();
-                                    $data = Content::orderBy('id', 'desc')->with('links')->where('drama_id', $id)->get();
+                                    $data = Content::orderBy('id', 'desc')->with('links')->with('backup')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
                                     array_push($fdrive, $url . " Update");
-                                    $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
+                                    // $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                                 }
                             }
                         }
@@ -187,10 +187,10 @@ class GDController extends Controller
                                     $links->content_id = $content->id;  
                                     $links->url = $content->url;  
                                     $links->save();
-                                    $data = Content::orderBy('id', 'desc')->with('links')->where('drama_id', $id)->get();
+                                    $data = Content::orderBy('id', 'desc')->with('links')->with('backup')->where('drama_id', $id)->get();
                                     Cache::forever('Content' . $id, $data);
                                     array_push($fdrive, $url . " Update");
-                                    $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
+                                    // $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                                 }
                             }
                         }

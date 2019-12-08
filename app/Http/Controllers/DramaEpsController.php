@@ -25,7 +25,7 @@ class DramaEpsController extends Controller
         $country = Country::all();
         $Type = Type::all();
         $status = Drama::groupBy('status')->select('status')->get();
-        $value = Drama::where('id', $id)->with('country')->with('type')->with('eps')->orderBy('id', 'desc')->first();
+        $value = Drama::where('id', $id)->with('country')->with('type')->with(['episode','episode.links','episode.backup',])->orderBy('id', 'desc')->first();
         return view('dashboard.dramaEps')->with('result', $value)->with("country", $country)->with("status", $status)->with("Type", $Type);
     }
     public function indexDetail($id)
@@ -37,7 +37,7 @@ class DramaEpsController extends Controller
         }
 
         //$value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->get();
-        $value = Drama::where('id', $id)->with('country')->with('type')->with('eps')->orderBy('id', 'desc')->first();
+        $value = Drama::where('id', $id)->with('country')->with('type')->with(['episode','episode.links','episode.backup',])->orderBy('id', 'desc')->first();
         $result = $this->GetTags($value);
         return response()->json($result);
     }
