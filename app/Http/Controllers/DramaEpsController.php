@@ -120,6 +120,21 @@ class DramaEpsController extends Controller
             $dataContent->f360p = $request->input("f360p");
             $dataContent->f720p = $request->input("f720p");
             $dataContent->save();
+            if ($request->input('links')) {
+                foreach ($request->input('links') as $a => $link) {
+                    if(isset($link['id'])){
+                        $MetaLink = \App\masterlinks::find($link['id']);
+                        $MetaLink->kualitas = $link['kualitas'];
+                        $MetaLink->link = $link['link'];
+                        $MetaLink->save();
+                    }else{
+                        $MetaLink = new MetaLink();
+                        $MetaLink->kualitas = $link['kualitas'];
+                        $MetaLink->link = $link['link'];
+                        $dataContent->links()->save($MetaLink);
+                    }
+                }
+            }
             $dataContentasd = "Insert Success";
             return response()->json($dataContentasd, 201);
         } else {
@@ -142,6 +157,21 @@ class DramaEpsController extends Controller
                 $dataContent->f360p = $request->input("f360p");
                 $dataContent->f720p = $request->input("f720p");
                 $dataContent->save();
+                if ($request->input('links')) {
+                    foreach ($request->input('links') as $a => $link) {
+                        if(isset($link['id'])){
+                            $MetaLink = \App\masterlinks::find($link['id']);
+                            $MetaLink->kualitas = $link['kualitas'];
+                            $MetaLink->link = $link['link'];
+                            $MetaLink->save();
+                        }else{
+                            $MetaLink = new MetaLink();
+                            $MetaLink->kualitas = $link['kualitas'];
+                            $MetaLink->link = $link['link'];
+                            $content->links()->save($MetaLink);
+                        }
+                    }
+                }
             }
             $dataContentasd = "Insert BatchEps Success ";
             return response()->json($dataContentasd, 201);

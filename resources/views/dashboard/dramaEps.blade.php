@@ -64,7 +64,6 @@ Drama {{$result->title}}
                                                     <button id="remove-tr" link="" class="btn btn-danger remove-tr"><i class="glyphicon glyphicon-trash"></i></button>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -341,7 +340,6 @@ $(document).ready(function() {
             success: function(data) {
                 $("#content").html(data);
                 $("input[name=searchKeyword]").val(seacrh);
-
             }
         });
     });
