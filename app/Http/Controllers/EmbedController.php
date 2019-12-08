@@ -83,43 +83,54 @@ class EmbedController extends Controller
     }
     public function getDetail(Request $request, $url)
     {
-        $content = Content::where('url', $url)->first();
         $this->addToTrashes();
         $linkError = '<div class="spinner"><div class="bounce1"></div> <div class="bounce2"></div> <div class="bounce3"></div></div><div id="notif" class="text-center"><p style="color: blue;">Ya Link Sudah Di Rusak!! Coba Server Lain Kak. :( </br> #LaporDenganKomentarDibawah</p></div>';
         switch ($request->input('player')) {
             case 'gd360':
-                $f360p = $this->CheckHeaderCode($content->f360p);
-                if ($f360p) {
-                    $this->MethodBrokenlinks($content->id, "SD", "delete");
-                    return $this->CopyGoogleDriveID($content->f360p, $url, "SD");
+                // $f360p = $this->CheckHeaderCode($content->f360p);
+                // if ($f360p) {
+                //     $this->MethodBrokenlinks($content->id, "SD", "delete");
+                //     return $this->CopyGoogleDriveID($content->f360p, $url, "SD");
+                // } else {
+                //     $this->MethodBrokenlinks($content->id, "SD", "add");
+                //     return '<script type="text/javascript">showPlayer("gd720");</script>';
+                // }
+                $dataLink = \App\masterlinks::where(["url" => $url, "kualitas" => "360p"])->first();
+                 if ($dataLink) {
+                    $this->MethodBrokenlinks($dataLink->content_id, "SD", "delete");
+                    return $this->CopyGoogleDriveID("https://drive.google.com/open?id=".$dataLink->drive, $url, "SD");
                 } else {
                     $this->MethodBrokenlinks($content->id, "SD", "add");
                     return '<script type="text/javascript">showPlayer("gd720");</script>';
                 }
                 break;
             case 'gd720':
-                $s720p = $this->CheckHeaderCode($content->f720p);
-                if ($s720p) {
-                    $this->MethodBrokenlinks($content->id, "HD", "delete");
-                    return $this->CopyGoogleDriveID($content->f720p, $url, "HD");
+                $dataLink = \App\masterlinks::where(["url" => $url, "kualitas" => "720p"])->first();
+                 if ($dataLink) {
+                    $this->MethodBrokenlinks($dataLink->content_id, "HD", "delete");
+                    return $this->CopyGoogleDriveID("https://drive.google.com/open?id=".$dataLink->drive, $url, "HD");
                 } else {
                     $this->MethodBrokenlinks($content->id, "HD", "add");
-                    return $this->GetPlayer("1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu");
+                    return '<script type="text/javascript">showPlayer("mirror1");</script>';
                 }
                 break;
             case 'mirror1':
+                $content = Content::where('url', $url)->first();
                 $iframe = $this->getMirror($content->f720p, "fembed.com");
                 return $iframe;
                 break;
             case 'mirror2':
+                $content = Content::where('url', $url)->first();
                 $iframe = $this->getMirror($content->f720p, "rapidvideo.com");
                 return $iframe;
                 break;
             case 'mirror3':
+                $content = Content::where('url', $url)->first();
                 $iframe = $this->getMirror($content->f720p, "openload.com");
                 return $iframe;
                 break;
             case "download_links":
+                $content = Content::where('url', $url)->first();
                 $returncontent = "";
                 $returncontent .= '<div id="notif" class="text-center"><p style="color: blue;">';
                 if (!is_null($content->mirror1)) {
