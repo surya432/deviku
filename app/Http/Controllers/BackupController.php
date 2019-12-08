@@ -53,22 +53,28 @@ class BackupController extends Controller
             $dataContent = DB::table('backups')
                 ->join("contents", "contents.url", "=", "backups.url")
                 ->select("contents.id", "contents.url", "backups.f720p", "backups.title", 'contents.id as contentsId')
-                ->whereNotIn('contents.id', DB::table('masterlinks')->pluck('content_id'))
+                ->whereNotIn('contents.id', DB::table('masterlinks')->where("kualitas", "360p")->pluck('content_id'))
             // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
             // ->whereNotNull('contents.f720p')
                 ->orderBy('contents.id', 'desc')
-                ->take(20)
+                ->take(10)
                 ->get();
             foreach ($dataContent as $content) {
-                if (preg_match("/720p/", $content->title)) {
-                    $duplicateMaster = $this->duplicateMaster($content, "720p");
-                    array_push($dataresult, $duplicateMaster);
-
-                } else if (preg_match("/360p/", $content->title)) {
-                    $duplicateMaster = $this->duplicateMaster($content, "360p");
-                    array_push($dataresult, $duplicateMaster);
-
-                }
+                $duplicateMaster = $this->duplicateMaster($content, "720p");
+                array_push($dataresult, $duplicateMaster);
+            }
+            $dataContent = DB::table('backups')
+                ->join("contents", "contents.url", "=", "backups.url")
+                ->select("contents.id", "contents.url", "backups.f720p", "backups.title", 'contents.id as contentsId')
+                ->whereNotIn('contents.id', DB::table('masterlinks')->where("kualitas", "360p")->pluck('content_id'))
+            // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
+            // ->whereNotNull('contents.f720p')
+                ->orderBy('contents.id', 'desc')
+                ->take(10)
+                ->get();
+            foreach ($dataContent as $content) {
+                $duplicateMaster = $this->duplicateMaster($content, "360p");
+                array_push($dataresult, $duplicateMaster);
             }
             return $dataresult;
 
@@ -119,7 +125,7 @@ class BackupController extends Controller
         if ($cekData) {
             //$this->AutoDeleteGd();
             $dataContent = DB::table('contents')
-                ->whereNotIn('url', DB::table('backups')->where("title","720p")->pluck('url'))
+                ->whereNotIn('url', DB::table('backups')->where("title", "720p")->pluck('url'))
                 ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
@@ -149,7 +155,7 @@ class BackupController extends Controller
 
             }
             $dataContent = DB::table('contents')
-                ->whereNotIn('url', DB::table('backups')->where("title","360p")->pluck('url'))
+                ->whereNotIn('url', DB::table('backups')->where("title", "360p")->pluck('url'))
                 ->where('f360p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f360p')
                 ->orderBy('id', 'desc')
