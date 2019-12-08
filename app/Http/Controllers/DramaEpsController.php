@@ -64,7 +64,7 @@ class DramaEpsController extends Controller
                 if ($data->backup) {
                     $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
                     foreach($data->backup as $backup){
-                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$backup->f720p.'" target="_blank" class="btn btn-xs btn-success">backup</a>';
+                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$backup->f720p.'" target="_blank" class="btn btn-xs btn-success">'.$backup->title.'</a>';
                     }
                     $linkvideo .= '</div>';
 
