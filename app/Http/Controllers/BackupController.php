@@ -52,41 +52,41 @@ class BackupController extends Controller
         if ($cekData) {
             $dataContent = DB::table('backups')
                 ->join("contents", "contents.url", "=", "backups.url")
-                ->select("contents.id", "contents.url", "backups.f720p", "backups.title",'contents.id as contentsId')
+                ->select("contents.id", "contents.url", "backups.f720p", "backups.title", 'contents.id as contentsId')
                 ->whereNotIn('contents.id', DB::table('masterlinks')->pluck('content_id'))
-                // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
-                // ->whereNotNull('contents.f720p')
+            // ->where('contents.f720p', 'NOT LIKE', '%picasa%')
+            // ->whereNotNull('contents.f720p')
                 ->orderBy('contents.id', 'desc')
                 ->take(20)
                 ->get();
             foreach ($dataContent as $content) {
                 if (preg_match("/720p/", $content->title)) {
-                    $duplicateMaster = $this->duplicateMaster($content,"720p");
+                    $duplicateMaster = $this->duplicateMaster($content, "720p");
                     array_push($dataresult, $duplicateMaster);
 
                 } else if (preg_match("/360p/", $content->title)) {
-                    $duplicateMaster = $this->duplicateMaster($content,"360p");
+                    $duplicateMaster = $this->duplicateMaster($content, "360p");
                     array_push($dataresult, $duplicateMaster);
 
                 }
             }
             return $dataresult;
 
-        }else{
-            $errorMassage = array("name"=> "Gmail Master Nof found");
+        } else {
+            $errorMassage = array("name" => "Gmail Master Nof found");
             array_push($dataresult, $errorMassage);
         }
         return $dataresult;
     }
-    public function duplicateMaster($content,$kualitas)
+    public function duplicateMaster($content, $kualitas)
     {
         // dd($content);
         $f20p = $this->getHeaderFolderCode($content->f720p);
-        if($f20p){
+        if ($f20p) {
             $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
-            $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id,"kualitas"=>$kualitas);
+            $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
             $datass = \App\masterlinks::firstOrCreate($data);
-            $copyID = $this->copygd($content->f720p, $settingData->folderid, $content->url ."-". $kualitas, $settingData->token);
+            $copyID = $this->copygd($content->f720p, $settingData->folderid, $content->url . "-" . $kualitas, $settingData->token);
             if (isset($copyID['id'])) {
                 $this->changePermission($copyID['id'], $settingData->token);
                 $datass->drive = $copyID['id'];
@@ -96,19 +96,19 @@ class BackupController extends Controller
                 return $datass;
             } else {
                 $datass->delete();
-                $dataDelete = \App\BackupFilesDrive::where("f720p",$content->f720p)->first();
-                if($dataDelete){
+                $dataDelete = \App\BackupFilesDrive::where("f720p", $content->f720p)->first();
+                if ($dataDelete) {
                     $dataDelete->delete();
                 }
                 return $copyID;
             }
-        }else{
-            $dataDelete = \App\BackupFilesDrive::where("f720p",$content->f720p)->first();
-            if($dataDelete){
+        } else {
+            $dataDelete = \App\BackupFilesDrive::where("f720p", $content->f720p)->first();
+            if ($dataDelete) {
                 $dataDelete->delete();
             }
-            $errorMassage = array("name"=> $content->title,"drive"=> $content->f720p,"massage"=>"File Not Found");
-            return $errorMassage; 
+            $errorMassage = array("name" => $content->title, "drive" => $content->f720p, "massage" => "File Not Found");
+            return $errorMassage;
         }
     }
     public function index()
@@ -119,11 +119,11 @@ class BackupController extends Controller
         if ($cekData) {
             //$this->AutoDeleteGd();
             $dataContent = DB::table('contents')
-                ->whereNotIn('url', DB::table('backups')->pluck('url'))
+                ->whereNotIn('url', DB::table('backups')->where("title","720p")->pluck('url'))
                 ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
-                ->take(20)
+                ->take(10)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
@@ -146,6 +146,16 @@ class BackupController extends Controller
                     $content->f720p = null;
                     $content->save();
                 }
+
+            }
+            $dataContent = DB::table('contents')
+                ->whereNotIn('url', DB::table('backups')->where("title","360p")->pluck('url'))
+                ->where('f360p', 'NOT LIKE', '%picasa%')
+                ->whereNotNull('f360p')
+                ->orderBy('id', 'desc')
+                ->take(10)
+                ->get();
+            foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
                 $f360p = $this->CheckHeaderCode($dataContents->f360p);
                 if ($f360p) {
@@ -168,7 +178,6 @@ class BackupController extends Controller
                 }
             }
             DB::table('backups')->whereNull('f720p')->delete();
-
         }
         return response()->json($dataresult);
     }
