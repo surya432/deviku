@@ -65,13 +65,13 @@ class GDController extends Controller
                             array_push($fdrive, $url . " Error");
                         } else {
                             if (isset($copyID['id'])) {
-                                $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->first();
+                                $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->get(['id']);
                                 if (!is_null($dataLink)) {
-                                    $dataLink->delete();
+                                    \App\masterlinks::destroy($dataLink->toArray());
                                 }
-                                $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
+                                $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->get(['id']);
                                 if (!is_null($checkLaporanBroken)) {
-                                    $checkLaporanBroken->delete();
+                                    \App\masterlinks::destroy($checkLaporanBroken->toArray());
                                 }
                                 // $content->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
                                 // $content->save();
@@ -113,13 +113,13 @@ class GDController extends Controller
                             array_push($fdrive, $url . " Error");
                         } else {
                             if (isset($copyID['id'])) {
-                                $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->first();
+                                $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "360p"])->get(['id']);
                                 if (!is_null($dataLink)) {
-                                    $dataLink->delete();
+                                   \App\masterlinks::destroy($dataLink->toArray());
                                 }
-                                $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
+                                $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->get(['id']);
                                 if (!is_null($checkLaporanBroken)) {
-                                    $checkLaporanBroken->delete();
+                                    Brokenlink::destroy($checkLaporanBroken->toArray());
                                 }
                                 $this->changePermission($copyID['id'], $gmail->token);
 
