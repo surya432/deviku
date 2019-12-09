@@ -42,7 +42,6 @@ trait HelperController
     {
         $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?supportsAllDrives=true&supportsTeamDrives=true");
         $data = json_decode($curl, true);
-        return $data;
         if (isset($data["shared"])) {
             return $data["shared"];
         } else {
@@ -56,12 +55,12 @@ trait HelperController
         curl_setopt($ch, CURLOPT_URL, $url);
         $head[] = "Connection: keep-alive";
         $head[] = "Keep-Alive: 300";
-        $head[] = "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7";
-        $head[] = "Accept-Language: en-us,en;q=0.5";
-        $head[] = 'Authorization: ' . $this->get_token($tokens);
+        $head[] = 'Authorization: ' . $this->get_token($tokens->token);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.124 Safari/537.36');
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        //     "Authorization: ".$this->get_token($tokens)));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -263,7 +262,7 @@ trait HelperController
     {
         if (!Cache::has('CHECKHEADER-' . md5($idDrive))) {
             $expiresCacheAt = Setting::find(1)->expiresCacheAt;
-            $statusCode = $this->getHeaderFolderCode($this->GetIdDrive($idDrive));
+            $statusCode = $this->getHeaderFolderCode($idDrive);
             Cache::put('CHECKHEADER-' . md5($idDrive), $statusCode, $expiresCacheAt);
             return $statusCode;
         }
@@ -286,7 +285,7 @@ trait HelperController
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
             return $id[1];
         } else {
-            return false;
+            return $urlVideoDrive;
         }
     }
     public function GetIdDrive($urlVideoDrive)
@@ -294,7 +293,7 @@ trait HelperController
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
             return $id[1];
         } else {
-            return false;
+            return $urlVideoDrive;
         }
     }
     public function addToTrashes($idcopy, $token)

@@ -171,24 +171,24 @@ class BackupController extends Controller
         // $this->viewsource(str_replace("mirror", "sync", $severDownload['keys']));
         $dataresult = array();
 
-        $dataContent = DB::table('contents')
-            ->whereNotIn('f720p', DB::table('mirrorcopies')->pluck('drive'))
-            ->where('f720p', 'NOT LIKE', '%picasa%')
-            ->whereNotNull('f720p')
+        $dataContent = DB::table('masterlinks')
+            ->whereNotIn('drive', DB::table('mirrorcopies')->pluck('drive'))
+            ->where('kualitas', '720p')->where('status', 'success')
+            ->whereNotNull('drive')
             ->orderBy('id', 'desc')
             ->take(10)
             ->get();
         foreach ($dataContent as $dataContents) {
-            $f20p = $this->CheckHeaderCode($dataContents->f720p);
+            $f20p = $this->CheckHeaderFolderCode($dataContents->drive);
             if ($f20p) {
-                $fembed = $this->getMirror($dataContents->f720p, "fembed.com");
-                $rapid = $this->getMirror($dataContents->f720p, "rapidvideo.com");
-                $openload = $this->getMirror($dataContents->f720p, "openload.com");
-                $copyID = array("fembed" => $fembed, "openload" => $openload, "rapid" => $rapid, "url" => $dataContents->f720p);
+                $fembed = $this->getMirror($dataContents->drive, "fembed.com");
+                $rapid = $this->getMirror($dataContents->drive, "rapidvideo.com");
+                $openload = $this->getMirror($dataContents->drive, "openload.com");
+                $copyID = array("fembed" => $fembed, "openload" => $openload, "rapid" => $rapid, "url" => $dataContents->url);
                 array_push($dataresult, $copyID);
             } else {
-                $content = Content::find($dataContents->id);
-                $content->f720p = null;
+                $content = DB::table('masterlinks')::find($dataContents->id);
+                $content->status = "broken";
                 $content->save();
             }
 
