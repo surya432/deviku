@@ -66,7 +66,7 @@ class GDController extends Controller
                         } else {
                             if (isset($copyID['id'])) {
                                 $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->first();
-                                if (!is_null($checkLaporanBroken)) {
+                                if (!is_null($dataLink)) {
                                     \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->delete();
                                 }
                                 $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
@@ -114,7 +114,7 @@ class GDController extends Controller
                         } else {
                             if (isset($copyID['id'])) {
                                 $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->first();
-                                if (!is_null($checkLaporanBroken)) {
+                                if (!is_null($dataLink)) {
                                     \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "360p"])->delete();
                                 }
                                 $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
