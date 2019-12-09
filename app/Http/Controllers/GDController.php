@@ -19,7 +19,6 @@ class GDController extends Controller
         $settingData = Setting::find(1);
         $tokenDriveAdmin = $settingData->tokenDriveAdmin;
         $resultCurl = $this->get_token($tokenDriveAdmin);
-
         return $resultCurl;
     }
     public function singkronFolder()
