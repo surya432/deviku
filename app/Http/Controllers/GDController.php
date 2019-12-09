@@ -67,11 +67,11 @@ class GDController extends Controller
                             if (isset($copyID['id'])) {
                                 $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->first();
                                 if (!is_null($dataLink)) {
-                                    \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->delete();
+                                    $dataLink->delete();
                                 }
                                 $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
                                 if (!is_null($checkLaporanBroken)) {
-                                    Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
+                                    $checkLaporanBroken->delete();
                                 }
                                 // $content->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
                                 // $content->save();
@@ -115,11 +115,11 @@ class GDController extends Controller
                             if (isset($copyID['id'])) {
                                 $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->first();
                                 if (!is_null($dataLink)) {
-                                    \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "360p"])->delete();
+                                    $dataLink->delete();
                                 }
                                 $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->first();
                                 if (!is_null($checkLaporanBroken)) {
-                                    Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->delete();
+                                    $checkLaporanBroken->delete();
                                 }
                                 $this->changePermission($copyID['id'], $gmail->token);
 
