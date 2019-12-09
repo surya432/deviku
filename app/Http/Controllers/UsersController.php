@@ -13,11 +13,11 @@ use Yajra\DataTables\Facades\DataTables;
 class UsersController extends Controller
 {
     //
-    function index()
+    public function index()
     {
         return view('user.laporan');
     }
-    function getlaporan()
+    public function getlaporan()
     {
         $data = DB::table('laporans')->join('users', 'laporans.username', '=', 'users.id')->select('laporans.*', 'users.first_name')->orderBy('laporans.created_at', 'desc')->get();
         return Datatables::of($data)
@@ -32,7 +32,7 @@ class UsersController extends Controller
             })
             ->make(true);
     }
-    function addlaporan(Request $request)
+    public function addlaporan(Request $request)
     {
         if (!empty($request->input("id"))) {
             $dataType = Laporan::find($request->input("id"));

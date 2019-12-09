@@ -16,7 +16,6 @@ class DramaController extends Controller
     use HelperController;
     public function index()
     {
-
         $country = Country::all();
         $Type = Type::all();
         $status = Drama::groupBy('status')->select('status')->get();

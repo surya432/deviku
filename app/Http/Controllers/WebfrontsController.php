@@ -165,7 +165,6 @@ class WebfrontsController extends Controller
         ]);
         $data = $response->getBody()->getContents();
         return json_decode($data, true);
-
     }
     public function preCreatePost(Request $request, $idDrama)
     {
@@ -177,7 +176,6 @@ class WebfrontsController extends Controller
 
     public function upload_image($sites, $header, $file, $mime, $title, $size)
     {
-
         $file = file_get_contents(public_path("uploads/" . $title));
         $url = $sites . '/wp-json/wp/v2/media/';
         // $ch = curl_init();

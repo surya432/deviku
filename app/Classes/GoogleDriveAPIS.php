@@ -19,8 +19,8 @@ class GoogleDriveAPIS
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_TIMEOUT => 300,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
@@ -39,7 +39,7 @@ class GoogleDriveAPIS
             return $response;
         }
     }
-    function get_token($tokens)
+    public function get_token($tokens)
     {
         $keys = explode(":::", $tokens['keys']);
         $tokenmd5=md5($tokens['keys']);
@@ -68,7 +68,6 @@ class GoogleDriveAPIS
     }
     public function copygd($driveId, $title, $token)
     {
-
         $keys = explode(":::", $token['keys']);
         $curl = curl_init();
         $folderid= $keys[2];
@@ -78,8 +77,8 @@ class GoogleDriveAPIS
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 300,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => "{\"name\":\"$title\",\"parents\":[\"$folderid\"]}",
@@ -96,7 +95,7 @@ class GoogleDriveAPIS
         if ($err) {
             return null;
         } else {
-            return json_decode($response,true);
+            return json_decode($response, true);
         }
     }
     public function deletegd($id, $token)
@@ -108,8 +107,8 @@ class GoogleDriveAPIS
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 300,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "DELETE",
             CURLOPT_HTTPHEADER => array(
@@ -137,8 +136,8 @@ class GoogleDriveAPIS
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 300,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "DELETE",
             CURLOPT_HTTPHEADER => array(
@@ -157,10 +156,10 @@ class GoogleDriveAPIS
             return $response;
         }
     }
-    function GDCopy($driveId, $dataKey)
+    public function GDCopy($driveId, $dataKey)
     {
         try {
-            $copyid = $this->copygd($driveId,  md5($driveId), $dataKey);
+            $copyid = $this->copygd($driveId, md5($driveId), $dataKey);
             if (isset($copyid['id'])) {
                 return $copyid['id'];
             } else {
@@ -170,7 +169,7 @@ class GoogleDriveAPIS
             return $e;
         }
     }
-    function GDMoveFolder($id, $uploadfolder)
+    public function GDMoveFolder($id, $uploadfolder)
     {
         $settingData = Setting::find(1);
         $oldFolder = $settingData->folderUpload;
@@ -179,8 +178,8 @@ class GoogleDriveAPIS
         curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/drive/v3/files/' . $id . '?addParents=' . $uploadfolder . '&removeParents=' . $oldFolder);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, "{}");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
         $headers = array();
@@ -195,7 +194,7 @@ class GoogleDriveAPIS
         }
         curl_close($ch);
     }
-    function GDCreateFolder($title)
+    public function GDCreateFolder($title)
     {
         $settingData = Setting::find(1);
         $folderid = $settingData->folder720p;
@@ -205,8 +204,8 @@ class GoogleDriveAPIS
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"name\": \"$title\",\"parents\": [\"$folderid\"],\"mimeType\": \"application/vnd.google-apps.folder\"}");
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
         $headers = array();
         $headers[] = 'Authorization: ' . $this->get_token($tokenAdmin);
@@ -222,7 +221,7 @@ class GoogleDriveAPIS
         $response = json_decode($result, true);
         return $response;
     }
-    function GetIdDriveTrashed($urlVideoDrive)
+    public function GetIdDriveTrashed($urlVideoDrive)
     {
         if (preg_match('@https?://(?:[\w\-]+\.)*(?:drive|docs)\.google\.com/(?:(?:folderview|open|uc)\?(?:[\w\-\%]+=[\w\-\%]*&)*id=|(?:folder|file|document|presentation)/d/|spreadsheet/ccc\?(?:[\w\-\%]+=[\w\-\%]*&)*key=)([\w\-]{28,})@i', $urlVideoDrive, $id)) {
             return $id[1];
@@ -231,7 +230,7 @@ class GoogleDriveAPIS
         }
     }
 
-    function AutoBackupDrive()
+    public function AutoBackupDrive()
     {
         $seconds = 1000 * 60 * 15;
         $value = Cache::remember('backupgd', $seconds, function () {
@@ -264,7 +263,7 @@ class GoogleDriveAPIS
         });
         return true;
     }
-    function checkFilesDrive($id)
+    public function checkFilesDrive($id)
     {
         $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&supportsTeamDrives=true");
         $data =  json_decode($curl, true);
@@ -274,22 +273,22 @@ class GoogleDriveAPIS
             return false;
         }
     }
-    function getHeaderCode($url)
+    public function getHeaderCode($url)
     {
         $url = 'https://drive.google.com/file/d/' . $url . '/view';
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, true);    // we want headers
         curl_setopt($ch, CURLOPT_NOBODY, true);    // we don't need body
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
         $output = curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         return $httpcode == 200 ? true : false;
     }
-    function viewsource($url)
+    public function viewsource($url)
     {
         $ch = @curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -301,12 +300,12 @@ class GoogleDriveAPIS
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_TIMEOUT, 300);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
         curl_setopt($ch, CURLOPT_REFERER, 'http://dldramaid.xyz/');
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $page = curl_exec($ch);
         curl_close($ch);
         return $page;

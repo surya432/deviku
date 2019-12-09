@@ -16,13 +16,12 @@ class BrokenLinkController extends Controller
     //
     use HelperController;
 
-    function index()
+    public function index()
     {
         return view('brokenlinks.index');
     }
-    function brokenlinksIndexTables()
+    public function brokenlinksIndexTables()
     {
-
         $data = DB::table('dramas')->whereIn('id', function ($query) {
             $query->from('contents')->select('drama_id')->whereIn('id', function ($query) {
                 $query->from('brokenlinks')->select('contents_id')->groupBy('contents_id')->get();
@@ -52,13 +51,13 @@ class BrokenLinkController extends Controller
             })
             ->make(true);
     }
-    function SetEpsFixed(Request $request)
+    public function SetEpsFixed(Request $request)
     {
         $data = Brokenlink::where('contents_id', $request->input('id'))->delete();
         $dataTypeasd = "sukses di Jalankan";
         return response()->json($dataTypeasd, 201);
     }
-    function DetailBrokenLinks($id)
+    public function DetailBrokenLinks($id)
     {
         $data = DB::table('contents')->whereIn('id', function ($query) {
             $query->from('brokenlinks')->select('contents_id')->get();
@@ -68,7 +67,6 @@ class BrokenLinkController extends Controller
 
 
             ->addColumn('f360ps', function ($data) {
-
                 $f360p = $this->CheckHeaderCode($data->f360p);
                 return ($f360p) ? "Ok" : "false";
             })
@@ -96,7 +94,7 @@ class BrokenLinkController extends Controller
             })
             ->make(true);
     }
-    function DetailBrokenLink($id)
+    public function DetailBrokenLink($id)
     {
         $checkPost = Drama::find($id);
         if (is_null($checkPost)) {

@@ -1,11 +1,11 @@
 <?php
 /*
-	Plugin Name: custom post types sample
-	Plugin URI: http://tagdiv.com
-	Description: adds the td_book post type and td_author + td_genre taxonomy
-	Author: Surya Haho
-	Version: 2.0
-	Author URI: http://nontonindrama.com
+    Plugin Name: custom post types sample
+    Plugin URI: http://tagdiv.com
+    Description: adds the td_book post type and td_author + td_genre taxonomy
+    Author: Surya Haho
+    Version: 2.0
+    Author URI: http://nontonindrama.com
 */
 
 // to register Custom Post Types and taxonomies, the use of the init hook is required!
@@ -172,7 +172,6 @@ class all_terms
     }
     public function get_all_terms($object)
     {
-      
         $return = [];
         $taxonomy_name = $_POST['term'];
         $keyword = explode(",", $_POST['s']);
@@ -205,7 +204,6 @@ class all_meta
     }
     public function get_all_meta($object)
     {
-
         $return = [];
         $postId = $_GET['id'];
         $return = get_post_meta($postId);

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class ViuController extends Controller
 {
-
     use HelperController;
     public function boot()
     {
@@ -189,5 +188,4 @@ class ViuController extends Controller
 
         return $string;
     }
-    
 }

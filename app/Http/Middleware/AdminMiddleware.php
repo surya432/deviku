@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Sentinel;
+
 class AdminMiddleware
 {
     /**
@@ -15,12 +16,11 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if(Sentinel::check()){
+        if (Sentinel::check()) {
             return $next($request);
-        }else{
-        return redirect('/login');	
-	}
+        } else {
+            return redirect('/login');
+        }
         return redirect('/');
-    
     }
 }

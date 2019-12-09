@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Auth;
 use Yajra\Datatables\Datatables;
+
 class MirrorkeyController extends Controller
 {
     /**
@@ -16,7 +17,7 @@ class MirrorkeyController extends Controller
      */
     public function json()
     {
-        $query = \App\mirrorkey::join('master_mirrors', 'master_mirrors.id',"=", 'mirrorkeys.master_mirror_id')->select('mirrorkeys.*','master_mirrors.name')->get();
+        $query = \App\mirrorkey::join('master_mirrors', 'master_mirrors.id', "=", 'mirrorkeys.master_mirror_id')->select('mirrorkeys.*', 'master_mirrors.name')->get();
         //$query mempunyai isi semua data di table users, dan diurutkan dari data yang terbaru
         return Datatables::of($query)
             //$query di masukkan kedalam Datatables
@@ -48,13 +49,12 @@ class MirrorkeyController extends Controller
      */
     public function create(Request $request)
     {
-        //       
+        //
 
-        // $cmp_id = Auth::user()->id; 
+        // $cmp_id = Auth::user()->id;
         // $readyMirrorkey = \App\mirrorkey::where("cmp_id",$cmp_id)->select("id")->get();
         $items = \App\MasterMirror::pluck('name', 'id');
-        return view("mirrorkey.create",compact("items"));
-
+        return view("mirrorkey.create", compact("items"));
     }
 
     /**
@@ -108,7 +108,7 @@ class MirrorkeyController extends Controller
         $readyMirrorkey = \App\mirrorkey::where("cmp_id", $cmp_id)->select("id")->get();
         $items = \App\MasterMirror::pluck('name', 'id');
         $data = \App\mirrorkey::find($id);
-        return view("mirrorkey.edit", compact("data","items"));
+        return view("mirrorkey.edit", compact("data", "items"));
     }
 
     /**

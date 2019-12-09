@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\BackupFilesDrive;
-use App\Content;
 use App\gmail;
 use DB;
 use Goutte\Client;
@@ -34,7 +33,6 @@ class BackupController extends Controller
                         array_push($dataresult, $datass->idcopy . " Delete");
                     } else {
                         array_push($dataresult, $datass->idcopy . " Delete Error");
-
                     }
                 } else {
                     $datass->delete();
@@ -109,7 +107,7 @@ class BackupController extends Controller
             //$this->AutoDeleteGd();
             $dataContent = DB::table('masterlinks')
                 ->whereNotIn('url', DB::table('backups')->where("title", "720p")->pluck('url'))
-                ->where('status','success')
+                ->where('status', 'success')
                 ->orderBy('id', 'desc')
                 ->take(5)
                 ->get();
@@ -134,7 +132,7 @@ class BackupController extends Controller
             }
             $dataContent = DB::table('masterlinks')
                 ->whereNotIn('url', DB::table('backups')->where("title", "360p")->pluck('url'))
-                ->where('status','success')
+                ->where('status', 'success')
                 ->whereNotNull('drive')
                 ->orderBy('id', 'desc')
                 ->take(5)
@@ -159,7 +157,7 @@ class BackupController extends Controller
                 }
             }
             DB::table('backups')->whereNull('f720p')->delete();
-        }else {
+        } else {
             $errorMassage = array("name" => "Gmail Backups Nof found");
             array_push($dataresult, $errorMassage);
         }
@@ -191,10 +189,8 @@ class BackupController extends Controller
                 $content->status = "broken";
                 $content->save();
             }
-
         }
         return response()->json($dataresult);
-
     }
     public function getMirror($data, $mirror)
     {
@@ -588,7 +584,7 @@ class BackupController extends Controller
         $iv = substr(hash('sha256', $secret_iv), 0, 16);
         if ($action == 'e') {
             $output = base64_encode(openssl_encrypt($string, $encrypt_method, $key, 0, $iv));
-        } else if ($action == 'd') {
+        } elseif ($action == 'd') {
             $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
         }
         return $output;

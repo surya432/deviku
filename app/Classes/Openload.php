@@ -7,9 +7,11 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
 use GuzzleHttp\Psr7\Request;
 use Auth;
 use Exception;
-class Openload{
-    var $baseUrl = "https://api.openload.co/1";
-    function clientCurl($urlEndpoint, $data)
+
+class Openload
+{
+    public $baseUrl = "https://api.openload.co/1";
+    public function clientCurl($urlEndpoint, $data)
     {
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -17,8 +19,8 @@ class Openload{
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
@@ -35,7 +37,7 @@ class Openload{
             return $response;
         }
     }
-    function getKey($data, $mirror)
+    public function getKey($data, $mirror)
     {
         try {
             $keys = explode(":::", $data['keys']);
@@ -45,12 +47,12 @@ class Openload{
             return $e->getMessage();
         }
     }
-    function OpenloadUpload($data)
+    public function OpenloadUpload($data)
     {
         $response = $this->clientCurl("/remotedl/add?", $data);
         return json_decode($response, true);
     }
-    function OpenloadStatus($data)
+    public function OpenloadStatus($data)
     {
         $response = $this->clientCurl("/remotedl/status?", $data);
         return json_decode($response, true);

@@ -17,12 +17,10 @@ class DashboardController extends Controller
     //
     public function index()
     {
-
         return view('dashboard.index');
     }
     public function get()
     {
-
         $data = Drama::with('country')->with('type')->orderBy('updated_at', 'desc')->get();
 
         return Datatables::of($data)

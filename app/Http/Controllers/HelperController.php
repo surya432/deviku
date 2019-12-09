@@ -252,7 +252,6 @@ trait HelperController
                     }
                 }
             }
-
         } else {
             return Cache::get($tokens);
         }
@@ -588,7 +587,6 @@ trait HelperController
     }
     public function getDetailDrama($url)
     {
-
         $goutteClient = new Client();
         $guzzleClient = new GuzzleClient(array(
             'timeout' => 60,

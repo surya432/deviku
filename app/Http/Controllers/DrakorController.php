@@ -10,11 +10,11 @@ class DrakorController extends Controller
 {
     //
     use HelperController;
-    function index()
+    public function index()
     {
         return view('lastupdate.index');
     }
-    function Data()
+    public function Data()
     {
         $xml = simplexml_load_string($this->viewsource("//123drakor.co/post-sitemap.xml"));
 

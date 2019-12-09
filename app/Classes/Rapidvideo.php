@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Classes;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -7,19 +7,19 @@ use GuzzleHttp\Psr7\Request;
 use Auth;
 use Exception;
 
-class RapidVideo{
-    var $baseUrl = "https://api.rapidvideo.com/v2";
-    function clientCurl($urlEndpoint, $data)
+class RapidVideo
+{
+    public $baseUrl = "https://api.rapidvideo.com/v2";
+    public function clientCurl($urlEndpoint, $data)
     {
-
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $this->baseUrl . $urlEndpoint. $data,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
-            CURLOPT_SSL_VERIFYHOST => FALSE,
-            CURLOPT_SSL_VERIFYPEER => FALSE,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
@@ -36,7 +36,7 @@ class RapidVideo{
             return $response;
         }
     }
-    function getKey($data, $mirror)
+    public function getKey($data, $mirror)
     {
         try {
             $keys = explode(":::", $data['keys']);
@@ -46,12 +46,12 @@ class RapidVideo{
             return $e->getMessage();
         }
     }
-    function RapidVideoUpload($data){
+    public function RapidVideoUpload($data)
+    {
         $response = $this->clientCurl("/remotedl/add?", $data);
         return json_decode($response, true);
-
     }
-    function RapidVideoStatus($data)
+    public function RapidVideoStatus($data)
     {
         $response = $this->clientCurl("/remotedl/status?", $data);
         return json_decode($response, true);

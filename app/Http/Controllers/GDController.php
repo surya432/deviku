@@ -114,7 +114,7 @@ class GDController extends Controller
                             if (isset($copyID['id'])) {
                                 $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "360p"])->get(['id']);
                                 if (!is_null($dataLink)) {
-                                   \App\masterlinks::destroy($dataLink->toArray());
+                                    \App\masterlinks::destroy($dataLink->toArray());
                                 }
                                 $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->get(['id']);
                                 if (!is_null($checkLaporanBroken)) {
@@ -164,7 +164,6 @@ class GDController extends Controller
             $resultCurl = $this->singkronfile($drama->folderid);
         }
         return view('dashboard.singkronContent')->with('url', $this->foreachFolder($resultCurl, $gmail->token, $id));
-
     }
     public function createFolderDrive(Request $request)
     {

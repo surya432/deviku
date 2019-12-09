@@ -51,11 +51,10 @@ class DramaEpsController extends Controller
                 $linkvideo = "";
                 if ($data->links) {
                     $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
-                    foreach($data->links as $link){
+                    foreach ($data->links as $link) {
                         $linkvideo .= ' <a href="https://drive.google.com/open?id='.$link->drive.'" target="_blank" class="btn btn-xs btn-success">'.$link->kualitas.'</a>';
                     }
                     $linkvideo .= '</div>';
-
                 }
                 return $linkvideo;
             })
@@ -63,11 +62,10 @@ class DramaEpsController extends Controller
                 $linkvideo = "";
                 if ($data->backup) {
                     $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
-                    foreach($data->backup as $backup){
+                    foreach ($data->backup as $backup) {
                         $linkvideo .= ' <a href="https://drive.google.com/open?id='.$backup->f720p.'" target="_blank" class="btn btn-xs btn-success">'.$backup->title.'</a>';
                     }
                     $linkvideo .= '</div>';
-
                 }
                 return $linkvideo;
             })
@@ -122,12 +120,12 @@ class DramaEpsController extends Controller
             $dataContent->save();
             if ($request->input('links')) {
                 foreach ($request->input('links') as $a => $link) {
-                    if(isset($link['id'])){
+                    if (isset($link['id'])) {
                         $MetaLink = \App\masterlinks::find($link['id']);
                         $MetaLink->kualitas = $link['kualitas'];
                         $MetaLink->link = $link['link'];
                         $MetaLink->save();
-                    }else{
+                    } else {
                         $MetaLink = new MetaLink();
                         $MetaLink->kualitas = $link['kualitas'];
                         $MetaLink->link = $link['link'];
@@ -159,12 +157,12 @@ class DramaEpsController extends Controller
                 $dataContent->save();
                 if ($request->input('links')) {
                     foreach ($request->input('links') as $a => $link) {
-                        if(isset($link['id'])){
+                        if (isset($link['id'])) {
                             $MetaLink = \App\masterlinks::find($link['id']);
                             $MetaLink->kualitas = $link['kualitas'];
                             $MetaLink->link = $link['link'];
                             $MetaLink->save();
-                        }else{
+                        } else {
                             $MetaLink = new MetaLink();
                             $MetaLink->kualitas = $link['kualitas'];
                             $MetaLink->link = $link['link'];
@@ -176,7 +174,6 @@ class DramaEpsController extends Controller
             $dataContentasd = "Insert BatchEps Success ";
             return response()->json($dataContentasd, 201);
         }
-
     }
     public function Delete(Request $request, $id)
     {

@@ -12,14 +12,14 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     public function sendError($errorMessages = [], $code = 404)
     {
-    	$response = [
+        $response = [
             'success' => false,
             'message' => $errorMessages,
             'status'=> 'error'
         ];
 
 
-        if(!empty($errorMessages)){
+        if (!empty($errorMessages)) {
             $response['data'] = $errorMessages;
         }
 

@@ -8,7 +8,7 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
 
 class MyAsianTv
 {
-    function getDetailDrama($url)
+    public function getDetailDrama($url)
     {
         try {
             $client = new Client();

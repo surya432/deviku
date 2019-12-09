@@ -100,7 +100,6 @@ class GmailController extends Controller
                 if (!is_null($idcopy) && !is_null($tokens)) {
                     $this->deletegd($this->GetIdDrive($idcopy), $tokens);
                     $content->delete();
-
                 } else {
                     $content->delete();
                 }

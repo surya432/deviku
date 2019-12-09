@@ -12,7 +12,6 @@ class LoginController extends Controller
     //
     public function login()
     {
-
         return view('authentication.login');
     }
     public function loginPost(request $request)
@@ -26,7 +25,7 @@ class LoginController extends Controller
                 // $slug = Sentinel::getUser()->roles()->first()->slug;
                 // if($slug =='admin'){
                 return response()->json(['redirect' => "/admin/drama"]);
-                // }else{
+            // }else{
                 //     return response()->json(['redirect'=>"/editor"]);
                 // }
             } else {

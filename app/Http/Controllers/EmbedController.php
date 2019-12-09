@@ -189,7 +189,7 @@ class EmbedController extends Controller
         $iv = substr(hash('sha256', $secret_iv), 0, 16);
         if ($action == 'e') {
             $output = base64_encode(openssl_encrypt($string, $encrypt_method, $key, 0, $iv));
-        } else if ($action == 'd') {
+        } elseif ($action == 'd') {
             $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
         }
         return $output;
@@ -292,7 +292,6 @@ class EmbedController extends Controller
                 $apikeyremove = $apikey . "&remove_ids=" . json_encode($arrayid);
                 $dataCurl = $fembed->fembedCheck($apikeyremove);
             }
-
         }
     }
     public function fembedCopy($data, $mirror)
@@ -341,7 +340,6 @@ class EmbedController extends Controller
                 //     return "";
                 // }
                 return "";
-
             }
         } else {
             return "";

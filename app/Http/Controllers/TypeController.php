@@ -46,13 +46,15 @@ class TypeController extends Controller
         if (!empty($request->input("id"))) {
             $dataType = Type::find($request->input("id"));
             $dataType->name = $request->input("name");
-            $dataType->slug = $this->seoUrl($request->input("name"));;
+            $dataType->slug = $this->seoUrl($request->input("name"));
+            ;
             $dataType->save();
             return response()->json($dataType, 201);
         }
         $dataType = new Type;
         $dataType->name = $request->input("name");
-        $dataType->slug = $this->seoUrl($request->input("name"));;
+        $dataType->slug = $this->seoUrl($request->input("name"));
+        ;
         $dataType->save();
         return response()->json($dataType, 201);
     }

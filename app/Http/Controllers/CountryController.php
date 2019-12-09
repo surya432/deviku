@@ -38,13 +38,15 @@ class CountryController extends Controller
         if (!empty($request->input("id"))) {
             $dataCountry = Country::find($request->input("id"));
             $dataCountry->name = $request->input("name");
-            $dataCountry->slug = $this->seoUrl($request->input("name"));;
+            $dataCountry->slug = $this->seoUrl($request->input("name"));
+            ;
             $dataCountry->save();
             return response()->json($dataCountry, 201);
         }
         $dataCountry = new Country;
         $dataCountry->name = $request->input("name");
-        $dataCountry->slug = $this->seoUrl($request->input("name"));;
+        $dataCountry->slug = $this->seoUrl($request->input("name"));
+        ;
         $dataCountry->save();
         return response()->json($dataCountry, 201);
     }
