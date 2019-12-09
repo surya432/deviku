@@ -91,7 +91,7 @@ class GDController extends Controller
                                 $data = Content::orderBy('id', 'desc')->with('links')->with('backup')->where('drama_id', $id)->get();
                                 Cache::forever('Content' . $id, $data);
                                 array_push($fdrive, $url . " Update");
-                                $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
+                                // $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                             }
                         }
                         // } else if ($content->f720p == "https://drive.google.com/open?id=" . $Nofiles['id']) {
