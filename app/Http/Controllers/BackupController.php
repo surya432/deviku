@@ -53,7 +53,7 @@ class BackupController extends Controller
                 ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
-                ->take(5)
+                ->take(10)
                 ->get();
             foreach ($dataContent as $content) {
                 $duplicateMaster = $this->duplicateMaster($content, "720p");
@@ -65,7 +65,7 @@ class BackupController extends Controller
                 ->where('f360p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f360p')
                 ->orderBy('id', 'desc')
-                ->take(5)
+                ->take(20)
                 ->get();
 
             foreach ($dataContent as $content) {
