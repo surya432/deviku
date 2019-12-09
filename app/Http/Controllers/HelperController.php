@@ -75,12 +75,12 @@ trait HelperController
     //
     public function singkronfile($id_folder, $tokenPage = null)
     {
-        $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime&supportsAllDrives=true&supportsTeamDrives=true");
+        $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&pageSize=250&orderby=modifiedByMeTime&supportsAllDrives=true&supportsTeamDrives=true");
         return json_decode($curl, true);
     }
     public function singkronToWeb($id_folder, $tokenPage = null)
     {
-        $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&key=AIzaSyARh3GYAD7zg3BFkGzuoqypfrjtt3bJH7M&&pageSize=250&orderby=modifiedByMeTime&supportsAllDrives=true&supportsTeamDrives=true");
+        $curl = $this->viewsource("https://www.googleapis.com/drive/v3/files?q='" . $id_folder . "'+in+parents&pageSize=250&orderby=modifiedByMeTime&supportsAllDrives=true&supportsTeamDrives=true");
         return json_decode($curl, true);
     }
     public function getEmbed($data)

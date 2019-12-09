@@ -163,6 +163,9 @@ class GDController extends Controller
             $drama = \App\Drama::where('id', $id)->first();
             $resultCurl = $this->singkronfile($drama->folderid);
         }
+        if (isset($resultCurl['error'])) {
+            return response()->json($resultCurl['error']);
+        }
         return view('dashboard.singkronContent')->with('url', $this->foreachFolder($resultCurl, $gmail->token, $id));
     }
     public function createFolderDrive(Request $request)
