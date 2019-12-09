@@ -73,7 +73,7 @@ class WebfrontsController extends Controller
         $idPost = $request->input('idPost');
         $data = Content::orderBy('id', 'asc')->where('drama_id', $drama_id)->get();
 
-        $value = Drama::where('id', $drama_id)->with('country')->with('type')->with('eps')->orderBy('id', 'desc')->first();
+        $value = Drama::where('id', $drama_id)->with('country')->with('type')->with('episode')->orderBy('id', 'desc')->first();
         $status = $this->getTermsId($sites->site, "status", $value->status);
         $client = new \GuzzleHttp\Client(['verify' => false, 'headers' => [
             "Authorization" => " Basic " . $header,
@@ -168,7 +168,7 @@ class WebfrontsController extends Controller
     }
     public function preCreatePost(Request $request, $idDrama)
     {
-        $value = Drama::where('id', $idDrama)->with('country')->with('type')->with('eps')->orderBy('id', 'desc')->first();
+        $value = Drama::where('id', $idDrama)->with('country')->with('type')->with('episode')->orderBy('id', 'desc')->first();
         $result = $this->GetTags($value);
         $site = Webfront::all();
         return view('dashboard.createnewpostwp', compact('result', 'site'));

@@ -25,7 +25,7 @@ class DramaEpsController extends Controller
         $country = Country::all();
         $Type = Type::all();
         $status = Drama::groupBy('status')->select('status')->get();
-        $value = Drama::where('id', $id)->with('country')->with('type')->with(['episode','episode.links','episode.backup',])->orderBy('id', 'desc')->first();
+        $value = Drama::where('id', $id)->with('country')->with('type')->with(['episode', 'episode.links', 'episode.backup'])->orderBy('id', 'desc')->first();
         return view('dashboard.dramaEps')->with('result', $value)->with("country", $country)->with("status", $status)->with("Type", $Type);
     }
     public function indexDetail($id)
@@ -37,7 +37,7 @@ class DramaEpsController extends Controller
         }
 
         //$value = Drama::with('country')->with('type')->with('eps')->orderBy('id', 'desc')->get();
-        $value = Drama::where('id', $id)->with('country')->with('type')->with(['episode','episode.links','episode.backup',])->orderBy('id', 'desc')->first();
+        $value = Drama::where('id', $id)->with('country')->with('type')->with(['episode', 'episode.links', 'episode.backup'])->orderBy('id', 'desc')->first();
         $result = $this->GetTags($value);
         return response()->json($result);
     }
@@ -52,7 +52,7 @@ class DramaEpsController extends Controller
                 if ($data->links) {
                     $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
                     foreach ($data->links as $link) {
-                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$link->drive.'" target="_blank" class="btn btn-xs btn-success">'.$link->kualitas.'</a>';
+                        $linkvideo .= ' <a href="https://drive.google.com/open?id=' . $link->drive . '" target="_blank" class="btn btn-xs btn-success">' . $link->kualitas . '</a>';
                     }
                     $linkvideo .= '</div>';
                 }
@@ -63,7 +63,7 @@ class DramaEpsController extends Controller
                 if ($data->backup) {
                     $linkvideo .= '<div class="btn-group" role="group" aria-label="Command Action">';
                     foreach ($data->backup as $backup) {
-                        $linkvideo .= ' <a href="https://drive.google.com/open?id='.$backup->f720p.'" target="_blank" class="btn btn-xs btn-success">'.$backup->title.'</a>';
+                        $linkvideo .= ' <a href="https://drive.google.com/open?id=' . $backup->f720p . '" target="_blank" class="btn btn-xs btn-success">' . $backup->title . '</a>';
                     }
                     $linkvideo .= '</div>';
                 }
@@ -91,8 +91,14 @@ class DramaEpsController extends Controller
                     $data->orderBy('id', 'desc');
                 }
             })
-            ->rawColumns(['backups','links', 'action'])
+            ->rawColumns(['backups', 'links', 'action'])
             ->make(true);
+    }
+    public function edit($id)
+    {
+        $checkPost = Content::where('id',$id)->with('links')->firstOrFail();
+        return response()->json($checkPost);
+
     }
     public function Post(Request $request)
     {
@@ -105,6 +111,25 @@ class DramaEpsController extends Controller
             $dataContent->f360p = $request->input("f360p");
             $dataContent->f720p = $request->input("f720p");
             $dataContent->save();
+            if ($request->input('links')) {
+                foreach ($request->input('links') as $a => $link) {
+                    if (isset($link['link'])) {
+                        if (isset($link['id'])) {
+                            $MetaLink = \App\masterlinks::find($link['id']);
+                            $MetaLink->kualitas = $link['kualitas'];
+                            $MetaLink->drive = $link['link'];
+                            $MetaLink->url = $dataContent->url;
+                            $MetaLink->save();
+                        } else {
+                            $MetaLink = new \App\masterlinks();
+                            $MetaLink->kualitas = $link['kualitas'];
+                            $MetaLink->drive = $link['link'];
+                            $MetaLink->url = $dataContent->url;
+                            $dataContent->links()->save($MetaLink);
+                        }
+                    }
+                }
+            }
             $dataContentasd = "Update Success";
             return response()->json($dataContentasd, 201);
         }
@@ -120,16 +145,20 @@ class DramaEpsController extends Controller
             $dataContent->save();
             if ($request->input('links')) {
                 foreach ($request->input('links') as $a => $link) {
-                    if (isset($link['id'])) {
-                        $MetaLink = \App\masterlinks::find($link['id']);
-                        $MetaLink->kualitas = $link['kualitas'];
-                        $MetaLink->link = $link['link'];
-                        $MetaLink->save();
-                    } else {
-                        $MetaLink = new MetaLink();
-                        $MetaLink->kualitas = $link['kualitas'];
-                        $MetaLink->link = $link['link'];
-                        $dataContent->links()->save($MetaLink);
+                    if (isset($link['link'])) {
+                        if (isset($link['id'])) {
+                            $MetaLink = \App\masterlinks::find($link['id']);
+                            $MetaLink->kualitas = $link['kualitas'];
+                            $MetaLink->drive = $link['link'];
+                            $MetaLink->url = $dataContent->url;
+                            $MetaLink->save();
+                        } else {
+                            $MetaLink = new \App\masterlinks();
+                            $MetaLink->kualitas = $link['kualitas'];
+                            $MetaLink->drive = $link['link'];
+                            $MetaLink->url = $dataContent->url;
+                            $dataContent->links()->save($MetaLink);
+                        }
                     }
                 }
             }
@@ -157,16 +186,18 @@ class DramaEpsController extends Controller
                 $dataContent->save();
                 if ($request->input('links')) {
                     foreach ($request->input('links') as $a => $link) {
-                        if (isset($link['id'])) {
-                            $MetaLink = \App\masterlinks::find($link['id']);
-                            $MetaLink->kualitas = $link['kualitas'];
-                            $MetaLink->link = $link['link'];
-                            $MetaLink->save();
-                        } else {
-                            $MetaLink = new MetaLink();
-                            $MetaLink->kualitas = $link['kualitas'];
-                            $MetaLink->link = $link['link'];
-                            $content->links()->save($MetaLink);
+                        if (isset($link['link'])) {
+                            if (isset($link['id'])) {
+                                $MetaLink = \App\masterlinks::find($link['id']);
+                                $MetaLink->kualitas = $link['kualitas'];
+                                $MetaLink->drive = $link['link'];
+                                $MetaLink->save();
+                            } else {
+                                $MetaLink = new \App\masterlinks();
+                                $MetaLink->kualitas = $link['kualitas'];
+                                $MetaLink->drive = $link['link'];
+                                $dataContent->links()->save($MetaLink);
+                            }
                         }
                     }
                 }

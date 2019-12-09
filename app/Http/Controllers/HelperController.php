@@ -96,7 +96,7 @@ trait HelperController
     public function GetTags($data)
     {
         $embed = '';
-        $eps = $data->eps;
+        $eps = $data->episode;
         $title = $data->title;
         $category = $data->country->name;
         $status = $data->status;
