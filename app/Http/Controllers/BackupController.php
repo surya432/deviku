@@ -49,27 +49,33 @@ class BackupController extends Controller
             $dataContent = DB::table('contents')
                 ->select("url", "f720p", "id")
                 ->whereNotIn('id', DB::table('masterlinks')->where("kualitas", "720p")->pluck('content_id'))
-                ->where('f720p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f720p')
                 ->orderBy('id', 'desc')
                 ->take(10)
                 ->get();
-            foreach ($dataContent as $content) {
-                $duplicateMaster = $this->duplicateMaster($content, "720p");
-                array_push($dataresult, $duplicateMaster);
+            if ($dataContent) {
+                foreach ($dataContent as $content) {
+                    $duplicateMaster = $this->duplicateMaster($content, "720p");
+                    array_push($dataresult, $duplicateMaster);
+                }
+            }else{
+                array_push($dataresult, "720p not found");
             }
             $dataContent = DB::table('contents')
                 ->select("url", "f360p as f720p", "id")
                 ->whereNotIn('id', DB::table('masterlinks')->where("kualitas", "360p")->pluck('content_id'))
-                ->where('f360p', 'NOT LIKE', '%picasa%')
                 ->whereNotNull('f360p')
                 ->orderBy('id', 'desc')
                 ->take(20)
                 ->get();
 
-            foreach ($dataContent as $content) {
-                $duplicateMaster = $this->duplicateMaster($content, "360p");
-                array_push($dataresult, $duplicateMaster);
+            if ($dataContent) {
+                foreach ($dataContent as $content) {
+                    $duplicateMaster = $this->duplicateMaster($content, "360p");
+                    array_push($dataresult, $duplicateMaster);
+                }
+            }else{
+                array_push($dataresult, "360p not found");
             }
             return $dataresult;
         } else {
@@ -86,6 +92,7 @@ class BackupController extends Controller
             $contentSetNull = \App\Content::find($content->id)->first();
             $contentSetNull->f720p = "";
             $contentSetNull->save();
+            return "Error Links";
         } else {
             $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
             $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
