@@ -21,7 +21,6 @@ class BackupController extends Controller
     {
         // $this->AutoDeleteGd();
         $dataresult = array();
-
         $datass = \App\Trash::take(20)->get();
         if ($datass) {
             foreach ($datass as $datass) {
@@ -82,20 +81,28 @@ class BackupController extends Controller
     public function duplicateMaster($content, $kualitas)
     {
         $idDrive = $this->GetIdDrive($content->f720p);
-        $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
-        $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
-        $datass = \App\masterlinks::firstOrCreate($data);
-        $copyID = $this->copygd($idDrive, $settingData->folderid, $content->url . "-" . $kualitas, $settingData->token);
-        if (isset($copyID['id'])) {
-            $this->changePermission($copyID['id'], $settingData->token);
-            $datass->drive = $copyID['id'];
-            $datass->apikey = $settingData->token;
-            $datass->status = "success";
-            $datass->save();
-            return $datass;
+        $f20p = $this->CheckHeaderFolderCode($idDrive);
+        if (!$f20p) {
+            $contentSetNull = \App\Content::find($content->id)->first();
+            $contentSetNull->f720p = "";
+            $contentSetNull->save();
         } else {
-            $datass->delete();
-            return $copyID;
+            $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
+            $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
+            $datass = \App\masterlinks::firstOrCreate($data);
+            $copyID = $this->copygd($idDrive, $settingData->folderid, $content->url . "-" . $kualitas, $settingData->token);
+            if (isset($copyID['id'])) {
+                $this->changePermission($copyID['id'], $settingData->token);
+                $datass->drive = $copyID['id'];
+                $datass->apikey = $settingData->token;
+                $datass->status = "success";
+                $datass->save();
+                return $datass;
+            } else {
+                $datass->delete();
+                return $copyID;
+            }
+
         }
     }
     public function index()

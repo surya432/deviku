@@ -72,7 +72,7 @@ class EmbedController extends Controller
     }
     public function MethodBrokenlinks($id, $kualitas, $options)
     {
-        $seconds = 1000 * 60 * 4;
+        $seconds = 1000 * 60 * 24 * 5;
         Cache::remember('MethodBrokenlinks', $seconds, function () use ($id, $kualitas, $options) {
             $checkLaporanBroken = Brokenlink::where(['contents_id' => $id, "kualitas" => $kualitas])->first();
             if (!is_null($checkLaporanBroken) && $options == "delete") {
@@ -119,18 +119,18 @@ class EmbedController extends Controller
                 }
                 break;
             case 'mirror1':
-                $content = Content::where('url', $url)->first();
-                $iframe = $this->getMirror($content->f720p, "fembed.com");
+                $content = \App\masterlinks::where(["url" => $url, "kualitas" => "720p"])->first();
+                $iframe = $this->getMirror($content->drive, "fembed.com");
                 return $iframe;
                 break;
             case 'mirror2':
-                $content = Content::where('url', $url)->first();
-                $iframe = $this->getMirror($content->f720p, "rapidvideo.com");
+                $content = \App\masterlinks::where(["url" => $url, "kualitas" => "720p"])->first();
+                $iframe = $this->getMirror($content->drive, "rapidvideo.com");
                 return $iframe;
                 break;
             case 'mirror3':
-                $content = Content::where('url', $url)->first();
-                $iframe = $this->getMirror($content->f720p, "openload.com");
+                $content = \App\masterlinks::where(["url" => $url, "kualitas" => "720p"])->first();
+                $iframe = $this->getMirror($content->drive, "openload.com");
                 return $iframe;
                 break;
             case "download_links":
