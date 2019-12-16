@@ -321,7 +321,7 @@ class BackupController extends Controller
         $this->syncFembed($data, $mirror);
 
         if ($ClientID != null) {
-            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->where(['status' => 'Task is completed'])->first();
+            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
             if ($copies) {
                 $url = null;
                 if ($copies['status'] == "Task is completed") {
