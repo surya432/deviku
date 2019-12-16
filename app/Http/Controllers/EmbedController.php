@@ -255,6 +255,8 @@ class EmbedController extends Controller
                         $dataMirror->status = $b['status'];
                         $dataMirror->save();
                         array_push($arrayid, $b['id']);
+                    }else{
+                        array_push($arrayid, $b['id']);
                     }
                 } elseif ($b['status'] == "Could not connect to download server") {
                     array_push($arrayid, $b['id']);

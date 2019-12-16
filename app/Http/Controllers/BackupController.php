@@ -58,7 +58,7 @@ class BackupController extends Controller
                     $duplicateMaster = $this->duplicateMaster($content, "720p");
                     array_push($dataresult, $duplicateMaster);
                 }
-            }else{
+            } else {
                 array_push($dataresult, "720p not found");
             }
             $dataContent = DB::table('contents')
@@ -74,7 +74,7 @@ class BackupController extends Controller
                     $duplicateMaster = $this->duplicateMaster($content, "360p");
                     array_push($dataresult, $duplicateMaster);
                 }
-            }else{
+            } else {
                 array_push($dataresult, "360p not found");
             }
             return $dataresult;
@@ -188,22 +188,27 @@ class BackupController extends Controller
             ->where('kualitas', '720p')->where('status', 'success')
             ->whereNotNull('drive')
             ->orderBy('id', 'desc')
-            ->take(10)
+            ->take(20)
             ->get();
-        foreach ($dataContent as $dataContents) {
-            $f20p = $this->CheckHeaderFolderCode($dataContents->drive);
-            if ($f20p) {
-                $fembed = $this->getMirror($dataContents->drive, "fembed.com");
-                $rapid = $this->getMirror($dataContents->drive, "rapidvideo.com");
-                $openload = $this->getMirror($dataContents->drive, "openload.com");
-                $copyID = array("fembed" => $fembed, "openload" => $openload, "rapid" => $rapid, "url" => $dataContents->url);
-                array_push($dataresult, $copyID);
-            } else {
-                $content = DB::table('masterlinks')::find($dataContents->id);
-                $content->status = "broken";
-                $content->save();
+        if ($dataContent) {
+            foreach ($dataContent as $dataContents) {
+                $f20p = $this->CheckHeaderFolderCode($dataContents->drive);
+                if ($f20p) {
+                    $fembed = $this->getMirror($dataContents->drive, "fembed.com");
+                    // $rapid = $this->getMirror($dataContents->drive, "rapidvideo.com");
+                    // $openload = $this->getMirror($dataContents->drive, "openload.com");
+                    $copyID = array("fembed" => $fembed, "url" => $dataContents->url);
+                    array_push($dataresult, $copyID);
+                } else {
+                    $content = DB::table('masterlinks')::find($dataContents->id);
+                    $content->status = "broken";
+                    $content->save();
+                }
             }
+        } else {
+            array_push($dataresult, "Not Found Copy");
         }
+
         return response()->json($dataresult);
     }
     public function getMirror($data, $mirror)
@@ -251,13 +256,72 @@ class BackupController extends Controller
             return $urlVideoDrive;
         }
     }
+    public function syncFembed($data, $mirror)
+    {
+        $fembed = new \App\Classes\FEmbed();
+        $apikey = $fembed->getKey($this->getProviderStatus($data, $mirror), $mirror);
+        $dataCurl = $fembed->fembedCheck($apikey);
+        if ($dataCurl['success']) {
+            $arrayid = array();
+            foreach ($dataCurl['data'] as $a => $b) {
+                $apikeys = $apikey . "&task_id=" . $b['id'];
+                $dataMirror = \App\Mirrorcopy::where('apikey', $apikeys)->first();
+                if ($b['status'] == 'Task is completed') {
+                    if ($dataMirror) {
+                        $dataMirror->url = $b['file_id'];
+                        $dataMirror->status = $b['status'];
+                        $dataMirror->save();
+                        array_push($arrayid, $b['id']);
+                    }else{
+                        array_push($arrayid, $b['id']);
+                    }
+                } elseif ($b['status'] == "Could not connect to download server") {
+                    array_push($arrayid, $b['id']);
+                    if ($dataMirror) {
+                        $dataMirror->delete();
+                    }
+                } elseif ($b['status'] == "Not an allowed video file") {
+                    array_push($arrayid, $b['id']);
+                    if ($dataMirror) {
+                        $dataMirror->delete();
+                    }
+                } elseif ($b['status'] == "Timed out") {
+                    array_push($arrayid, $b['id']);
+                    if ($dataMirror) {
+                        $dataMirror->delete();
+                    }
+                } elseif ($b['status'] == "could not connect to server") {
+                    array_push($arrayid, $b['id']);
+                    if ($dataMirror) {
+                        $dataMirror->delete();
+                    }
+                } elseif ($b['status'] == "could not verify file to download") {
+                    array_push($arrayid, $b['id']);
+                    if ($dataMirror) {
+                        $dataMirror->delete();
+                    }
+                } elseif ($b['status'] == "file is too small, minimum allow size is 10,240 bytes") {
+                    array_push($arrayid, $b['id']);
+                    if ($dataMirror) {
+                        $dataMirror->delete();
+                    }
+                }
+            }
+            if (!empty($arrayid)) {
+                $apikeyremove = $apikey . "&remove_ids=" . json_encode($arrayid);
+                $dataCurl = $fembed->fembedCheck($apikeyremove);
+            }
+        }
+    }
     public function fembedCopy($data, $mirror)
     {
         $response = [];
         $fembed = new \App\Classes\FEmbed();
         $ClientID = $this->getProviderStatus($data, $mirror);
+        $this->syncFembed($data, $mirror);
+
         if ($ClientID != null) {
-            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->first();
+            $copies = \App\Mirrorcopy::where(['drive' => $data])->where(['provider' => $mirror])->where(['status' => 'Task is completed'])->first();
             if ($copies) {
                 $url = null;
                 if ($copies['status'] == "Task is completed") {
@@ -298,10 +362,10 @@ class BackupController extends Controller
                         $mirrorcopies->save();
                         return $resultCurl['data'][0];
                     } else {
-                        return "";
+                        return $resultCurl;
                     }
                 } else {
-                    return "";
+                    return "Status Disable";
                 }
             }
         } else {
