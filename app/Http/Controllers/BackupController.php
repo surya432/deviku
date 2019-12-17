@@ -97,7 +97,7 @@ class BackupController extends Controller
 
             }
             $contentSetNull->save();
-            return $content->url ."Error Links ".$kualitas;
+            return $content->url ." ".$kualitas ." Error Links ".$content->f720p;
         } else {
             $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
             $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
