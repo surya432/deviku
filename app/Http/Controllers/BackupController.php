@@ -17,6 +17,10 @@ class BackupController extends Controller
      * @return \Illuminate\Http\Response
      */
     use HelperController;
+    public function __construct()
+    {
+        set_time_limit(180);
+    }
     public function deletegdFromDB()
     {
         // $this->AutoDeleteGd();
@@ -59,7 +63,8 @@ class BackupController extends Controller
                     array_push($dataresult, $duplicateMaster);
                 }
             } else {
-                array_push($dataresult, "720p not found");
+                
+                array_push($dataresult, Array("massage"=>"720p Not Found"));
             }
             $dataContent = DB::table('contents')
                 ->select("url", "f360p as f720p", "id")
@@ -75,11 +80,12 @@ class BackupController extends Controller
                     array_push($dataresult, $duplicateMaster);
                 }
             } else {
-                array_push($dataresult, "360p not found");
+
+                array_push($dataresult, Array("massage"=>"360p Not Found"));
             }
             return $dataresult;
         } else {
-            $errorMassage = array("name" => "Gmail Master Nof found");
+            $errorMassage = array("name" => "Gmail Master Not found");
             array_push($dataresult, $errorMassage);
         }
         return $dataresult;
@@ -89,15 +95,20 @@ class BackupController extends Controller
         $idDrive = $this->GetIdDrive($content->f720p);
         $f20p = $this->CheckHeaderFolderCode($idDrive);
         if (!$f20p) {
-            $contentSetNull = \App\Content::find($content->id)->first();
-            if($kualitas == "720p"){
-                $contentSetNull->f720p = null;
-            }else{
-                $contentSetNull->f360p = null;
+            $contentSetNull = \App\Content::where('url',$content->url)->first();
+            if($contentSetNull){
 
+                if ($kualitas == "720p") {
+                    $contentSetNull->f720p = null;
+                } else {
+                    $contentSetNull->f360p = null;
+    
+                }
+                $contentSetNull->save();
+                return $content->url . " " . $kualitas . " Error Links " . $content->f720p;
+            }else{
+                return $content->url . "Cant Set Null " . $kualitas . " Error Links " . $content->f720p;
             }
-            $contentSetNull->save();
-            return $content->url ." ".$kualitas ." Error Links ".$content->f720p;
         } else {
             $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
             $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
@@ -277,7 +288,7 @@ class BackupController extends Controller
                         $dataMirror->status = $b['status'];
                         $dataMirror->save();
                         array_push($arrayid, $b['id']);
-                    }else{
+                    } else {
                         array_push($arrayid, $b['id']);
                     }
                 } elseif ($b['status'] == "Could not connect to download server") {
@@ -312,7 +323,7 @@ class BackupController extends Controller
                     }
                 } elseif ($b['status'] == "Downloading...") {
                     $dataDelete = \Carbon\Carbon::parse($b['created_at'])->addMinutes(30);
-                    if($dataDelete <=  \Carbon\Carbon::now()){
+                    if ($dataDelete <= \Carbon\Carbon::now()) {
                         array_push($arrayid, $b['id']);
                         if ($dataMirror) {
                             $dataMirror->delete();
