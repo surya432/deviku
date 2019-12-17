@@ -305,6 +305,14 @@ class BackupController extends Controller
                     if ($dataMirror) {
                         $dataMirror->delete();
                     }
+                } elseif ($b['status'] == "Downloading...") {
+                    $dataDelete = \Carbon\Carbon::parse($b['created_at'])->addMinutes(30);
+                    if($dataDelete <=  \Carbon\Carbon::now()){
+                        array_push($arrayid, $b['id']);
+                        if ($dataMirror) {
+                            $dataMirror->delete();
+                        }
+                    }
                 }
             }
             if (!empty($arrayid)) {
