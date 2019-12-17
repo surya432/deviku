@@ -139,12 +139,12 @@ class BackupController extends Controller
                 ->whereNotIn('url', DB::table('backups')->where("title", "720p")->pluck('url'))
                 ->where('status', 'success')
                 ->orderBy('id', 'desc')
-                ->take(5)
+                ->take(20)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
                 $datass = BackupFilesDrive::where(['url' => $dataContents->url, 'title' => "720p"]);
-                if ($datass->count() > 0) {
+                if ($datass->count() < 1) {
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->drive), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
                     if (isset($copyID['id'])) {
                         $this->changePermission($copyID['id'], $settingData->token);
@@ -158,6 +158,8 @@ class BackupController extends Controller
                     } else {
                         array_push($dataresult, $copyID);
                     }
+                }else {
+                    array_push($dataresult, $datass);
                 }
             }
             $dataContent = DB::table('masterlinks')
@@ -165,12 +167,12 @@ class BackupController extends Controller
                 ->where('status', 'success')
                 ->whereNotNull('drive')
                 ->orderBy('id', 'desc')
-                ->take(5)
+                ->take(20)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
                 $datass = BackupFilesDrive::where(['url' => $dataContents->url, 'title' => "360p"]);
-                if ($datass->count() > 0) {
+                if ($datass->count() < 1) {
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->drive), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
                     if (isset($copyID['id'])) {
                         $this->changePermission($copyID['id'], $settingData->token);
@@ -184,6 +186,8 @@ class BackupController extends Controller
                     } else {
                         array_push($dataresult, $copyID);
                     }
+                }else {
+                    array_push($dataresult, $datass);
                 }
             }
             DB::table('backups')->whereNull('f720p')->delete();
