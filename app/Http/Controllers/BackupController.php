@@ -207,8 +207,8 @@ class BackupController extends Controller
             ->whereNotIn('drive', DB::table('mirrorcopies')->pluck('drive'))
             ->where('kualitas', '720p')->where('status', 'success')
             ->whereNotNull('drive')
-            ->orderBy('id', 'desc')
-            ->take(20)
+            ->orderBy('id', 'asc')
+            ->take(10)
             ->get();
         if ($dataContent) {
             foreach ($dataContent as $dataContents) {
