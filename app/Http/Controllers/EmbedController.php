@@ -165,7 +165,7 @@ class EmbedController extends Controller
         //return json_encode($mirror);
         if (is_null($mirror)) {
             $copyID = $this->GDCopy($urlDrive, md5($url . $mytime), $kualitas);
-           
+
             if (is_null($copyID) || isset($copyID['error'])) {
                 return $this->GetPlayer("1av4t26HaqPqgSlBAj6D_FSO54RyZR2Tu");
             };
@@ -255,7 +255,7 @@ class EmbedController extends Controller
                         $dataMirror->status = $b['status'];
                         $dataMirror->save();
                         array_push($arrayid, $b['id']);
-                    }else{
+                    } else {
                         array_push($arrayid, $b['id']);
                     }
                 } elseif ($b['status'] == "Could not connect to download server") {
@@ -287,6 +287,14 @@ class EmbedController extends Controller
                     array_push($arrayid, $b['id']);
                     if ($dataMirror) {
                         $dataMirror->delete();
+                    }
+                } elseif ($b['status'] == "Downloading...") {
+                    $dataDelete = \Carbon\Carbon::parse($b['created_at'])->addMinutes(30);
+                    if ($dataDelete <= \Carbon\Carbon::now()) {
+                        array_push($arrayid, $b['id']);
+                        if ($dataMirror) {
+                            $dataMirror->delete();
+                        }
                     }
                 }
             }

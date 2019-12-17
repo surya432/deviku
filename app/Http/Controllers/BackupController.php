@@ -319,6 +319,7 @@ class BackupController extends Controller
                 $apikeyremove = $apikey . "&remove_ids=" . json_encode($arrayid);
                 $dataCurl = $fembed->fembedCheck($apikeyremove);
             }
+            // dd($arrayid);
         }
     }
     public function fembedCopy($data, $mirror)
