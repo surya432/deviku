@@ -91,9 +91,9 @@ class BackupController extends Controller
         if (!$f20p) {
             $contentSetNull = \App\Content::find($content->id)->first();
             if($kualitas == "720p"){
-                $contentSetNull->f720p = "";
+                $contentSetNull->f720p = null;
             }else{
-                $contentSetNull->f360p = "";
+                $contentSetNull->f360p = null;
 
             }
             $contentSetNull->save();
