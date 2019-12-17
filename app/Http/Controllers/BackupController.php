@@ -139,7 +139,7 @@ class BackupController extends Controller
                 ->whereNotIn('url', DB::table('backups')->where("title", "720p")->pluck('url'))
                 ->where('status', 'success')
                 ->orderBy('id', 'desc')
-                ->take(20)
+                ->take(10)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
@@ -167,7 +167,7 @@ class BackupController extends Controller
                 ->where('status', 'success')
                 ->whereNotNull('drive')
                 ->orderBy('id', 'desc')
-                ->take(20)
+                ->take(10)
                 ->get();
             foreach ($dataContent as $dataContents) {
                 $settingData = gmail::where('tipe', 'backup')->inRandomOrder()->first();
