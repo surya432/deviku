@@ -90,9 +90,14 @@ class BackupController extends Controller
         $f20p = $this->CheckHeaderFolderCode($idDrive);
         if (!$f20p) {
             $contentSetNull = \App\Content::find($content->id)->first();
-            $contentSetNull->f720p = "";
+            if($kualitas == "720p"){
+                $contentSetNull->f720p = "";
+            }else{
+                $contentSetNull->f360p = "";
+
+            }
             $contentSetNull->save();
-            return "Error Links";
+            return $content->url ."Error Links ".$kualitas;
         } else {
             $settingData = gmail::where('tipe', 'master')->inRandomOrder()->first();
             $data = array("status" => "duplicate", "url" => $content->url, "content_id" => $content->id, "kualitas" => $kualitas);
