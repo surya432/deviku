@@ -16,10 +16,15 @@ Route::get('/', function () {
 Route::get('/register', function () {
     return abort(404);
 });
-Route::get('/test/{id}', function ($id) {
-    $getData = \App\Drama::with('country')->with('type')->with(['episode', 'episode.links', 'episode.backup'])->findOrFail($id);
-    return $getData;
+Route::get('/downExport', function () {
+    return Excel::download(new \App\Exports\BackupExport, 'backup.xlsx');
 });
+Route::get('/test/{id}', function ($id) {
+    $users = \App\Drama::with('country')->with('type')->with(['episode', 'episode.links', 'episode.backup'])->whereYear('created_at', $id);
+    // return response()->json($users);
+    return view('export',['pegawai' => $users]);
+});
+
 Route::get('/generator/backup', ['as' => 'backup', 'uses' => 'BackupController@index']);
 Route::get('/generator/mirror', ['as' => 'getMirrorAlternatif', 'uses' => 'BackupController@getMirrorAlternatif']);
 Route::get('/generator/links', ['as' => 'viewEpsCoeg', 'uses' => 'BackupController@changeMaster']);
