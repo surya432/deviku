@@ -133,7 +133,7 @@ class ViuController extends Controller
                 $title = $item["title"];
                 $slug = $this->seoUrl($slug);
                 $this->store($title, $slug, $dramaId);
-                $subtitle_code .= "powershell.exe wget '" . $subtitle_indo . "' -OutFile 'sub/" . $slug . ".srt' \n";
+                $subtitle_code .= "powershell.exe wget '" . $subtitle_indo . "' -OutFile '".$path_sub."sub/" . $slug . ".srt' \n";
                 //$ffmpeg_code .= " \n" . '' . $path_sub . '\ffmpeg\ffmpeg.exe -y -i "' . $item["href"] . '" -c copy ' . $path_sub . '\\' . $slug . '.ts;';
                 $ffmpeg_code .= " \n" . 'start "Encoding ' . $title . '" powershell.exe "' . 'ffmpeg -y -i "' . $item["href"] . '" -c copy ' . $path_sub . $slug . '.ts;"';
                 //$ffmpeg_code .= " \n".'start "Encoding '.$slug.'" powershell.exe "'.$path_sub.':\ffmpeg\ffmpeg.exe" -y -i "'.$items["href"].'" '.$command_ffmpeg.' "'.$path_sub.':\\'.$slug.'.720p.mp4"'.$hardsub360p;
