@@ -97,7 +97,7 @@ class GDController extends Controller
                         //     $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                         // }
                     } else {
-                        array_push($fdrive, $url . " Tidak Ditemukan");
+                        array_push($fdrive, $Nofiles['name'] . " Tidak Ditemukan");
                     }
                 } elseif (preg_match("/360p/", $Nofiles['name'])) {
                     $url = str_replace('-360p.mp4', '', $Nofiles['name']);
@@ -146,7 +146,7 @@ class GDController extends Controller
                         //     $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                         // }
                     } else {
-                        array_push($fdrive, $url . " Tidak Ditemukan");
+                        array_push($fdrive, $Nofiles['name'] . " Tidak Ditemukan");
                     }
                 }
             }
