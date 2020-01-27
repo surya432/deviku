@@ -178,7 +178,7 @@ class BackupController extends Controller
                 $datass = BackupFilesDrive::where(['url' => $dataContents->url, 'title' => "360p"]);
                 if ($datass->count() < 1) {
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->drive), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
-                    if (isset($copyID['id'])) {
+                    if (isset($copyID['id']) && !isset($copyID['error'])) {
                         $this->changePermission($copyID['id'], $settingData->token);
                         // $datass = new BackupFilesDrive;
                         // $datass->f720p = $copyID['id'];
