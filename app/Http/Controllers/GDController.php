@@ -64,10 +64,10 @@ class GDController extends Controller
                             array_push($fdrive, $url . " Error");
                         } else {
                             if (isset($copyID['id'])) {
-                                $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->get(['id']);
-                                if (!is_null($dataLink)) {
-                                    \App\masterlinks::destroy($dataLink->toArray());
-                                }
+                                // $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "720p"])->get(['id']);
+                                // if (!is_null($dataLink)) {
+                                //     \App\masterlinks::destroy($dataLink->toArray());
+                                // }
                                 $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "HD"])->get(['id']);
                                 if (!is_null($checkLaporanBroken)) {
                                     \App\masterlinks::destroy($checkLaporanBroken->toArray());
@@ -75,14 +75,18 @@ class GDController extends Controller
                                 // $content->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
                                 // $content->save();
                                 $this->changePermission($copyID['id'], $gmail->token);
-                                $links = new \App\masterlinks;
-                                $links->drive = $copyID['id'];
-                                $links->status = "success";
-                                $links->kualitas = "720p";
-                                $links->apikey = $gmail->token;
-                                $links->content_id = $content->id;
-                                $links->url = $content->url;
-                                $links->save();
+                                $links = App\masterlinks::updateOrCreate(
+                                    ['kualitas' => "720p", 'content_id' => $content->id,'url'=>$content->url],
+                                    ['apikey' => $gmail->token, 'status' => "success", 'drive' => $copyID['id']]
+                                );
+                                // $links = new \App\masterlinks;
+                                // $links->drive = $copyID['id'];
+                                // $links->status = "success";
+                                // $links->kualitas = "720p";
+                                // $links->apikey = $gmail->token;
+                                // $links->content_id = $content->id;
+                                // $links->url = $content->url;
+                                // $links->save();
                                 if ($links) {
                                     $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                                 }
@@ -112,10 +116,10 @@ class GDController extends Controller
                             array_push($fdrive, $url . " Error");
                         } else {
                             if (isset($copyID['id'])) {
-                                $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "360p"])->get(['id']);
-                                if (!is_null($dataLink)) {
-                                    \App\masterlinks::destroy($dataLink->toArray());
-                                }
+                                // $dataLink = \App\masterlinks::where(["content_id" => $content->id, "kualitas" => "360p"])->get(['id']);
+                                // if (!is_null($dataLink)) {
+                                //     \App\masterlinks::destroy($dataLink->toArray());
+                                // }
                                 $checkLaporanBroken = Brokenlink::where(['contents_id' => $content->id, "kualitas" => "SD"])->get(['id']);
                                 if (!is_null($checkLaporanBroken)) {
                                     Brokenlink::destroy($checkLaporanBroken->toArray());
@@ -125,14 +129,18 @@ class GDController extends Controller
                                 // $content->f360p = "https://drive.google.com/open?id=" . $copyID['id'];
                                 // $content->save();
                                 Drama::find($content->drama_id)->touch();
-                                $links = new \App\masterlinks;
-                                $links->drive = $copyID['id'];
-                                $links->status = "success";
-                                $links->kualitas = "360p";
-                                $links->apikey = $gmail->token;
-                                $links->content_id = $content->id;
-                                $links->url = $content->url;
-                                $links->save();
+                                $links = App\masterlinks::updateOrCreate(
+                                    ['kualitas' => "360p", 'content_id' => $content->id,'url'=>$content->url],
+                                    ['apikey' => $gmail->token, 'status' => "success", 'drive' => $copyID['id']]
+                                );
+                                // $links = new \App\masterlinks;
+                                // $links->drive = $copyID['id'];
+                                // $links->status = "success";
+                                // $links->kualitas = "360p";
+                                // // $links->apikey = $gmail->token;
+                                // // $links->content_id = $content->id;
+                                // // $links->url = $content->url;
+                                // $links->save();
                                 if ($links) {
                                     $this->addToTrashes($Nofiles['id'], $tokenDriveAdmin);
                                 }

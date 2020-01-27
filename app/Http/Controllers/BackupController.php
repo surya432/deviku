@@ -148,12 +148,16 @@ class BackupController extends Controller
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->drive), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
                     if (isset($copyID['id'])) {
                         $this->changePermission($copyID['id'], $settingData->token);
-                        $datass = new BackupFilesDrive;
-                        $datass->f720p = $copyID['id'];
-                        $datass->url = $dataContents->url;
-                        $datass->title = "720p";
-                        $datass->tokenfcm = $settingData->token;
-                        $datass->save();
+                        // $datass = new BackupFilesDrive;
+                        // $datass->f720p = $copyID['id'];
+                        // $datass->url = $dataContents->url;
+                        // $datass->title = "720p";
+                        // $datass->tokenfcm = $settingData->token;
+                        // $datass->save();
+                        $datass = App\masterlinks::updateOrCreate(
+                            ['title' => "720p", 'url'=>$dataContents->url],
+                            ['tokenfcm' => $settingData->token,  'f720p' => $copyID['id']]
+                        );
                         array_push($dataresult, $datass);
                     } else {
                         array_push($dataresult, $copyID);
@@ -176,12 +180,16 @@ class BackupController extends Controller
                     $copyID = $this->copygd($this->GetIdDriveTrashed($dataContents->drive), $settingData->folderid, $dataContents->url . "-360p", $settingData->token);
                     if (isset($copyID['id'])) {
                         $this->changePermission($copyID['id'], $settingData->token);
-                        $datass = new BackupFilesDrive;
-                        $datass->f720p = $copyID['id'];
-                        $datass->url = $dataContents->url;
-                        $datass->title = "360p";
-                        $datass->tokenfcm = $settingData->token;
-                        $datass->save();
+                        // $datass = new BackupFilesDrive;
+                        // $datass->f720p = $copyID['id'];
+                        // $datass->url = $dataContents->url;
+                        // $datass->title = "360p";
+                        // $datass->tokenfcm = $settingData->token;
+                        // $datass->save();
+                        $datass = App\masterlinks::updateOrCreate(
+                            ['title' => "360p", 'url'=>$dataContents->url],
+                            ['tokenfcm' => $settingData->token,  'f720p' => $copyID['id']]
+                        );
                         array_push($dataresult, $datass);
                     } else {
                         array_push($dataresult, $copyID);
