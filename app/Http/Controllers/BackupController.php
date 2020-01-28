@@ -154,7 +154,7 @@ class BackupController extends Controller
                         // $datass->title = "720p";
                         // $datass->tokenfcm = $settingData->token;
                         // $datass->save();
-                        $datass = App\masterlinks::updateOrCreate(
+                        $datass = \App\masterlinks::updateOrCreate(
                             ['title' => "720p", 'url'=>$dataContents->url],
                             ['tokenfcm' => $settingData->token,  'f720p' => $copyID['id']]
                         );
@@ -186,7 +186,7 @@ class BackupController extends Controller
                         // $datass->title = "360p";
                         // $datass->tokenfcm = $settingData->token;
                         // $datass->save();
-                        $datass = App\masterlinks::updateOrCreate(
+                        $datass = \App\masterlinks::updateOrCreate(
                             ['title' => "360p", 'url'=>$dataContents->url],
                             ['tokenfcm' => $settingData->token,  'f720p' => $copyID['id']]
                         );

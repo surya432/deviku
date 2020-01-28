@@ -75,7 +75,7 @@ class GDController extends Controller
                                 // $content->f720p = "https://drive.google.com/open?id=" . $copyID['id'];
                                 // $content->save();
                                 $this->changePermission($copyID['id'], $gmail->token);
-                                $links = App\masterlinks::updateOrCreate(
+                                $links = \App\masterlinks::updateOrCreate(
                                     ['kualitas' => "720p", 'content_id' => $content->id,'url'=>$content->url],
                                     ['apikey' => $gmail->token, 'status' => "success", 'drive' => $copyID['id']]
                                 );
@@ -129,7 +129,7 @@ class GDController extends Controller
                                 // $content->f360p = "https://drive.google.com/open?id=" . $copyID['id'];
                                 // $content->save();
                                 Drama::find($content->drama_id)->touch();
-                                $links = App\masterlinks::updateOrCreate(
+                                $links = \App\masterlinks::updateOrCreate(
                                     ['kualitas' => "360p", 'content_id' => $content->id,'url'=>$content->url],
                                     ['apikey' => $gmail->token, 'status' => "success", 'drive' => $copyID['id']]
                                 );
