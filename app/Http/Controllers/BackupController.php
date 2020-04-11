@@ -402,7 +402,7 @@ class BackupController extends Controller
                         return $resultCurl;
                     }
                 } else {
-                    return "Status Disable";
+                    return "Status ".$ClientID['status'];
                 }
             }
         } else {
