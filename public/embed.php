@@ -127,8 +127,12 @@
 				},
 				"download"
 			).on("error", function(e) {
-				daplayer.load();
-				daplayer.play();
+				// daplayer.load();
+				// daplayer.play();
+				daplayer.remove();
+
+				$("#myElement").html('<iframe id="playerEmbed" src="https://drive.google.com/open?id=<?php echo $gid;?>" frameborder=0 marginwidth=0 marginheight=0 scrolling=no width="' + video
+                                .width + '" height="' + video.height + '" allowfullscreen></iframe>');
 			});
 		</script><?php
 						// $results = file_get_contents(url() . '/json.php?url=https://drive.google.com/file/d/' . $gid . '/view');
