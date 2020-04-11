@@ -131,7 +131,7 @@
 				// daplayer.play();
 				daplayer.remove();
 
-				$("#myElement").html('<iframe id="playerEmbed" src="https://drive.google.com/open?id=<?php echo $gid;?>" frameborder=0 marginwidth=0 marginheight=0 scrolling=no width="' + video
+				$("#myElement").html('<iframe id="playerEmbed" src="https://drive.google.com/file/d/<?php echo $gid;?>/preview" frameborder=0 marginwidth=0 marginheight=0 scrolling=no width="' + video
                                 .width + '" height="' + video.height + '" allowfullscreen></iframe>');
 			});
 		</script><?php
