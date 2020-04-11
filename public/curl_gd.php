@@ -15,7 +15,7 @@ function GoogleDrive($gid)
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         $streaming_vid = Drive($gid, "2");
         if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
-            $keys = array('AIzaSyCNxXAnWvUkdi0m7XTkC-EFHb2z2MQMtRo', 'AIzaSyCSqEAuMN_6svup7oZc_v9JRq1PHOQ_2dE', 'AIzaSyD7jsVh3vlw-xhJcklRTugVDSwdnfxMma4', 'AIzaSyDVP1vHDb9fP2fNAhd4GSRRspLMFyVt_X0', 'AIzaSyAFin5-mcY0LhVmjZ56jnVkuUyomb8qf6E', 'AIzaSyACZPjRqcxAS4q_J-MP-dAfMzZVUKqh-2Y');
+            $keys = array('AIzaSyCNxXAnWvUkdi0m7XTkC-EFHb2z2MQMtRo', 'AIzaSyCSqEAuMN_6svup7oZc_v9JRq1PHOQ_2dE', 'AIzaSyD7jsVh3vlw-xhJcklRTugVDSwdnfxMma4', 'AIzaSyDVP1vHDb9fP2fNAhd4GSRRspLMFyVt_X0', 'AIzaSyAFin5-mcY0LhVmjZ56jnVkuUyomb8qf6E', 'AIzaSyACZPjRqcxAS4q_J-MP-dAfMzZVUKqh-2Y','AIzaSyBnkAWXQIDhSTXuCpsmh5bfBgvgm_XdXG0','AIzaSyBWcqH-i6qgdTXjK34jADTgm_NgaJegb2c');
             $output = ['label' => 'auto', 'file' => 'https://www.googleapis.com/drive/v3/files/' . $gid . '?alt=media&key=' . $keys[array_rand($keys)], 'type' => 'video/mp4'];
             $output = json_encode($output, JSON_PRETTY_PRINT);
             return $output;
