@@ -51,9 +51,8 @@
 		return $protocol . "://gd." . $_SERVER['HTTP_HOST'];
 	}
 	if (isset($_GET['id'])) {
-		$eid = htmlspecialchars($_GET['id']);
-		$gid = my_simple_crypt($eid, 'd');
-		// url() . 
+		$gid = htmlspecialchars($_GET['id']);
+		$gid = my_simple_crypt($gid, 'd');
 		// $results = file_get_contents('https://gd.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/file/d/' . $gid . '/preview');
 		$gid = get_drive_id("https://drive.google.com/file/d/$gid/view");
 		$sourcesvideo = GoogleDrive($gid);
@@ -147,6 +146,8 @@
 						if (isset($results)) {
 							echo $results;
 						}
+					}else{
+						echo "nothing";
 					}
 
 					?>

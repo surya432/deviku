@@ -32,6 +32,7 @@ Route::get('/embed/{url}', ['as' => 'viewEps', 'uses' => 'EmbedController@Index'
 Route::get('/ajax/videos/{url}', function () {
     return abort(404);
 });
+Route::get('/drive/cookies', ['as' => 'googleDriveCookies', 'uses' => 'GoogleDrivePlayerController@getlist']);
 Route::get('/detail/drama', ['as' => 'dramacurl', 'uses' => 'WebfrontsController@asiawiki']);
 Route::post('/ajax/videos/{url}', ['as' => 'ajaxEps', 'uses' => 'EmbedController@getDetail']);
 Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@login']);
@@ -144,4 +145,5 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::delete('/admin/form/master-apikey-delete', 'MirrorkeyController@destroy')->name('mirrorkey.destroy');
 
     Route::get('/admin/form-master-mirror', 'MasterMirrorController@json')->name('ApiMasterMirrorJson');
+    Route::resource('cookies', 'GoogleDrivePlayerController');
 });

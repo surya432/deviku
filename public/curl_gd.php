@@ -12,10 +12,11 @@ function GoogleDrive($gid)
     //$title = gdTitle($gid);
     //$img = gdImg($gdurl);
     $streaming_vid = Drive($gid, "1");
+
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         $streaming_vid = Drive($gid, "2");
         if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
-            $keys = array('AIzaSyCNxXAnWvUkdi0m7XTkC-EFHb2z2MQMtRo', 'AIzaSyCSqEAuMN_6svup7oZc_v9JRq1PHOQ_2dE', 'AIzaSyD7jsVh3vlw-xhJcklRTugVDSwdnfxMma4', 'AIzaSyDVP1vHDb9fP2fNAhd4GSRRspLMFyVt_X0', 'AIzaSyAFin5-mcY0LhVmjZ56jnVkuUyomb8qf6E', 'AIzaSyACZPjRqcxAS4q_J-MP-dAfMzZVUKqh-2Y','AIzaSyBnkAWXQIDhSTXuCpsmh5bfBgvgm_XdXG0','AIzaSyBWcqH-i6qgdTXjK34jADTgm_NgaJegb2c');
+            $keys = array('AIzaSyCNxXAnWvUkdi0m7XTkC-EFHb2z2MQMtRo', 'AIzaSyCSqEAuMN_6svup7oZc_v9JRq1PHOQ_2dE', 'AIzaSyD7jsVh3vlw-xhJcklRTugVDSwdnfxMma4', 'AIzaSyDVP1vHDb9fP2fNAhd4GSRRspLMFyVt_X0', 'AIzaSyAFin5-mcY0LhVmjZ56jnVkuUyomb8qf6E', 'AIzaSyACZPjRqcxAS4q_J-MP-dAfMzZVUKqh-2Y', 'AIzaSyBnkAWXQIDhSTXuCpsmh5bfBgvgm_XdXG0', 'AIzaSyBWcqH-i6qgdTXjK34jADTgm_NgaJegb2c');
             $output = ['label' => 'auto', 'file' => 'https://www.googleapis.com/drive/v3/files/' . $gid . '?alt=media&key=' . $keys[array_rand($keys)], 'type' => 'video/mp4'];
             $output = json_encode($output, JSON_PRETTY_PRINT);
             return $output;
@@ -31,6 +32,7 @@ function Drive($gid, $try)
 {
     $timeout = 900;
     $file_name = md5('GD' . $gid . 'player' . $try);
+    // return $file_name;
     if (file_exists('cache/' . $file_name . '.cache')) {
         $fopen = file_get_contents('cache/' . $file_name . '.cache');
         $data = explode('@@', $fopen);
@@ -38,17 +40,19 @@ function Drive($gid, $try)
         $times = strtotime($now) - $data[0];
         if ($times >= $timeout) {
             $linkdown = trim(getlink($gid, $try));
-            $create_cache = gd_cache($gid . $try, $linkdown);
+            $create_cache = gd_cache($file_name, $linkdown);
             $arrays = explode('|', $create_cache);
             $cache = $arrays[0];
+            $cache = $linkdown;
+
         } else {
             $cache = $data[1];
         }
     } else {
-        $linkdown = trim(getlink($gid,$try));
-        $create_cache = gd_cache($gid, $linkdown);
+        $linkdown = trim(getlink($gid, $try));
+        $create_cache = gd_cache($file_name, $linkdown);
         $arrays = explode('|', $create_cache);
-        $cache = $arrays[0];
+        $cache = $linkdown;
     }
     return $cache;
 }
@@ -56,11 +60,11 @@ function Drive($gid, $try)
 //New cache
 function gd_cache($gid, $source)
 {
-    if ($source == '404') {
-        return 'Error|a';
+    if ($source == '404' || is_null($source) || empty($source)) {
+        return 'Error';
     }
     $time = gmdate('Y-m-d H:i:s', time() + 3600 * (+7 + date('I')));
-    $file_name = md5('GD' . $gid . 'player');
+    $file_name = $gid;
     $string = strtotime($time) . '@@' . $source;
     $file = fopen("cache/" . $file_name . ".cache", 'w');
     fwrite($file, $string);
@@ -72,20 +76,24 @@ function gd_cache($gid, $source)
     }
     return $msn;
 }
-
+function getCookies(){
+    return "";
+}
 function getlink($id, $try)
 {
     $link = "https://drive.google.com/uc?export=download&id=$id";
     $ch = curl_init();
+    $cookies = "cookies" . rand(1, 5);
+    $jsoncookies = getCookies();
     curl_setopt($ch, CURLOPT_URL, $link);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 10);
+    // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     if ($try == "2") {
-        curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
-        curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
+        curl_setopt($ch, CURLOPT_COOKIE, $jsoncookies);
     } else {
         curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
         curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
@@ -94,14 +102,12 @@ function getlink($id, $try)
     $get = locheader($page);
     if (strpos($page, "Can&#39;t")) {
         //'Sorry, the owner hasn\'t given you permission to download this file.';
-        $get = '404';
+        $get = '';
     } elseif (strpos($page, "Error 404")) {
         //Error 404. We\'re sorry. You can\'t access this item because it is in violation of our Terms of Service.
-        $get = '404';
+        $get = '';
     } else {
-        if ($get != "") {
-            $get = '404';
-        } else {
+        if ($get != "") { } else {
             $html = str_get_html($page);
             $link = urldecode(trim($html->find('a[id=uc-download-link]', 0)->href));
             $tmp = explode("confirm=", $link);
@@ -115,14 +121,11 @@ function getlink($id, $try)
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_TIMEOUT, 600);
             if ($try == "2") {
-                curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
-                curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/cookies/cookies" . rand(1, 5) . ".txt");
+                curl_setopt($ch, CURLOPT_COOKIE, $jsoncookies);
             } else {
                 curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
                 curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
             }
-
-            // Getting binary data
             $page = curl_exec($ch);
             $get = locheader($page);
         }
@@ -237,10 +240,19 @@ function locheader($page)
     $temp = explode("\r\n", $page);
     foreach ($temp as $item) {
         $temp2 = explode(": ", $item);
-        $infoheader[$temp2[0]] = $temp2[1];
+        if (isset($temp2[1])) {
+            $infoheader[$temp2[0]] = $temp2[1];
+        }
     }
-    $location = $infoheader['Location'];
-    return $location;
+    if (isset($infoheader['location'])) {
+        $location = $infoheader['location'];
+        return $location;
+    }
+    if (isset($infoheader['Location'])) {
+        $location = $infoheader['Location'];
+        return $location;
+    }
+    return "";
 }
 
 function file_get_html()
@@ -277,7 +289,6 @@ function dump_html_tree($node, $show_attr = true, $deep = 0)
     foreach ($node->nodes as $c) {
         dump_html_tree($c, $show_attr, $deep + 1);
     }
-
 }
 
 // simple html dom node
@@ -453,7 +464,6 @@ class simple_html_dom_node
             foreach ($this->nodes as $n) {
                 $ret .= $n->outertext();
             }
-
         }
 
         // render end tag
@@ -472,9 +482,12 @@ class simple_html_dom_node
         }
 
         switch ($this->nodetype) {
-            case HDOM_TYPE_TEXT:return $this->dom->restore_noise($this->_[HDOM_INFO_TEXT]);
-            case HDOM_TYPE_COMMENT:return '';
-            case HDOM_TYPE_UNKNOWN:return '';
+            case HDOM_TYPE_TEXT:
+                return $this->dom->restore_noise($this->_[HDOM_INFO_TEXT]);
+            case HDOM_TYPE_COMMENT:
+                return '';
+            case HDOM_TYPE_UNKNOWN:
+                return '';
         }
         if (strcasecmp($this->tag, 'script') === 0) {
             return '';
@@ -525,11 +538,14 @@ class simple_html_dom_node
                 $ret .= $key;
             } else {
                 switch ($this->_[HDOM_INFO_QUOTE][$i]) {
-                    case HDOM_QUOTE_DOUBLE:$quote = '"';
+                    case HDOM_QUOTE_DOUBLE:
+                        $quote = '"';
                         break;
-                    case HDOM_QUOTE_SINGLE:$quote = '\'';
+                    case HDOM_QUOTE_SINGLE:
+                        $quote = '\'';
                         break;
-                    default:$quote = '';
+                    default:
+                        $quote = '';
                 }
                 $ret .= $key . $this->_[HDOM_INFO_SPACE][$i][1] . '=' . $this->_[HDOM_INFO_SPACE][$i][2] . $quote . $val . $quote;
             }
@@ -574,7 +590,6 @@ class simple_html_dom_node
                 if (!isset($found_keys[$k])) {
                     $found_keys[$k] = 1;
                 }
-
             }
         }
 
@@ -638,18 +653,18 @@ class simple_html_dom_node
             }
 
             // compare tag
-            if ($tag && $tag != $node->tag && $tag !== '*') {$pass = false;}
+            if ($tag && $tag != $node->tag && $tag !== '*') {
+                $pass = false;
+            }
             // compare key
             if ($pass && $key) {
                 if ($no_key) {
                     if (isset($node->attr[$key])) {
                         $pass = false;
                     }
-
                 } else if (!isset($node->attr[$key])) {
                     $pass = false;
                 }
-
             }
             // compare value
             if ($pass && $key && $val && $val !== '*') {
@@ -661,13 +676,11 @@ class simple_html_dom_node
                         if ($check) {
                             break;
                         }
-
                     }
                 }
                 if (!$check) {
                     $pass = false;
                 }
-
             }
             if ($pass) {
                 $ret[$i] = 1;
@@ -719,20 +732,34 @@ class simple_html_dom_node
             }
 
             list($tag, $key, $val, $exp, $no_key) = array($m[1], null, null, '=', false);
-            if (!empty($m[2])) {$key = 'id';
-                $val = $m[2];}
-            if (!empty($m[3])) {$key = 'class';
-                $val = $m[3];}
-            if (!empty($m[4])) {$key = $m[4];}
-            if (!empty($m[5])) {$exp = $m[5];}
-            if (!empty($m[6])) {$val = $m[6];}
+            if (!empty($m[2])) {
+                $key = 'id';
+                $val = $m[2];
+            }
+            if (!empty($m[3])) {
+                $key = 'class';
+                $val = $m[3];
+            }
+            if (!empty($m[4])) {
+                $key = $m[4];
+            }
+            if (!empty($m[5])) {
+                $exp = $m[5];
+            }
+            if (!empty($m[6])) {
+                $val = $m[6];
+            }
 
             // convert to lowercase
-            if ($this->dom->lowercase) {$tag = strtolower($tag);
-                $key = strtolower($key);}
+            if ($this->dom->lowercase) {
+                $tag = strtolower($tag);
+                $key = strtolower($key);
+            }
             //elements that do NOT have the specified attribute
-            if (isset($key[0]) && $key[0] === '!') {$key = substr($key, 1);
-                $no_key = true;}
+            if (isset($key[0]) && $key[0] === '!') {
+                $key = substr($key, 1);
+                $no_key = true;
+            }
 
             $result[] = array($tag, $key, $val, $exp, $no_key);
             if (trim($m[7]) === ',') {
@@ -754,18 +781,24 @@ class simple_html_dom_node
         }
 
         switch ($name) {
-            case 'outertext':return $this->outertext();
-            case 'innertext':return $this->innertext();
-            case 'plaintext':return $this->text();
-            case 'xmltext':return $this->xmltext();
-            default:return array_key_exists($name, $this->attr);
+            case 'outertext':
+                return $this->outertext();
+            case 'innertext':
+                return $this->innertext();
+            case 'plaintext':
+                return $this->text();
+            case 'xmltext':
+                return $this->xmltext();
+            default:
+                return array_key_exists($name, $this->attr);
         }
     }
 
     public function __set($name, $value)
     {
         switch ($name) {
-            case 'outertext':return $this->_[HDOM_INFO_OUTER] = $value;
+            case 'outertext':
+                return $this->_[HDOM_INFO_OUTER] = $value;
             case 'innertext':
                 if (isset($this->_[HDOM_INFO_TEXT])) {
                     return $this->_[HDOM_INFO_TEXT] = $value;
@@ -783,9 +816,12 @@ class simple_html_dom_node
     public function __isset($name)
     {
         switch ($name) {
-            case 'outertext':return true;
-            case 'innertext':return true;
-            case 'plaintext':return true;
+            case 'outertext':
+                return true;
+            case 'innertext':
+                return true;
+            case 'plaintext':
+                return true;
         }
         //no value attr: nowrap, checked selected...
         return (array_key_exists($name, $this->attr)) ? true : isset($this->attr[$name]);
@@ -796,40 +832,69 @@ class simple_html_dom_node
         if (isset($this->attr[$name])) {
             unset($this->attr[$name]);
         }
-
     }
 
     // camel naming conventions
     public function getAllAttributes()
-    {return $this->attr;}
+    {
+        return $this->attr;
+    }
     public function getAttribute($name)
-    {return $this->__get($name);}
+    {
+        return $this->__get($name);
+    }
     public function setAttribute($name, $value)
-    {$this->__set($name, $value);}
+    {
+        $this->__set($name, $value);
+    }
     public function hasAttribute($name)
-    {return $this->__isset($name);}
+    {
+        return $this->__isset($name);
+    }
     public function removeAttribute($name)
-    {$this->__set($name, null);}
+    {
+        $this->__set($name, null);
+    }
     public function getElementById($id)
-    {return $this->find("#$id", 0);}
+    {
+        return $this->find("#$id", 0);
+    }
     public function getElementsById($id, $idx = null)
-    {return $this->find("#$id", $idx);}
+    {
+        return $this->find("#$id", $idx);
+    }
     public function getElementByTagName($name)
-    {return $this->find($name, 0);}
+    {
+        return $this->find($name, 0);
+    }
     public function getElementsByTagName($name, $idx = null)
-    {return $this->find($name, $idx);}
+    {
+        return $this->find($name, $idx);
+    }
     public function parentNode()
-    {return $this->parent();}
+    {
+        return $this->parent();
+    }
     public function childNodes($idx = -1)
-    {return $this->children($idx);}
+    {
+        return $this->children($idx);
+    }
     public function firstChild()
-    {return $this->first_child();}
+    {
+        return $this->first_child();
+    }
     public function lastChild()
-    {return $this->last_child();}
+    {
+        return $this->last_child();
+    }
     public function nextSibling()
-    {return $this->next_sibling();}
+    {
+        return $this->next_sibling();
+    }
     public function previousSibling()
-    {return $this->prev_sibling();}
+    {
+        return $this->prev_sibling();
+    }
 }
 
 // simple html dom parser
@@ -874,7 +939,6 @@ class simple_html_dom
             } else {
                 $this->load($str);
             }
-
         }
     }
 
@@ -950,10 +1014,18 @@ class simple_html_dom
     // clean up memory due to php5 circular references memory leak...
     public function clear()
     {
-        foreach ($this->nodes as $n) {$n->clear();
-            $n = null;}
-        if (isset($this->parent)) {$this->parent->clear();unset($this->parent);}
-        if (isset($this->root)) {$this->root->clear();unset($this->root);}
+        foreach ($this->nodes as $n) {
+            $n->clear();
+            $n = null;
+        }
+        if (isset($this->parent)) {
+            $this->parent->clear();
+            unset($this->parent);
+        }
+        if (isset($this->root)) {
+            $this->root->clear();
+            unset($this->root);
+        }
         unset($this->doc);
         unset($this->noise);
     }
@@ -983,7 +1055,6 @@ class simple_html_dom
         if ($this->size > 0) {
             $this->char = $this->doc[0];
         }
-
     }
 
     // parse html content
@@ -1062,7 +1133,6 @@ class simple_html_dom
                 } else {
                     return $this->as_text_node($tag);
                 }
-
             }
 
             $this->parent->_[HDOM_INFO_END] = $this->cursor;
@@ -1202,7 +1272,6 @@ class simple_html_dom
             } else {
                 break;
             }
-
         } while ($this->char !== '>' && $this->char !== '/');
 
         $this->link_nodes($node, true);
@@ -1217,7 +1286,6 @@ class simple_html_dom
             if (!isset($this->self_closing_tags[strtolower($node->tag)])) {
                 $this->parent = $node;
             }
-
         }
         $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
         return true;
@@ -1254,7 +1322,6 @@ class simple_html_dom
         if ($is_child) {
             $this->parent->children[] = $node;
         }
-
     }
 
     // as a text node
@@ -1367,7 +1434,6 @@ class simple_html_dom
         if ($this->size > 0) {
             $this->char = $this->doc[0];
         }
-
     }
 
     // restore noise to html content
@@ -1378,7 +1444,6 @@ class simple_html_dom
             if (isset($this->noise[$key])) {
                 $text = substr($text, 0, $pos) . $this->noise[$key] . substr($text, $pos + 14);
             }
-
         }
         return $text;
     }
@@ -1391,28 +1456,47 @@ class simple_html_dom
     public function __get($name)
     {
         switch ($name) {
-            case 'outertext':return $this->root->innertext();
-            case 'innertext':return $this->root->innertext();
-            case 'plaintext':return $this->root->text();
+            case 'outertext':
+                return $this->root->innertext();
+            case 'innertext':
+                return $this->root->innertext();
+            case 'plaintext':
+                return $this->root->text();
         }
     }
 
     // camel naming conventions
     public function childNodes($idx = -1)
-    {return $this->root->childNodes($idx);}
+    {
+        return $this->root->childNodes($idx);
+    }
     public function firstChild()
-    {return $this->root->first_child();}
+    {
+        return $this->root->first_child();
+    }
     public function lastChild()
-    {return $this->root->last_child();}
+    {
+        return $this->root->last_child();
+    }
     public function getElementById($id)
-    {return $this->find("#$id", 0);}
+    {
+        return $this->find("#$id", 0);
+    }
     public function getElementsById($id, $idx = null)
-    {return $this->find("#$id", $idx);}
+    {
+        return $this->find("#$id", $idx);
+    }
     public function getElementByTagName($name)
-    {return $this->find($name, 0);}
+    {
+        return $this->find($name, 0);
+    }
     public function getElementsByTagName($name, $idx = -1)
-    {return $this->find($name, $idx);}
+    {
+        return $this->find($name, $idx);
+    }
     public function loadFile()
-    {$args = func_get_args();
-        $this->load(call_user_func_array('file_get_contents', $args), true);}
+    {
+        $args = func_get_args();
+        $this->load(call_user_func_array('file_get_contents', $args), true);
+    }
 }

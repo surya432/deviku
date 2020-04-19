@@ -4,7 +4,7 @@
 
         <ul class="nav" id="side-menu">
 
-            {{--   <li class="sidebar-search">
+            {{-- <li class="sidebar-search">
 
                 <div class="input-group custom-search-form">
 
@@ -91,6 +91,11 @@
                         <a href="{{ route('MirrorkeyController') }}">List APi Key</a>
 
                     </li>
+                    <li>
+
+                        <a href="{{ route('cookies.index') }}">List Cookies</a>
+
+                    </li>
                 </ul>
 
             </li>
@@ -122,7 +127,7 @@
                         <a href="{{ route('users') }}">List Users</a>
 
                     </li>
-                
+
 
                     <li>
 
