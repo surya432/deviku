@@ -110,7 +110,7 @@ class GoogleDrivePlayerController extends Controller
     }
     public function getlist()
     {
-        $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->get();
+        $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
         return response()->json($data);
     }
     public function jsonDataTable()
