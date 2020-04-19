@@ -20,7 +20,7 @@ class GoogleDrivePlayerController extends Controller
     public function index()
     {
         //
-        return view('googledriveplayer.index');
+        return view('googledrivePlayer.index');
     }
 
     /**
@@ -31,7 +31,7 @@ class GoogleDrivePlayerController extends Controller
     public function create()
     {
         //
-        return view("googledriveplayer.create");
+        return view("googledrivePlayer.create");
     }
 
     /**
@@ -78,7 +78,7 @@ class GoogleDrivePlayerController extends Controller
     public function edit(GoogleDrivePlayer $googleDrivePlayer)
     {
         //
-        return view("googledriveplayer.edit", compact('googleDrivePlayer'));
+        return view("googledrivePlayer.edit", compact('googleDrivePlayer'));
     }
 
     /**
