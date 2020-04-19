@@ -145,5 +145,7 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::delete('/admin/form/master-apikey-delete', 'MirrorkeyController@destroy')->name('mirrorkey.destroy');
 
     Route::get('/admin/form-master-mirror', 'MasterMirrorController@json')->name('ApiMasterMirrorJson');
-    Route::resource('cookies', 'GoogleDrivePlayerController');
+    Route::resource('/admin/cookies', 'GoogleDrivePlayerController');
+    Route::get('/admin/datatables/master-cookies', 'GoogleDrivePlayerController@jsonDataTable')->name('jsonDataTableCookies');
+
 });

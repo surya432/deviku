@@ -1,17 +1,17 @@
 @extends('parts.default')
 @section('title-page')
-Master Player
+Master Cookies
 @endsection
 @section('content')
 <div class="panel panel-primary">
     <div class="panel-heading">
-        List Player Mirror
+        List Player Cookies
     </div>
     <div class="panel-body">
          <div class="col-lg-12">
               <!-- Button trigger modal -->
-          <button type="button" link="{{ route('masterMirrorCreate') }}" class="btn btn-primary btn-create btn-action btn-sm btn-flat " data-toggle="modal" data-target="#modelId">
-            Create New Mirror
+          <button type="button" link="{{ route('cookies.create') }}" class="btn btn-primary btn-create btn-action btn-sm btn-flat " data-toggle="modal" data-target="#modelId">
+            Create New Cookies
         </button>
 
         <!-- Modal -->
@@ -23,7 +23,7 @@ Master Player
                     <thead>
                         <tr>
                             <th witdh="5%">No</th>
-                            <th>Name</th>
+                            <th>Email</th>
                             <th width="15%">Status</th>
                             <th width="20%">Aksi</th>
                         </tr>
@@ -166,7 +166,7 @@ Master Player
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    'url': "{!! route('ApiMasterMirrorJson') !!}",
+                    'url': "{!! route('jsonDataTableCookies') !!}",
                     "type": "GET"
                 },
                 columns: [{
@@ -176,8 +176,8 @@ Master Player
                         searchable: false
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'email',
+                        name: 'email'
                     },
                     {
                         data: 'status',

@@ -1,4 +1,4 @@
-{!! Form::open(array('route' => ['ApiMasterMirrorStore'],'method'=>'POST','role' => 'form', 'id' => 'my_form')) !!}
+{!! Form::open(array('route' => ['cookies.store'],'method'=>'POST','role' => 'form', 'id' => 'my_form')) !!}
 
 <div class="modal-header">
     <h5 class="modal-title">Modal title</h5>
@@ -10,8 +10,14 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Name:</strong>
-                {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
+                <strong>Email:</strong>
+                {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Cookies JSON:</strong>
+                {!! Form::textarea('cookiestext', null, array('placeholder' => 'Cookies JSON','rows' => 4, 'cols' => 54,'class' => 'form-control')) !!}
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">

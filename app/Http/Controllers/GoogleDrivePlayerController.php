@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\GoogleDrivePlayer;
 use Illuminate\Http\Request;
 
+use Validator;
+use DB;
+
+use Yajra\Datatables\Datatables;
+
 class GoogleDrivePlayerController extends Controller
 {
     /**
@@ -15,7 +20,7 @@ class GoogleDrivePlayerController extends Controller
     public function index()
     {
         //
-        return view('googledriveplayer.index')
+        return view('googledriveplayer.index');
     }
 
     /**
@@ -27,7 +32,6 @@ class GoogleDrivePlayerController extends Controller
     {
         //
         return view("googledriveplayer.create");
-
     }
 
     /**
@@ -39,6 +43,19 @@ class GoogleDrivePlayerController extends Controller
     public function store(Request $request)
     {
         //
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'email' => 'required|unique:google_drive_players,email',
+            'cookiestext' => 'required',
+            'status' => 'required'
+        ]);
+
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        $product = \App\GoogleDrivePlayer::create($input);
+        return $this->sendResponse($product->toArray(), 'created successfully.');
     }
 
     /**
@@ -61,6 +78,7 @@ class GoogleDrivePlayerController extends Controller
     public function edit(GoogleDrivePlayer $googleDrivePlayer)
     {
         //
+        return view("googledriveplayer.edit", compact('googleDrivePlayer'));
     }
 
     /**
@@ -84,10 +102,35 @@ class GoogleDrivePlayerController extends Controller
     public function destroy(GoogleDrivePlayer $googleDrivePlayer)
     {
         $googleDrivePlayer->delete();
-        return $this->sendResponse($googleDrivePlayer->toArray(), 'googleDrivePlayer deleted successfully.');
+        if ($googleDrivePlayer) {
+            DB::table('google_drive_players')->where('id', '=', $googleDrivePlayer->id)->delete();
+            return $this->sendResponse($googleDrivePlayer->toArray(), 'googleDrivePlayer deleted successfully.');
+        }
+        return response()->json($googleDrivePlayer);
     }
-    public function getlist(){
-        $data = GoogleDrivePlayer::where('status','active')->random(1)->first();
+    public function getlist()
+    {
+        $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->get();
         return response()->json($data);
-    } 
+    }
+    public function jsonDataTable()
+    {
+        $query = \App\GoogleDrivePlayer::orderBy('id', 'desc')->get();
+        //$query mempunyai isi semua data di table users, dan diurutkan dari data yang terbaru
+        return Datatables::of($query)
+            //$query di masukkan kedalam Datatables
+            ->addColumn('action', function ($q) {
+                //Kemudian kita menambahkan kolom baru , yaitu "action"
+                return view('links', [
+                    //Kemudian dioper ke file links.blade.php
+                    'model'      => $q,
+                    'url_edit'   => route('cookies.edit', $q->id),
+                    'url_hapus'  => route('cookies.destroy', $q->id),
+                    // 'url_detail' => route('mirrorkey.show', $q->id),
+                ]);
+            })
+            ->addIndexColumn()
+            // ->rawColumns(['other-columns'])
+            ->make(true);
+    }
 }
