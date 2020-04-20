@@ -75,13 +75,12 @@ Master Cookies
                     if (result.value) {
                         axios({
                             url: urlsdelete,
-                            credentials: true,
+                            credentials: false,
                             method: "DELETE",
                         }).then(response => {
                             console.log(response);
                             table.draw();
                             swal2(data.status, data.message);
-
                         }).catch(error => {
                             console.log(error.response);
                         });
@@ -105,7 +104,6 @@ Master Cookies
 
             axios({
                 url: urls,
-                credentials: true,
                 method: "GET",
             }).then(response => {
                 // // console.log(response);

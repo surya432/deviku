@@ -75,9 +75,10 @@ class GoogleDrivePlayerController extends Controller
      * @param  \App\GoogleDrivePlayer  $googleDrivePlayer
      * @return \Illuminate\Http\Response
      */
-    public function edit(GoogleDrivePlayer $googleDrivePlayer)
+    public function edit(GoogleDrivePlayer $googleDrivePlayer,$id)
     {
         //
+        $googleDrivePlayer = \App\GoogleDrivePlayer::find($id)->first();
         return view("googledrivePlayer.edit", compact('googleDrivePlayer'));
     }
 
@@ -88,9 +89,27 @@ class GoogleDrivePlayerController extends Controller
      * @param  \App\GoogleDrivePlayer  $googleDrivePlayer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GoogleDrivePlayer $googleDrivePlayer)
+    public function update(Request $request, GoogleDrivePlayer $googleDrivePlayer,$id)
     {
         //
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'email' => 'required',
+            'cookiestext' => 'required',
+            'status' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $masterMirror= \App\GoogleDrivePlayer::find($id);
+        $masterMirror->email = $input['email'];
+        $masterMirror->cookiestext = $input['cookiestext'];
+        $masterMirror->status = $input['status'];
+        $masterMirror->save();
+
+
+        return $this->sendResponse($masterMirror->toArray(), 'Product updated successfully.');
     }
 
     /**
@@ -99,11 +118,12 @@ class GoogleDrivePlayerController extends Controller
      * @param  \App\GoogleDrivePlayer  $googleDrivePlayer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GoogleDrivePlayer $googleDrivePlayer)
+    public function destroy(GoogleDrivePlayer $googleDrivePlayer,$id)
     {
-        $googleDrivePlayer->delete();
+        $googleDrivePlayer= \App\GoogleDrivePlayer::find($id);
+
         if ($googleDrivePlayer) {
-            DB::table('google_drive_players')->where('id', '=', $googleDrivePlayer->id)->delete();
+            $googleDrivePlayer->delete();
             return $this->sendResponse($googleDrivePlayer->toArray(), 'googleDrivePlayer deleted successfully.');
         }
         return response()->json($googleDrivePlayer);
