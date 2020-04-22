@@ -77,10 +77,15 @@ function gd_cache($gid, $source)
 }
 function getCookies($id)
 {
-    $hostName = "//" . $_SERVER['HTTP_HOST'] . "/drive/getDataWebLink/" . $id;
+    $hostName = "https://player.nontonindrama.com/drive/getDataWebLink/" . $id;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $hostName);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 10);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
     $headers = array();
