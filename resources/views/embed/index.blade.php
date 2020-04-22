@@ -164,6 +164,7 @@
                 url: "{{ route('ajaxEps',$url->url) }}",
                 type: "POST",
                 data: data,
+                mode: 'cors',
                 cache: false,
                 beforeSend: function() {
                     // setting a timeout
