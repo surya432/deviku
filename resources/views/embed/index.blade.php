@@ -162,7 +162,7 @@
             );
             var data = 'videos={{ $url->url }}&player=' + link_id;
             $.ajax({
-                async: false,
+                async: true,
                 url: "{{ route('ajaxEps',$url->url) }}",
                 type: "POST",
                 data: data,
