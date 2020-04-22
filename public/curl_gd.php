@@ -97,7 +97,7 @@ function getlink($id, $try)
     $link = "https://drive.google.com/uc?export=download&id=$id";
     $ch = curl_init();
     if ($try == "2") {
-        $link = getCookies($id);
+        return getCookies($id);
     }
     curl_setopt($ch, CURLOPT_URL, $link);
     curl_setopt($ch, CURLOPT_HEADER, true);
