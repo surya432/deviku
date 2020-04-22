@@ -101,7 +101,7 @@ function getlink($id, $try)
     $link = "https://drive.google.com/uc?export=download&id=$id";
 
     if ($try == "2") {
-        return file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $id);
+        $link= file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $id);
     }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $link);
