@@ -33,7 +33,6 @@ function Drive($gid, $try)
 {
     $timeout = 900;
     $file_name = md5('GD' . $gid . 'player' . $try);
-    // return $file_name;
     if (file_exists('cache/' . $file_name . '.cache')) {
         $fopen = file_get_contents('cache/' . $file_name . '.cache');
         $data = explode('@@', $fopen);
