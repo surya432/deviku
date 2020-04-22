@@ -14,7 +14,6 @@ function GoogleDrive($gid)
     //$img = gdImg($gdurl);
     // $streaming_vid = Drive($gid, "2");
     $streaming_vid= file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $gid);
-    $streaming_vid = getlink($streaming_vid,"1");
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         $streaming_vid = Drive($gid, "1");
         if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
