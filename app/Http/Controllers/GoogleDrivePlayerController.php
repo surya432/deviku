@@ -12,6 +12,8 @@ use Yajra\Datatables\Datatables;
 
 class GoogleDrivePlayerController extends Controller
 {
+    use HelperController;
+
     /**
      * Display a listing of the resource.
      *
@@ -132,6 +134,15 @@ class GoogleDrivePlayerController extends Controller
     {
         $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
         return response()->json($data);
+    }
+    public function getDataWebLink($id){
+        $dataCurl=$this->viewsource("https://www.googleapis.com/drive/v3/files/".$id."?alt=json&fields=webContentLink%2Cid&");
+        $data = json_decode($dataCurl,true);
+        
+        if(isset($data['webContentLink'])){
+            return $data['webContentLink'];
+        }
+        return null;
     }
     public function jsonDataTable()
     {

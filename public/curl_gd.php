@@ -11,8 +11,7 @@ function GoogleDrive($gid)
     $iframeid = my_simple_crypt($gid);
     //$title = gdTitle($gid);
     //$img = gdImg($gdurl);
-    $streaming_vid = Drive($gid, "1");
-
+    return $streaming_vid = Drive($gid, "2");
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         $streaming_vid = Drive($gid, "2");
         if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
@@ -44,7 +43,6 @@ function Drive($gid, $try)
             $arrays = explode('|', $create_cache);
             $cache = $arrays[0];
             $cache = $linkdown;
-
         } else {
             $cache = $data[1];
         }
@@ -76,28 +74,40 @@ function gd_cache($gid, $source)
     }
     return $msn;
 }
-function getCookies(){
-    return "";
+function getCookies($id)
+{
+    $hostName = "//" . $_SERVER['HTTP_HOST'] . "/drive/getDataWebLink/" . $id;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $hostName);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+    $headers = array();
+    $headers[] = 'Accept: application/json';
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    $result = curl_exec($ch);
+    if (curl_errno($ch)) {
+        return "";
+    }
+    curl_close($ch);
+    return $result;
 }
 function getlink($id, $try)
 {
     $link = "https://drive.google.com/uc?export=download&id=$id";
     $ch = curl_init();
-    $cookies = "cookies" . rand(1, 5);
-    $jsoncookies = getCookies();
+    if ($try == "2") {
+        $link = getCookies($id);
+    }
     curl_setopt($ch, CURLOPT_URL, $link);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 10);
-    // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    if ($try == "2") {
-        curl_setopt($ch, CURLOPT_COOKIE, $jsoncookies);
-    } else {
-        curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
-        curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
-    }
+    curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
+    curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
     $page = curl_exec($ch);
     $get = locheader($page);
     if (strpos($page, "Can&#39;t")) {
@@ -120,12 +130,8 @@ function getlink($id, $try)
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_TIMEOUT, 600);
-            if ($try == "2") {
-                curl_setopt($ch, CURLOPT_COOKIE, $jsoncookies);
-            } else {
-                curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
-                curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
-            }
+            curl_setopt($ch, CURLOPT_COOKIEJAR, dirname(__FILE__) . "/google.mp3");
+            curl_setopt($ch, CURLOPT_COOKIEFILE, dirname(__FILE__) . "/google.mp3");
             $page = curl_exec($ch);
             $get = locheader($page);
         }
