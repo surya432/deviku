@@ -7,17 +7,13 @@ if (!file_exists('cache')) {
 
 function GoogleDrive($gid)
 {
-    $output = ['label' => 'auto', 'file' => "https://drive.google.com/a/sman1-teras.sch.id/uc?id=1H8CEYLXaC3IJsT37Ij-snIQ4O6JbRatr&export=download", 'type' => 'video/mp4'];
-    $output = json_encode($output, JSON_PRETTY_PRINT);
-    return $output;
+
     $gdurl = 'https://drive.google.com/file/d/' . $gid . '/preview';
     $iframeid = my_simple_crypt($gid);
     //$title = gdTitle($gid);
     //$img = gdImg($gdurl);
     $streaming_vid = Drive($gid, "1");
-    $output = ['label' => 'auto', 'file' => "https://drive.google.com/a/sman1-teras.sch.id/uc?id=1H8CEYLXaC3IJsT37Ij-snIQ4O6JbRatr&export=download", 'type' => 'video/mp4'];
-    $output = json_encode($output, JSON_PRETTY_PRINT);
-    return $output;
+
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         $streaming_vid = Drive($gid, "2");
         if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
@@ -101,10 +97,11 @@ function getCookies($id)
 function getlink($id, $try)
 {
     $link = "https://drive.google.com/uc?export=download&id=$id";
-    $ch = curl_init();
+
     if ($try == "2") {
         return getCookies($id);
     }
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $link);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
