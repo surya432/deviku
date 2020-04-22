@@ -11,7 +11,7 @@ function GoogleDrive($gid)
     $iframeid = my_simple_crypt($gid);
     //$title = gdTitle($gid);
     //$img = gdImg($gdurl);
-    return $streaming_vid = Drive($gid, "2");
+    $streaming_vid = Drive($gid, "2");
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         $streaming_vid = Drive($gid, "2");
         if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
