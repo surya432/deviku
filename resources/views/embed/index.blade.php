@@ -141,8 +141,6 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                'Content-Type': 'application/json',
-                "Accept": 'application/json',
             },
         });
     </script>
@@ -166,7 +164,6 @@
                 url: "{{ route('ajaxEps',$url->url) }}",
                 type: "POST",
                 data: data,
-                mode: 'cors',
                 cache: false,
                 beforeSend: function() {
                     // setting a timeout
