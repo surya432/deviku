@@ -12,7 +12,7 @@ function GoogleDrive($gid)
     $iframeid = my_simple_crypt($gid);
     //$title = gdTitle($gid);
     //$img = gdImg($gdurl);
-    $streaming_vid = Drive($gid, "1");
+    $streaming_vid = Drive($gid, "2");
 
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         $streaming_vid = Drive($gid, "2");
@@ -86,8 +86,6 @@ function getCookies($id)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 10);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-    curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
     $headers = array();
     $headers[] = 'Accept: application/json';
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -103,7 +101,7 @@ function getlink($id, $try)
     $link = "https://drive.google.com/uc?export=download&id=$id";
 
     if ($try == "2") {
-        return getCookies($id);
+        return file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $id);
     }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $link);
