@@ -90,7 +90,8 @@ function getCookies()
         return "";
     }
     curl_close($ch);
-    return $result;
+    $data = json_decode($result,true);
+    return $data['cookiestext'];
 }
 function getlink($id, $try)
 {
