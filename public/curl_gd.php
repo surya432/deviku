@@ -76,7 +76,7 @@ function getCookies()
     $hostName = "https://player.nontonindrama.com/drive/getDataWebLink";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $hostName);
-    curl_setopt($ch, CURLOPT_HEADER, true);
+    // curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 10);
@@ -90,15 +90,16 @@ function getCookies()
         return "";
     }
     curl_close($ch);
-    $data = json_decode($result,true);
-    return $data['cookiestext'];
+    $result = json_decode($result,true);
+     return $result['cookiestext'];
 }
 function getlink($id, $try)
 {
     $link = "https://drive.google.com/uc?export=download&id=$id";
 
     if ($try == "2") {
-        return  'https://www.googleapis.com/drive/v3/files/' . $id . '?alt=media&key=' .getCookies();
+        $data = getCookies();
+        return  'https://www.googleapis.com/drive/v3/files/' . $id . '?alt=media&key=' .$data;
     }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $link);
