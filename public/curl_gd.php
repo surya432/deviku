@@ -84,7 +84,7 @@ function getCookies()
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     $headers = array();
     $headers[] = 'Accept: application/json';
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     $result = curl_exec($ch);
     if (curl_errno($ch)) {
         return "";
