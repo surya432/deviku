@@ -32,7 +32,7 @@ Route::get('/embed/{url}', ['as' => 'viewEps', 'uses' => 'EmbedController@Index'
 Route::get('/ajax/videos/{url}', function () {
     return abort(404);
 });
-Route::get('/drive/getDataWebLink/{id}', ['as' => 'googleDrivegetDataWebLink', 'uses' => 'GoogleDrivePlayerController@getDataWebLink']);
+Route::get('/drive/getDataWebLink', ['as' => 'googleDrivegetDataWebLink', 'uses' => 'GoogleDrivePlayerController@getlist']);
 Route::get('/detail/drama', ['as' => 'dramacurl', 'uses' => 'WebfrontsController@asiawiki']);
 Route::post('/ajax/videos/{url}', ['as' => 'ajaxEps', 'uses' => 'EmbedController@getDetail']);
 Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@login']);

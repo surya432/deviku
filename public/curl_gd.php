@@ -12,16 +12,11 @@ function GoogleDrive($gid)
     $iframeid = my_simple_crypt($gid);
     //$title = gdTitle($gid);
     //$img = gdImg($gdurl);
-     $streaming_vid = Drive($gid, "2");
-   // $streaming_vid= file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $gid);
+    $streaming_vid = Drive($gid, "2");
+    // $streaming_vid= file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $gid);
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
-        $streaming_vid = Drive($gid, "1");
-        if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
-            $keys = array('AIzaSyCNxXAnWvUkdi0m7XTkC-EFHb2z2MQMtRo', 'AIzaSyCSqEAuMN_6svup7oZc_v9JRq1PHOQ_2dE', 'AIzaSyD7jsVh3vlw-xhJcklRTugVDSwdnfxMma4', 'AIzaSyDVP1vHDb9fP2fNAhd4GSRRspLMFyVt_X0', 'AIzaSyAFin5-mcY0LhVmjZ56jnVkuUyomb8qf6E', 'AIzaSyACZPjRqcxAS4q_J-MP-dAfMzZVUKqh-2Y', 'AIzaSyBnkAWXQIDhSTXuCpsmh5bfBgvgm_XdXG0', 'AIzaSyBWcqH-i6qgdTXjK34jADTgm_NgaJegb2c');
-            $output = ['label' => 'auto', 'file' => 'https://www.googleapis.com/drive/v3/files/' . $gid . '?alt=media&key=' . $keys[array_rand($keys)], 'type' => 'video/mp4'];
-            $output = json_encode($output, JSON_PRETTY_PRINT);
-            return $output;
-        }
+        $streaming_vid = Drive($gid, "2");
+        
     }
     $output = ['label' => 'auto', 'file' => str_replace("&authuser=0", "", $streaming_vid), 'type' => 'video/mp4'];
     $output = json_encode($output, JSON_PRETTY_PRINT);
@@ -31,6 +26,7 @@ function GoogleDrive($gid)
 //Check cache
 function Drive($gid, $try)
 {
+
     $timeout = 900;
     $file_name = md5('GD' . $gid . 'player' . $try);
     if (file_exists('cache/' . $file_name . '.cache')) {
@@ -75,9 +71,9 @@ function gd_cache($gid, $source)
     }
     return $msn;
 }
-function getCookies($id)
+function getCookies()
 {
-    $hostName = "https://player.nontonindrama.com/drive/getDataWebLink/" . $id;
+    $hostName = "https://player.nontonindrama.com/drive/getDataWebLink/";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $hostName);
     curl_setopt($ch, CURLOPT_HEADER, true);
@@ -101,7 +97,7 @@ function getlink($id, $try)
     $link = "https://drive.google.com/uc?export=download&id=$id";
 
     if ($try == "2") {
-        $link= file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $id);
+        return  'https://www.googleapis.com/drive/v3/files/' . $id . '?alt=media&key=' .getCookies();
     }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $link);

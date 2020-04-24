@@ -133,14 +133,14 @@ class GoogleDrivePlayerController extends Controller
     public function getlist()
     {
         $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
-        return response()->json($data);
+        return $data;
     }
     public function getDataWebLink($id){
-        $dataCurl=$this->viewsource("https://www.googleapis.com/drive/v3/files/".$id."?alt=json&fields=webContentLink%2Cid&");
-        $data = json_decode($dataCurl,true);
+        $dataCurl=$this->viewsource("https://www.googleapis.com/drive/v2/files/".$id."?alt=json");
+         $data = json_decode($dataCurl,true);
         
-        if(isset($data['webContentLink'])){
-            return $data['webContentLink'];
+        if(isset($data['alternateLink'])){
+            return $data['alternateLink'];
         }
         return null;
     }
