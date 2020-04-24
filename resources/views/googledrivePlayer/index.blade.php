@@ -24,6 +24,7 @@ Master Cookies
                         <tr>
                             <th witdh="5%">No</th>
                             <th>Email</th>
+                            <th width="15%">Key</th>
                             <th width="15%">Status</th>
                             <th width="20%">Aksi</th>
                         </tr>
@@ -176,6 +177,10 @@ Master Cookies
                     {
                         data: 'email',
                         name: 'email'
+                    },
+                    {
+                        data: 'cookiestext',
+                        name: 'cookiestext'
                     },
                     {
                         data: 'status',
