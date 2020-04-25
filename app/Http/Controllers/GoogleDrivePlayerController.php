@@ -80,7 +80,7 @@ class GoogleDrivePlayerController extends Controller
     public function edit(GoogleDrivePlayer $googleDrivePlayer, $id)
     {
         //
-        $googleDrivePlayer = \App\GoogleDrivePlayer::find($id)->first();
+        $googleDrivePlayer = \App\GoogleDrivePlayer::where('id',$id)->first();
         return view("googledrivePlayer.edit", compact('googleDrivePlayer'));
     }
 
@@ -104,7 +104,7 @@ class GoogleDrivePlayerController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $masterMirror = \App\GoogleDrivePlayer::find($input['id']);
+        $masterMirror = \App\GoogleDrivePlayer::where('id',$input['id'])->first();
         $masterMirror->email = $input['email'];
         $masterMirror->cookiestext = $input['cookiestext'];
         $masterMirror->status = $input['status'];
