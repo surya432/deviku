@@ -77,7 +77,7 @@ class GoogleDrivePlayerController extends Controller
      * @param  \App\GoogleDrivePlayer  $googleDrivePlayer
      * @return \Illuminate\Http\Response
      */
-    public function edit(GoogleDrivePlayer $googleDrivePlayer,$id)
+    public function edit(GoogleDrivePlayer $googleDrivePlayer, $id)
     {
         //
         $googleDrivePlayer = \App\GoogleDrivePlayer::find($id)->first();
@@ -91,7 +91,7 @@ class GoogleDrivePlayerController extends Controller
      * @param  \App\GoogleDrivePlayer  $googleDrivePlayer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GoogleDrivePlayer $googleDrivePlayer,$id)
+    public function update(Request $request, GoogleDrivePlayer $googleDrivePlayer, $id)
     {
         //
         $input = $request->all();
@@ -104,14 +104,14 @@ class GoogleDrivePlayerController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $masterMirror= \App\GoogleDrivePlayer::find($id);
+        $masterMirror = \App\GoogleDrivePlayer::find($input['id']);
         $masterMirror->email = $input['email'];
         $masterMirror->cookiestext = $input['cookiestext'];
         $masterMirror->status = $input['status'];
         $masterMirror->save();
 
 
-        return $this->sendResponse($masterMirror->toArray(), 'Product updated successfully.');
+        return $this->sendResponse($masterMirror->toArray(), 'GoogleDrivePlayer updated successfully.');
     }
 
     /**
@@ -120,9 +120,9 @@ class GoogleDrivePlayerController extends Controller
      * @param  \App\GoogleDrivePlayer  $googleDrivePlayer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GoogleDrivePlayer $googleDrivePlayer,$id)
+    public function destroy(GoogleDrivePlayer $googleDrivePlayer, $id)
     {
-        $googleDrivePlayer= \App\GoogleDrivePlayer::find($id);
+        $googleDrivePlayer = \App\GoogleDrivePlayer::find($id);
 
         if ($googleDrivePlayer) {
             $googleDrivePlayer->delete();
@@ -135,11 +135,12 @@ class GoogleDrivePlayerController extends Controller
         $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
         return $data;
     }
-    public function getDataWebLink($id){
-        $dataCurl=$this->viewsource("https://www.googleapis.com/drive/v2/files/".$id."?alt=json");
-         $data = json_decode($dataCurl,true);
-        
-        if(isset($data['alternateLink'])){
+    public function getDataWebLink($id)
+    {
+        $dataCurl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?alt=json");
+        $data = json_decode($dataCurl, true);
+
+        if (isset($data['alternateLink'])) {
             return $data['alternateLink'];
         }
         return null;
