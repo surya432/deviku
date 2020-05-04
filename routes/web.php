@@ -22,7 +22,7 @@ Route::get('/downExport', function () {
 Route::get('/test/{id}', function ($id) {
     $users = \App\Drama::with('country')->with('type')->with(['episode', 'episode.links', 'episode.backup'])->whereYear('created_at', $id);
     // return response()->json($users);
-    return view('export',['pegawai' => $users]);
+    return view('export', ['pegawai' => $users]);
 });
 
 Route::get('/generator/backup', ['as' => 'backup', 'uses' => 'BackupController@index']);
@@ -32,7 +32,7 @@ Route::get('/embed/{url}', ['as' => 'viewEps', 'uses' => 'EmbedController@Index'
 Route::get('/ajax/videos/{url}', function () {
     return abort(404);
 });
-Route::get('/drive/getDataWebLink', ['as' => 'googleDrivegetDataWebLink', 'uses' => 'GoogleDrivePlayerController@getlist']);
+Route::get('/drive/getDataWebLink/{id}', ['as' => 'googleDrivegetDataWebLink', 'uses' => 'GoogleDrivePlayerController@getlist']);
 Route::get('/detail/drama', ['as' => 'dramacurl', 'uses' => 'WebfrontsController@asiawiki']);
 Route::post('/ajax/videos/{url}', ['as' => 'ajaxEps', 'uses' => 'EmbedController@getDetail']);
 Route::get('/login', ['as' => 'login', 'uses' => 'LoginController@login']);
@@ -43,6 +43,7 @@ Route::get('/deletegd', ['as' => 'gmailPostUpdate', 'uses' => 'BackupController@
 Route::get('/testGd', ['as' => 'testGd', 'uses' => 'BackupController@testgd']);
 Route::get('/singkron/drama/{id}', ['as' => 'singkrons', 'uses' => 'GDController@syncFolder']);
 Route::get('/proxyDrive', ['as' => 'ProxyDriveIndex', 'uses' => 'ProxyDriveController@index']);
+Route::get('/photodrive', ['as' => 'ProxyDriveIndex', 'uses' => 'ProxyDriveController@uploadPhoto']);
 Route::get('/proxyDrive/{id}', ['as' => 'ProxyDriveContents', 'uses' => 'ProxyDriveController@getBrokenLink']);
 Route::get('/proxyDriveps1', ['as' => 'ProxyDriveContentsps1', 'uses' => 'ProxyDriveController@fileBrokenLinkPs1']);
 Route::group(['middleware' => ['web']], function () {
@@ -147,5 +148,4 @@ Route::group(['middleware' => ['admin', 'web']], function () {
     Route::get('/admin/form-master-mirror', 'MasterMirrorController@json')->name('ApiMasterMirrorJson');
     Route::resource('/admin/cookies', 'GoogleDrivePlayerController');
     Route::get('/admin/datatables/master-cookies', 'GoogleDrivePlayerController@jsonDataTable')->name('jsonDataTableCookies');
-
 });

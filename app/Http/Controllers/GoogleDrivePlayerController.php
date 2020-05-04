@@ -130,10 +130,16 @@ class GoogleDrivePlayerController extends Controller
         }
         return response()->json($googleDrivePlayer);
     }
-    public function getlist()
+    public function getlist($id)
     {
         $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
-        return $data;
+        $dataCurl = $this->getApi("https://www.googleapis.com/drive/v2/files/" . $id . "?alt=json&key=".$data['cookiestext']);
+        $data = json_decode($dataCurl, true);
+
+        if (isset($data['downloadUrl'])) {
+            return $data['downloadUrl'];
+        }
+        return "";
     }
     public function getDataWebLink($id)
     {
@@ -165,4 +171,5 @@ class GoogleDrivePlayerController extends Controller
             // ->rawColumns(['other-columns'])
             ->make(true);
     }
+    
 }

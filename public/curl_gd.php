@@ -13,10 +13,10 @@ function GoogleDrive($gid)
     //$title = gdTitle($gid);
     //$img = gdImg($gdurl);
     $streaming_vid = Drive($gid, "2");
-    // $streaming_vid= file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $gid);
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
-        $streaming_vid = Drive($gid, "2");
-        
+        $streaming_vid = Drive($gid, "1");
+            // $streaming_vid= file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $gid);
+
     }
     $output = ['label' => 'auto', 'file' => str_replace("&authuser=0", "", $streaming_vid), 'type' => 'video/mp4'];
     $output = json_encode($output, JSON_PRETTY_PRINT);
@@ -71,9 +71,9 @@ function gd_cache($gid, $source)
     }
     return $msn;
 }
-function getCookies()
+function getCookies($id)
 {
-    $hostName = "https://player.nontonindrama.com/drive/getDataWebLink";
+    $hostName = "https://player.nontonindrama.com/drive/getDataWebLink/".$id;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $hostName);
     // curl_setopt($ch, CURLOPT_HEADER, true);
@@ -90,16 +90,17 @@ function getCookies()
         return "";
     }
     curl_close($ch);
-    $result = json_decode($result,true);
-     return $result['cookiestext'];
+    $result = json_decode($result, true);
+    return $result['cookiestext'];
 }
 function getlink($id, $try)
 {
     $link = "https://drive.google.com/uc?export=download&id=$id";
 
     if ($try == "2") {
-        $data = getCookies();
-        return  'https://www.googleapis.com/drive/v3/files/' . $id . '?alt=media&key=' .$data;
+        $data = getCookies($id);
+        // return  'https://www.googleapis.com/drive/v3/files/' . $id . '?alt=media&key=' . $data;
+        return  $data;
     }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $link);

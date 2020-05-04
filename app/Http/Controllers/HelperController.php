@@ -38,6 +38,21 @@ trait HelperController
         curl_close($ch);
         return $httpcode;
     }
+    public function getApi($url)
+    {
+        // $url = 'https://drive.google.com/file/d/' . $url . '/view';
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_REFERER, 'http://dldramaid.xyz/');
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $page = curl_exec($ch);
+        curl_close($ch);
+        return $page;
+    }
     public function getHeaderFolderCode($id)
     {
         $curl = $this->viewsource("https://www.googleapis.com/drive/v2/files/" . $id . "?supportsAllDrives=true&supportsTeamDrives=true");

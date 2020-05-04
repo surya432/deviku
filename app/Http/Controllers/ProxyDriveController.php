@@ -111,4 +111,16 @@ class ProxyDriveController extends Controller
             return $returnData;
         }
     }
+    function uploadPhoto(){
+        $returnData = null;
+        $data = \App\masterlinks::whereNotIn('drive', function ($query) {
+            $query->from('mirrorcopies')->where('provider','photogoogle')->select('drive')->get();
+        })->where('kualitas','720p')->orderBy('id', 'desc')->take(10)->get();
+        if(!is_null($data)){
+            foreach ($data as $content) {
+                $returnData .= '"C:\Program Files (x86)\Internet Download Manager\IDMan.exe" /d "http://127.0.0.1:5001/api/googledrive/'.$content->drive.'?token=ndo" /a /n ' . " \n";
+            }
+        }
+        return $returnData;
+    }
 }
