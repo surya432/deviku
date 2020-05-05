@@ -25,8 +25,8 @@ Master Cookies
                             <th witdh="5%">No</th>
                             <th>Email</th>
                             <th width="15%">Key</th>
-                            <th width="15%">Status</th>
-                            <th width="20%">Aksi</th>
+                            <th width="25%">Status</th>
+                            <th width="10%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
