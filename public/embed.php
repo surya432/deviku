@@ -70,7 +70,7 @@
 		var hsdsd = 35;
 		var sources_video = <?php
 								if ($sourcesvideo) {
-									echo '[' . $sourcesvideo . "];";
+									echo $sourcesvideo;
 								} else {
 									echo $sourcesvideo;
 								} ?>
