@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Validator;
 use DB;
-
+use Cache;
 use Yajra\Datatables\Datatables;
 
 class GoogleDrivePlayerController extends Controller
@@ -140,7 +140,7 @@ class GoogleDrivePlayerController extends Controller
         $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
         $dataCurl = $this->getApi("https://www.googleapis.com/drive/v2/files/" . $id . "?alt=json&key=" . $data['cookiestext']);
         $dataCurl = json_decode($dataCurl, true);
-        if ($dataCurl['error']['message'] == "Rate Limit Exceeded") {
+        if (isset($dataCurl['error']) && $dataCurl['error']['message'] == "Rate Limit Exceeded") {
             $masterMirror = \App\GoogleDrivePlayer::where('id', $data['id'])->first();
             $masterMirror->status = "limit";
             $masterMirror->save();
