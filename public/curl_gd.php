@@ -12,10 +12,10 @@ function GoogleDrive($gid)
     // $iframeid = my_simple_crypt($gid);
     $streaming_vid = Drive($gid, "2");;
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
-        $streaming_vid = Drive($gid, "1");
+        $streaming_vid = Drive($gid, "2");
     }
-    $output = ['label' => 'auto', 'file' => str_replace("&authuser=0", "", $streaming_vid), 'type' => 'video/mp4'];
-    $output = json_encode($output, JSON_PRETTY_PRINT);
+    $output = "['label' => 'auto', 'file' => '".str_replace("&authuser=0", "", $streaming_vid)."', 'type' => 'video/mp4']";
+    // $output = json_encode($output, JSON_PRETTY_PRINT);
     return $output;
 }
 
