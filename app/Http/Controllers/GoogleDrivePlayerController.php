@@ -133,7 +133,7 @@ class GoogleDrivePlayerController extends Controller
     public function getlist($id)
     {
         Cache::remember('users', 60 * 60 * 24, function () {
-            $masterMirror = \App\GoogleDrivePlayer::where('status', '=', "limit")->update(array('status' => 1));
+            $masterMirror = \App\GoogleDrivePlayer::where('status', '=', "Rate Limit Exceeded")->update(array('status' => 1));
             return $masterMirror;
         });
 
