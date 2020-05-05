@@ -72,7 +72,7 @@
 								if ($sourcesvideo) {
 									echo $sourcesvideo;
 								} else {
-									echo $sourcesvideo;
+									echo  "['label' => 'auto', 'file' => 'error', 'type' => 'video/mp4']";;
 								} ?>
 
 		var daplayer = jwplayer("myElement").setup({
