@@ -14,7 +14,7 @@ function GoogleDrive($gid)
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         return null;
     }
-    $output = "['label' => 'auto', 'file' => '".str_replace("&authuser=0", "", $streaming_vid)."', 'type' => 'video/mp4']";
+    $output = '[{"label":"undefined","type":"video\/mp4","file":"'.$streaming_vid.'"}]';
     // $output = json_encode($output, JSON_PRETTY_PRINT);
     return $output;
 }
