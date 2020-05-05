@@ -142,7 +142,7 @@ class GoogleDrivePlayerController extends Controller
         $dataCurl = json_decode($dataCurl, true);
         if (isset($dataCurl['error']) && $dataCurl['error']['message'] == "Rate Limit Exceeded") {
             $masterMirror = \App\GoogleDrivePlayer::where('id', $data['id'])->first();
-            $masterMirror->status = "limit";
+            $masterMirror->status = $dataCurl['error']['message'];
             $masterMirror->save();
         }
         if (isset($dataCurl['downloadUrl'])) {
