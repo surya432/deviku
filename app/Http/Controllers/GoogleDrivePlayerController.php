@@ -140,7 +140,7 @@ class GoogleDrivePlayerController extends Controller
         $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
         $dataCurl = $this->getApi("https://www.googleapis.com/drive/v2/files/" . $id . "?alt=json&key=" . $data['cookiestext']);
         $dataCurl = json_decode($dataCurl, true);
-        if ($dataCurl['error']) {
+        if ($dataCurl['error']['message'] == "Rate Limit Exceeded") {
             $masterMirror = \App\GoogleDrivePlayer::where('id', $data['id'])->first();
             $masterMirror->status = "limit";
             $masterMirror->save();
