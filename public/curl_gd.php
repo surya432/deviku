@@ -8,15 +8,11 @@ if (!file_exists('cache')) {
 function GoogleDrive($gid)
 {
 
-    $gdurl = 'https://drive.google.com/file/d/' . $gid . '/preview';
-    $iframeid = my_simple_crypt($gid);
-    //$title = gdTitle($gid);
-    //$img = gdImg($gdurl);
-    $streaming_vid = Drive($gid, "2");
+    // $gdurl = 'https://drive.google.com/file/d/' . $gid . '/preview';
+    // $iframeid = my_simple_crypt($gid);
+    $streaming_vid = Drive($gid, "2");;
     if (empty($streaming_vid) || is_null($streaming_vid) || $streaming_vid == "Error") {
         $streaming_vid = Drive($gid, "1");
-            // $streaming_vid= file_get_contents( "https://player.nontonindrama.com/drive/getDataWebLink/" . $gid);
-
     }
     $output = ['label' => 'auto', 'file' => str_replace("&authuser=0", "", $streaming_vid), 'type' => 'video/mp4'];
     $output = json_encode($output, JSON_PRETTY_PRINT);
@@ -27,7 +23,7 @@ function GoogleDrive($gid)
 function Drive($gid, $try)
 {
 
-    $timeout = 900;
+    $timeout = 60;
     $file_name = md5('GD' . $gid . 'player' . $try);
     if (file_exists('cache/' . $file_name . '.cache')) {
         $fopen = file_get_contents('cache/' . $file_name . '.cache');
@@ -73,25 +69,19 @@ function gd_cache($gid, $source)
 }
 function getCookies($id)
 {
-    $hostName = "https://player.nontonindrama.com/drive/getDataWebLink/".$id;
+    $hostName = "https://player.nontonindrama.com/drive/getDataWebLink/" . $id;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $hostName);
-    // curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 10);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    $headers = array();
-    $headers[] = 'Accept: application/json';
-    // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     $result = curl_exec($ch);
-    if (curl_errno($ch)) {
-        return "";
-    }
+
     curl_close($ch);
-    $result = json_decode($result, true);
-    return $result['cookiestext'];
+
+    return $result;
 }
 function getlink($id, $try)
 {
