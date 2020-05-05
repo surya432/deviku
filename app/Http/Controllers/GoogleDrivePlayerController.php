@@ -80,7 +80,7 @@ class GoogleDrivePlayerController extends Controller
     public function edit(GoogleDrivePlayer $googleDrivePlayer, $id)
     {
         //
-        $googleDrivePlayer = \App\GoogleDrivePlayer::where('id',$id)->first();
+        $googleDrivePlayer = \App\GoogleDrivePlayer::where('id', $id)->first();
         return view("googledrivePlayer.edit", compact('googleDrivePlayer'));
     }
 
@@ -104,7 +104,7 @@ class GoogleDrivePlayerController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $masterMirror = \App\GoogleDrivePlayer::where('id',$input['id'])->first();
+        $masterMirror = \App\GoogleDrivePlayer::where('id', $input['id'])->first();
         $masterMirror->email = $input['email'];
         $masterMirror->cookiestext = $input['cookiestext'];
         $masterMirror->status = $input['status'];
@@ -132,12 +132,21 @@ class GoogleDrivePlayerController extends Controller
     }
     public function getlist($id)
     {
-        $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
-        $dataCurl = $this->getApi("https://www.googleapis.com/drive/v2/files/" . $id . "?alt=json&key=".$data['cookiestext']);
-        $data = json_decode($dataCurl, true);
+        Cache::remember('users', 60 * 60 * 24, function () {
+            $masterMirror = \App\GoogleDrivePlayer::where('status', '=', "limit")->update(array('status' => 1));
+            return $masterMirror;
+        });
 
-        if (isset($data['downloadUrl'])) {
-            return $data['downloadUrl'];
+        $data = GoogleDrivePlayer::where('status', 'active')->inRandomOrder()->first();
+        $dataCurl = $this->getApi("https://www.googleapis.com/drive/v2/files/" . $id . "?alt=json&key=" . $data['cookiestext']);
+        $dataCurl = json_decode($dataCurl, true);
+        if ($dataCurl['error']) {
+            $masterMirror = \App\GoogleDrivePlayer::where('id', $data['id'])->first();
+            $masterMirror->status = "limit";
+            $masterMirror->save();
+        }
+        if (isset($dataCurl['downloadUrl'])) {
+            return $dataCurl['downloadUrl'];
         }
         return "";
     }
