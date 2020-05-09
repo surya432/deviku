@@ -69,7 +69,7 @@ function gd_cache($gid, $source)
 }
 function getCookies($id)
 {
-    $hostName = "https://player.nontonindrama.com/drive/getDataWebLink/" . $id;
+    $hostName = "https://player.nontonindrama.xyz/drive/getDataWebLink/" . $id;
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $hostName);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

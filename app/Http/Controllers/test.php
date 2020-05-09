@@ -5,7 +5,7 @@
     Description: adds the td_book post type and td_author + td_genre taxonomy
     Author: Surya Haho
     Version: 2.0
-    Author URI: http://nontonindrama.com
+    Author URI: http://nontonindrama.xyz
 */
 
 // to register Custom Post Types and taxonomies, the use of the init hook is required!

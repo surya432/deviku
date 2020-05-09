@@ -68,8 +68,8 @@ $sourcesvideo = GoogleDrive($gid);
 		//		"width": 300,
 		//	}
 		//},
-		abouttext: "nontonindrama.com",
-		aboutlink: "http://nontonindrama.com",
+		abouttext: "nontonindrama.xyz",
+		aboutlink: "http://nontonindrama.xyz",
 		sources: sources_video
 	}).addButton(
 		//"//i.imgur.com/cAHz5k9.png",

@@ -60,7 +60,7 @@
 	if (isset($_GET['id'])) {
 		$gid = htmlspecialchars($_GET['id']);
 		$gid = my_simple_crypt($gid, 'd');
-		// $results = file_get_contents('https://gd.nontonindrama.com/Player-Script/json.php?url=https://drive.google.com/file/d/' . $gid . '/preview');
+		// $results = file_get_contents('https://gd.nontonindrama.xyz/Player-Script/json.php?url=https://drive.google.com/file/d/' . $gid . '/preview');
 		$gid = get_drive_id("https://drive.google.com/file/d/$gid/view");
 		$sourcesvideo = GoogleDrive($gid);
 		?>
@@ -104,8 +104,8 @@
 			// 		"width": 300,
 			// 	}
 			// },
-			abouttext: "nontonindrama.com",
-			aboutlink: "http://nontonindrama.com",
+			abouttext: "nontonindrama.xyz",
+			aboutlink: "http://nontonindrama.xyz",
 			sources: sources_video
 		}).addButton(
 			//"//i.imgur.com/cAHz5k9.png",
